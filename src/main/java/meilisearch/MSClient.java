@@ -52,4 +52,28 @@ public class MSClient {
     public String getIndex (String uid) throws Exception {
         return this.indexes.get(uid);
     }
+
+    /**
+     * Update index by uid
+     * Refer https://docs.meilisearch.com/references/indexes.html#update-an-index
+     *
+     * @param uid
+     * @return
+     * @throws Exception
+     */
+    public String updateIndex (String uid, String name) throws Exception {
+        return this.indexes.update(uid, name);
+    }
+
+    /**
+     * Delete single index by uid
+     * Refer https://docs.meilisearch.com/references/indexes.html#get-one-index
+     *
+     * @param uid
+     * @return
+     * @throws Exception
+     */
+    public String deleteIndex (String uid) throws Exception {
+        return this.indexes.delete(uid);
+    }
 }

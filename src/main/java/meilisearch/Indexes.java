@@ -29,4 +29,17 @@ class Indexes {
     String getAll() throws Exception {
         return request.get("/indexes");
     }
+
+    String update(String uid, String name) throws Exception {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("name", name);
+
+        String requestQuery = "/indexes/" + uid;
+        return request.put(requestQuery, jsonObject.toString());
+    }
+
+    String delete(String uid) throws Exception {
+        String requestQuery = "/indexes/" + uid;
+        return request.delete(requestQuery);
+    }
 }

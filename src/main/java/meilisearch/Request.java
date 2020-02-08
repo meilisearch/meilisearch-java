@@ -63,6 +63,45 @@ class Request {
         return sb.toString();
     }
 
+    String put(String api, String params) throws Exception {
+        System.out.println(params);
+        URL url = new URL(config.hostUrl + api);
+
+        HttpURLConnection connection = connection(url, "PUT", config.apiKey);
+        connection.setDoOutput(true);
+        connection.getOutputStream().write(params.getBytes());
+        connection.connect();
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
+        StringBuffer sb = new StringBuffer();
+        String responsed;
+
+        while ((responsed = br.readLine()) != null) {
+            sb.append(responsed);
+        }
+
+        br.close();
+        return sb.toString();
+    }
+
+    String delete(String api) throws Exception {
+        URL url = new URL(config.hostUrl + api);
+
+        HttpURLConnection connection = connection(url, "DELETE", config.apiKey);
+        connection.connect();
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
+        StringBuffer sb = new StringBuffer();
+        String responsed;
+
+        while ((responsed = br.readLine()) != null) {
+            sb.append(responsed);
+        }
+
+        br.close();
+        return sb.toString();
+    }
+
     private HttpURLConnection connection(URL url, String requestMethod, String apiKey) throws IOException {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod(requestMethod);

@@ -39,4 +39,14 @@ public class MeiliSearchTest {
     public void getIndex() throws Exception {
         System.out.println(ms.getIndex("4ayjgirl"));
     }
+
+    @Test
+    public void put() throws Exception {
+
+    }
+
+    @Test
+    public void delete() throws Exception {
+
+    }
 }
