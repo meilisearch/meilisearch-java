@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class MeiliSearchTest {
+public class IndexesTest {
 
     MSClient ms;
 
@@ -37,6 +37,7 @@ public class MeiliSearchTest {
 
     @Test
     public void getIndex() throws Exception {
+        // TODO: input uid for test
         System.out.println(ms.getIndex("4ayjgirl"));
     }
 

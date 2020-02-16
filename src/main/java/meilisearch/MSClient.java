@@ -6,6 +6,7 @@ package meilisearch;
 public class MSClient {
     public Config config;
     public Indexes indexes;
+    public Documents documents;
 
     /**
      * Call instance for MeiliSearch client
@@ -15,6 +16,7 @@ public class MSClient {
     public MSClient(Config config) {
         this.config = config;
         this.indexes = new Indexes(config);
+        this.documents = new Documents(config);
     }
 
     /**
@@ -75,5 +77,26 @@ public class MSClient {
      */
     public String deleteIndex (String uid) throws Exception {
         return this.indexes.delete(uid);
+    }
+
+    /**
+     *
+     * @param uid
+     * @return
+     * @throws Exception
+     */
+    public String getDocuments (String uid) throws Exception {
+        return this.documents.getDocuments(uid);
+    }
+
+    /**
+     *
+     * @param uid
+     * @param identifier
+     * @return
+     * @throws Exception
+     */
+    public String getDocument (String uid, String identifier) throws Exception {
+        return this.documents.getDocument(uid, identifier);
     }
 }

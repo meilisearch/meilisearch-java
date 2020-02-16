@@ -13,7 +13,7 @@ class Documents {
     }
 
     String getDocuments (String uid) throws Exception {
-        String requestQuery = "/indexes/" + uid + "/documents/";
+        String requestQuery = "/indexes/" + uid + "/documents";
         return request.get(requestQuery);
     }
 
