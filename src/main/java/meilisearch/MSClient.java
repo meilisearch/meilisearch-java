@@ -3,10 +3,14 @@
  */
 package meilisearch;
 
+import com.google.gson.Gson;
+import meilisearch.model.Index;
+
 public class MSClient {
     public Config config;
     public Indexes indexes;
     public Documents documents;
+    public Gson gson;
 
     /**
      * Call instance for MeiliSearch client
@@ -15,6 +19,7 @@ public class MSClient {
      */
     public MSClient(Config config) {
         this.config = config;
+        gson = new Gson();
         this.indexes = new Indexes(config);
         this.documents = new Documents(config);
     }
@@ -39,8 +44,9 @@ public class MSClient {
      * @return
      * @throws Exception
      */
-    public String getIndexes () throws Exception {
-        return this.indexes.getAll();
+    public Index[] getIndexes () throws Exception {
+        Index[] indexList = gson.fromJson(this.indexes.getAll(), Index[].class);
+        return indexList;
     }
 
     /**
@@ -51,8 +57,9 @@ public class MSClient {
      * @return
      * @throws Exception
      */
-    public String getIndex (String uid) throws Exception {
-        return this.indexes.get(uid);
+    public Index getIndex (String uid) throws Exception {
+        Index index = gson.fromJson(this.indexes.get(uid), Index.class);
+        return index;
     }
 
     /**
