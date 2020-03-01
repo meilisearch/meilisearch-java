@@ -17,4 +17,9 @@ class Documents {
         return request.get(requestQuery);
     }
 
+    String getDocuments(String uid, int limit) throws Exception {
+        String requestQuery = "/indexes/" + uid + "/documents?limit=" + limit;
+        return request.get(requestQuery);
+    }
+
 }

@@ -1,6 +1,7 @@
 package meilisearch.model;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 
 public class Index extends DefaultModel implements Serializable {
     String name;
@@ -13,4 +14,13 @@ public class Index extends DefaultModel implements Serializable {
     public String getUid() {
         return this.uid;
     }
+
+    public ZonedDateTime getCreatedAt() {
+        return ZonedDateTime.parse(this.createdAt);
+    }
+
+    public ZonedDateTime getUpdatedAt() {
+        return ZonedDateTime.parse(this.createdAt);
+    }
+
 }
