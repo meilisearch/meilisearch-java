@@ -3,7 +3,6 @@
  */
 package meilisearch;
 
-import meilisearch.model.Index;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,9 +32,9 @@ public class IndexesTest {
 
     @Test
     public void getIndexes() throws Exception {
-        Index[] indexes = ms.getIndexes();
+        Indexes[] indexes = ms.getIndexList();
         for (int a = 0; a < indexes.length; a++) {
-            System.out.println(indexes[a].getUid());
+            System.out.println(indexes[a]);
         }
 
     }
@@ -43,8 +42,8 @@ public class IndexesTest {
     @Test
     public void getIndex() throws Exception {
         // TODO: input uid for test
-        Index index = ms.getIndex("4ayjgirl");
-        System.out.println(index.getUid());
+        Indexes index = ms.getIndex("4ayjgirl");
+        System.out.println(index);
     }
 
     @Test

@@ -1,45 +1,48 @@
 package meilisearch;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
 
-class Indexes {
-    Request request;
-    Indexes (Config config) {
-        request = new Request(config);
+public class Indexes implements Serializable {
+    String name;
+    String uid;
+    String createdAt;
+    String updatedAt;
+    Config config;
+    Documents documents;
+
+    void setConfig(Config config) {
+        this.config = config;
+        this.documents = new Documents(config);
     }
 
-    String create(String name, Schema schema) throws Exception {
-        Gson gson = new Gson();
-        JsonElement jsonElement = gson.toJsonTree(schema);
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("name", name);
-        jsonObject.add("schema", jsonElement);
-
-        return request.post("/indexes", jsonObject.toString());
+    public String getName() {
+        return this.name;
     }
 
-    String get(String uid) throws Exception {
-        String requestQuery = "/indexes/" + uid;
-        return request.get(requestQuery);
+    public String getUid() {
+        return this.uid;
     }
 
-    String getAll() throws Exception {
-        return request.get("/indexes");
+    public ZonedDateTime getCreatedAt() {
+        return ZonedDateTime.parse(this.createdAt);
     }
 
-    String update(String uid, String name) throws Exception {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("name", name);
-
-        String requestQuery = "/indexes/" + uid;
-        return request.put(requestQuery, jsonObject.toString());
+    public ZonedDateTime getUpdatedAt() {
+        return ZonedDateTime.parse(this.updatedAt);
     }
 
-    String delete(String uid) throws Exception {
-        String requestQuery = "/indexes/" + uid;
-        return request.delete(requestQuery);
+    public String getDocument(String identifier) throws Exception {
+        return this.documents.getDocument(this.uid, identifier);
+    }
+
+    public String getDocuments() throws Exception {
+        return this.documents.getDocuments(this.uid);
+    }
+
+    @Override
+    public String toString() {
+        // TODO: update format
+        return "Indexes:" + name + " / config: " + config.hostUrl;
     }
 }

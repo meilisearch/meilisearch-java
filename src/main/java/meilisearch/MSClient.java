@@ -4,12 +4,10 @@
 package meilisearch;
 
 import com.google.gson.Gson;
-import meilisearch.model.Index;
 
 public class MSClient {
     public Config config;
-    public Indexes indexes;
-    public Documents documents;
+    public Index index;
     public Gson gson;
 
     /**
@@ -20,8 +18,7 @@ public class MSClient {
     public MSClient(Config config) {
         this.config = config;
         gson = new Gson();
-        this.indexes = new Indexes(config);
-        this.documents = new Documents(config);
+        this.index = new Index(config);
     }
 
     /**
@@ -34,7 +31,7 @@ public class MSClient {
      * @throws Exception
      */
     public String createIndex (String name, Schema params) throws Exception {
-        return this.indexes.create(name, params);
+        return this.index.create(name, params);
     }
 
     /**
@@ -44,8 +41,11 @@ public class MSClient {
      * @return
      * @throws Exception
      */
-    public Index[] getIndexes () throws Exception {
-        Index[] indexList = gson.fromJson(this.indexes.getAll(), Index[].class);
+    public Indexes[] getIndexList () throws Exception {
+        Indexes[] indexList = gson.fromJson(this.index.getAll(), Indexes[].class);
+        for (Indexes idxs: indexList) {
+            idxs.setConfig(this.config);
+        }
         return indexList;
     }
 
@@ -57,9 +57,10 @@ public class MSClient {
      * @return
      * @throws Exception
      */
-    public Index getIndex (String uid) throws Exception {
-        Index index = gson.fromJson(this.indexes.get(uid), Index.class);
-        return index;
+    public Indexes getIndex (String uid) throws Exception {
+        Indexes indexes = gson.fromJson(this.index.get(uid), Indexes.class);
+        indexes.setConfig(this.config);
+        return indexes;
     }
 
     /**
@@ -71,7 +72,7 @@ public class MSClient {
      * @throws Exception
      */
     public String updateIndex (String uid, String name) throws Exception {
-        return this.indexes.update(uid, name);
+        return this.index.update(uid, name);
     }
 
     /**
@@ -83,27 +84,6 @@ public class MSClient {
      * @throws Exception
      */
     public String deleteIndex (String uid) throws Exception {
-        return this.indexes.delete(uid);
-    }
-
-    /**
-     *
-     * @param uid
-     * @return
-     * @throws Exception
-     */
-    public String getDocuments (String uid) throws Exception {
-        return this.documents.getDocuments(uid);
-    }
-
-    /**
-     *
-     * @param uid
-     * @param identifier
-     * @return
-     * @throws Exception
-     */
-    public String getDocument (String uid, String identifier) throws Exception {
-        return this.documents.getDocument(uid, identifier);
+        return this.index.delete(uid);
     }
 }

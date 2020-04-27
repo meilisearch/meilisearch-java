@@ -5,22 +5,28 @@ import org.junit.Test;
 
 public class DocumentsTest {
 
-    MSClient ms;
+    Indexes index;
 
     @Before
     public void initialize() {
-        ms = new MSClient(new Config("http://localhost:7700", ""));
+        MSClient ms = new MSClient(new Config("http://localhost:7700", ""));
+        try {
+            // TODO: add uid of index for test
+            this.index = ms.getIndex("");
+        } catch (Exception e) {
+
+        }
     }
 
     @Test
     public void getDocument() throws Exception {
         // TODO: input uid, identifier for test
-        System.out.println(ms.getDocument("", ""));
+        System.out.println(this.index.getDocument(""));
     }
 
     @Test
     public void getDocuments() throws Exception {
         // TODO: input uid for test
-        System.out.println(ms.getDocuments(""));
+        System.out.println(this.index.getDocuments());
     }
 }
