@@ -11,7 +11,7 @@ class Request {
 
     private Config config;
 
-    Request(Config config) {
+    protected Request(Config config) {
         this.config = config;
     }
 

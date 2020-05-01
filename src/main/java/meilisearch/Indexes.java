@@ -40,9 +40,17 @@ public class Indexes implements Serializable {
         return this.documents.getDocuments(this.uid);
     }
 
+    public String getDocuments(int limits) throws Exception {
+        return this.documents.getDocuments(this.uid, limits);
+    }
+
+    public String addDocument(String document) throws Exception {
+        return this.documents.addDocument(this.uid, document);
+    }
+
     @Override
     public String toString() {
         // TODO: update format
-        return "Indexes:" + name + " / config: " + config.hostUrl;
+        return "Indexes:" + name + " / uid: " + uid;
     }
 }
