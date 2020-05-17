@@ -48,6 +48,18 @@ public class Indexes implements Serializable {
         return this.documents.addDocument(this.uid, document);
     }
 
+    public String deleteDocument(String identifier) throws Exception {
+        return this.documents.deleteDocument(this.uid, identifier);
+    }
+
+    public String deleteDocuments() throws Exception {
+        return this.documents.deleteDocuments(this.uid);
+    }
+
+    public String search(String q) throws Exception {
+        return this.documents.search(this.uid, q);
+    }
+
     @Override
     public String toString() {
         // TODO: update format

@@ -42,7 +42,7 @@ public class IndexesTest {
     @Test
     public void getIndex() throws Exception {
         // TODO: input uid for test
-        Indexes index = ms.getIndex("4ayjgirl");
+        Indexes index = ms.getIndex("movies");
         System.out.println(index);
     }
 

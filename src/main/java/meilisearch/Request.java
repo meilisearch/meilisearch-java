@@ -2,10 +2,12 @@ package meilisearch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 class Request {
 
@@ -89,31 +91,42 @@ class Request {
 
         HttpURLConnection connection = connection(url, "DELETE", config.apiKey);
         connection.connect();
+        return getResponseBuffer(connection.getInputStream());
+    }
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
+    private String getResponseBuffer(InputStream is) {
+        BufferedReader br = new BufferedReader(
+                new InputStreamReader(is, StandardCharsets.UTF_8)
+        );
         StringBuffer sb = new StringBuffer();
         String responsed;
+        try {
+            while ((responsed = br.readLine()) != null) {
+                sb.append(responsed);
+            }
 
-        while ((responsed = br.readLine()) != null) {
-            sb.append(responsed);
+            br.close();
+        } catch (IOException ioe) {
+        } finally {
+            return sb.toString();
         }
-
-        br.close();
-        return sb.toString();
     }
 
     private HttpURLConnection connection(URL url, String requestMethod, String apiKey) throws IOException {
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod(requestMethod);
-        con.setRequestProperty("Content-Type", "application/json");
+        try {
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod(requestMethod);
+            con.setRequestProperty("Content-Type", "application/json");
 
-        if (!apiKey.equals("")) {
-            con.setRequestProperty("X-Meili-API-Key", apiKey);
+            if (!apiKey.equals("")) {
+                con.setRequestProperty("X-Meili-API-Key", apiKey);
+            }
+
+            return con;
+        } catch (IOException ioe) {
+
         }
 
-//        con.setRequestProperty("Content-Encoding", "gzip");
-//        con.setRequestProperty("Accept-Encoding", "gzip, deflate");
-
-        return con;
+        return null;
     }
 }

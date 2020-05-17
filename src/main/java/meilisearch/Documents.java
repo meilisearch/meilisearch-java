@@ -27,11 +27,6 @@ class Documents {
         return request.post(requestQuery, document);
     }
 
-    String updateDocument (String uid, String document) throws Exception {
-        // TODO
-        return "";
-    }
-
     String deleteDocument (String uid, String identifier) throws Exception {
         String requestQuery = "/indexes/" + uid + "/documents/" + identifier;
         return request.delete(requestQuery);
@@ -45,6 +40,28 @@ class Documents {
     String deleteList (String uid, int[] ids) throws Exception {
         // TODO
         return "";
+    }
+
+    String search (String uid, String q) throws Exception {
+        String requestQuery = "/indexes/" + uid + "/search";
+        SearchRequest sr = new SearchRequest(q);
+        return request.get(requestQuery, sr.getQuery());
+    }
+
+    String search (String uid,
+                   String q,
+                   int offset,
+                   int limit,
+                   String attributesToRetrieve,
+                   String attributesToCrop,
+                   int cropLength,
+                   String attributesToHighlight,
+                   String filters,
+                   boolean matches
+    ) throws Exception {
+        String requestQuery = "/indexes/" + uid + "/search";
+        SearchRequest sr = new SearchRequest(q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength, attributesToHighlight, filters, matches);
+        return request.get(requestQuery, sr.getQuery());
     }
 
 }
