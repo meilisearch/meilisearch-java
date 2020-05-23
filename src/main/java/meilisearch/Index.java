@@ -1,7 +1,5 @@
 package meilisearch;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 class Index {
@@ -10,13 +8,16 @@ class Index {
         request = new Request(config);
     }
 
-    String create(String name, Schema schema) throws Exception {
-        Gson gson = new Gson();
-        JsonElement jsonElement = gson.toJsonTree(schema);
+    String create(String uid) throws Exception {
+        return this.create(uid, null);
+    }
 
+    String create(String uid, String primaryKey) throws Exception {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("name", name);
-        jsonObject.add("schema", jsonElement);
+        jsonObject.addProperty("uid", uid);
+        if (primaryKey != null) {
+            jsonObject.addProperty("primaryKey", primaryKey);
+        }
 
         return request.post("/indexes", jsonObject.toString());
     }
@@ -30,9 +31,9 @@ class Index {
         return request.get("/indexes");
     }
 
-    String update(String uid, String name) throws Exception {
+    String update(String uid, String primaryKey) throws Exception {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("name", name);
+        jsonObject.addProperty("primaryKey", primaryKey);
 
         String requestQuery = "/indexes/" + uid;
         return request.put(requestQuery, jsonObject.toString());
