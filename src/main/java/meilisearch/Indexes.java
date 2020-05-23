@@ -32,10 +32,23 @@ public class Indexes implements Serializable {
         return ZonedDateTime.parse(this.updatedAt);
     }
 
+    /**
+     * getDocument
+     *
+     * @param identifier
+     * @return
+     * @throws Exception
+     */
     public String getDocument(String identifier) throws Exception {
         return this.documents.getDocument(this.uid, identifier);
     }
 
+    /**
+     * getDocuments
+     *
+     * @return
+     * @throws Exception
+     */
     public String getDocuments() throws Exception {
         return this.documents.getDocuments(this.uid);
     }
@@ -44,10 +57,24 @@ public class Indexes implements Serializable {
         return this.documents.getDocuments(this.uid, limits);
     }
 
+    /**
+     * addDocument
+     *
+     * @param document
+     * @return
+     * @throws Exception
+     */
     public String addDocument(String document) throws Exception {
         return this.documents.addDocument(this.uid, document);
     }
 
+    /**
+     * deleteDocument
+     *
+     * @param identifier
+     * @return
+     * @throws Exception
+     */
     public String deleteDocument(String identifier) throws Exception {
         return this.documents.deleteDocument(this.uid, identifier);
     }
@@ -56,6 +83,13 @@ public class Indexes implements Serializable {
         return this.documents.deleteDocuments(this.uid);
     }
 
+    /**
+     * search
+     *
+     * @param q
+     * @return
+     * @throws Exception
+     */
     public String search(String q) throws Exception {
         return this.documents.search(this.uid, q);
     }

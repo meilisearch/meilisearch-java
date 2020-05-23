@@ -23,3 +23,22 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 }
+
+task buildJar(type: Jar) {
+    manifest {
+        attributes(
+                'Main-Class': 'meilisearch-java.MSClient'
+        )
+    }
+//    classifier = 'all'
+    baseName = 'meilisearch-java'
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+            {
+                exclude "META-INF/*.SF"
+                exclude "META-INF/*.DSA"
+                exclude "META-INF/*.RSA"
+            }
+    with jar
+}
