@@ -6,6 +6,7 @@ import java.time.ZonedDateTime;
 public class Indexes implements Serializable {
     String name;
     String uid;
+    String primaryKey;
     String createdAt;
     String updatedAt;
     Config config;
@@ -97,6 +98,6 @@ public class Indexes implements Serializable {
     @Override
     public String toString() {
         // TODO: update format
-        return "Indexes:" + name + " / uid: " + uid;
+        return "Indexes:" + name + " / uid: " + uid + " / pk: " + primaryKey;
     }
 }

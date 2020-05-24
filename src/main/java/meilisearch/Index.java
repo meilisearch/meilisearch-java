@@ -2,6 +2,11 @@ package meilisearch;
 
 import com.google.gson.JsonObject;
 
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringJoiner;
+
 class Index {
     Request request;
     Index (Config config) {
@@ -13,13 +18,13 @@ class Index {
     }
 
     String create(String uid, String primaryKey) throws Exception {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("uid", uid);
+        JsonObject params = new JsonObject();
+        params.addProperty("uid", uid);
         if (primaryKey != null) {
-            jsonObject.addProperty("primaryKey", primaryKey);
+            params.addProperty("primaryKey", primaryKey);
         }
 
-        return request.post("/indexes", jsonObject.toString());
+        return request.post("/indexes", params.toString());
     }
 
     String get(String uid) throws Exception {

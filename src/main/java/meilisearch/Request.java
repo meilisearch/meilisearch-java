@@ -50,7 +50,9 @@ class Request {
 
         HttpURLConnection connection = connection(url, "POST", config.apiKey);
         connection.setDoOutput(true);
-        connection.getOutputStream().write(params.getBytes());
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        connection.setRequestProperty("Content-Length", String.valueOf(params.length()));
+        connection.getOutputStream().write(params.getBytes("UTF-8"));
         connection.connect();
 
         BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));

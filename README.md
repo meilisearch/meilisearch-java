@@ -28,13 +28,15 @@ public class TestApp {
         
         Indexes book = ms.getIndex("books");
         
+        JsonArray jsonArray = new JsonArray();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("1111", "alice in wonderland");
+        jsonArray.add(jsonObject);
 
-        // add new document "{"1111": "alice in wonderland"}"
+        // add new document "[{"1111": "alice in wonderland"}]"
         String response = book.addDocument(jsonObject.toString());
 
-        // response : "{ "updateId": 1 }"
+        // response : "{ "updateId": 0 }"
     }
 }
 ```
