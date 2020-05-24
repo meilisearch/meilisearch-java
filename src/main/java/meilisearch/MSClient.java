@@ -25,13 +25,25 @@ public class MSClient {
      * Create index
      * Refer https://docs.meilisearch.com/references/indexes.html#create-an-index
      *
-     * @param name
-     * @param params
+     * @param uid
      * @return
      * @throws Exception
      */
-    public String createIndex (String name, Schema params) throws Exception {
-        return this.index.create(name, params);
+    public String createIndex (String uid) throws Exception {
+        return this.index.create(uid);
+    }
+
+    /**
+     * Create index
+     * Refer https://docs.meilisearch.com/references/indexes.html#create-an-index
+     *
+     * @param uid
+     * @param primaryKeys
+     * @return
+     * @throws Exception
+     */
+    public String createIndex (String uid, String primaryKeys) throws Exception {
+        return this.index.create(uid, primaryKeys);
     }
 
     /**
@@ -68,11 +80,12 @@ public class MSClient {
      * Refer https://docs.meilisearch.com/references/indexes.html#update-an-index
      *
      * @param uid
+     * @param primaryKey
      * @return
      * @throws Exception
      */
-    public String updateIndex (String uid, String name) throws Exception {
-        return this.index.update(uid, name);
+    public String updateIndex (String uid, String primaryKey) throws Exception {
+        return this.index.update(uid, primaryKey);
     }
 
     /**

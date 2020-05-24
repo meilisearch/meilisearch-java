@@ -18,16 +18,7 @@ public class IndexesTest {
 
     @Test
     public void createIndex() throws Exception {
-        String name = "Movies";
-        Schema schema = new Schema(
-                new String[]{ "identifier", "indexed", "displayed" },
-                new String[]{ "indexed", "displayed" },
-                new String[]{ "indexed", "displayed" },
-                new String[]{ "displayed" },
-                new String[]{ "displayed" }
-        );
-
-        System.out.println(ms.createIndex(name, schema));
+        System.out.println(ms.createIndex("videos"));
     }
 
     @Test
@@ -52,7 +43,13 @@ public class IndexesTest {
     }
 
     @Test
-    public void delete() throws Exception {
+    public void update() throws Exception {
+        System.out.println(ms.updateIndex("video", "videos_key"));
 
+    }
+
+    @Test
+    public void delete() throws Exception {
+        System.out.println(ms.deleteIndex("videos"));
     }
 }
