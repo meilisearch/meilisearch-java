@@ -5,7 +5,7 @@ package meilisearch;
 
 import com.google.gson.Gson;
 
-public class MSClient {
+public class Client {
     public Config config;
     public Index index;
     public Gson gson;
@@ -15,7 +15,7 @@ public class MSClient {
      *
      * @param config
      */
-    public MSClient(Config config) {
+    public Client(Config config) {
         this.config = config;
         gson = new Gson();
         this.index = new Index(config);

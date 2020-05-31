@@ -9,7 +9,7 @@ public class DocumentsTest {
 
     @Before
     public void initialize() {
-        MSClient ms = new MSClient(new Config("http://localhost:7700", ""));
+        Client ms = new Client(new Config("http://localhost:7700", ""));
 
         try {
             // TODO: add uid of index for test
