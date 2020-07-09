@@ -9,11 +9,11 @@ import org.junit.Test;
 
 public class IndexesTest {
 
-    MSClient ms;
+    Client ms;
 
     @Before
     public void initialize() {
-        ms = new MSClient(new Config("http://localhost:7700", ""));
+        ms = new Client(new Config("http://localhost:7700", ""));
     }
 
     @Test
