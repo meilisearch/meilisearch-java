@@ -18,10 +18,14 @@ Here is the [MeiliSearch documentation](https://docs.meilisearch.com/) 📖
 
 #### Quickstart
 ```java
+import meilisearch.Config;
+import meilisearch.Indexes;
+import meilisearch.Client;
+
 public class TestApp {
 
     public static void main(String[] args) throws Exception {
-        MSClient ms = new MSClient(new Config("http://localhost:7700", ""));
+        Client ms = new Client(new Config("http://localhost:7700", ""));
        
         // create new index with primary key(optional)
         ms.createIndex("books", "books_id");

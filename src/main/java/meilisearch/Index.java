@@ -2,11 +2,6 @@ package meilisearch;
 
 import com.google.gson.JsonObject;
 
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringJoiner;
-
 class Index {
     Request request;
     Index (Config config) {

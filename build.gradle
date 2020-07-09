@@ -30,7 +30,6 @@ task buildJar(type: Jar) {
                 'Main-Class': 'meilisearch-java.MSClient'
         )
     }
-//    classifier = 'all'
     baseName = 'meilisearch-java'
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
