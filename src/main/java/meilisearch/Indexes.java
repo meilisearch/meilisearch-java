@@ -3,6 +3,8 @@ package meilisearch;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 
+import com.google.gson.*;
+
 public class Indexes implements Serializable {
     String name;
     String uid;
@@ -93,6 +95,15 @@ public class Indexes implements Serializable {
      */
     public String search(String q) throws Exception {
         return this.documents.search(this.uid, q);
+    }
+
+    public String getUpdate(int updateId) throws Exception {
+        return this.documents.getUpdate(this.uid, updateId);
+    }
+
+    public UpdateStatus[] getUpdates()  throws Exception {
+        Gson gson = new Gson();
+        return gson.fromJson(this.documents.getUpdates(this.uid), UpdateStatus[].class);
     }
 
     @Override
