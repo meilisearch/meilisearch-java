@@ -64,4 +64,13 @@ class Documents {
         return request.get(requestQuery, sr.getQuery());
     }
 
+    String getUpdate (String uid, int updateId) throws Exception {
+        String requestQuery = "/indexes/" + uid + "/updates/" + updateId;
+        return request.get(requestQuery);
+    }
+
+    String getUpdates (String uid) throws Exception {
+        String requestQuery = "/indexes/" + uid + "/updates";
+        return request.get(requestQuery);
+    }
 }

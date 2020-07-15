@@ -53,4 +53,9 @@ public class DocumentsTest {
     public void search() throws Exception {
         System.out.println(this.index.search("Batman"));
     }
+
+    @Test
+    public void updates() throws Exception {
+        System.out.println(this.index.getUpdates()[0].toString());
+    }
 }
