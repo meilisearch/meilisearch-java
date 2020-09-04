@@ -9,9 +9,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 class Request {
-	private final Config config;
+	private final MeilisearchConfig config;
 
-	protected Request(Config config) {
+	protected Request(MeilisearchConfig config) {
 		this.config = config;
 	}
 
