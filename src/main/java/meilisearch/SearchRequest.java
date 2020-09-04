@@ -49,21 +49,26 @@ class SearchRequest {
 
 	String getQuery() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("?q=" + this.q);
-		sb.append("&offset=" + this.offset);
-		sb.append("&limit=" + this.limit);
-		sb.append("&attributesToRetrieve=" + this.attributesToRetrieve);
+
+		// Default parameters
+		sb.append("?q=").append(this.q)
+			.append("&offset=").append(this.offset)
+			.append("&limit=").append(this.limit)
+			.append("&attributesToRetrieve=").append(this.attributesToRetrieve)
+			.append("&cropLength=").append(this.cropLength)
+			.append("&matches=").append(this.matches);
+
 		if (this.attributesToCrop != null) {
-			sb.append("&attributesToCrop=" + this.attributesToCrop);
+			sb.append("&attributesToCrop=").append(this.attributesToCrop);
 		}
-		sb.append("&cropLength=" + this.cropLength);
+
 		if (this.attributesToHighlight != null) {
-			sb.append("&attributesToHighlight=" + this.attributesToHighlight);
+			sb.append("&attributesToHighlight=").append(this.attributesToHighlight);
 		}
+
 		if (this.filters != null) {
-			sb.append("&filters=" + this.filters);
+			sb.append("&filters=").append(this.filters);
 		}
-		sb.append("&matches=" + this.matches);
 
 		return sb.toString();
 	}
