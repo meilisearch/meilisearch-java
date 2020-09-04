@@ -2,63 +2,47 @@ package meilisearch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 class Request {
-
-	private Config config;
+	private final Config config;
 
 	protected Request(Config config) {
 		this.config = config;
 	}
 
-	String get(String api) throws Exception {
-		return this.get(api, "");
-	}
+	/**
+	 * Create and get a validated HTTP connection to url with method and API key
+	 *
+	 * @param url    URL to connect to
+	 * @param method HTTP method to use for the connection
+	 * @param apiKey API Key to use for the connection
+	 * @return Validated connection (otherwise, will throw a {@link IOException})
+	 * @throws IOException If unable to establish connection
+	 */
+	private HttpURLConnection getConnection(final URL url, final String method, final String apiKey) throws IOException {
+		if (url == null || "".equals(method)) throw new IOException("Unable to open an HttpURLConnection with no URL or method");
 
-	String get(String api, String param) throws Exception {
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestMethod(method);
+		connection.setRequestProperty("Content-Type", "application/json");
 
-		StringBuilder urlBuilder = new StringBuilder(config.hostUrl + api);
-		if (!param.equals("")) {
-			urlBuilder.append(param);
+		// Use API key header only if one is provided
+		if (!"".equals(apiKey)) {
+			connection.setRequestProperty("X-Meili-API-Key", apiKey);
 		}
 
-		URL url = new URL(urlBuilder.toString());
-		HttpURLConnection connection = connection(url, "GET", config.apiKey);
-		connection.connect();
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
-		StringBuffer sb = new StringBuffer();
-		String responsed;
-
-		while ((responsed = br.readLine()) != null) {
-			sb.append(responsed);
-		}
-
-		br.close();
-		return sb.toString();
+		// Ensure connection is set
+		Optional<HttpURLConnection> connectionOptional = Optional.of(connection);
+		return connectionOptional.orElseThrow(IOException::new);
 	}
 
-	String post(String api, String params) throws IOException {
-		System.out.println(params);
-		URL url = new URL(config.hostUrl + api);
 
-		HttpURLConnection connection = Optional
-			.ofNullable(connection(url, "POST", config.apiKey))
-			.orElseThrow(IOException::new);
-
-		connection.setDoOutput(true);
-		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-		connection.setRequestProperty("Content-Length", String.valueOf(params.length()));
-		connection.getOutputStream().write(params.getBytes(StandardCharsets.UTF_8));
-		connection.connect();
-
+	private String parseConnectionResponse(HttpURLConnection connection) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder sb = new StringBuilder();
 		String responseLine;
@@ -68,71 +52,60 @@ class Request {
 		}
 
 		br.close();
+
 		return sb.toString();
 	}
 
-	String put(String api, String params) throws Exception {
-		System.out.println(params);
+
+	String get(String api) throws Exception {
+		return this.get(api, "");
+	}
+
+
+	String get(String api, String param) throws Exception {
+		StringBuilder urlBuilder = new StringBuilder(config.hostUrl + api);
+		if (!param.equals("")) {
+			urlBuilder.append(param);
+		}
+
+		URL url = new URL(urlBuilder.toString());
+		HttpURLConnection connection = this.getConnection(url, "GET", this.config.apiKey);
+
+		return this.parseConnectionResponse(connection);
+	}
+
+
+	String post(String api, String params) throws IOException {
 		URL url = new URL(config.hostUrl + api);
 
-		HttpURLConnection connection = connection(url, "PUT", config.apiKey);
+		HttpURLConnection connection = this.getConnection(url, "POST", config.apiKey);
+		connection.setDoOutput(true);
+		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		connection.setRequestProperty("Content-Length", String.valueOf(params.length()));
+		connection.getOutputStream().write(params.getBytes(StandardCharsets.UTF_8));
+		connection.connect();
+
+		return this.parseConnectionResponse(connection);
+	}
+
+
+	String put(String api, String params) throws Exception {
+		URL url = new URL(config.hostUrl + api);
+
+		HttpURLConnection connection = this.getConnection(url, "PUT", config.apiKey);
 		connection.setDoOutput(true);
 		connection.getOutputStream().write(params.getBytes());
 		connection.connect();
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
-		StringBuffer sb = new StringBuffer();
-		String responsed;
-
-		while ((responsed = br.readLine()) != null) {
-			sb.append(responsed);
-		}
-
-		br.close();
-		return sb.toString();
+		return this.parseConnectionResponse(connection);
 	}
+
 
 	String delete(String api) throws Exception {
 		URL url = new URL(config.hostUrl + api);
 
-		HttpURLConnection connection = connection(url, "DELETE", config.apiKey);
+		HttpURLConnection connection = this.getConnection(url, "DELETE", config.apiKey);
 		connection.connect();
-		return getResponseBuffer(connection.getInputStream());
-	}
-
-	private String getResponseBuffer(InputStream is) {
-		BufferedReader br = new BufferedReader(
-			new InputStreamReader(is, StandardCharsets.UTF_8)
-		);
-		StringBuffer sb = new StringBuffer();
-		String responsed;
-		try {
-			while ((responsed = br.readLine()) != null) {
-				sb.append(responsed);
-			}
-
-			br.close();
-		} catch (IOException ioe) {
-		} finally {
-			return sb.toString();
-		}
-	}
-
-	private HttpURLConnection connection(URL url, String requestMethod, String apiKey) throws IOException {
-		try {
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setRequestMethod(requestMethod);
-			con.setRequestProperty("Content-Type", "application/json");
-
-			if (!apiKey.equals("")) {
-				con.setRequestProperty("X-Meili-API-Key", apiKey);
-			}
-
-			return con;
-		} catch (IOException ioe) {
-
-		}
-
-		return null;
+		return this.parseConnectionResponse(connection);
 	}
 }
