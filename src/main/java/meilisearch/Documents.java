@@ -3,7 +3,7 @@ package meilisearch;
 class Documents {
 
 	Request request;
-	protected Documents (Config config) {
+	protected Documents (MeilisearchConfig config) {
 		request = new Request(config);
 	}
 

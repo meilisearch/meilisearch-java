@@ -13,7 +13,7 @@ public class IndexesTest {
 
 	@Before
 	public void initialize() {
-		ms = new Client(new Config("http://localhost:7700", ""));
+		ms = new Client(new MeilisearchConfig("http://localhost:7700", ""));
 	}
 
 	@Test

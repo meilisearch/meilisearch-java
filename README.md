@@ -53,7 +53,7 @@ Here is the [MeiliSearch documentation](https://docs.meilisearch.com/) 📖
 
 #### Quickstart
 ```java
-import meilisearch.Config;
+import meilisearch.MeilisearchConfig;
 import meilisearch.Indexes;
 import meilisearch.Client;
 

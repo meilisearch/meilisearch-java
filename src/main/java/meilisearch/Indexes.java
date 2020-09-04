@@ -11,10 +11,10 @@ public class Indexes implements Serializable {
 	String primaryKey;
 	String createdAt;
 	String updatedAt;
-	Config config;
+	MeilisearchConfig config;
 	Documents documents;
 
-	void setConfig(Config config) {
+	void setConfig(MeilisearchConfig config) {
 		this.config = config;
 		this.documents = new Documents(config);
 	}
@@ -38,7 +38,7 @@ public class Indexes implements Serializable {
 	/**
 	 * getDocument
 	 *
-	 * @param identifiers
+	 * @param identifier
 	 * @return
 	 * @throws Exception
 	 */

@@ -9,7 +9,7 @@ import com.google.gson.Gson;
  * Meilisearch client
  */
 public class Client {
-	public Config config;
+	public MeilisearchConfig config;
 	public Index index;
 	public Gson gson;
 
@@ -18,7 +18,7 @@ public class Client {
 	 *
 	 * @param config Configuration to connect to Meilisearch instance
 	 */
-	public Client(Config config) {
+	public Client(MeilisearchConfig config) {
 		this.config = config;
 		gson = new Gson();
 		this.index = new Index(config);

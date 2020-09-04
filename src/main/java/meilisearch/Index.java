@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
  */
 class Index {
 	Request request;
-	Index (Config config) {
+	Index (MeilisearchConfig config) {
 		request = new Request(config);
 	}
 
