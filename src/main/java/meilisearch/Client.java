@@ -5,6 +5,9 @@ package meilisearch;
 
 import com.google.gson.Gson;
 
+/**
+ * Meilisearch client
+ */
 public class Client {
 	public Config config;
 	public Index index;
@@ -13,7 +16,7 @@ public class Client {
 	/**
 	 * Call instance for MeiliSearch client
 	 *
-	 * @param config
+	 * @param config Configuration to connect to Meilisearch instance
 	 */
 	public Client(Config config) {
 		this.config = config;
@@ -25,9 +28,9 @@ public class Client {
 	 * Create index
 	 * Refer https://docs.meilisearch.com/references/indexes.html#create-an-index
 	 *
-	 * @param uid
-	 * @return
-	 * @throws Exception
+	 * @param uid Unique identifier for the index to create
+	 * @return Meilisearch API response
+	 * @throws Exception If an error occurs
 	 */
 	public String createIndex (String uid) throws Exception {
 		return this.index.create(uid);
@@ -37,26 +40,26 @@ public class Client {
 	 * Create index
 	 * Refer https://docs.meilisearch.com/references/indexes.html#create-an-index
 	 *
-	 * @param uid
-	 * @param primaryKeys
-	 * @return
-	 * @throws Exception
+	 * @param uid Unique identifier for the index to create
+	 * @param primaryKey The primary key of the documents in that index
+	 * @return Meilisearch API response
+	 * @throws Exception If an error occurs
 	 */
-	public String createIndex (String uid, String primaryKeys) throws Exception {
-		return this.index.create(uid, primaryKeys);
+	public String createIndex (String uid, String primaryKey) throws Exception {
+		return this.index.create(uid, primaryKey);
 	}
 
 	/**
 	 * Get all indexes
 	 * Refer https://docs.meilisearch.com/references/indexes.html#list-all-indexes
 	 *
-	 * @return
-	 * @throws Exception
+	 * @return List of indexes in the Meilisearch client
+	 * @throws Exception If an error occurs
 	 */
 	public Indexes[] getIndexList () throws Exception {
 		Indexes[] indexList = gson.fromJson(this.index.getAll(), Indexes[].class);
-		for (Indexes idxs: indexList) {
-			idxs.setConfig(this.config);
+		for (Indexes indexes: indexList) {
+			indexes.setConfig(this.config);
 		}
 		return indexList;
 	}
@@ -65,9 +68,9 @@ public class Client {
 	 * Get single index by uid
 	 * Refer https://docs.meilisearch.com/references/indexes.html#get-one-index
 	 *
-	 * @param uid
-	 * @return
-	 * @throws Exception
+	 * @param uid Unique identifier of the index to get
+	 * @return Meilisearch API response
+	 * @throws Exception If an error occurs
 	 */
 	public Indexes getIndex (String uid) throws Exception {
 		Indexes indexes = gson.fromJson(this.index.get(uid), Indexes.class);
@@ -79,10 +82,10 @@ public class Client {
 	 * Update index by uid
 	 * Refer https://docs.meilisearch.com/references/indexes.html#update-an-index
 	 *
-	 * @param uid
-	 * @param primaryKey
-	 * @return
-	 * @throws Exception
+	 * @param uid Unique identifier of the index to update
+	 * @param primaryKey Primary key of the documents in the index
+	 * @return Meilisearch API response
+	 * @throws Exception If an error occurs
 	 */
 	public String updateIndex (String uid, String primaryKey) throws Exception {
 		return this.index.update(uid, primaryKey);
@@ -92,9 +95,9 @@ public class Client {
 	 * Delete single index by uid
 	 * Refer https://docs.meilisearch.com/references/indexes.html#get-one-index
 	 *
-	 * @param uid
-	 * @return
-	 * @throws Exception
+	 * @param uid Unique identifier of the index to delete
+	 * @return Meilisearch API response
+	 * @throws Exception If an error occurs
 	 */
 	public String deleteIndex (String uid) throws Exception {
 		return this.index.delete(uid);
