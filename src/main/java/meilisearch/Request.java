@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 class Request {
 
@@ -44,23 +45,26 @@ class Request {
 		return sb.toString();
 	}
 
-	String post(String api, String params) throws Exception {
+	String post(String api, String params) throws IOException {
 		System.out.println(params);
 		URL url = new URL(config.hostUrl + api);
 
-		HttpURLConnection connection = connection(url, "POST", config.apiKey);
+		HttpURLConnection connection = Optional
+			.ofNullable(connection(url, "POST", config.apiKey))
+			.orElseThrow(IOException::new);
+
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 		connection.setRequestProperty("Content-Length", String.valueOf(params.length()));
-		connection.getOutputStream().write(params.getBytes("UTF-8"));
+		connection.getOutputStream().write(params.getBytes(StandardCharsets.UTF_8));
 		connection.connect();
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
-		StringBuffer sb = new StringBuffer();
-		String responsed;
+		BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
+		StringBuilder sb = new StringBuilder();
+		String responseLine;
 
-		while ((responsed = br.readLine()) != null) {
-			sb.append(responsed);
+		while ((responseLine = br.readLine()) != null) {
+			sb.append(responseLine);
 		}
 
 		br.close();
