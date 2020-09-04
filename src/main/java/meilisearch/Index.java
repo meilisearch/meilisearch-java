@@ -2,6 +2,9 @@ package meilisearch;
 
 import com.google.gson.JsonObject;
 
+/**
+ * Wrapper around the Request class to ease usage for Meilisearch indexes
+ */
 class Index {
 	Request request;
 	Index (Config config) {
