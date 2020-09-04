@@ -9,47 +9,47 @@ import org.junit.Test;
 
 public class IndexesTest {
 
-    Client ms;
+	Client ms;
 
-    @Before
-    public void initialize() {
-        ms = new Client(new Config("http://localhost:7700", ""));
-    }
+	@Before
+	public void initialize() {
+		ms = new Client(new Config("http://localhost:7700", ""));
+	}
 
-    @Test
-    public void createIndex() throws Exception {
-        System.out.println(ms.createIndex("videos"));
-    }
+	@Test
+	public void createIndex() throws Exception {
+		System.out.println(ms.createIndex("videos"));
+	}
 
-    @Test
-    public void getIndexes() throws Exception {
-        Indexes[] indexes = ms.getIndexList();
-        for (int a = 0; a < indexes.length; a++) {
-            System.out.println(indexes[a]);
-        }
+	@Test
+	public void getIndexes() throws Exception {
+		Indexes[] indexes = ms.getIndexList();
+		for (int a = 0; a < indexes.length; a++) {
+			System.out.println(indexes[a]);
+		}
 
-    }
+	}
 
-    @Test
-    public void getIndex() throws Exception {
-        // TODO: input uid for test
-        Indexes index = ms.getIndex("movies");
-        System.out.println(index);
-    }
+	@Test
+	public void getIndex() throws Exception {
+		// TODO: input uid for test
+		Indexes index = ms.getIndex("movies");
+		System.out.println(index);
+	}
 
-    @Test
-    public void put() throws Exception {
+	@Test
+	public void put() throws Exception {
 
-    }
+	}
 
-    @Test
-    public void update() throws Exception {
-        System.out.println(ms.updateIndex("video", "videos_key"));
+	@Test
+	public void update() throws Exception {
+		System.out.println(ms.updateIndex("video", "videos_key"));
 
-    }
+	}
 
-    @Test
-    public void delete() throws Exception {
-        System.out.println(ms.deleteIndex("videos"));
-    }
+	@Test
+	public void delete() throws Exception {
+		System.out.println(ms.deleteIndex("videos"));
+	}
 }
