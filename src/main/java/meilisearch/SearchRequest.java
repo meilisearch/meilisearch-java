@@ -1,5 +1,8 @@
 package meilisearch;
 
+/**
+ * Search request query string builder
+ */
 class SearchRequest {
 	String q;
 	int offset;
