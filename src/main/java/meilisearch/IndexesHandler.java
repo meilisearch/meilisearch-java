@@ -3,7 +3,7 @@ package meilisearch;
 import com.google.gson.JsonObject;
 
 /**
- * Wrapper around the Request class to ease usage for Meilisearch indexes
+ * Wrapper around the MeilisearchHttpRequest class to ease usage for Meilisearch indexes
  */
 class IndexesHandler {
 	MeilisearchHttpRequest meilisearchHttpRequest;
