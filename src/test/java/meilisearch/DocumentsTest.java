@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class DocumentsTest {
 
-	Indexes index;
+	MeilisearchIndex meilisearchIndex;
 
 	@Before
 	public void initialize() {
@@ -13,7 +13,7 @@ public class DocumentsTest {
 
 		try {
 			// TODO: add uid of index for test
-			this.index = ms.getIndex("movies");
+			this.meilisearchIndex = ms.getIndex("movies");
 		} catch (Exception e) {
 
 		}
@@ -22,12 +22,12 @@ public class DocumentsTest {
 	@Test
 	public void get() throws Exception {
 		// TODO: input identifier for test
-		System.out.println(this.index.getDocument("9999"));
+		System.out.println(this.meilisearchIndex.getDocument("9999"));
 	}
 
 	@Test
 	public void getAll() throws Exception {
-		System.out.println(this.index.getDocuments());
+		System.out.println(this.meilisearchIndex.getDocuments());
 	}
 
 	@Test
@@ -40,22 +40,22 @@ public class DocumentsTest {
 			"      \"release_date\": \"2019-03-23\"\n" +
 			"  }]";
 		// TODO: setup test document for 'add'
-		System.out.println(this.index.addDocument(""));
+		System.out.println(this.meilisearchIndex.addDocument(""));
 	}
 
 	@Test
 	public void delete() throws Exception {
 		// TODO: input identifier for test
-		System.out.println(this.index.deleteDocument(""));
+		System.out.println(this.meilisearchIndex.deleteDocument(""));
 	}
 
 	@Test
 	public void search() throws Exception {
-		System.out.println(this.index.search("Batman"));
+		System.out.println(this.meilisearchIndex.search("Batman"));
 	}
 
 	@Test
 	public void updates() throws Exception {
-		System.out.println(this.index.getUpdates()[0].toString());
+		System.out.println(this.meilisearchIndex.getUpdates()[0].toString());
 	}
 }

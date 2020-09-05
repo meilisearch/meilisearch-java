@@ -8,7 +8,7 @@ import lombok.Getter;
 /**
  * Meilisearch index
  */
-public class Indexes implements Serializable {
+public class MeilisearchIndex implements Serializable {
 	@Getter
 	String name;
 
