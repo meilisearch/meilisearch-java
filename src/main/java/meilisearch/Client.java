@@ -10,7 +10,7 @@ import com.google.gson.Gson;
  */
 public class Client {
 	public MeilisearchConfig config;
-	public Index index;
+	public IndexesHandler indexesHandler;
 	public Gson gson;
 
 	/**
@@ -20,8 +20,8 @@ public class Client {
 	 */
 	public Client(MeilisearchConfig config) {
 		this.config = config;
-		gson = new Gson();
-		this.index = new Index(config);
+		this.gson = new Gson();
+		this.indexesHandler = new IndexesHandler(config);
 	}
 
 	/**
@@ -33,7 +33,7 @@ public class Client {
 	 * @throws Exception If an error occurs
 	 */
 	public String createIndex (String uid) throws Exception {
-		return this.index.create(uid);
+		return this.indexesHandler.create(uid);
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class Client {
 	 * @throws Exception If an error occurs
 	 */
 	public String createIndex (String uid, String primaryKey) throws Exception {
-		return this.index.create(uid, primaryKey);
+		return this.indexesHandler.create(uid, primaryKey);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class Client {
 	 * @throws Exception If an error occurs
 	 */
 	public Indexes[] getIndexList () throws Exception {
-		Indexes[] indexList = gson.fromJson(this.index.getAll(), Indexes[].class);
+		Indexes[] indexList = gson.fromJson(this.indexesHandler.getAll(), Indexes[].class);
 		for (Indexes indexes: indexList) {
 			indexes.setConfig(this.config);
 		}
@@ -73,7 +73,7 @@ public class Client {
 	 * @throws Exception If an error occurs
 	 */
 	public Indexes getIndex (String uid) throws Exception {
-		Indexes indexes = gson.fromJson(this.index.get(uid), Indexes.class);
+		Indexes indexes = gson.fromJson(this.indexesHandler.get(uid), Indexes.class);
 		indexes.setConfig(this.config);
 		return indexes;
 	}
@@ -88,7 +88,7 @@ public class Client {
 	 * @throws Exception If an error occurs
 	 */
 	public String updateIndex (String uid, String primaryKey) throws Exception {
-		return this.index.update(uid, primaryKey);
+		return this.indexesHandler.update(uid, primaryKey);
 	}
 
 	/**
@@ -100,6 +100,6 @@ public class Client {
 	 * @throws Exception If an error occurs
 	 */
 	public String deleteIndex (String uid) throws Exception {
-		return this.index.delete(uid);
+		return this.indexesHandler.delete(uid);
 	}
 }
