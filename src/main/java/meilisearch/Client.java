@@ -56,12 +56,12 @@ public class Client {
 	 * @return List of indexes in the Meilisearch client
 	 * @throws Exception If an error occurs
 	 */
-	public Indexes[] getIndexList () throws Exception {
-		Indexes[] indexList = gson.fromJson(this.indexesHandler.getAll(), Indexes[].class);
-		for (Indexes indexes: indexList) {
+	public MeilisearchIndex[] getIndexList () throws Exception {
+		MeilisearchIndex[] meilisearchIndexList = gson.fromJson(this.indexesHandler.getAll(), MeilisearchIndex[].class);
+		for (MeilisearchIndex indexes: meilisearchIndexList) {
 			indexes.setConfig(this.config);
 		}
-		return indexList;
+		return meilisearchIndexList;
 	}
 
 	/**
@@ -72,8 +72,8 @@ public class Client {
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public Indexes getIndex (String uid) throws Exception {
-		Indexes indexes = gson.fromJson(this.indexesHandler.get(uid), Indexes.class);
+	public MeilisearchIndex getIndex (String uid) throws Exception {
+		MeilisearchIndex indexes = gson.fromJson(this.indexesHandler.get(uid), MeilisearchIndex.class);
 		indexes.setConfig(this.config);
 		return indexes;
 	}

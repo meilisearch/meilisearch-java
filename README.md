@@ -54,7 +54,7 @@ Here is the [MeiliSearch documentation](https://docs.meilisearch.com/) 📖
 #### Quickstart
 ```java
 import meilisearch.MeilisearchConfig;
-import meilisearch.Indexes;
+import meilisearch.MeilisearchIndex;
 import meilisearch.Client;
 
 public class TestApp {
@@ -62,7 +62,7 @@ public class TestApp {
     public static void main(String[] args) throws Exception {
         Client ms = new Client(new Config("http://localhost:7700", ""));
        
-        // create new index with primary key(optional)
+        // create new meilisearchIndex with primary key(optional)
         ms.createIndex("books", "books_id");
         
         Indexes book = ms.getIndex("books");

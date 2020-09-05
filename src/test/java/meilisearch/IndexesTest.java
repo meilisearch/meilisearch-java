@@ -23,9 +23,9 @@ public class IndexesTest {
 
 	@Test
 	public void getIndexes() throws Exception {
-		Indexes[] indexes = ms.getIndexList();
-		for (int a = 0; a < indexes.length; a++) {
-			System.out.println(indexes[a]);
+		MeilisearchIndex[] meilisearchIndices = ms.getIndexList();
+		for (int a = 0; a < meilisearchIndices.length; a++) {
+			System.out.println(meilisearchIndices[a]);
 		}
 
 	}
@@ -33,8 +33,8 @@ public class IndexesTest {
 	@Test
 	public void getIndex() throws Exception {
 		// TODO: input uid for test
-		Indexes index = ms.getIndex("movies");
-		System.out.println(index);
+		MeilisearchIndex meilisearchIndex = ms.getIndex("movies");
+		System.out.println(meilisearchIndex);
 	}
 
 	@Test
