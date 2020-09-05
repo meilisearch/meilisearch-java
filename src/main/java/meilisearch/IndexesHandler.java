@@ -5,9 +5,9 @@ import com.google.gson.JsonObject;
 /**
  * Wrapper around the Request class to ease usage for Meilisearch indexes
  */
-class Index {
+class IndexesHandler {
 	Request request;
-	Index (MeilisearchConfig config) {
+	IndexesHandler(MeilisearchConfig config) {
 		request = new Request(config);
 	}
 
