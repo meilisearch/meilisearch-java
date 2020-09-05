@@ -1,38 +1,41 @@
 package meilisearch;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
 
 import com.google.gson.*;
+import lombok.Getter;
 
+/**
+ * Meilisearch index
+ */
 public class Indexes implements Serializable {
+	@Getter
 	String name;
+
+	@Getter
 	String uid;
+
+	@Getter
 	String primaryKey;
+
+	@Getter
 	String createdAt;
+
+	@Getter
 	String updatedAt;
+
+	@Getter
 	MeilisearchConfig config;
+
 	Documents documents;
 
+	/**
+	 * Set the Meilisearch configuration for the index
+	 * @param config Meilisearch configuration to use
+	 */
 	void setConfig(MeilisearchConfig config) {
 		this.config = config;
 		this.documents = new Documents(config);
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public String getUid() {
-		return this.uid;
-	}
-
-	public ZonedDateTime getCreatedAt() {
-		return ZonedDateTime.parse(this.createdAt);
-	}
-
-	public ZonedDateTime getUpdatedAt() {
-		return ZonedDateTime.parse(this.updatedAt);
 	}
 
 	/**
