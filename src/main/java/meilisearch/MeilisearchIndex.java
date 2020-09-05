@@ -12,9 +12,6 @@ import lombok.ToString;
 @ToString
 public class MeilisearchIndex implements Serializable {
 	@Getter
-	String name;
-
-	@Getter
 	String uid;
 
 	@Getter
