@@ -9,11 +9,11 @@ import org.junit.Test;
 
 public class IndexesTest {
 
-	Client ms;
+	MeilisearchClient ms;
 
 	@Before
 	public void initialize() {
-		ms = new Client(new MeilisearchConfig("http://localhost:7700", ""));
+		ms = new MeilisearchClient(new MeilisearchConfig("http://localhost:7700", ""));
 	}
 
 	@Test

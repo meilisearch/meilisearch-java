@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 /**
  * Meilisearch client
  */
-public class Client {
+public class MeilisearchClient {
 	public MeilisearchConfig config;
 	public IndexesHandler indexesHandler;
 	public Gson gson;
@@ -18,7 +18,7 @@ public class Client {
 	 *
 	 * @param config Configuration to connect to Meilisearch instance
 	 */
-	public Client(MeilisearchConfig config) {
+	public MeilisearchClient(MeilisearchConfig config) {
 		this.config = config;
 		this.gson = new Gson();
 		this.indexesHandler = new IndexesHandler(config);

@@ -9,7 +9,7 @@ public class DocumentsTest {
 
 	@Before
 	public void initialize() {
-		Client ms = new Client(new MeilisearchConfig("http://localhost:7700", ""));
+		MeilisearchClient ms = new MeilisearchClient(new MeilisearchConfig("http://localhost:7700", ""));
 
 		try {
 			// TODO: add uid of index for test

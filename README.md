@@ -55,7 +55,7 @@ Here is the [MeiliSearch documentation](https://docs.meilisearch.com/) 📖
 ```java
 import meilisearch.MeilisearchConfig;
 import meilisearch.MeilisearchIndex;
-import meilisearch.Client;
+import meilisearch.MeilisearchClient;
 
 public class TestApp {
 
