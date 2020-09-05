@@ -88,7 +88,7 @@ public class Client {
 	 * @throws Exception If an error occurs
 	 */
 	public String updateIndex (String uid, String primaryKey) throws Exception {
-		return this.indexesHandler.update(uid, primaryKey);
+		return this.indexesHandler.updatePrimaryKey(uid, primaryKey);
 	}
 
 	/**
