@@ -8,10 +8,10 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
-class Request {
+class MeilisearchHttpRequest {
 	private final MeilisearchConfig config;
 
-	protected Request(MeilisearchConfig config) {
+	protected MeilisearchHttpRequest(MeilisearchConfig config) {
 		this.config = config;
 	}
 
