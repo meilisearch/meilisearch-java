@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
  * Wrapper around the Request class to ease usage for Meilisearch indexes
  */
 class IndexesHandler {
-	Request request;
+	MeilisearchHttpRequest meilisearchHttpRequest;
 
 	/**
 	 * Create and setup an instance of IndexesHandler to simplify Meilisearch API calls to manage indexes
@@ -14,7 +14,7 @@ class IndexesHandler {
 	 * @param config Meilisearch configuration
 	 */
 	IndexesHandler(MeilisearchConfig config) {
-		this.request = new Request(config);
+		this.meilisearchHttpRequest = new MeilisearchHttpRequest(config);
 	}
 
 	/**
@@ -43,7 +43,7 @@ class IndexesHandler {
 			params.addProperty("primaryKey", primaryKey);
 		}
 
-		return request.post("/indexes", params.toString());
+		return meilisearchHttpRequest.post("/indexes", params.toString());
 	}
 
 	/**
@@ -55,7 +55,7 @@ class IndexesHandler {
 	 */
 	String get(String uid) throws Exception {
 		String requestQuery = "/indexes/" + uid;
-		return request.get(requestQuery);
+		return meilisearchHttpRequest.get(requestQuery);
 	}
 
 	/**
@@ -65,7 +65,7 @@ class IndexesHandler {
 	 * @throws Exception If something goes wrong
 	 */
 	String getAll() throws Exception {
-		return request.get("/indexes");
+		return meilisearchHttpRequest.get("/indexes");
 	}
 
 	/**
@@ -81,7 +81,7 @@ class IndexesHandler {
 		jsonObject.addProperty("primaryKey", primaryKey);
 
 		String requestQuery = "/indexes/" + uid;
-		return request.put(requestQuery, jsonObject.toString());
+		return meilisearchHttpRequest.put(requestQuery, jsonObject.toString());
 	}
 
 	/**
@@ -93,6 +93,6 @@ class IndexesHandler {
 	 */
 	String delete(String uid) throws Exception {
 		String requestQuery = "/indexes/" + uid;
-		return request.delete(requestQuery);
+		return meilisearchHttpRequest.delete(requestQuery);
 	}
 }
