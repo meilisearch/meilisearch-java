@@ -1,7 +1,7 @@
 package meilisearch;
 
 /**
- * Wrapper around Request class to use for Meilisearch documents
+ * Wrapper around MeilisearchHttpRequest class to use for Meilisearch documents
  */
 class Documents {
 	private final MeilisearchHttpRequest meilisearchHttpRequest;
