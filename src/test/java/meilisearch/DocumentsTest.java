@@ -1,61 +1,74 @@
 package meilisearch;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.runners.MethodSorters;
+import static org.junit.Assert.*;
 
+import java.io.IOException;
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DocumentsTest {
+	final static String indexUid = "__TEST_MOVIES";
+	static MeilisearchIndex meilisearchIndex;
+	static final MeilisearchClient ms = new MeilisearchClient(new MeilisearchConfig("http://localhost:7700", ""));
 
-	MeilisearchIndex meilisearchIndex;
+	private static final String testDocument = "{" +
+		"\"id\":9999," +
+		"\"title\":\"Shazam\"," +
+		"\"poster\":\"https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg\"," +
+		"\"overview\":\"A boy is given the ability to become an adult superhero in times of need with a single magic word.\"," +
+		"\"release_date\":\"2019-03-23\"" +
+		"}";
 
-	@Before
-	public void initialize() {
-		MeilisearchClient ms = new MeilisearchClient(new MeilisearchConfig("http://localhost:7700", ""));
+	@BeforeClass
+	public static void initialize() throws Exception {
+		DocumentsTest.ms.createIndex(DocumentsTest.indexUid);
+		DocumentsTest.meilisearchIndex = DocumentsTest.ms.getIndex(DocumentsTest.indexUid);
+		assertNotNull(meilisearchIndex);
+	}
 
-		try {
-			// TODO: add uid of index for test
-			this.meilisearchIndex = ms.getIndex("movies");
-		} catch (Exception e) {
+	@AfterClass
+	public static void cleanup() throws Exception {
+		DocumentsTest.ms.deleteIndex(DocumentsTest.indexUid);
+	}
 
-		}
+	@Test(expected = IOException.class)
+	public void test1_shouldGetNoneAtFirst() throws Exception {
+		// Expect no documents in the index
+		assertEquals("[]", DocumentsTest.meilisearchIndex.getDocuments());
+
+		// Expect 404 NOT FOUND HTTP error
+		DocumentsTest.meilisearchIndex.getDocument("9999");
 	}
 
 	@Test
-	public void get() throws Exception {
-		// TODO: input identifier for test
-		System.out.println(this.meilisearchIndex.getDocument("9999"));
+	public void test2_shouldAllowInsertion() throws Exception {
+		final String docArr = "[" + testDocument + "]";
+		DocumentsTest.meilisearchIndex.addDocument(docArr);
+	}
+
+	@Test(timeout = 100L)
+	public void test3_shouldGetNewlyInsertedDocument() throws Exception {
+		final String docs = DocumentsTest.meilisearchIndex.getDocuments();
+		assertEquals("[" + DocumentsTest.testDocument + "]", docs);
+		assertEquals(testDocument, DocumentsTest.meilisearchIndex.getDocument("9999"));
 	}
 
 	@Test
-	public void getAll() throws Exception {
-		System.out.println(this.meilisearchIndex.getDocuments());
+	public void test4_validSearchShouldReturnTestDocument() throws Exception {
+		assertTrue(DocumentsTest.meilisearchIndex.search("superhero").contains(testDocument));
 	}
 
 	@Test
-	public void add() throws Exception {
-		String testDoc = "[{\n" +
-			"      \"id\": 9999,\n" +
-			"      \"title\": \"Shazam\",\n" +
-			"      \"poster\": \"https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg\",\n" +
-			"      \"overview\": \"A boy is given the ability to become an adult superhero in times of need with a single magic word.\",\n" +
-			"      \"release_date\": \"2019-03-23\"\n" +
-			"  }]";
-		// TODO: setup test document for 'add'
-		System.out.println(this.meilisearchIndex.addDocument(""));
+	public void test5_invalidSearchShouldNotReturnDocuments() throws Exception {
+		assertTrue(DocumentsTest.meilisearchIndex.search("Batman").contains("\"hits\":[]"));
 	}
 
 	@Test
-	public void delete() throws Exception {
-		// TODO: input identifier for test
-		System.out.println(this.meilisearchIndex.deleteDocument(""));
-	}
+	public void test6_shouldAllowDocumentDeletion() throws Exception {
+		DocumentsTest.meilisearchIndex.deleteDocument("");
 
-	@Test
-	public void search() throws Exception {
-		System.out.println(this.meilisearchIndex.search("Batman"));
-	}
-
-	@Test
-	public void updates() throws Exception {
-		System.out.println(this.meilisearchIndex.getUpdates()[0].toString());
+		// Expect no documents in the index
+		assertEquals("[]", DocumentsTest.meilisearchIndex.getDocuments());
 	}
 }
