@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  meilisearch:
+    image: getmeili/meilisearch
+    ports:
+    - "7700:7700"
+    volumes:
+    - meilisearch_data:/data.ms
+volumes:
+  meilisearch_data:
