@@ -4,6 +4,7 @@ import org.junit.*;
 import org.junit.runners.MethodSorters;
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -32,7 +33,7 @@ public class DocumentsTest {
 		DocumentsTest.ms.deleteIndex(DocumentsTest.indexUid);
 	}
 
-	@Test(expected = IOException.class)
+	@Test(expected = FileNotFoundException.class)
 	public void test1_shouldGetNoneAtFirst() throws Exception {
 		// Expect no documents in the index
 		assertEquals("[]", DocumentsTest.meilisearchIndex.getDocuments());
