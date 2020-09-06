@@ -3,53 +3,44 @@
  */
 package meilisearch;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
+import static org.junit.Assert.*;
 
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class IndexesTest {
+	private static final String indexUid = "__TEST_VIDEOS";
+	static MeilisearchClient ms = new MeilisearchClient(new MeilisearchConfig("http://localhost:7700"));
 
-	MeilisearchClient ms;
+	private static int initialIndexCount = 0;
 
-	@Before
-	public void initialize() {
-		ms = new MeilisearchClient(new MeilisearchConfig("http://localhost:7700", ""));
+	@BeforeClass
+	public static void getIndexesBeforeTest() throws Exception {
+		initialIndexCount = ms.getIndexList().length;
 	}
 
 	@Test
-	public void createIndex() throws Exception {
-		System.out.println(ms.createIndex("videos"));
+	public void test1_shouldCreateIndex() throws Exception {
+		assertNotEquals("", ms.createIndex(indexUid));
 	}
 
 	@Test
-	public void getIndexes() throws Exception {
-		MeilisearchIndex[] meilisearchIndices = ms.getIndexList();
-		for (int a = 0; a < meilisearchIndices.length; a++) {
-			System.out.println(meilisearchIndices[a]);
-		}
-
+	public void test2_clientShouldHaveExactlyOneIndex() throws Exception {
+		MeilisearchIndex[] meilisearchIndexes = ms.getIndexList();
+		assertEquals(initialIndexCount + 1, meilisearchIndexes.length);
 	}
 
 	@Test
-	public void getIndex() throws Exception {
-		// TODO: input uid for test
-		MeilisearchIndex meilisearchIndex = ms.getIndex("movies");
-		System.out.println(meilisearchIndex);
+	public void test3_shouldGetIndex() throws Exception {
+		MeilisearchIndex testIndex = ms.getIndex(indexUid);
+		assertNotNull(testIndex);
 	}
 
 	@Test
-	public void put() throws Exception {
-
-	}
-
-	@Test
-	public void update() throws Exception {
-		System.out.println(ms.updateIndex("video", "videos_key"));
-
-	}
-
-	@Test
-	public void delete() throws Exception {
-		System.out.println(ms.deleteIndex("videos"));
+	public void test4_shouldDeleteIndex() throws Exception {
+		ms.deleteIndex(indexUid);
+		assertEquals(initialIndexCount, ms.getIndexList().length);
 	}
 }
