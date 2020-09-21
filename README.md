@@ -27,6 +27,14 @@
 
 ### ⚠️ Important!: this is WIP, and not available for production ⚠️
 
+## Table of Contents <!-- omit in toc -->
+
+- [🔧 Installation](#-installation)
+- [🚀 Getting started](#-getting-started)
+- [🤖 Compatibility with MeiliSearch](#-compatibility-with-meilisearch)
+- [🎬 Examples](#-examples)
+- [⚙️ Development Workflow and Contributing](#️-development-workflow-and-contributing)
+
 # meilisearch-java
 
 Java client for MeiliSearch.
@@ -36,12 +44,12 @@ MeiliSearch provides an ultra relevant and instant full-text search. Our solutio
 Here is the [MeiliSearch documentation](https://docs.meilisearch.com/) 📖
 
 
-## Installation
+## 🔧 Installation
 
 // TODO:
 
 
-## Getting started
+## 🚀 Getting started
 
 #### Quickstart
 ```java
@@ -71,6 +79,22 @@ public class TestApp {
     }
 }
 ```
+
+## 🤖 Compatibility with MeiliSearch
+
+This package is compatible with the following MeiliSearch versions:
+- `v0.14.X`
+- `v0.13.X`
+
+## 🎬 Examples
+
+// TODO:
+
+## ⚙️ Development Workflow and Contributing
+
+Any new contribution is more than welcome in this project!
+
+If you want to know more about the development workflow or want to contribute, please visit our [contributing guidelines](/CONTRIBUTING.md) for detailed instructions!
 
 <hr>
 
