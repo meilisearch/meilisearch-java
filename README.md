@@ -53,9 +53,9 @@ Here is the [MeiliSearch documentation](https://docs.meilisearch.com/) 📖
 
 #### Quickstart
 ```java
-import meilisearch.MeilisearchConfig;
-import meilisearch.MeilisearchIndex;
-import meilisearch.MeilisearchClient;
+import meilisearch.Config;
+import meilisearch.MeiliSearchIndex;
+import meilisearch.Client;
 
 public class TestApp {
 

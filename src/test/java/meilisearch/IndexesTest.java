@@ -9,11 +9,11 @@ import org.junit.Test;
 
 public class IndexesTest {
 
-	MeilisearchClient ms;
+	Client ms;
 
 	@Before
 	public void initialize() {
-		ms = new MeilisearchClient(new MeilisearchConfig("http://localhost:7700", ""));
+		ms = new Client(new Config("http://localhost:7700", ""));
 	}
 
 	@Test
@@ -23,7 +23,7 @@ public class IndexesTest {
 
 	@Test
 	public void getIndexes() throws Exception {
-		MeilisearchIndex[] meilisearchIndices = ms.getIndexList();
+		MeiliSearchIndex[] meilisearchIndices = ms.getIndexList();
 		for (int a = 0; a < meilisearchIndices.length; a++) {
 			System.out.println(meilisearchIndices[a]);
 		}
@@ -33,7 +33,7 @@ public class IndexesTest {
 	@Test
 	public void getIndex() throws Exception {
 		// TODO: input uid for test
-		MeilisearchIndex meilisearchIndex = ms.getIndex("movies");
+		MeiliSearchIndex meilisearchIndex = ms.getIndex("movies");
 		System.out.println(meilisearchIndex);
 	}
 

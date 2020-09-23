@@ -3,7 +3,7 @@ package meilisearch;
 /**
  * Meilisearch configuration
  */
-public class MeilisearchConfig {
+public class Config {
 	String hostUrl;
 	String apiKey;
 
@@ -11,7 +11,7 @@ public class MeilisearchConfig {
 	 * Create a configuration without an API key
 	 * @param hostUrl URL of the Meilisearch instance
 	 */
-	public MeilisearchConfig(String hostUrl) {
+	public Config(String hostUrl) {
 		this(hostUrl, "");
 	}
 
@@ -20,7 +20,7 @@ public class MeilisearchConfig {
 	 * @param hostUrl URL of the Meilisearch instance
 	 * @param apiKey API key to pass to the header of requests sent to Meilisearch
 	 */
-	public MeilisearchConfig(String hostUrl, String apiKey) {
+	public Config(String hostUrl, String apiKey) {
 		this.hostUrl = hostUrl;
 		this.apiKey = apiKey;
 	}

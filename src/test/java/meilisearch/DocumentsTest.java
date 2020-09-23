@@ -5,11 +5,11 @@ import org.junit.Test;
 
 public class DocumentsTest {
 
-	MeilisearchIndex meilisearchIndex;
+	MeiliSearchIndex meilisearchIndex;
 
 	@Before
 	public void initialize() {
-		MeilisearchClient ms = new MeilisearchClient(new MeilisearchConfig("http://localhost:7700", ""));
+		Client ms = new Client(new Config("http://localhost:7700", ""));
 
 		try {
 			// TODO: add uid of index for test

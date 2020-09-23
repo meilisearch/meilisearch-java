@@ -6,15 +6,15 @@ import com.google.gson.JsonObject;
  * Wrapper around the MeilisearchHttpRequest class to ease usage for Meilisearch indexes
  */
 class IndexesHandler {
-	MeilisearchHttpRequest meilisearchHttpRequest;
+	MeiliSearchHttpRequest meilisearchHttpRequest;
 
 	/**
 	 * Create and setup an instance of IndexesHandler to simplify Meilisearch API calls to manage indexes
 	 *
 	 * @param config Meilisearch configuration
 	 */
-	IndexesHandler(MeilisearchConfig config) {
-		this.meilisearchHttpRequest = new MeilisearchHttpRequest(config);
+	IndexesHandler(Config config) {
+		this.meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
 	}
 
 	/**

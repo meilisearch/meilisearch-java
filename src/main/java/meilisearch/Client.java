@@ -8,8 +8,8 @@ import com.google.gson.Gson;
 /**
  * Meilisearch client
  */
-public class MeilisearchClient {
-	public MeilisearchConfig config;
+public class Client {
+	public Config config;
 	public IndexesHandler indexesHandler;
 	public Gson gson;
 
@@ -18,7 +18,7 @@ public class MeilisearchClient {
 	 *
 	 * @param config Configuration to connect to Meilisearch instance
 	 */
-	public MeilisearchClient(MeilisearchConfig config) {
+	public Client(Config config) {
 		this.config = config;
 		this.gson = new Gson();
 		this.indexesHandler = new IndexesHandler(config);
@@ -56,12 +56,12 @@ public class MeilisearchClient {
 	 * @return List of indexes in the Meilisearch client
 	 * @throws Exception If an error occurs
 	 */
-	public MeilisearchIndex[] getIndexList () throws Exception {
-		MeilisearchIndex[] meilisearchIndexList = gson.fromJson(this.indexesHandler.getAll(), MeilisearchIndex[].class);
-		for (MeilisearchIndex indexes: meilisearchIndexList) {
+	public MeiliSearchIndex[] getIndexList () throws Exception {
+		MeiliSearchIndex[] meiliSearchIndexList = gson.fromJson(this.indexesHandler.getAll(), MeiliSearchIndex[].class);
+		for (MeiliSearchIndex indexes: meiliSearchIndexList) {
 			indexes.setConfig(this.config);
 		}
-		return meilisearchIndexList;
+		return meiliSearchIndexList;
 	}
 
 	/**
@@ -72,8 +72,8 @@ public class MeilisearchClient {
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public MeilisearchIndex getIndex (String uid) throws Exception {
-		MeilisearchIndex indexes = gson.fromJson(this.indexesHandler.get(uid), MeilisearchIndex.class);
+	public MeiliSearchIndex getIndex (String uid) throws Exception {
+		MeiliSearchIndex indexes = gson.fromJson(this.indexesHandler.get(uid), MeiliSearchIndex.class);
 		indexes.setConfig(this.config);
 		return indexes;
 	}

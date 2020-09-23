@@ -4,10 +4,10 @@ package meilisearch;
  * Wrapper around MeilisearchHttpRequest class to use for Meilisearch documents
  */
 class Documents {
-	private final MeilisearchHttpRequest meilisearchHttpRequest;
+	private final MeiliSearchHttpRequest meilisearchHttpRequest;
 
-	protected Documents(MeilisearchConfig config) {
-		meilisearchHttpRequest = new MeilisearchHttpRequest(config);
+	protected Documents(Config config) {
+		meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
 	}
 
 	String getDocument(String uid, String identifier) throws Exception {

@@ -10,7 +10,7 @@ import lombok.ToString;
  * Meilisearch index
  */
 @ToString
-public class MeilisearchIndex implements Serializable {
+public class MeiliSearchIndex implements Serializable {
 	@Getter
 	String uid;
 
@@ -26,7 +26,7 @@ public class MeilisearchIndex implements Serializable {
 
 	@Getter
 	@ToString.Exclude
-	MeilisearchConfig config;
+	Config config;
 
 	@ToString.Exclude
 	Documents documents;
@@ -36,7 +36,7 @@ public class MeilisearchIndex implements Serializable {
 	 *
 	 * @param config Meilisearch configuration to use
 	 */
-	void setConfig(MeilisearchConfig config) {
+	void setConfig(Config config) {
 		this.config = config;
 		this.documents = new Documents(config);
 	}
