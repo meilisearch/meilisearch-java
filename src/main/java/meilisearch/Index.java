@@ -10,7 +10,7 @@ import lombok.ToString;
  * Meilisearch index
  */
 @ToString
-public class MeiliSearchIndex implements Serializable {
+public class Index implements Serializable {
 	@Getter
 	String uid;
 

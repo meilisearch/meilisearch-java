@@ -56,9 +56,9 @@ public class Client {
 	 * @return List of indexes in the Meilisearch client
 	 * @throws Exception If an error occurs
 	 */
-	public MeiliSearchIndex[] getIndexList () throws Exception {
-		MeiliSearchIndex[] meiliSearchIndexList = gson.fromJson(this.indexesHandler.getAll(), MeiliSearchIndex[].class);
-		for (MeiliSearchIndex indexes: meiliSearchIndexList) {
+	public Index[] getIndexList () throws Exception {
+		Index[] meiliSearchIndexList = gson.fromJson(this.indexesHandler.getAll(), Index[].class);
+		for (Index indexes: meiliSearchIndexList) {
 			indexes.setConfig(this.config);
 		}
 		return meiliSearchIndexList;
@@ -72,8 +72,8 @@ public class Client {
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public MeiliSearchIndex getIndex (String uid) throws Exception {
-		MeiliSearchIndex indexes = gson.fromJson(this.indexesHandler.get(uid), MeiliSearchIndex.class);
+	public Index getIndex (String uid) throws Exception {
+		Index indexes = gson.fromJson(this.indexesHandler.get(uid), Index.class);
 		indexes.setConfig(this.config);
 		return indexes;
 	}
