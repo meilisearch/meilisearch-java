@@ -57,3 +57,4 @@ atlassian-ide-plugin.xml
 # oh-my-zsh gradle plugin
 .gradletasknamecache
 
+.vscode

@@ -72,7 +72,7 @@ public class TestApp {
         jsonArray.add(jsonObject);
 
         // add new document "[{"1111": "alice in wonderland"}]"
-        String response = book.addDocument(jsonObject.toString());
+        String response = book.addDocuments(jsonObject.toString());
 
         // response : "{ "updateId": 0 }"
     }

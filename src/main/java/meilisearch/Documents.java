@@ -25,7 +25,7 @@ class Documents {
 		return meilisearchHttpRequest.get(requestQuery);
 	}
 
-	String addDocument(String uid, String document) throws Exception {
+	String addDocuments(String uid, String document) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/documents";
 		return meilisearchHttpRequest.post(requestQuery, document);
 	}
