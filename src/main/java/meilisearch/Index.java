@@ -80,8 +80,8 @@ public class Index implements Serializable {
 	 * @return Meilisearch API response
 	 * @throws Exception If something goes wrong
 	 */
-	public String addDocument(String document) throws Exception {
-		return this.documents.addDocument(this.uid, document);
+	public String addDocuments(String document) throws Exception {
+		return this.documents.addDocuments(this.uid, document);
 	}
 
 	/**
