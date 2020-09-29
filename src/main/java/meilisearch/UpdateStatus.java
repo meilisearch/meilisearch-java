@@ -7,18 +7,56 @@ class StatusType {
 }
 
 public class UpdateStatus {
-	public String status = "";
-	public int updateId = 0;
-	public StatusType type = null;
-	public float duration = 0.0f;
-	public String enqueuedAt = "";
-	public String processedAt = "";
-	public String errorCode = "";
-	public String errorType = "";
-	public String errorLink = "";
+	String status = "";
+	int updateId = 0;
+	StatusType type = null;
+	float duration = 0.0f;
+	String enqueuedAt = "";
+	String processedAt = "";
+	String errorCode = "";
+	String errorType = "";
+	String errorLink = "";
+
+	private static Gson gsonUpdate = new Gson();
 
 	@Override
 	public String toString() {
-		return new com.google.gson.Gson().toJson(this);
+		return gsonUpdate.toJson(this);
 	}
+
+	public String getStatus() {
+		return this.status;
+	}
+
+	public int getUpdateId() {
+		return this.updateId;
+	}
+
+	public StatusType getStatusType() {
+		return this.type;
+	}
+
+	public float getDuration() {
+		return this.duration;
+	}
+
+	public String getEnqueuedAt() {
+		return this.enqueuedAt;
+	}
+
+	public String getProcessedAt() {
+		return this.processedAt;
+	}
+
+	public String getErrorCode() {
+		return this.errorCode;
+	}
+
+	public String getErrorType() {
+		return this.errorType;
+	}
+
+	public String getErrorLink() {
+		return this.errorLink;
+	}	
 }
