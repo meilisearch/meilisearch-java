@@ -7,15 +7,15 @@ class StatusType {
 }
 
 public class UpdateStatus {
-	String status = "";
-	int updateId = 0;
-	StatusType type = null;
-	float duration = 0.0f;
-	String enqueuedAt = "";
-	String processedAt = "";
-	String errorCode = "";
-	String errorType = "";
-	String errorLink = "";
+	protected String status = "";
+	protected int updateId = 0;
+	protected StatusType type = null;
+	protected float duration = 0.0f;
+	protected String enqueuedAt = "";
+	protected String processedAt = "";
+	protected String errorCode = "";
+	protected String errorType = "";
+	protected String errorLink = "";
 
 	private static Gson gsonUpdate = new Gson();
 
