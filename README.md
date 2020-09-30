@@ -53,8 +53,8 @@ Here is the [MeiliSearch documentation](https://docs.meilisearch.com/) 📖
 
 #### Quickstart
 ```java
-import meilisearch.Config;
-import meilisearch.Client;
+import com.meilisearch.sdk.Config;
+import com.meilisearch.sdk.Client;
 
 public class TestApp {
 

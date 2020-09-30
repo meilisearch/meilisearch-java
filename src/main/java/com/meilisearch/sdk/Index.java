@@ -1,10 +1,10 @@
-package meilisearch;
+package com.meilisearch.sdk;
 
-import java.io.Serializable;
-
-import com.google.gson.*;
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.ToString;
+
+import java.io.Serializable;
 
 /**
  * Meilisearch index
@@ -133,7 +133,7 @@ public class Index implements Serializable {
 	 * @return List of updates in the index
 	 * @throws Exception If something goes wrong
 	 */
-	public UpdateStatus[] getUpdates()  throws Exception {
+	public UpdateStatus[] getUpdates() throws Exception {
 		Gson gson = new Gson();
 		return gson.fromJson(this.documents.getUpdates(this.uid), UpdateStatus[].class);
 	}

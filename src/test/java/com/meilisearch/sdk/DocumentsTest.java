@@ -1,11 +1,12 @@
-package meilisearch;
+package com.meilisearch.sdk;
+
 
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DocumentsTest {
 
-	MeiliSearchIndex meilisearchIndex;
+	Index meilisearchIndex;
 
 	@Before
 	public void initialize() {
@@ -40,7 +41,7 @@ public class DocumentsTest {
 			"      \"release_date\": \"2019-03-23\"\n" +
 			"  }]";
 		// TODO: setup test document for 'add'
-		System.out.println(this.meilisearchIndex.addDocument(""));
+		System.out.println(this.meilisearchIndex.addDocuments(""));
 	}
 
 	@Test

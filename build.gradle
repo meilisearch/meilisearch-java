@@ -23,7 +23,8 @@ dependencies {
 	implementation 'com.google.guava:guava:29.0-jre'
 	implementation 'com.google.code.gson:gson:2.8.6'
 	// Use JUnit test framework
-	testImplementation 'junit:junit:4.12'
+	testImplementation(platform('org.junit:junit-bom:5.7.0'))
+	testImplementation('org.junit.jupiter:junit-jupiter')
 
 	// Lombok
 	compileOnly 'org.projectlombok:lombok:1.18.12'
@@ -33,19 +34,21 @@ dependencies {
 }
 
 task buildJar(type: Jar) {
-	manifest {
-		attributes(
-				'Main-Class': 'meilisearch-java.MSClient'
-		)
-	}
 	baseName = 'meilisearch-java'
 	from {
 		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
 	}
-			{
-				exclude "META-INF/*.SF"
-				exclude "META-INF/*.DSA"
-				exclude "META-INF/*.RSA"
-			}
+		{
+			exclude "META-INF/*.SF"
+			exclude "META-INF/*.DSA"
+			exclude "META-INF/*.RSA"
+		}
 	with jar
+}
+
+test {
+	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
 }

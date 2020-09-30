@@ -1,4 +1,4 @@
-package meilisearch;
+package com.meilisearch.sdk;
 
 import com.google.gson.JsonObject;
 
@@ -31,7 +31,7 @@ class IndexesHandler {
 	/**
 	 * Create an index with a unique identifier
 	 *
-	 * @param uid Unique identifier to create the index with
+	 * @param uid        Unique identifier to create the index with
 	 * @param primaryKey Field to use as the primary key for documents in that index
 	 * @return Meilisearch API response
 	 * @throws Exception If something goes wrong
@@ -71,7 +71,7 @@ class IndexesHandler {
 	/**
 	 * Update the primary key of an index in the Meilisearch instance
 	 *
-	 * @param uid Unique identifier of the index to update
+	 * @param uid        Unique identifier of the index to update
 	 * @param primaryKey New primary key field to use for documents in that index
 	 * @return Meilisearch API response
 	 * @throws Exception If something goes wrong

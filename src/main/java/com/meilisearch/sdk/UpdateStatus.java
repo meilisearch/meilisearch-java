@@ -1,4 +1,5 @@
-package meilisearch;
+package com.meilisearch.sdk;
+
 import com.google.gson.Gson;
 
 class StatusType {
@@ -58,5 +59,5 @@ public class UpdateStatus {
 
 	public String getErrorLink() {
 		return this.errorLink;
-	}	
+	}
 }

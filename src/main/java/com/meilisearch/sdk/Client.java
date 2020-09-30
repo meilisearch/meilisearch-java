@@ -1,7 +1,7 @@
 /*
  * Unofficial Java client for MeiliSearch
  */
-package meilisearch;
+package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
 
@@ -32,7 +32,7 @@ public class Client {
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public String createIndex (String uid) throws Exception {
+	public String createIndex(String uid) throws Exception {
 		return this.indexesHandler.create(uid);
 	}
 
@@ -40,12 +40,12 @@ public class Client {
 	 * Create index
 	 * Refer https://docs.meilisearch.com/references/indexes.html#create-an-index
 	 *
-	 * @param uid Unique identifier for the index to create
+	 * @param uid        Unique identifier for the index to create
 	 * @param primaryKey The primary key of the documents in that index
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public String createIndex (String uid, String primaryKey) throws Exception {
+	public String createIndex(String uid, String primaryKey) throws Exception {
 		return this.indexesHandler.create(uid, primaryKey);
 	}
 
@@ -56,9 +56,9 @@ public class Client {
 	 * @return List of indexes in the Meilisearch client
 	 * @throws Exception If an error occurs
 	 */
-	public Index[] getIndexList () throws Exception {
+	public Index[] getIndexList() throws Exception {
 		Index[] meiliSearchIndexList = gson.fromJson(this.indexesHandler.getAll(), Index[].class);
-		for (Index indexes: meiliSearchIndexList) {
+		for (Index indexes : meiliSearchIndexList) {
 			indexes.setConfig(this.config);
 		}
 		return meiliSearchIndexList;
@@ -72,7 +72,7 @@ public class Client {
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public Index getIndex (String uid) throws Exception {
+	public Index getIndex(String uid) throws Exception {
 		Index indexes = gson.fromJson(this.indexesHandler.get(uid), Index.class);
 		indexes.setConfig(this.config);
 		return indexes;
@@ -82,12 +82,12 @@ public class Client {
 	 * Update index by uid
 	 * Refer https://docs.meilisearch.com/references/indexes.html#update-an-index
 	 *
-	 * @param uid Unique identifier of the index to update
+	 * @param uid        Unique identifier of the index to update
 	 * @param primaryKey Primary key of the documents in the index
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public String updateIndex (String uid, String primaryKey) throws Exception {
+	public String updateIndex(String uid, String primaryKey) throws Exception {
 		return this.indexesHandler.updatePrimaryKey(uid, primaryKey);
 	}
 
@@ -99,7 +99,7 @@ public class Client {
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public String deleteIndex (String uid) throws Exception {
+	public String deleteIndex(String uid) throws Exception {
 		return this.indexesHandler.delete(uid);
 	}
 }
