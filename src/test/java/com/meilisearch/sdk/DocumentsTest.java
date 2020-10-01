@@ -1,14 +1,14 @@
 package com.meilisearch.sdk;
 
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class DocumentsTest {
 
 	Index meilisearchIndex;
 
-	@Before
+	@BeforeEach
 	public void initialize() {
 		Client ms = new Client(new Config("http://localhost:7700", ""));
 
