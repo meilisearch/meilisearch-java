@@ -11,6 +11,14 @@ plugins {
 	id 'java-library'
 }
 
+group = 'com.meilisearch.sdk'
+version = '0.1.0-SNAPSHOT'
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 repositories {
 	// Use jcenter for resolving dependencies.
 	// You can declare any Maven/Ivy/file repository here.
@@ -33,6 +41,8 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok:1.18.12'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
 }
+
+apply from: "$rootDir/integration-test.gradle"
 
 task buildJar(type: Jar) {
 	baseName = 'meilisearch-java'
