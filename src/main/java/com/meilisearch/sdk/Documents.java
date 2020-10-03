@@ -1,4 +1,4 @@
-package meilisearch;
+package com.meilisearch.sdk;
 
 /**
  * Wrapper around MeilisearchHttpRequest class to use for Meilisearch documents
@@ -52,15 +52,15 @@ class Documents {
 	}
 
 	String search(String uid,
-	              String q,
-	              int offset,
-	              int limit,
-	              String attributesToRetrieve,
-	              String attributesToCrop,
-	              int cropLength,
-	              String attributesToHighlight,
-	              String filters,
-	              boolean matches
+				  String q,
+				  int offset,
+				  int limit,
+				  String attributesToRetrieve,
+				  String attributesToCrop,
+				  int cropLength,
+				  String attributesToHighlight,
+				  String filters,
+				  boolean matches
 	) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/search";
 		SearchRequest sr = new SearchRequest(q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength, attributesToHighlight, filters, matches);

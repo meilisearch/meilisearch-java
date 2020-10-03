@@ -1,4 +1,4 @@
-package meilisearch;
+package com.meilisearch.sdk;
 
 import java.io.BufferedReader;
 import java.io.IOException;
