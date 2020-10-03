@@ -31,6 +31,9 @@ dependencies {
 	implementation 'com.google.guava:guava:29.0-jre'
 	implementation 'com.google.code.gson:gson:2.8.6'
 	implementation 'org.json:json:20200518'
+	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+	compileOnly group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.0.2'
+
 	// Use JUnit test framework
 	testImplementation(platform('org.junit:junit-bom:5.7.0'))
 	testImplementation('org.junit.jupiter:junit-jupiter')

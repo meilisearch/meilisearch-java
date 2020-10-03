@@ -26,4 +26,12 @@ public class Config {
 		this.hostUrl = hostUrl;
 		this.apiKey = apiKey;
 	}
+
+	public String getHostUrl() {
+		return hostUrl;
+	}
+
+	public String getApiKey() {
+		return apiKey;
+	}
 }
