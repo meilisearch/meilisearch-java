@@ -1,8 +1,9 @@
 package com.meilisearch.sdk.http;
 
 import com.meilisearch.sdk.Config;
-import com.meilisearch.sdk.http.request.BasicHttpRequest;
+import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.BasicHttpResponse;
+import com.meilisearch.sdk.http.response.HttpResponse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class DefaultHttpClient implements HttpClient<BasicHttpRequest, BasicHttpResponse> {
+public class DefaultHttpClient extends AbstractHttpClient {
 
 	private final Config config;
 
@@ -47,7 +48,7 @@ public class DefaultHttpClient implements HttpClient<BasicHttpRequest, BasicHttp
 		return connectionOptional.orElseThrow(IOException::new);
 	}
 
-	private BasicHttpResponse execute(BasicHttpRequest request) throws IOException {
+	private HttpResponse<?> execute(HttpRequest<?> request) throws IOException {
 		URL url = new URL(this.config.getHostUrl() + request.getPath());
 		HttpURLConnection connection = this.getConnection(url, request.getMethod().name(), this.config.getApiKey());
 
@@ -59,22 +60,22 @@ public class DefaultHttpClient implements HttpClient<BasicHttpRequest, BasicHttp
 	}
 
 	@Override
-	public BasicHttpResponse get(BasicHttpRequest request) throws Exception {
+	public HttpResponse<?> get(HttpRequest<?> request) throws Exception {
 		return execute(request);
 	}
 
 	@Override
-	public BasicHttpResponse post(BasicHttpRequest request) throws Exception {
+	public HttpResponse<?> post(HttpRequest<?> request) throws Exception {
 		return execute(request);
 	}
 
 	@Override
-	public BasicHttpResponse put(BasicHttpRequest request) throws Exception {
+	public HttpResponse<?> put(HttpRequest<?> request) throws Exception {
 		return execute(request);
 	}
 
 	@Override
-	public BasicHttpResponse delete(BasicHttpRequest request) throws Exception {
+	public HttpResponse<?> delete(HttpRequest<?> request) throws Exception {
 		return execute(request);
 	}
 }

@@ -8,6 +8,16 @@ public class BasicHttpRequest implements HttpRequest<String> {
 	private Map<String, String> headers;
 	private String content;
 
+	public BasicHttpRequest() {
+	}
+
+	public BasicHttpRequest(HttpMethod method, String path, Map<String, String> headers, String content) {
+		this.method = method;
+		this.path = path;
+		this.headers = headers;
+		this.content = content;
+	}
+
 	@Override
 	public HttpMethod getMethod() {
 		return this.method;
@@ -41,5 +51,10 @@ public class BasicHttpRequest implements HttpRequest<String> {
 	@Override
 	public String getContent() {
 		return content;
+	}
+
+	@Override
+	public byte[] getContentAsBytes() {
+		return content.getBytes();
 	}
 }
