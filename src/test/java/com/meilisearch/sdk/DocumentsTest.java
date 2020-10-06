@@ -1,24 +1,18 @@
 package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DocumentsTest {
 	
 	Client ms;
-	Index index;
 	Gson gson = new Gson();
-	
-	String primaryKey = "id";
 
 	@BeforeEach
 	public void initialize() throws Exception {
@@ -42,7 +36,7 @@ public class DocumentsTest {
 
 		String indexUid = "addSingleDocument";
 		ms.createIndex(indexUid);
-		this.index = ms.getIndex(indexUid);
+		Index index = ms.getIndex(indexUid);
 
 		JSONArray jsonArray = new JSONArray();
 		JSONObject jsonObject;
@@ -57,16 +51,7 @@ public class DocumentsTest {
 			UpdateStatus.class
 		);
 		
-		// TODO: Replace by WaitForPendingUpdate()
-		String status = "";
-		while (!status.equals("processed")){
-			UpdateStatus updateStatus = this.gson.fromJson(
-				index.getUpdate(updateInfo.getUpdateId()), 
-				UpdateStatus.class
-			);
-			status = updateStatus.getStatus();
-			Thread.sleep(20);
-		}
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
 		assertEquals(index.getDocuments(), jsonArray.toString());
 	}
 
@@ -78,7 +63,7 @@ public class DocumentsTest {
 
 		String indexUid = "addMultipleDocuments";
 		ms.createIndex(indexUid);
-		this.index = ms.getIndex(indexUid);
+		Index index = ms.getIndex(indexUid);
 
 		JSONArray jsonArray = new JSONArray();
 		JSONObject jsonObject;
@@ -103,16 +88,7 @@ public class DocumentsTest {
 			UpdateStatus.class
 		);
 		
-		// TODO: Replace by WaitForPendingUpdate()
-		String status = "";
-		while (!status.equals("processed")){
-			UpdateStatus updateStatus = this.gson.fromJson(
-				index.getUpdate(updateInfo.getUpdateId()), 
-				UpdateStatus.class
-			);
-			status = updateStatus.getStatus();
-			Thread.sleep(20);
-		}
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
 		assertEquals(index.getDocuments(), jsonArray.toString());
 	}
 

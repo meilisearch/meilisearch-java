@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.Date;
 import java.io.Serializable;
 
 /**
@@ -136,5 +137,46 @@ public class Index implements Serializable {
 	public UpdateStatus[] getUpdates() throws Exception {
 		Gson gson = new Gson();
 		return gson.fromJson(this.documents.getUpdates(this.uid), UpdateStatus[].class);
+	}
+
+	/**
+	 * Wait for a pending update to be processed
+	 *
+	 * @param updateId ID of the index update
+	 * @param timeoutInMs number of milliseconds before throwing and Exception
+	 * @param intervalInMs number of milliseconds before requesting the status again
+	 * @throws Exception If timeout is reached
+	 */
+	public void waitForPendingUpdate(int updateId) throws Exception {
+		waitForPendingUpdate(updateId, 5000, 50);
+	}
+
+	/**
+	 * Wait for a pending update to be processed
+	 *
+	 * @param updateId ID of the index update
+	 * @param timeoutInMs number of milliseconds before throwing and Exception
+	 * @param intervalInMs number of milliseconds before requesting the status again
+	 * @throws Exception If timeout is reached
+	 */
+	public void waitForPendingUpdate(int updateId, int timeoutInMs, int intervalInMs) throws Exception {
+		Gson gson = new Gson();
+		UpdateStatus updateStatus;
+		String status = "";
+		long startTime = new Date().getTime();
+		long elapsedTime = 0;
+
+		while (!status.equals("processed")){
+			if (elapsedTime >= timeoutInMs){
+				throw new Exception();
+			}
+			updateStatus = gson.fromJson(
+				this.getUpdate(updateId), 
+				UpdateStatus.class
+			);
+			status = updateStatus.getStatus();
+			Thread.sleep(intervalInMs);
+			elapsedTime = new Date().getTime() - startTime;
+		}
 	}
 }

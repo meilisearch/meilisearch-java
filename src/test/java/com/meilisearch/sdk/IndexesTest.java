@@ -1,12 +1,16 @@
 package com.meilisearch.sdk;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
+
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class IndexesTest {
 
@@ -87,5 +91,69 @@ public class IndexesTest {
 		assert(Arrays.stream(indexUids).anyMatch(indexUids[1]::equals));
 		ms.deleteIndex(indexUids[0]);
 		ms.deleteIndex(indexUids[1]);
-	}	
+	}
+	
+	/**
+	 * Test waitForPendingUpdate
+	 */
+	@Test
+	public void testWaitForPendingUpdate() throws Exception {
+		String indexUid = "IndexesTest2";
+		ms.createIndex(indexUid);
+		Index index = ms.getIndex(indexUid);
+
+		JSONArray jsonArray = new JSONArray();
+		JSONObject jsonObject;
+
+		jsonObject  = new JSONObject()
+		.put("id", "1111")
+		.put("title", "Alice in wonderland");
+		jsonArray.put(jsonObject);
+
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(jsonArray.toString()), 
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		UpdateStatus updateStatus = this.gson.fromJson(
+			index.getUpdate(updateInfo.getUpdateId()), 
+			UpdateStatus.class
+		);
+
+		assertEquals("processed", updateStatus.getStatus());
+
+		ms.deleteIndex(index.uid);
+	}
+
+	/**
+	 * Test waitForPendingUpdate timeoutInMs
+	 */
+	@Test
+	public void testWaitForPendingUpdateTimoutInMs() throws Exception {
+		String indexUid = "IndexesTest2";
+		ms.createIndex(indexUid);
+		Index index = ms.getIndex(indexUid);
+
+		JSONArray jsonArray = new JSONArray();
+		JSONObject jsonObject;
+
+		jsonObject  = new JSONObject()
+		.put("id", "1111")
+		.put("title", "Alice in wonderland");
+		jsonArray.put(jsonObject);
+
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(jsonArray.toString()), 
+			UpdateStatus.class
+		);
+
+		assertThrows(
+			Exception.class,
+			() -> index.waitForPendingUpdate(updateInfo.getUpdateId(), 0, 50)
+		);
+
+		ms.deleteIndex(index.uid);
+	}
 }
