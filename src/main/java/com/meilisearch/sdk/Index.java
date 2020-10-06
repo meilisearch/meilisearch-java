@@ -157,7 +157,7 @@ public class Index implements Serializable {
 	 * @param updateId ID of the index update
 	 * @param timeoutInMs number of milliseconds before throwing an Exception
 	 * @param intervalInMs number of milliseconds before requesting the status again
-	 * @throws Exception If timeout is reached
+	 * @throws Exception if timeout is reached
 	 */
 	public void waitForPendingUpdate(int updateId, int timeoutInMs, int intervalInMs) throws Exception {
 		Gson gson = new Gson();
