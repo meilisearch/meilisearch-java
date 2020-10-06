@@ -155,7 +155,7 @@ public class Index implements Serializable {
 	 * Wait for a pending update to be processed
 	 *
 	 * @param updateId ID of the index update
-	 * @param timeoutInMs number of milliseconds before throwing and Exception
+	 * @param timeoutInMs number of milliseconds before throwing an Exception
 	 * @param intervalInMs number of milliseconds before requesting the status again
 	 * @throws Exception If timeout is reached
 	 */
