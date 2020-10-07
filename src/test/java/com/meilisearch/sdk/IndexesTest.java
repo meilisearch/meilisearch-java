@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.Arrays;
 
 import com.google.gson.Gson;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ public class IndexesTest {
 	Client ms;
 	Gson gson = new Gson();
 	String primaryKey = "id";
+	TestUtils testUtils =  new TestUtils();
 
 	@BeforeEach
 	public void initializeClient() throws Exception {
@@ -25,11 +27,7 @@ public class IndexesTest {
 
 	@AfterAll
 	static void cleanMeiliSearch()  throws Exception {
-		Client ms = new Client(new Config("http://localhost:7700", "masterKey"));
-		Index[] indexes = ms.getIndexList();
-		for (int i = 0; i < indexes.length; i++) {
-			ms.deleteIndex(indexes[i].uid);
-		}
+		new TestUtils().deleteAllIndexes();
 	}
 
 	/**
@@ -102,16 +100,8 @@ public class IndexesTest {
 		ms.createIndex(indexUid);
 		Index index = ms.getIndex(indexUid);
 
-		JSONArray jsonArray = new JSONArray();
-		JSONObject jsonObject;
-
-		jsonObject  = new JSONObject()
-		.put("id", "1111")
-		.put("title", "Alice in wonderland");
-		jsonArray.put(jsonObject);
-
 		UpdateStatus updateInfo = this.gson.fromJson(
-			index.addDocuments(jsonArray.toString()), 
+			index.addDocuments(this.testUtils.movies_data), 
 			UpdateStatus.class
 		);
 
@@ -136,16 +126,8 @@ public class IndexesTest {
 		ms.createIndex(indexUid);
 		Index index = ms.getIndex(indexUid);
 
-		JSONArray jsonArray = new JSONArray();
-		JSONObject jsonObject;
-
-		jsonObject  = new JSONObject()
-		.put("id", "1111")
-		.put("title", "Alice in wonderland");
-		jsonArray.put(jsonObject);
-
 		UpdateStatus updateInfo = this.gson.fromJson(
-			index.addDocuments(jsonArray.toString()), 
+			index.addDocuments(this.testUtils.movies_data), 
 			UpdateStatus.class
 		);
 
@@ -156,4 +138,5 @@ public class IndexesTest {
 
 		ms.deleteIndex(index.uid);
 	}
+
 }

@@ -1,11 +1,15 @@
 package com.meilisearch.sdk;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import com.google.gson.reflect.TypeToken;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,6 +17,7 @@ public class DocumentsTest {
 	
 	Client ms;
 	Gson gson = new Gson();
+	TestUtils testUtils =  new TestUtils();
 
 	@BeforeEach
 	public void initialize() throws Exception {
@@ -21,11 +26,7 @@ public class DocumentsTest {
 
 	@AfterAll
 	static void cleanMeiliSearch()  throws Exception {
-		Client ms = new Client(new Config("http://localhost:7700", "masterKey"));
-		Index[] indexes = ms.getIndexList();
-		for (int i = 0; i < indexes.length; i++) {
-			ms.deleteIndex(indexes[i].uid);
-		}
+		new TestUtils().deleteAllIndexes();
 	}
 
 	/**
@@ -37,22 +38,17 @@ public class DocumentsTest {
 		String indexUid = "addSingleDocument";
 		ms.createIndex(indexUid);
 		Index index = ms.getIndex(indexUid);
-
-		JSONArray jsonArray = new JSONArray();
-		JSONObject jsonObject;
-
-		jsonObject  = new JSONObject()
-		.put("id", "1111")
-		.put("title", "Alice in wonderland");
-		jsonArray.put(jsonObject);
 		
 		UpdateStatus updateInfo = this.gson.fromJson(
-			index.addDocuments(jsonArray.toString()), 
+			index.addDocuments(this.testUtils.movies_data), 
 			UpdateStatus.class
 		);
 		
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
-		assertEquals(index.getDocuments(), jsonArray.toString());
+		Movie[] movies = this.testUtils.moviesStringToJson(index.getDocuments());
+		for (int i=0; i<movies.length; i++) {
+			assertEquals(movies[i].title, this.testUtils.movies[i].title);
+		}
 	}
 
 	/**
@@ -65,31 +61,16 @@ public class DocumentsTest {
 		ms.createIndex(indexUid);
 		Index index = ms.getIndex(indexUid);
 
-		JSONArray jsonArray = new JSONArray();
-		JSONObject jsonObject;
-
-		jsonObject  = new JSONObject()
-		.put("id", "1111")
-		.put("title", "Alice in wonderland");
-		jsonArray.put(jsonObject);
-
-		jsonObject = new JSONObject()
-		.put("id", "222")
-		.put("title", "Blice in wonderland");
-		jsonArray.put(jsonObject);
-
-		jsonObject = new JSONObject()
-		.put("id", "333")
-		.put("title", "Clice in wonderland");
-		jsonArray.put(jsonObject);
-
 		UpdateStatus updateInfo = this.gson.fromJson(
-			index.addDocuments(jsonArray.toString()), 
+			index.addDocuments(this.testUtils.movies_data), 
 			UpdateStatus.class
 		);
 		
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
-		assertEquals(index.getDocuments(), jsonArray.toString());
+		Movie[] movies = this.testUtils.moviesStringToJson(index.getDocuments());
+		for (int i=0; i<movies.length; i++) {
+			assertEquals(movies[i].title, this.testUtils.movies[i].title);
+		}
 	}
 
 }
