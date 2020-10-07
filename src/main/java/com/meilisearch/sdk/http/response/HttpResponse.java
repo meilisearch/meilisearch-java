@@ -8,4 +8,6 @@ public interface HttpResponse<B> {
 	int getStatusCode();
 
 	B getContent();
+
+	byte[] getContentAsBytes();
 }

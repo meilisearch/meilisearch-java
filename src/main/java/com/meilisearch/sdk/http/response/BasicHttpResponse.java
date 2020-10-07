@@ -27,4 +27,9 @@ public class BasicHttpResponse implements HttpResponse<String> {
 	public String getContent() {
 		return content;
 	}
+
+	@Override
+	public byte[] getContentAsBytes() {
+		return content.getBytes();
+	}
 }

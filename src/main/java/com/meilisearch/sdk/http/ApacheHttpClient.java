@@ -1,5 +1,6 @@
 package com.meilisearch.sdk.http;
 
+import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.BasicHttpResponse;
 import com.meilisearch.sdk.http.response.HttpResponse;
@@ -25,18 +26,21 @@ import java.util.stream.Collectors;
 public class ApacheHttpClient extends AbstractHttpClient {
 
 	private final HttpAsyncClient client;
+	private final Config config;
 
-	public ApacheHttpClient() {
+	public ApacheHttpClient(Config config) {
 		final IOReactorConfig ioReactorConfig = IOReactorConfig.custom()
 			.setSoTimeout(Timeout.ofSeconds(5))
 			.build();
 
-		client = HttpAsyncClients.custom()
+		this.client = HttpAsyncClients.custom()
 			.setIOReactorConfig(ioReactorConfig)
 			.build();
+		this.config = config;
 	}
 
-	public ApacheHttpClient(HttpAsyncClient client) {
+	public ApacheHttpClient(Config config, HttpAsyncClient client) {
+		this.config = config;
 		this.client = client;
 	}
 
@@ -76,6 +80,7 @@ public class ApacheHttpClient extends AbstractHttpClient {
 	private SimpleHttpRequest mapRequest(HttpRequest<?> request) {
 		SimpleHttpRequest httpRequest = new SimpleHttpRequest(request.getMethod().name(), request.getPath());
 		httpRequest.setBody(request.getContentAsBytes(), ContentType.APPLICATION_JSON);
+		httpRequest.addHeader("X-Meili-API-Key", this.config.getApiKey());
 		return httpRequest;
 	}
 
