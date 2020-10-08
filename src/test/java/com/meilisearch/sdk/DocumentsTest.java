@@ -1,62 +1,77 @@
 package com.meilisearch.sdk;
 
+import java.lang.reflect.Type;
+import java.util.List;
 
+import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import com.google.gson.reflect.TypeToken;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DocumentsTest {
-
-	Index meilisearchIndex;
+	
+	Client ms;
+	Gson gson = new Gson();
+	TestUtils testUtils =  new TestUtils();
 
 	@BeforeEach
-	public void initialize() {
-		Client ms = new Client(new Config("http://localhost:7700", ""));
+	public void initialize() throws Exception {
+		ms = new Client(new Config("http://localhost:7700", "masterKey"));
+	}
 
-		try {
-			// TODO: add uid of index for test
-			this.meilisearchIndex = ms.getIndex("movies");
-		} catch (Exception e) {
+	@AfterAll
+	static void cleanMeiliSearch()  throws Exception {
+		new TestUtils().deleteAllIndexes();
+	}
 
+	/**
+	 * Test Add single document
+	 */
+	@Test
+	public void testAddDocumentsSingle() throws Exception {
+
+		String indexUid = "addSingleDocument";
+		ms.createIndex(indexUid);
+		Index index = ms.getIndex(indexUid);
+		
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(this.testUtils.movies_data), 
+			UpdateStatus.class
+		);
+		
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+		for (int i=0; i<movies.length; i++) {
+			assertEquals(movies[i].title, this.testUtils.movies[i].title);
 		}
 	}
 
+	/**
+	 * Test Add multiple documents
+	 */
 	@Test
-	public void get() throws Exception {
-		// TODO: input identifier for test
-		System.out.println(this.meilisearchIndex.getDocument("9999"));
+	public void testAddDocumentsMultiple() throws Exception {
+
+		String indexUid = "addMultipleDocuments";
+		ms.createIndex(indexUid);
+		Index index = ms.getIndex(indexUid);
+
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(this.testUtils.movies_data), 
+			UpdateStatus.class
+		);
+		
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+		for (int i=0; i<movies.length; i++) {
+			assertEquals(movies[i].title, this.testUtils.movies[i].title);
+		}
 	}
 
-	@Test
-	public void getAll() throws Exception {
-		System.out.println(this.meilisearchIndex.getDocuments());
-	}
-
-	@Test
-	public void add() throws Exception {
-		String testDoc = "[{\n" +
-			"      \"id\": 9999,\n" +
-			"      \"title\": \"Shazam\",\n" +
-			"      \"poster\": \"https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg\",\n" +
-			"      \"overview\": \"A boy is given the ability to become an adult superhero in times of need with a single magic word.\",\n" +
-			"      \"release_date\": \"2019-03-23\"\n" +
-			"  }]";
-		// TODO: setup test document for 'add'
-		System.out.println(this.meilisearchIndex.addDocuments(""));
-	}
-
-	@Test
-	public void delete() throws Exception {
-		// TODO: input identifier for test
-		System.out.println(this.meilisearchIndex.deleteDocument(""));
-	}
-
-	@Test
-	public void search() throws Exception {
-		System.out.println(this.meilisearchIndex.search("Batman"));
-	}
-
-	@Test
-	public void updates() throws Exception {
-		System.out.println(this.meilisearchIndex.getUpdates()[0].toString());
-	}
 }
+

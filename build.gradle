@@ -22,6 +22,7 @@ dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
 	implementation 'com.google.guava:guava:29.0-jre'
 	implementation 'com.google.code.gson:gson:2.8.6'
+	implementation 'org.json:json:20200518'
 	// Use JUnit test framework
 	testImplementation(platform('org.junit:junit-bom:5.7.0'))
 	testImplementation('org.junit.jupiter:junit-jupiter')
