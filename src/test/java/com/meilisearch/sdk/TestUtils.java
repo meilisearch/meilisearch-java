@@ -16,8 +16,7 @@ public class TestUtils {
 	Gson gson = new Gson();
 
 	public TestUtils () {
-		this.movies = moviesStringToJson(moviesFileToString());
-		return;
+		this.movies = gson.fromJson(moviesFileToString(),Movie[].class);
 	}
 
 	public String moviesFileToString () {
@@ -33,14 +32,6 @@ public class TestUtils {
 		}
 		this.movies_data = content;
 		return content;
-	}
-
-	public Movie[] moviesStringToJson (String movies_str) {
-		Movie[] movies = new Movie[10];
-		Type MOVIE_TYPE = new TypeToken<Movie[]>() {
-		}.getType();
-		movies = gson.fromJson(movies_str, MOVIE_TYPE);
-		return movies;
 	}
 
 	static public void deleteAllIndexes() throws Exception {
