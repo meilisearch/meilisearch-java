@@ -45,7 +45,7 @@ public class DocumentsTest {
 		);
 		
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
-		Movie[] movies = this.testUtils.moviesStringToJson(index.getDocuments());
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
 		for (int i=0; i<movies.length; i++) {
 			assertEquals(movies[i].title, this.testUtils.movies[i].title);
 		}
@@ -67,7 +67,7 @@ public class DocumentsTest {
 		);
 		
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
-		Movie[] movies = this.testUtils.moviesStringToJson(index.getDocuments());
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
 		for (int i=0; i<movies.length; i++) {
 			assertEquals(movies[i].title, this.testUtils.movies[i].title);
 		}

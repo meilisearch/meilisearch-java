@@ -16,12 +16,13 @@ public class TestUtils {
 	Gson gson = new Gson();
 
 	public TestUtils () {
-		this.movies = gson.fromJson(moviesFileToString(),Movie[].class);
+		this.movies_data = moviesFileToString();
+		this.movies = gson.fromJson(this.movies_data, Movie[].class);
 	}
 
 	public String moviesFileToString () {
 		String content = "";
-		String filePath = "src/test/java/com/meilisearch/sdk/movies.json";
+		String filePath = "src/test/ressources/movies.json";
 		try
 		{
 			content = new String ( Files.readAllBytes( Paths.get(filePath) ) );
@@ -30,7 +31,6 @@ public class TestUtils {
 		{
 			e.printStackTrace();
 		}
-		this.movies_data = content;
 		return content;
 	}
 
