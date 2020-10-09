@@ -1,0 +1,135 @@
+[
+	{
+		"id": 419704,
+		"title": "Ad Astra",
+		"poster": "https://image.tmdb.org/t/p/original/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg",
+		"overview": "The near future, a time when both hope and hardships drive humanity to look to the stars and beyond. While a mysterious phenomenon menaces to destroy life on planet Earth, astronaut Roy McBride undertakes a mission across the immensity of space and its many perils to uncover the truth about a lost expedition that decades before boldly faced emptiness and silence in search of the unknown.",
+		"release_date": "2019-09-17",
+		"language": "en",
+		"genres": [
+			"Science Fiction",
+			"Drama"
+		]
+	},
+	{
+		"id": 574982,
+		"title": "The Blackout",
+		"poster": "https://image.tmdb.org/t/p/original/avl9MEQhtvokNnzoWepkmHBZ2ss.jpg",
+		"overview": "Contact between most towns on Earth has been severed. A small ring-like area in Eastern Europe still has electricity, and maybe even life is being reported from space. What military forces find outside the ring is shocking.",
+		"release_date": "2019-11-21",
+		"language": "ru",
+		"genres": [
+			"Thriller",
+			"Science Fiction",
+			"Action"
+		]
+	},
+	{
+		"id": 454626,
+		"title": "Sonic the Hedgehog",
+		"poster": "https://image.tmdb.org/t/p/original/aQvJ5WPzZgYVDrxLX4R6cLJCEaQ.jpg",
+		"overview": "Based on the global blockbuster videogame franchise from Sega, Sonic the Hedgehog tells the story of the world’s speediest hedgehog as he embraces his new home on Earth. In this live-action adventure comedy, Sonic and his new best friend team up to defend the planet from the evil genius Dr. Robotnik and his plans for world domination.",
+		"release_date": "2020-02-12",
+		"language": "en",
+		"genres": [
+			"Action",
+			"Science Fiction",
+			"Comedy",
+			"Family"
+		]
+	},
+	{
+		"id": 338762,
+		"title": "Bloodshot",
+		"poster": "https://image.tmdb.org/t/p/original/8WUVHemHFH2ZIP6NWkwlHWsyrEL.jpg",
+		"overview": "After he and his wife are murdered, marine Ray Garrison is resurrected by a team of scientists. Enhanced with nanotechnology, he becomes a superhuman, biotech killing machine—'Bloodshot'. As Ray first trains with fellow super-soldiers, he cannot recall anything from his former life. But when his memories flood back and he remembers the man that killed both him and his wife, he breaks out of the facility to get revenge, only to discover that there's more to the conspiracy than he thought.",
+		"release_date": "2020-03-05",
+		"language": "en",
+		"genres": [
+			"Action",
+			"Science Fiction"
+		]
+	},
+	{
+		"id": 496243,
+		"title": "Parasite",
+		"poster": "https://image.tmdb.org/t/p/original/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+		"overview": "All unemployed, Ki-taek's family takes peculiar interest in the wealthy and glamorous Parks for their livelihood until they get entangled in an unexpected incident.",
+		"release_date": "2019-05-30",
+		"language": "ko",
+		"genres": [
+			"Comedy",
+			"Thriller",
+			"Drama"
+		]
+	},
+	{
+		"id": 514847,
+		"title": "The Hunt",
+		"poster": "https://image.tmdb.org/t/p/original/wxPhn4ef1EAo5njxwBkAEVrlJJG.jpg",
+		"overview": "Twelve strangers wake up in a clearing. They don't know where they are—or how they got there. In the shadow of a dark internet conspiracy theory, ruthless elitists gather at a remote location to hunt humans for sport. But their master plan is about to be derailed when one of the hunted turns the tables on her pursuers.",
+		"release_date": "2020-03-11",
+		"language": "en",
+		"genres": [
+			"Action",
+			"Thriller",
+			"Horror"
+		]
+	},
+	{
+		"id": 429617,
+		"title": "Spider-Man: Far from Home",
+		"poster": "https://image.tmdb.org/t/p/original/4q2NNj4S5dG2RLF9CpXsej7yXl.jpg",
+		"overview": "Peter Parker and his friends go on a summer trip to Europe. However, they will hardly be able to rest - Peter will have to agree to help Nick Fury uncover the mystery of creatures that cause natural disasters and destruction throughout the continent.",
+		"release_date": "2019-06-28",
+		"language": "en",
+		"genres": [
+			"Action",
+			"Adventure",
+			"Science Fiction"
+		]
+	},
+	{
+		"id": 530915,
+		"title": "1917",
+		"poster": "https://image.tmdb.org/t/p/original/iZf0KyrE25z1sage4SYFLCCrMi9.jpg",
+		"overview": "At the height of the First World War, two young British soldiers must cross enemy territory and deliver a message that will stop a deadly attack on hundreds of soldiers.",
+		"release_date": "2019-12-25",
+		"language": "en",
+		"genres": [
+			"War",
+			"Drama",
+			"Action",
+			"History"
+		]
+	},
+	{
+		"id": 508439,
+		"title": "Onward",
+		"poster": "https://image.tmdb.org/t/p/original/f4aul3FyD3jv3v4bul1IrkWZvzq.jpg",
+		"overview": "In a suburban fantasy world, two teenage elf brothers embark on an extraordinary quest to discover if there is still a little magic left out there.",
+		"release_date": "2020-02-29",
+		"language": "en",
+		"genres": [
+			"Animation",
+			"Family",
+			"Adventure",
+			"Comedy",
+			"Fantasy"
+		]
+	},
+	{
+		"id": 495764,
+		"title": "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)",
+		"poster": "https://image.tmdb.org/t/p/original/h4VB6m0RwcicVEZvzftYZyKXs6K.jpg",
+		"overview": "Harley Quinn joins forces with a singer, an assassin and a police detective to help a young girl who had a hit placed on her after she stole a rare diamond from a crime lord.",
+		"release_date": "2020-02-05",
+		"language": "en",
+		"genres": [
+			"Action",
+			"Crime",
+			"Comedy",
+			"Drama"
+		]
+	}
+]
