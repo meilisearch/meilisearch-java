@@ -1,4 +1,4 @@
-package com.meilisearch.sdk;
+package com.meilisearch.integration;
 
 import java.util.List;
 

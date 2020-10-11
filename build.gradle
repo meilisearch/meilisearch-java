@@ -42,8 +42,6 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
 }
 
-apply from: "$rootDir/integration-test.gradle"
-
 task buildJar(type: Jar) {
 	baseName = 'meilisearch-java'
 	from {
@@ -58,7 +56,18 @@ task buildJar(type: Jar) {
 }
 
 test {
-	useJUnitPlatform()
+	useJUnitPlatform {
+		excludeTags("integration")
+	}
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+}
+
+task integrationTest(type: Test) {
+	useJUnitPlatform {
+		includeTags("integration")
+	}
 	testLogging {
 		events "passed", "skipped", "failed"
 	}

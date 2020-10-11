@@ -1,13 +1,17 @@
-package com.meilisearch.sdk;
+package com.meilisearch.integration;
 
+import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Tag("integration")
 public class DocumentsTest extends AbstractIT {
 
 	@BeforeEach

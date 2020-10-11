@@ -1,14 +1,18 @@
-package com.meilisearch.sdk;
+package com.meilisearch.integration;
 
+import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("integration")
 public class IndexesTest extends AbstractIT {
 
 	String primaryKey = "id";
@@ -34,9 +38,9 @@ public class IndexesTest extends AbstractIT {
 		String indexUid = "IndexesTest";
 		client.createIndex(indexUid);
 		Index index = client.getIndex(indexUid);
-		assertEquals(index.uid, indexUid);
-		assertNull(index.primaryKey);
-		client.deleteIndex(index.uid);
+		assertEquals(index.getUid(), indexUid);
+		assertNull(index.getPrimaryKey());
+		client.deleteIndex(index.getUid());
 	}
 
 	/**
@@ -47,9 +51,9 @@ public class IndexesTest extends AbstractIT {
 		String indexUid = "IndexesTest";
 		client.createIndex(indexUid, this.primaryKey);
 		Index index = client.getIndex(indexUid);
-		assertEquals(index.uid, indexUid);
-		assertEquals(index.primaryKey, this.primaryKey);
-		client.deleteIndex(index.uid);
+		assertEquals(index.getUid(), indexUid);
+		assertEquals(index.getPrimaryKey(), this.primaryKey);
+		client.deleteIndex(index.getUid());
 	}
 
 	/**
@@ -60,13 +64,13 @@ public class IndexesTest extends AbstractIT {
 		String indexUid = "IndexesTest";
 		client.createIndex(indexUid);
 		Index index = client.getIndex(indexUid);
-		assertEquals(index.uid, indexUid);
-		assertNull(index.primaryKey);
+		assertEquals(index.getUid(), indexUid);
+		assertNull(index.getPrimaryKey());
 		client.updateIndex(indexUid, this.primaryKey);
 		index = client.getIndex(indexUid);
-		assertEquals(index.uid, indexUid);
-		assertEquals(index.primaryKey, this.primaryKey);
-		client.deleteIndex(index.uid);
+		assertEquals(index.getUid(), indexUid);
+		assertEquals(index.getPrimaryKey(), this.primaryKey);
+		client.deleteIndex(index.getUid());
 	}
 
 	/**
@@ -110,7 +114,7 @@ public class IndexesTest extends AbstractIT {
 
 		assertEquals("processed", updateStatus.getStatus());
 
-		client.deleteIndex(index.uid);
+		client.deleteIndex(index.getUid());
 	}
 
 	/**
@@ -132,7 +136,7 @@ public class IndexesTest extends AbstractIT {
 			() -> index.waitForPendingUpdate(updateInfo.getUpdateId(), 0, 50)
 		);
 
-		client.deleteIndex(index.uid);
+		client.deleteIndex(index.getUid());
 	}
 
 }
