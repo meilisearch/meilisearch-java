@@ -1,5 +1,6 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

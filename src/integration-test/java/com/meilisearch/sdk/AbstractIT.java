@@ -3,6 +3,7 @@ package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.meilisearch.sdk.utils.Movie;
 
 import java.io.*;
 import java.net.URL;

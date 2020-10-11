@@ -1,4 +1,4 @@
-package com.meilisearch.sdk;
+package com.meilisearch.sdk.utils;
 
 public class Movie {
 	private long id;
