@@ -11,14 +11,14 @@ import java.util.Collections;
 
 class MeiliSearchHttpRequest {
 	private final AbstractHttpClient client;
-	private final RequestFactory<?> factory;
+	private final RequestFactory factory;
 
 	protected MeiliSearchHttpRequest(Config config) {
 		this.client = new DefaultHttpClient(config);
 		this.factory = new BasicRequestFactory();
 	}
 
-	public MeiliSearchHttpRequest(AbstractHttpClient client, RequestFactory<?> factory) {
+	public MeiliSearchHttpRequest(AbstractHttpClient client, RequestFactory factory) {
 		this.client = client;
 		this.factory = factory;
 	}
@@ -34,14 +34,14 @@ class MeiliSearchHttpRequest {
 	}
 
 
-	String post(String api, String params) throws Exception {
-		HttpResponse<?> httpResponse = this.client.post(factory.create(HttpMethod.POST, api + params, Collections.emptyMap(), null));
+	String post(String api, String body) throws Exception {
+		HttpResponse<?> httpResponse = this.client.post(factory.create(HttpMethod.POST, api, Collections.emptyMap(), body));
 		return new String(httpResponse.getContentAsBytes());
 	}
 
 
-	String put(String api, String params) throws Exception {
-		HttpResponse<?> httpResponse = this.client.put(factory.create(HttpMethod.PUT, api + params, Collections.emptyMap(), null));
+	String put(String api, String body) throws Exception {
+		HttpResponse<?> httpResponse = this.client.put(factory.create(HttpMethod.PUT, api, Collections.emptyMap(), body));
 		return new String(httpResponse.getContentAsBytes());
 	}
 

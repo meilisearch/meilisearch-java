@@ -1,17 +1,18 @@
 package com.meilisearch.sdk.http;
 
 import com.meilisearch.sdk.Config;
+import com.meilisearch.sdk.http.request.HttpMethod;
 import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.BasicHttpResponse;
 import com.meilisearch.sdk.http.response.HttpResponse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DefaultHttpClient extends AbstractHttpClient {
@@ -33,6 +34,8 @@ public class DefaultHttpClient extends AbstractHttpClient {
 		if (url == null || "".equals(method)) throw new IOException("Unable to open an HttpURLConnection with no URL or method");
 
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		if (method.equalsIgnoreCase(HttpMethod.POST.name()) || method.equalsIgnoreCase(HttpMethod.PUT.name()) || method.equalsIgnoreCase(HttpMethod.DELETE.name()))
+			connection.setDoOutput(true);
 		connection.setRequestMethod(method);
 		connection.setRequestProperty("Content-Type", "application/json");
 
@@ -41,19 +44,26 @@ public class DefaultHttpClient extends AbstractHttpClient {
 			connection.setRequestProperty("X-Meili-API-Key", apiKey);
 		}
 
-		// Ensure connection is set
-		Optional<HttpURLConnection> connectionOptional = Optional.of(connection);
-		return connectionOptional.orElseThrow(IOException::new);
+		return connection;
 	}
 
 	private HttpResponse<?> execute(HttpRequest<?> request) throws IOException {
 		URL url = new URL(this.config.getHostUrl() + request.getPath());
 		HttpURLConnection connection = this.getConnection(url, request.getMethod().name(), this.config.getApiKey());
 
+		if (request.hasContent())
+			connection.getOutputStream().write(request.getContentAsBytes());
+
+		InputStream contentStream;
+		if (connection.getResponseCode() < 200 && connection.getResponseCode() > 299) {
+			contentStream = connection.getErrorStream();
+		} else {
+			contentStream = connection.getInputStream();
+		}
 		return new BasicHttpResponse(
 			Collections.emptyMap(),
 			connection.getResponseCode(),
-			new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining("\n"))
+			new BufferedReader(new InputStreamReader(contentStream)).lines().collect(Collectors.joining("\n"))
 		);
 	}
 

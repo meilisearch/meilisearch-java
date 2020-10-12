@@ -6,9 +6,10 @@ import com.meilisearch.sdk.http.request.HttpRequest;
 
 import java.util.Map;
 
-public class BasicRequestFactory implements RequestFactory<String> {
+public class BasicRequestFactory implements RequestFactory {
 	@Override
-	public HttpRequest<?> create(HttpMethod method, String path, Map<String, String> headers, String content) {
-		return new BasicHttpRequest(method,path,headers,content);
+	public <T> HttpRequest<?> create(HttpMethod method, String path, Map<String, String> headers, T content) {
+		//todo integrate serializer for content
+		return new BasicHttpRequest(method, path, headers, (String) content);
 	}
 }
