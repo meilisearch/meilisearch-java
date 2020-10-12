@@ -4,15 +4,15 @@ package com.meilisearch.sdk;
  * Search request query string builder
  */
 class SearchRequest {
-	String q;
-	int offset;
-	int limit;
-	String attributesToRetrieve;
-	String attributesToCrop;
-	int cropLength;
-	String attributesToHighlight;
-	String filters;
-	boolean matches;
+	private String q;
+	private int offset;
+	private int limit;
+	private String attributesToRetrieve;
+	private String attributesToCrop;
+	private int cropLength;
+	private String attributesToHighlight;
+	private String filters;
+	private boolean matches;
 
 	SearchRequest(String q) {
 		this(q, 0);
@@ -48,6 +48,42 @@ class SearchRequest {
 		this.attributesToHighlight = attributesToHighlight;
 		this.filters = filters;
 		this.matches = matches;
+	}
+
+	public String getQ() {
+		return q;
+	}
+
+	public int getOffset() {
+		return offset;
+	}
+
+	public int getLimit() {
+		return limit;
+	}
+
+	public String getAttributesToRetrieve() {
+		return attributesToRetrieve;
+	}
+
+	public String getAttributesToCrop() {
+		return attributesToCrop;
+	}
+
+	public int getCropLength() {
+		return cropLength;
+	}
+
+	public String getAttributesToHighlight() {
+		return attributesToHighlight;
+	}
+
+	public String getFilters() {
+		return filters;
+	}
+
+	public boolean isMatches() {
+		return matches;
 	}
 
 	String getQuery() {
