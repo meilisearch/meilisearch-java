@@ -1,7 +1,6 @@
 package com.meilisearch.sdk.http;
 
 import com.meilisearch.sdk.Config;
-import com.meilisearch.sdk.http.request.HttpMethod;
 import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.BasicHttpResponse;
 import com.meilisearch.sdk.http.response.HttpResponse;
@@ -34,8 +33,6 @@ public class DefaultHttpClient extends AbstractHttpClient {
 		if (url == null || "".equals(method)) throw new IOException("Unable to open an HttpURLConnection with no URL or method");
 
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-		if (method.equalsIgnoreCase(HttpMethod.POST.name()) || method.equalsIgnoreCase(HttpMethod.PUT.name()) || method.equalsIgnoreCase(HttpMethod.DELETE.name()))
-			connection.setDoOutput(true);
 		connection.setRequestMethod(method);
 		connection.setRequestProperty("Content-Type", "application/json");
 
@@ -51,15 +48,14 @@ public class DefaultHttpClient extends AbstractHttpClient {
 		URL url = new URL(this.config.getHostUrl() + request.getPath());
 		HttpURLConnection connection = this.getConnection(url, request.getMethod().name(), this.config.getApiKey());
 
-		if (request.hasContent())
+		if (request.hasContent()) {
+			connection.setDoOutput(true);
 			connection.getOutputStream().write(request.getContentAsBytes());
-
-		InputStream contentStream;
-		if (connection.getResponseCode() < 200 && connection.getResponseCode() > 299) {
-			contentStream = connection.getErrorStream();
-		} else {
-			contentStream = connection.getInputStream();
 		}
+
+		InputStream errorStream = connection.getErrorStream();
+		InputStream contentStream = (errorStream != null ? errorStream : connection.getInputStream());
+
 		return new BasicHttpResponse(
 			Collections.emptyMap(),
 			connection.getResponseCode(),
