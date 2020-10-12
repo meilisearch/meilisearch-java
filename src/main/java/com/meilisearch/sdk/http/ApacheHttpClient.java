@@ -18,6 +18,7 @@ import org.apache.hc.core5.reactor.IOReactorConfig;
 import org.apache.hc.core5.util.Timeout;
 
 import java.util.Arrays;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -45,7 +46,7 @@ public class ApacheHttpClient extends AbstractHttpClient {
 	}
 
 
-	private HttpResponse<?> execute(HttpRequest<?> request) throws ExecutionException, InterruptedException {
+	private HttpResponse<?> execute(HttpRequest<?> request) throws Exception {
 		CompletableFuture<SimpleHttpResponse> response = new CompletableFuture<>();
 		client.execute(
 			SimpleRequestProducer.create(mapRequest(request)),
@@ -54,7 +55,12 @@ public class ApacheHttpClient extends AbstractHttpClient {
 			HttpClientContext.create(),
 			getCallback(response)
 		);
-		return response.thenApply(this::mapResponse).get();
+		try {
+			return response.thenApply(this::mapResponse).get();
+		} catch (CancellationException | ExecutionException e) {
+			// todo: throw dedicated exception
+			throw new Exception(e);
+		}
 	}
 
 	@Override
@@ -79,7 +85,8 @@ public class ApacheHttpClient extends AbstractHttpClient {
 
 	private SimpleHttpRequest mapRequest(HttpRequest<?> request) {
 		SimpleHttpRequest httpRequest = new SimpleHttpRequest(request.getMethod().name(), request.getPath());
-		httpRequest.setBody(request.getContentAsBytes(), ContentType.APPLICATION_JSON);
+		if (request.hasContent())
+			httpRequest.setBody(request.getContentAsBytes(), ContentType.APPLICATION_JSON);
 		httpRequest.addHeader("X-Meili-API-Key", this.config.getApiKey());
 		return httpRequest;
 	}
@@ -106,7 +113,7 @@ public class ApacheHttpClient extends AbstractHttpClient {
 
 			@Override
 			public void cancelled() {
-				completableFuture.cancel(true);
+				completableFuture.cancel(false);
 			}
 		};
 	}

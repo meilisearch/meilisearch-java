@@ -7,6 +7,8 @@ public interface HttpResponse<B> {
 
 	int getStatusCode();
 
+	boolean hasContent();
+
 	B getContent();
 
 	byte[] getContentAsBytes();

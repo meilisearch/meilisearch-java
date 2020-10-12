@@ -24,6 +24,11 @@ public class BasicHttpResponse implements HttpResponse<String> {
 	}
 
 	@Override
+	public boolean hasContent() {
+		return content != null;
+	}
+
+	@Override
 	public String getContent() {
 		return content;
 	}

@@ -49,6 +49,11 @@ public class BasicHttpRequest implements HttpRequest<String> {
 	}
 
 	@Override
+	public boolean hasContent() {
+		return content != null;
+	}
+
+	@Override
 	public String getContent() {
 		return content;
 	}

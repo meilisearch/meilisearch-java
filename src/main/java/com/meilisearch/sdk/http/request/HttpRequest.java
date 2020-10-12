@@ -15,6 +15,8 @@ public interface HttpRequest<T> {
 
 	void setHeaders(Map<String, String> headers);
 
+	boolean hasContent();
+
 	T getContent();
 
 	byte[] getContentAsBytes();
