@@ -26,6 +26,10 @@ repositories {
 	jcenter()
 }
 
+configurations {
+	testCompile.extendsFrom compileOnly
+}
+
 dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
 	implementation 'com.google.guava:guava:29.0-jre'
@@ -40,8 +44,6 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:3.5.13'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
-	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
-	testCompile group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.0.2'
 
 	// Lombok
 	compileOnly 'org.projectlombok:lombok:1.18.12'
