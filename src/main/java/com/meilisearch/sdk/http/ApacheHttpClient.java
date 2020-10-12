@@ -27,9 +27,9 @@ import java.util.stream.Collectors;
 public class ApacheHttpClient extends AbstractHttpClient {
 
 	private final HttpAsyncClient client;
-	private final Config config;
 
 	public ApacheHttpClient(Config config) {
+		super(config);
 		final IOReactorConfig ioReactorConfig = IOReactorConfig.custom()
 			.setSoTimeout(Timeout.ofSeconds(5))
 			.build();
@@ -37,11 +37,10 @@ public class ApacheHttpClient extends AbstractHttpClient {
 		this.client = HttpAsyncClients.custom()
 			.setIOReactorConfig(ioReactorConfig)
 			.build();
-		this.config = config;
 	}
 
 	public ApacheHttpClient(Config config, HttpAsyncClient client) {
-		this.config = config;
+		super(config);
 		this.client = client;
 	}
 

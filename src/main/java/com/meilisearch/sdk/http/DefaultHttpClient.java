@@ -16,10 +16,8 @@ import java.util.stream.Collectors;
 
 public class DefaultHttpClient extends AbstractHttpClient {
 
-	private final Config config;
-
 	public DefaultHttpClient(Config config) {
-		this.config = config;
+		super(config);
 	}
 
 	/**
