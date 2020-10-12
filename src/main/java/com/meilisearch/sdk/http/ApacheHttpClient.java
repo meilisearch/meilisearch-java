@@ -99,7 +99,7 @@ public class ApacheHttpClient extends AbstractHttpClient {
 	}
 
 	private FutureCallback<SimpleHttpResponse> getCallback(CompletableFuture<SimpleHttpResponse> completableFuture) {
-		return new FutureCallback<>() {
+		return new FutureCallback<SimpleHttpResponse>() {
 			@Override
 			public void completed(SimpleHttpResponse result) {
 				completableFuture.complete(result);
