@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Tag("integration")
 public class DocumentsTest extends AbstractIT {
@@ -76,6 +77,146 @@ public class DocumentsTest extends AbstractIT {
 		for (int i = 0; i < movies.length; i++) {
 			assertEquals(movies[i].getTitle(), testData.getData().get(i).getTitle());
 		}
+	}
+
+	/**
+	 * Test GetDocument
+	 */
+	@Test
+	public void testGetDocument() throws Exception {
+
+		String indexUid = "getDocument";
+		client.createIndex(indexUid);
+		Index index = client.getIndex(indexUid);
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		Movie movie = this.gson.fromJson(
+			index.getDocument(String.valueOf(testData.getData().get(0).getId())),
+			Movie.class
+		);
+		assertEquals(movie.getTitle(), testData.getData().get(0).getTitle());
+	}
+
+	/**
+	 * Test default GetDocuments
+	 */
+	@Test
+	public void testDefaultGetDocuments() throws Exception {
+
+		String indexUid = "defaultGetDocuments";
+		client.createIndex(indexUid);
+		Index index = client.getIndex(indexUid);
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+		assertEquals(20, movies.length);
+		for (int i = 0; i < movies.length; i++) {
+			assertEquals(movies[i].getTitle(), testData.getData().get(i).getTitle());
+			assertEquals(movies[i].getId(), testData.getData().get(i).getId());
+			String[] expectedGenres = testData.getData().get(i).getGenres();
+			String[] foundGenres = movies[i].getGenres();
+			for (int x = 0; x < expectedGenres.length; x++) {
+				assertEquals(expectedGenres[x], foundGenres[x]);
+			}
+		}
+	}
+
+	/**
+	 * Test GetDocuments with limit
+	 */
+	@Test
+	public void testGetDocumentsLimit() throws Exception {
+
+		String indexUid = "defaultGetDocumentsLimit";
+		int limit = 42;
+		client.createIndex(indexUid);
+		Index index = client.getIndex(indexUid);
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		Movie[] movies = this.gson.fromJson(index.getDocuments(limit), Movie[].class);
+		assertEquals(limit, movies.length);
+		for (int i = 0; i < movies.length; i++) {
+			assertEquals(movies[i].getId(), testData.getData().get(i).getId());
+		}
+	}
+
+	/**
+	 * Test deleteDocument
+	 */
+	@Test
+	public void testDeleteDocument() throws Exception {
+
+		String indexUid = "deleteDocument";
+		client.createIndex(indexUid);
+		Index index = client.getIndex(indexUid);
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+		Movie toDelete = movies[0];
+		updateInfo = this.gson.fromJson(
+			index.deleteDocument(String.valueOf(toDelete.getId())),
+			UpdateStatus.class
+		);
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		assertThrows(
+			Exception.class,
+			() -> index.getDocument(String.valueOf(toDelete.getId()))
+		);
+	}
+
+	/**
+	 * Test deleteDocuments
+	 */
+	@Test
+	public void testDeleteDocuments() throws Exception {
+
+		String indexUid = "deleteDocuments";
+		client.createIndex(indexUid);
+		Index index = client.getIndex(indexUid);
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+		assertEquals(20, movies.length);
+
+		updateInfo = this.gson.fromJson(
+			index.deleteDocuments(),
+			UpdateStatus.class
+		);
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+		assertEquals(0, movies.length);
 	}
 
 }
