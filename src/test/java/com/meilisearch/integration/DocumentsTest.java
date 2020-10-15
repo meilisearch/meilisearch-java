@@ -31,8 +31,7 @@ public class DocumentsTest extends AbstractIT {
 	public void testAddDocumentsSingle() throws Exception {
 
 		String indexUid = "addSingleDocument";
-		client.createIndex(indexUid);
-		Index index = client.getIndex(indexUid);
+		Index index = client.createIndex(indexUid);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		String singleDocument = this.gson.toJson(testData.getData().get(0));
@@ -64,8 +63,7 @@ public class DocumentsTest extends AbstractIT {
 	public void testAddDocumentsMultiple() throws Exception {
 
 		String indexUid = "addMultipleDocuments";
-		client.createIndex(indexUid);
-		Index index = client.getIndex(indexUid);
+		Index index = client.createIndex(indexUid);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		UpdateStatus updateInfo = this.gson.fromJson(
