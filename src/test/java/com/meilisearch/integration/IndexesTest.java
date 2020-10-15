@@ -35,7 +35,7 @@ public class IndexesTest extends AbstractIT {
 	 */
 	@Test
 	public void testCreateIndexWithoutPrimaryKey() throws Exception {
-		String indexUid = "IndexesTest";
+		String indexUid = "CreateIndexWithoutPrimaryKey";
 		Index index = client.createIndex(indexUid);
 		assertEquals(index.getUid(), indexUid);
 		assertNull(index.getPrimaryKey());
@@ -47,7 +47,7 @@ public class IndexesTest extends AbstractIT {
 	 */
 	@Test
 	public void testCreateIndexWithPrimaryKey() throws Exception {
-		String indexUid = "IndexesTest";
+		String indexUid = "CreateIndexWithPrimaryKey";
 		Index index = client.createIndex(indexUid, this.primaryKey);
 		assertEquals(index.getUid(), indexUid);
 		assertEquals(index.getPrimaryKey(), this.primaryKey);
@@ -59,7 +59,7 @@ public class IndexesTest extends AbstractIT {
 	 */
 	@Test
 	public void testUpdateIndexPrimaryKey() throws Exception {
-		String indexUid = "IndexesTest";
+		String indexUid = "UpdateIndexPrimaryKey";
 		Index index = client.createIndex(indexUid);
 		assertEquals(index.getUid(), indexUid);
 		assertNull(index.getPrimaryKey());
@@ -75,7 +75,7 @@ public class IndexesTest extends AbstractIT {
 	 */
 	@Test
 	public void testGetIndexList() throws Exception {
-		String[] indexUids = {"IndexesTest", "IndexesTest2"};
+		String[] indexUids = {"GetIndexList", "GetIndexList2"};
 		Index index1 = client.createIndex(indexUids[0]);
 		Index index2 = client.createIndex(indexUids[1], this.primaryKey);
 		Index[] indexes = client.getIndexList();
@@ -91,7 +91,7 @@ public class IndexesTest extends AbstractIT {
 	 */
 	@Test
 	public void testWaitForPendingUpdate() throws Exception {
-		String indexUid = "IndexesTest2";
+		String indexUid = "WaitForPendingUpdate";
 		Index index = client.createIndex(indexUid);
 
 		UpdateStatus updateInfo = this.gson.fromJson(
@@ -113,7 +113,7 @@ public class IndexesTest extends AbstractIT {
 	 */
 	@Test
 	public void testWaitForPendingUpdateTimoutInMs() throws Exception {
-		String indexUid = "IndexesTest2";
+		String indexUid = "WaitForPendingUpdateTimoutInMs";
 		Index index = client.createIndex(indexUid);
 
 		UpdateStatus updateInfo = this.gson.fromJson(
