@@ -40,11 +40,6 @@ class Documents {
 		return meilisearchHttpRequest.delete(requestQuery);
 	}
 
-	String deleteList(String uid, int[] ids) throws Exception {
-		// TODO
-		return "";
-	}
-
 	String search(String uid, String q) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/search";
 		SearchRequest sr = new SearchRequest(q);

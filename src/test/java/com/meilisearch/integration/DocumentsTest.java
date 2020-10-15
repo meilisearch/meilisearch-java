@@ -31,7 +31,7 @@ public class DocumentsTest extends AbstractIT {
 	@Test
 	public void testAddDocumentsSingle() throws Exception {
 
-		String indexUid = "addSingleDocument";
+		String indexUid = "AddDocumentsSingle";
 		Index index = client.createIndex(indexUid);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
@@ -63,7 +63,7 @@ public class DocumentsTest extends AbstractIT {
 	@Test
 	public void testAddDocumentsMultiple() throws Exception {
 
-		String indexUid = "addMultipleDocuments";
+		String indexUid = "AddDocumentsMultiple";
 		Index index = client.createIndex(indexUid);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
@@ -85,7 +85,7 @@ public class DocumentsTest extends AbstractIT {
 	@Test
 	public void testGetDocument() throws Exception {
 
-		String indexUid = "getDocument";
+		String indexUid = "GetDocument";
 		client.createIndex(indexUid);
 		Index index = client.getIndex(indexUid);
 
@@ -107,9 +107,9 @@ public class DocumentsTest extends AbstractIT {
 	 * Test default GetDocuments
 	 */
 	@Test
-	public void testDefaultGetDocuments() throws Exception {
+	public void testGetDocuments() throws Exception {
 
-		String indexUid = "defaultGetDocuments";
+		String indexUid = "GetDocuments";
 		client.createIndex(indexUid);
 		Index index = client.getIndex(indexUid);
 
@@ -139,7 +139,7 @@ public class DocumentsTest extends AbstractIT {
 	@Test
 	public void testGetDocumentsLimit() throws Exception {
 
-		String indexUid = "defaultGetDocumentsLimit";
+		String indexUid = "GetDocumentsLimit";
 		int limit = 42;
 		client.createIndex(indexUid);
 		Index index = client.getIndex(indexUid);
@@ -164,7 +164,7 @@ public class DocumentsTest extends AbstractIT {
 	@Test
 	public void testDeleteDocument() throws Exception {
 
-		String indexUid = "deleteDocument";
+		String indexUid = "DeleteDocument";
 		client.createIndex(indexUid);
 		Index index = client.getIndex(indexUid);
 
@@ -195,7 +195,7 @@ public class DocumentsTest extends AbstractIT {
 	@Test
 	public void testDeleteDocuments() throws Exception {
 
-		String indexUid = "deleteDocuments";
+		String indexUid = "DeleteDocuments";
 		client.createIndex(indexUid);
 		Index index = client.getIndex(indexUid);
 
