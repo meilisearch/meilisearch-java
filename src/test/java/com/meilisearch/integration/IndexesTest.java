@@ -19,7 +19,7 @@ public class IndexesTest extends AbstractIT {
 	private TestData<Movie> testData;
 
 	@BeforeEach
-	public void initializeClient() {
+	public void initialize() {
 		setUp();
 		if (testData == null)
 			testData = this.getTestData(MOVIES_INDEX, Movie.class);
