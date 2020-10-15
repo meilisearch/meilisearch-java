@@ -45,7 +45,7 @@ public class DocumentsTest extends AbstractIT {
 		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
 
 		assertEquals(1, movies.length);
-		assertEquals(419704, movies[0].getId());
+		assertEquals("419704", movies[0].getId());
 		assertEquals("Ad Astra", movies[0].getTitle());
 		assertEquals("https://image.tmdb.org/t/p/original/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg", movies[0].getPoster());
 		assertEquals("The near future, a time when both hope and hardships drive humanity to look to the stars and beyond. While a mysterious phenomenon menaces to destroy life on planet Earth, astronaut Roy McBride undertakes a mission across the immensity of space and its many perils to uncover the truth about a lost expedition that decades before boldly faced emptiness and silence in search of the unknown.", movies[0].getOverview());
@@ -97,7 +97,7 @@ public class DocumentsTest extends AbstractIT {
 
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 		Movie movie = this.gson.fromJson(
-			index.getDocument(String.valueOf(testData.getData().get(0).getId())),
+			index.getDocument(testData.getData().get(0).getId()),
 			Movie.class
 		);
 		assertEquals(movie.getTitle(), testData.getData().get(0).getTitle());
@@ -178,14 +178,14 @@ public class DocumentsTest extends AbstractIT {
 		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
 		Movie toDelete = movies[0];
 		updateInfo = this.gson.fromJson(
-			index.deleteDocument(String.valueOf(toDelete.getId())),
+			index.deleteDocument(toDelete.getId()),
 			UpdateStatus.class
 		);
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
 		assertThrows(
 			Exception.class,
-			() -> index.getDocument(String.valueOf(toDelete.getId()))
+			() -> index.getDocument(toDelete.getId())
 		);
 	}
 
