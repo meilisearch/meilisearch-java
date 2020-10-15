@@ -32,8 +32,10 @@ public class Client {
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public String createIndex(String uid) throws Exception {
-		return this.indexesHandler.create(uid);
+	public Index createIndex(String uid) throws Exception {
+		Index index = gson.fromJson(this.indexesHandler.create(uid), Index.class);
+		index.setConfig(this.config);
+		return index;
 	}
 
 	/**
@@ -45,8 +47,11 @@ public class Client {
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public String createIndex(String uid, String primaryKey) throws Exception {
-		return this.indexesHandler.create(uid, primaryKey);
+	public Index createIndex(String uid, String primaryKey) throws Exception {
+		// return this.indexesHandler.create(uid, primaryKey);
+		Index index = gson.fromJson(this.indexesHandler.create(uid, primaryKey), Index.class);
+		index.setConfig(this.config);
+		return index;
 	}
 
 	/**
