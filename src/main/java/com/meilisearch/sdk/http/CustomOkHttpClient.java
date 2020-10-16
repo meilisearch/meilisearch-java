@@ -13,17 +13,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OkHttpHttpClient extends AbstractHttpClient {
+public class CustomOkHttpClient extends AbstractHttpClient {
 	private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 	private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create("".getBytes());
 	private final OkHttpClient client;
 
-	public OkHttpHttpClient(Config config, OkHttpClient client) {
+	public CustomOkHttpClient(Config config, OkHttpClient client) {
 		super(config);
 		this.client = client;
 	}
 
-	public OkHttpHttpClient(Config config) {
+	public CustomOkHttpClient(Config config) {
 		super(config);
 		this.client = new OkHttpClient();
 	}
