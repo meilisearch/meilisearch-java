@@ -22,6 +22,7 @@ public class GsonJsonHandler implements JsonHandler {
 		try {
 			return gson.toJson(o);
 		} catch (Exception e) {
+			// todo: use dedicated exception
 			throw new RuntimeException("Error while serializing: ", e);
 		}
 	}
@@ -30,6 +31,7 @@ public class GsonJsonHandler implements JsonHandler {
 	@SuppressWarnings("unchecked")
 	public <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters) throws Exception {
 		if (o == null) {
+			// todo: use dedicated exception
 			throw new RuntimeException("String to deserialize is null");
 		}
 		if (targetClass == String.class) {
@@ -43,6 +45,7 @@ public class GsonJsonHandler implements JsonHandler {
 				return gson.fromJson((String) o, parameterized.getType());
 			}
 		} catch (Exception e) {
+			// todo: use dedicated exception
 			throw new RuntimeException("Error while deserializing: ", e);
 		}
 	}
