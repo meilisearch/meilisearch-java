@@ -30,6 +30,10 @@ configurations {
 	testCompile.extendsFrom compileOnly
 }
 
+configurations {
+	testCompile.extendsFrom compileOnly
+}
+
 dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
 	implementation 'com.google.guava:guava:29.0-jre'
@@ -48,6 +52,8 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
 	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.3'
+	compileOnly group: 'jakarta.json.bind', name: 'jakarta.json.bind-api', version: '1.0.2'
+	testImplementation group: 'org.eclipse', name: 'yasson', version: '1.0.8'
 
 
 	// Lombok
