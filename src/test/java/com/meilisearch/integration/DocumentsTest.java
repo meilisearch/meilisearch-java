@@ -140,7 +140,7 @@ public class DocumentsTest extends AbstractIT {
 	public void testGetDocumentsLimit() throws Exception {
 
 		String indexUid = "GetDocumentsLimit";
-		int limit = 42;
+		int limit = 24;
 		client.createIndex(indexUid);
 		Index index = client.getIndex(indexUid);
 

@@ -32,7 +32,18 @@ public class UpdatesTest extends AbstractIT {
 	 */
 	@Test
 	public void testGetUpdate() throws Exception {
+		String indexUid = "GetUpdate";
+		Index index = client.createIndex(indexUid);
 
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(this.testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		UpdateStatus updateStatus =	index.getUpdate(updateInfo.getUpdateId());
+		assertNotNull(updateStatus.getStatus());
+		assertNotEquals("", updateStatus.getStatus());
+		assertTrue(updateStatus.getUpdateId() >= 0);
 	}
 
 	/**
@@ -40,7 +51,20 @@ public class UpdatesTest extends AbstractIT {
 	 */
 	@Test
 	public void testGetUpdates() throws Exception {
+		String indexUid = "GetUpdates";
+		Index index = client.createIndex(indexUid);
 
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(this.testData.getRaw()),
+			UpdateStatus.class
+		);
+		updateInfo = this.gson.fromJson(
+			index.addDocuments(this.testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		UpdateStatus[] updateStatus = index.getUpdates();
+		assertTrue(updateStatus.length == 2);
 	}
 
 	/**
@@ -55,13 +79,9 @@ public class UpdatesTest extends AbstractIT {
 			index.addDocuments(this.testData.getRaw()),
 			UpdateStatus.class
 		);
-
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
-		UpdateStatus updateStatus = this.gson.fromJson(
-			index.getUpdate(updateInfo.getUpdateId()),
-			UpdateStatus.class
-		);
+		UpdateStatus updateStatus = index.getUpdate(updateInfo.getUpdateId());
 
 		assertEquals("processed", updateStatus.getStatus());
 
@@ -80,6 +100,7 @@ public class UpdatesTest extends AbstractIT {
 			index.addDocuments(this.testData.getRaw()),
 			UpdateStatus.class
 		);
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
 		assertThrows(
 			Exception.class,

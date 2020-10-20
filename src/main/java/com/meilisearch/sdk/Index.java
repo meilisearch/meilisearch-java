@@ -123,7 +123,7 @@ public class Index implements Serializable {
 	 * Get an index update by its id
 	 *
 	 * @param updateId ID of the index update
-	 * @return Meilisearch API response
+	 * @return UpdateStatus
 	 * @throws Exception If something goes wrong
 	 */
 	public UpdateStatus getUpdate(int updateId) throws Exception {
