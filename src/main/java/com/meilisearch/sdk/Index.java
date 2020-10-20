@@ -32,6 +32,8 @@ public class Index implements Serializable {
 	@ToString.Exclude
 	Documents documents;
 
+	Gson gson = new Gson();
+
 	/**
 	 * Set the Meilisearch configuration for the index
 	 *
@@ -124,8 +126,11 @@ public class Index implements Serializable {
 	 * @return Meilisearch API response
 	 * @throws Exception If something goes wrong
 	 */
-	public String getUpdate(int updateId) throws Exception {
-		return this.documents.getUpdate(this.uid, updateId);
+	public UpdateStatus getUpdate(int updateId) throws Exception {
+		return this.gson.fromJson(
+			this.documents.getUpdate(this.uid, updateId),
+			UpdateStatus.class
+		);
 	}
 
 	/**
@@ -135,8 +140,10 @@ public class Index implements Serializable {
 	 * @throws Exception If something goes wrong
 	 */
 	public UpdateStatus[] getUpdates() throws Exception {
-		Gson gson = new Gson();
-		return gson.fromJson(this.documents.getUpdates(this.uid), UpdateStatus[].class);
+		return this.gson.fromJson(
+			this.documents.getUpdates(this.uid),
+			UpdateStatus[].class
+		);
 	}
 
 	/**
@@ -160,7 +167,6 @@ public class Index implements Serializable {
 	 * @throws Exception if timeout is reached
 	 */
 	public void waitForPendingUpdate(int updateId, int timeoutInMs, int intervalInMs) throws Exception {
-		Gson gson = new Gson();
 		UpdateStatus updateStatus;
 		String status = "";
 		long startTime = new Date().getTime();
@@ -170,10 +176,7 @@ public class Index implements Serializable {
 			if (elapsedTime >= timeoutInMs){
 				throw new Exception();
 			}
-			updateStatus = gson.fromJson(
-				this.getUpdate(updateId), 
-				UpdateStatus.class
-			);
+			updateStatus = this.getUpdate(updateId);
 			status = updateStatus.getStatus();
 			Thread.sleep(intervalInMs);
 			elapsedTime = new Date().getTime() - startTime;
