@@ -101,11 +101,8 @@ public class IndexesTest extends AbstractIT {
 
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
-		UpdateStatus updateStatus = this.gson.fromJson(
-			index.getUpdate(updateInfo.getUpdateId()),
-			UpdateStatus.class
-		);
-
+		UpdateStatus updateStatus = index.getUpdate(updateInfo.getUpdateId());
+		
 		assertEquals("processed", updateStatus.getStatus());
 
 		client.deleteIndex(index.getUid());
