@@ -22,8 +22,12 @@ java {
 repositories {
 	// Use jcenter for resolving dependencies.
 	// You can declare any Maven/Ivy/file repository here.
-	jcenter()
 	mavenCentral()  // Required for Lombok dependency
+	jcenter()
+}
+
+configurations {
+	testCompile.extendsFrom compileOnly
 }
 
 dependencies {
@@ -31,9 +35,16 @@ dependencies {
 	implementation 'com.google.guava:guava:29.0-jre'
 	implementation 'com.google.code.gson:gson:2.8.6'
 	implementation 'org.json:json:20200518'
+	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+	compileOnly group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.0.3'
+	compileOnly 'com.squareup.okhttp3:okhttp:4.9.0'
+
 	// Use JUnit test framework
 	testImplementation(platform('org.junit:junit-bom:5.7.0'))
 	testImplementation('org.junit.jupiter:junit-jupiter')
+	// https://mvnrepository.com/artifact/org.mockito/mockito-core
+	testImplementation 'org.mockito:mockito-core:3.5.13'
+	testImplementation 'org.hamcrest:hamcrest:2.2'
 
 	// Lombok
 	compileOnly 'org.projectlombok:lombok:1.18.12'
