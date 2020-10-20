@@ -27,12 +27,27 @@ public class SearchTest extends AbstractIT {
 		cleanup();
 	}
 
+	// TODO: Real Search tests after search refactor
+
 	/**
-	 * Test ...
+	 * Test basic search
 	 */
 	@Test
 	public void testSearch() throws Exception {
+		String indexUid = "BasicSearch";
+		Index index = client.createIndex(indexUid);
 
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		String s = index.search("a");
+		assertNotEquals("", s);
+		assertNotNull(s);
 	}
 
 	

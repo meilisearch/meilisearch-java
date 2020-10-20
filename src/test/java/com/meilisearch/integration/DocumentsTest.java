@@ -8,9 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("integration")
 public class DocumentsTest extends AbstractIT {
@@ -86,8 +84,7 @@ public class DocumentsTest extends AbstractIT {
 	public void testGetDocument() throws Exception {
 
 		String indexUid = "GetDocument";
-		client.createIndex(indexUid);
-		Index index = client.getIndex(indexUid);
+		Index index = client.createIndex(indexUid);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		UpdateStatus updateInfo = this.gson.fromJson(
@@ -110,8 +107,7 @@ public class DocumentsTest extends AbstractIT {
 	public void testGetDocuments() throws Exception {
 
 		String indexUid = "GetDocuments";
-		client.createIndex(indexUid);
-		Index index = client.getIndex(indexUid);
+		Index index = client.createIndex(indexUid);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		UpdateStatus updateInfo = this.gson.fromJson(

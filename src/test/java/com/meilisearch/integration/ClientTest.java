@@ -1,7 +1,6 @@
 package com.meilisearch.integration;
 
 import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("integration")
-public class IndexesTest extends AbstractIT {
+public class ClientTest extends AbstractIT {
 
 	String primaryKey = "id";
 	private TestData<Movie> testData;
@@ -71,6 +70,19 @@ public class IndexesTest extends AbstractIT {
 	}
 
 	/**
+	 * Test getIndex
+	 */
+	@Test
+	public void testGetIndex() throws Exception {
+		String indexUid = "GetIndex";
+		Index index = client.createIndex(indexUid);
+		Index getIndex = client.getIndex(indexUid);
+		assertEquals(index.getUid(), getIndex.getUid());
+		assertEquals(index.getPrimaryKey(), getIndex.getPrimaryKey());
+		client.deleteIndex(index.getUid());
+	}
+
+	/**
 	 * Test getIndexList
 	 */
 	@Test
@@ -87,46 +99,17 @@ public class IndexesTest extends AbstractIT {
 	}
 
 	/**
-	 * Test waitForPendingUpdate
+	 * Test deleteIndex
 	 */
 	@Test
-	public void testWaitForPendingUpdate() throws Exception {
-		String indexUid = "WaitForPendingUpdate";
+	public void testDeleteIndex() throws Exception {
+		String indexUid = "DeleteIndex";
 		Index index = client.createIndex(indexUid);
-
-		UpdateStatus updateInfo = this.gson.fromJson(
-			index.addDocuments(this.testData.getRaw()),
-			UpdateStatus.class
-		);
-
-		index.waitForPendingUpdate(updateInfo.getUpdateId());
-
-		UpdateStatus updateStatus = index.getUpdate(updateInfo.getUpdateId());
-		
-		assertEquals("processed", updateStatus.getStatus());
-
 		client.deleteIndex(index.getUid());
-	}
-
-	/**
-	 * Test waitForPendingUpdate timeoutInMs
-	 */
-	@Test
-	public void testWaitForPendingUpdateTimoutInMs() throws Exception {
-		String indexUid = "WaitForPendingUpdateTimoutInMs";
-		Index index = client.createIndex(indexUid);
-
-		UpdateStatus updateInfo = this.gson.fromJson(
-			index.addDocuments(this.testData.getRaw()),
-			UpdateStatus.class
-		);
-
 		assertThrows(
 			Exception.class,
-			() -> index.waitForPendingUpdate(updateInfo.getUpdateId(), 0, 50)
+			() -> client.getIndex(indexUid)
 		);
-
-		client.deleteIndex(index.getUid());
 	}
 
 }
