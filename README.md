@@ -6,10 +6,10 @@
 
 <h4 align="center">
   <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> |
+  <a href="https://docs.meilisearch.com">Documentation</a> |
   <a href="https://www.meilisearch.com">Website</a> |
   <a href="https://blog.meilisearch.com">Blog</a> |
   <a href="https://twitter.com/meilisearch">Twitter</a> |
-  <a href="https://docs.meilisearch.com">Documentation</a> |
   <a href="https://docs.meilisearch.com/faq">FAQ</a>
 </h4>
 
@@ -19,29 +19,24 @@
   <a href="https://github.com/meilisearch/MeiliSearch/discussions" alt="Discussions"><img src="https://img.shields.io/badge/github-discussions-red" /></a>
 </p>
 
-<p align="center">
-  ⚡ Lightning Fast, Ultra Relevant, and Typo-Tolerant Search Engine MeiliSearch client written in Java
-</p>
+<p align="center">⚡ The MeiliSearch API client written for Java</p>
 
-<hr>
+**MeiliSearch Java** is a client for **MeiliSearch** written in Java. **MeiliSearch** is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, facets and synonyms are provided out-of-the-box.
 
 ### ⚠️ Important!: this is WIP, and not available for production ⚠️
 
 ## Table of Contents <!-- omit in toc -->
 
+- [📖 Documentation](#-documentation)
 - [🔧 Installation](#-installation)
-- [🚀 Getting started](#-getting-started)
+- [🚀 Getting Started](#-getting-started)
 - [🤖 Compatibility with MeiliSearch](#-compatibility-with-meilisearch)
-- [🎬 Examples](#-examples)
+- [💡 Learn More](#-learn-more)
 - [⚙️ Development Workflow and Contributing](#️-development-workflow-and-contributing)
 
-# meilisearch-java
+## 📖 Documentation
 
-Java client for MeiliSearch.
-
-MeiliSearch provides an ultra relevant and instant full-text search. Our solution is open-source and you can check out [our repository here](https://github.com/meilisearch/MeiliSearch).
-
-Here is the [MeiliSearch documentation](https://docs.meilisearch.com/) 📖
+See our [Documentation](https://docs.meilisearch.com/guides/introduction/quick_start_guide.html) or our [API References](https://docs.meilisearch.com/references/).
 
 
 ## 🔧 Installation
@@ -49,45 +44,92 @@ Here is the [MeiliSearch documentation](https://docs.meilisearch.com/) 📖
 // TODO:
 
 
-## 🚀 Getting started
+## 🚀 Getting Started
 
-#### Quickstart
+#### Add documents <!-- omit in toc -->
+
 ```java
-import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.Client;
+import com.meilisearch.sdk.Config;
+import com.meilisearch.sdk.Index;
 
-public class TestApp {
+public class Main {
 
-    public static void main(String[] args) throws Exception {
-        Client ms = new Client(new Config("http://localhost:7700", ""));
-       
-        // create new Index with primary key(optional)
-        ms.createIndex("books", "books_id");
-        
-        Indexes book = ms.getIndex("books");
-        
-        JsonArray jsonArray = new JsonArray();
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("1111", "alice in wonderland");
-        jsonArray.add(jsonObject);
+	public static void main(String[] args) throws Exception {
 
-        // add new document "[{"1111": "alice in wonderland"}]"
-        String response = book.addDocuments(jsonObject.toString());
+		final String documents = "["
+			+ "{\"book_id\": 123, \"title\": \"Pride and Prejudice\"},"
+			+ "{\"book_id\": 456, \"title\": \"Le Petit Prince\"},"
+			+ "{\"book_id\": 1, \"title\": \"Alice In Wonderland\"},"
+			+ "{\"book_id\": 1344, \"title\": \"The Hobbit\"},"
+			+ "{\"book_id\": 4, \"title\": \"Harry Potter and the Half-Blood Prince\"},"
+			+ "{\"book_id\": 2, \"title\": \"The Hitchhiker\'s Guide to the Galaxy\"}"
+			+ "]";
 
-        // response : "{ "updateId": 0 }"
-    }
+		Client client = new Client(new Config("http://localhost:7700", "masterKey"));
+		Index index = client.createIndex("books");
+
+		index.addDocuments(documents);
+	}
+
 }
 ```
 
-## 🤖 Compatibility with MeiliSearch
+#### Basic Search <!-- omit in toc -->
 
-This package is compatible with the following MeiliSearch versions:
-- `v0.14.X`
-- `v0.13.X`
+```java
 
-## 🎬 Examples
+import com.meilisearch.sdk.Client;
+import com.meilisearch.sdk.Config;
+import com.meilisearch.sdk.Index;
+
+public class Main {
+
+	public static void main(String[] args) throws Exception {
+
+		Client client = new Client(new Config("http://localhost:7700", "masterKey"));
+		Index index = client.getIndex("books");
+
+		// MeiliSearch is typo-tolerant:
+		String results = index.search("harry pottre");
+		System.out.println(results);
+	}
+
+}
+```
+
+Output:
+```json
+{
+	"hits": [{
+		"book_id": 4,
+		"title": "Harry Potter and the Half-Blood Prince"
+	}],
+	"offset": 0,
+	"limit": 20,
+	"nbHits": 1,
+	"exhaustiveNbHits": false,
+	"processingTimeMs": 2,
+	"query": "harry pottre"
+}
+```
+
+#### Custom Search <!-- omit in toc -->
 
 // TODO:
+
+## 🤖 Compatibility with MeiliSearch
+
+This package only guarantees the compatibility with the [version v0.15.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.15.0).
+
+## 💡 Learn More
+
+The following sections may interest you:
+
+- **Manipulate documents**: see the [API references](https://docs.meilisearch.com/references/documents.html) or read more about [documents](https://docs.meilisearch.com/guides/main_concepts/documents.html).
+- **Search**: see the [API references](https://docs.meilisearch.com/references/search.html) or follow our guide on [search parameters](https://docs.meilisearch.com/guides/advanced_guides/search_parameters.html).
+- **Manage the indexes**: see the [API references](https://docs.meilisearch.com/references/indexes.html) or read more about [indexes](https://docs.meilisearch.com/guides/main_concepts/indexes.html).
+- **Configure the index settings**: see the [API references](https://docs.meilisearch.com/references/settings.html) or follow our guide on [settings parameters](https://docs.meilisearch.com/guides/advanced_guides/settings.html).
 
 ## ⚙️ Development Workflow and Contributing
 
