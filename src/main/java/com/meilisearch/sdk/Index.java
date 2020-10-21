@@ -32,6 +32,12 @@ public class Index implements Serializable {
 	@ToString.Exclude
 	Documents documents;
 
+	@ToString.Exclude
+	Updates updates;
+
+	@ToString.Exclude
+	Search search;
+
 	Gson gson = new Gson();
 
 	/**
@@ -42,6 +48,8 @@ public class Index implements Serializable {
 	void setConfig(Config config) {
 		this.config = config;
 		this.documents = new Documents(config);
+		this.updates = new Updates(config);
+		this.search = new Search(config);
 	}
 
 	/**
@@ -116,19 +124,19 @@ public class Index implements Serializable {
 	 * @throws Exception If something goes wrong
 	 */
 	public String search(String q) throws Exception {
-		return this.documents.search(this.uid, q);
+		return this.search.search(this.uid, q);
 	}
 
 	/**
 	 * Get an index update by its id
 	 *
 	 * @param updateId ID of the index update
-	 * @return Meilisearch API response
+	 * @return UpdateStatus
 	 * @throws Exception If something goes wrong
 	 */
 	public UpdateStatus getUpdate(int updateId) throws Exception {
 		return this.gson.fromJson(
-			this.documents.getUpdate(this.uid, updateId),
+			this.updates.getUpdate(this.uid, updateId),
 			UpdateStatus.class
 		);
 	}
@@ -141,7 +149,7 @@ public class Index implements Serializable {
 	 */
 	public UpdateStatus[] getUpdates() throws Exception {
 		return this.gson.fromJson(
-			this.documents.getUpdates(this.uid),
+			this.updates.getUpdates(this.uid),
 			UpdateStatus[].class
 		);
 	}
@@ -155,7 +163,7 @@ public class Index implements Serializable {
 	 * @throws Exception If timeout is reached
 	 */
 	public void waitForPendingUpdate(int updateId) throws Exception {
-		waitForPendingUpdate(updateId, 5000, 50);
+		this.waitForPendingUpdate(updateId, 5000, 50);
 	}
 
 	/**

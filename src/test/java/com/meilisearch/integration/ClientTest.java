@@ -1,7 +1,6 @@
 package com.meilisearch.integration;
 
 import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,13 +12,13 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("integration")
-public class IndexesTest extends AbstractIT {
+public class ClientTest extends AbstractIT {
 
 	String primaryKey = "id";
 	private TestData<Movie> testData;
 
 	@BeforeEach
-	public void initializeClient() {
+	public void initialize() {
 		setUp();
 		if (testData == null)
 			testData = this.getTestData(MOVIES_INDEX, Movie.class);
@@ -35,7 +34,7 @@ public class IndexesTest extends AbstractIT {
 	 */
 	@Test
 	public void testCreateIndexWithoutPrimaryKey() throws Exception {
-		String indexUid = "IndexesTest";
+		String indexUid = "CreateIndexWithoutPrimaryKey";
 		Index index = client.createIndex(indexUid);
 		assertEquals(index.getUid(), indexUid);
 		assertNull(index.getPrimaryKey());
@@ -47,7 +46,7 @@ public class IndexesTest extends AbstractIT {
 	 */
 	@Test
 	public void testCreateIndexWithPrimaryKey() throws Exception {
-		String indexUid = "IndexesTest";
+		String indexUid = "CreateIndexWithPrimaryKey";
 		Index index = client.createIndex(indexUid, this.primaryKey);
 		assertEquals(index.getUid(), indexUid);
 		assertEquals(index.getPrimaryKey(), this.primaryKey);
@@ -59,7 +58,7 @@ public class IndexesTest extends AbstractIT {
 	 */
 	@Test
 	public void testUpdateIndexPrimaryKey() throws Exception {
-		String indexUid = "IndexesTest";
+		String indexUid = "UpdateIndexPrimaryKey";
 		Index index = client.createIndex(indexUid);
 		assertEquals(index.getUid(), indexUid);
 		assertNull(index.getPrimaryKey());
@@ -71,11 +70,24 @@ public class IndexesTest extends AbstractIT {
 	}
 
 	/**
+	 * Test getIndex
+	 */
+	@Test
+	public void testGetIndex() throws Exception {
+		String indexUid = "GetIndex";
+		Index index = client.createIndex(indexUid);
+		Index getIndex = client.getIndex(indexUid);
+		assertEquals(index.getUid(), getIndex.getUid());
+		assertEquals(index.getPrimaryKey(), getIndex.getPrimaryKey());
+		client.deleteIndex(index.getUid());
+	}
+
+	/**
 	 * Test getIndexList
 	 */
 	@Test
 	public void testGetIndexList() throws Exception {
-		String[] indexUids = {"IndexesTest", "IndexesTest2"};
+		String[] indexUids = {"GetIndexList", "GetIndexList2"};
 		Index index1 = client.createIndex(indexUids[0]);
 		Index index2 = client.createIndex(indexUids[1], this.primaryKey);
 		Index[] indexes = client.getIndexList();
@@ -87,46 +99,17 @@ public class IndexesTest extends AbstractIT {
 	}
 
 	/**
-	 * Test waitForPendingUpdate
+	 * Test deleteIndex
 	 */
 	@Test
-	public void testWaitForPendingUpdate() throws Exception {
-		String indexUid = "IndexesTest2";
+	public void testDeleteIndex() throws Exception {
+		String indexUid = "DeleteIndex";
 		Index index = client.createIndex(indexUid);
-
-		UpdateStatus updateInfo = this.gson.fromJson(
-			index.addDocuments(this.testData.getRaw()),
-			UpdateStatus.class
-		);
-
-		index.waitForPendingUpdate(updateInfo.getUpdateId());
-
-		UpdateStatus updateStatus = index.getUpdate(updateInfo.getUpdateId());
-		
-		assertEquals("processed", updateStatus.getStatus());
-
 		client.deleteIndex(index.getUid());
-	}
-
-	/**
-	 * Test waitForPendingUpdate timeoutInMs
-	 */
-	@Test
-	public void testWaitForPendingUpdateTimoutInMs() throws Exception {
-		String indexUid = "IndexesTest2";
-		Index index = client.createIndex(indexUid);
-
-		UpdateStatus updateInfo = this.gson.fromJson(
-			index.addDocuments(this.testData.getRaw()),
-			UpdateStatus.class
-		);
-
 		assertThrows(
 			Exception.class,
-			() -> index.waitForPendingUpdate(updateInfo.getUpdateId(), 0, 50)
+			() -> client.getIndex(indexUid)
 		);
-
-		client.deleteIndex(index.getUid());
 	}
 
 }
