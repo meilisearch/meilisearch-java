@@ -39,41 +39,4 @@ class Documents {
 		String requestQuery = "/indexes/" + uid + "/documents";
 		return meilisearchHttpRequest.delete(requestQuery);
 	}
-
-	String deleteList(String uid, int[] ids) throws Exception {
-		// TODO
-		return "";
-	}
-
-	String search(String uid, String q) throws Exception {
-		String requestQuery = "/indexes/" + uid + "/search";
-		SearchRequest sr = new SearchRequest(q);
-		return meilisearchHttpRequest.get(requestQuery, sr.getQuery());
-	}
-
-	String search(String uid,
-				  String q,
-				  int offset,
-				  int limit,
-				  String attributesToRetrieve,
-				  String attributesToCrop,
-				  int cropLength,
-				  String attributesToHighlight,
-				  String filters,
-				  boolean matches
-	) throws Exception {
-		String requestQuery = "/indexes/" + uid + "/search";
-		SearchRequest sr = new SearchRequest(q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength, attributesToHighlight, filters, matches);
-		return meilisearchHttpRequest.get(requestQuery, sr.getQuery());
-	}
-
-	String getUpdate(String uid, int updateId) throws Exception {
-		String requestQuery = "/indexes/" + uid + "/updates/" + updateId;
-		return meilisearchHttpRequest.get(requestQuery);
-	}
-
-	String getUpdates(String uid) throws Exception {
-		String requestQuery = "/indexes/" + uid + "/updates";
-		return meilisearchHttpRequest.get(requestQuery);
-	}
 }

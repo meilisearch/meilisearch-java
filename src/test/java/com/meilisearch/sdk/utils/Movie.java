@@ -1,7 +1,7 @@
 package com.meilisearch.sdk.utils;
 
 public class Movie {
-	private long id;
+	private String id;
 	private String title;
 	private String poster;
 	private String overview;
@@ -12,16 +12,16 @@ public class Movie {
 	public Movie() {
 	}
 
-	public Movie(long id, String title) {
+	public Movie(String id, String title) {
 		this.id = id;
 		this.title = title;
 	}
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public Movie setId(long id) {
+	public Movie setId(String id) {
 		this.id = id;
 		return this;
 	}
