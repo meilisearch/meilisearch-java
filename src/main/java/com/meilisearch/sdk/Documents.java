@@ -1,5 +1,10 @@
 package com.meilisearch.sdk;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import java.util.List;
+
 /**
  * Wrapper around MeilisearchHttpRequest class to use for Meilisearch documents
  */
@@ -35,7 +40,15 @@ class Documents {
 		return meilisearchHttpRequest.delete(requestQuery);
 	}
 
-	String deleteDocuments(String uid) throws Exception {
+	String deleteDocuments(String uid, List<String> identifiers) throws Exception {
+		String requestQuery = "/indexes/" + uid + "/documents/" + "delete-batch";
+		JsonArray requestData = new JsonArray(identifiers.size());
+		identifiers.forEach(requestData::add);
+
+		return meilisearchHttpRequest.post(requestQuery,requestData.getAsString());
+	}
+
+	String deleteAllDocuments(String uid) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/documents";
 		return meilisearchHttpRequest.delete(requestQuery);
 	}

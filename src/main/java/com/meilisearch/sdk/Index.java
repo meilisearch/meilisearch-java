@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import java.util.Date;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Meilisearch index
@@ -107,13 +108,23 @@ public class Index implements Serializable {
 	}
 
 	/**
+	 * Delete list of documents from the index
+	 * @param documentsIdentifiers list of identifiers of documents to delete
+	 * @return Meilisearch API response
+	 * @throws Exception If something goes wrong
+	 */
+	public String deleteDocuments(List<String> documentsIdentifiers) throws Exception{
+		return this.documents.deleteDocuments(this.uid, documentsIdentifiers);
+	}
+
+	/**
 	 * Delete all documents in the index
 	 *
 	 * @return Meilisearch API response
 	 * @throws Exception If something goes wrong
 	 */
-	public String deleteDocuments() throws Exception {
-		return this.documents.deleteDocuments(this.uid);
+	public String deleteAllDocuments() throws Exception {
+		return this.documents.deleteAllDocuments(this.uid);
 	}
 
 	/**
