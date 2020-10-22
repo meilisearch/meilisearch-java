@@ -1,4 +1,4 @@
-package com.meilisearch.integration;
+package com.meilisearch.integration.classes;
 
 
 import com.google.gson.Gson;

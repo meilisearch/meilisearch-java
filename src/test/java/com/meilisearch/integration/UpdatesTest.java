@@ -1,5 +1,7 @@
 package com.meilisearch.integration;
 
+import com.meilisearch.integration.classes.AbstractIT;
+import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.utils.Movie;
