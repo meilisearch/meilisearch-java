@@ -3,15 +3,23 @@
  */
 package com.meilisearch.sdk;
 
-import com.google.gson.Gson;
+import com.meilisearch.sdk.api.documents.DocumentHandler;
+import com.meilisearch.sdk.api.index.IndexesHandler;
+import com.meilisearch.sdk.http.ApacheHttpClient;
+import com.meilisearch.sdk.http.factory.BasicRequestFactory;
+import com.meilisearch.sdk.json.GsonJsonHandler;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Meilisearch client
  */
 public class Client {
-	public Config config;
-	public IndexesHandler indexesHandler;
-	public Gson gson;
+	private final Config config;
+	private final IndexesHandler indexesHandler;
+	private final Map<String, DocumentHandler<?>> handlerMap;
+	private final GenericServiceTemplate serviceTemplate;
 
 	/**
 	 * Call instance for MeiliSearch client
@@ -20,91 +28,30 @@ public class Client {
 	 */
 	public Client(Config config) {
 		this.config = config;
-		this.gson = new Gson();
-		this.indexesHandler = new IndexesHandler(config);
+		GsonJsonHandler jsonHandler = new GsonJsonHandler();
+		this.serviceTemplate = new GenericServiceTemplate(new ApacheHttpClient(config), jsonHandler, new BasicRequestFactory(jsonHandler));
+		this.indexesHandler = new IndexesHandler(serviceTemplate);
+		this.handlerMap = config.getModelMapping()
+			.entrySet()
+			.stream()
+			.collect(
+				Collectors.toMap(
+					Map.Entry::getKey,
+					entry -> new DocumentHandler<>(entry.getKey(), entry.getValue(), serviceTemplate)
+				)
+			);
 	}
 
-	/**
-	 * Create index
-	 * Refer https://docs.meilisearch.com/references/indexes.html#create-an-index
-	 *
-	 * @param uid Unique identifier for the index to create
-	 * @return Meilisearch API response
-	 * @throws Exception If an error occurs
-	 */
-	public Index createIndex(String uid) throws Exception {
-		Index index = gson.fromJson(this.indexesHandler.create(uid), Index.class);
-		index.setConfig(this.config);
-		return index;
+	public IndexesHandler index() {
+		return this.indexesHandler;
 	}
 
-	/**
-	 * Create index
-	 * Refer https://docs.meilisearch.com/references/indexes.html#create-an-index
-	 *
-	 * @param uid        Unique identifier for the index to create
-	 * @param primaryKey The primary key of the documents in that index
-	 * @return Meilisearch API response
-	 * @throws Exception If an error occurs
-	 */
-	public Index createIndex(String uid, String primaryKey) throws Exception {
-		// return this.indexesHandler.create(uid, primaryKey);
-		Index index = gson.fromJson(this.indexesHandler.create(uid, primaryKey), Index.class);
-		index.setConfig(this.config);
-		return index;
+	@SuppressWarnings("unchecked")
+	public <T> DocumentHandler<T> documents(String uid) {
+		return (DocumentHandler<T>) this.handlerMap.get(uid);
 	}
 
-	/**
-	 * Get all indexes
-	 * Refer https://docs.meilisearch.com/references/indexes.html#list-all-indexes
-	 *
-	 * @return List of indexes in the Meilisearch client
-	 * @throws Exception If an error occurs
-	 */
-	public Index[] getIndexList() throws Exception {
-		Index[] meiliSearchIndexList = gson.fromJson(this.indexesHandler.getAll(), Index[].class);
-		for (Index indexes : meiliSearchIndexList) {
-			indexes.setConfig(this.config);
-		}
-		return meiliSearchIndexList;
-	}
-
-	/**
-	 * Get single index by uid
-	 * Refer https://docs.meilisearch.com/references/indexes.html#get-one-index
-	 *
-	 * @param uid Unique identifier of the index to get
-	 * @return Meilisearch API response
-	 * @throws Exception If an error occurs
-	 */
-	public Index getIndex(String uid) throws Exception {
-		Index indexes = gson.fromJson(this.indexesHandler.get(uid), Index.class);
-		indexes.setConfig(this.config);
-		return indexes;
-	}
-
-	/**
-	 * Update index by uid
-	 * Refer https://docs.meilisearch.com/references/indexes.html#update-an-index
-	 *
-	 * @param uid        Unique identifier of the index to update
-	 * @param primaryKey Primary key of the documents in the index
-	 * @return Meilisearch API response
-	 * @throws Exception If an error occurs
-	 */
-	public String updateIndex(String uid, String primaryKey) throws Exception {
-		return this.indexesHandler.updatePrimaryKey(uid, primaryKey);
-	}
-
-	/**
-	 * Delete single index by uid
-	 * Refer https://docs.meilisearch.com/references/indexes.html#get-one-index
-	 *
-	 * @param uid Unique identifier of the index to delete
-	 * @return Meilisearch API response
-	 * @throws Exception If an error occurs
-	 */
-	public String deleteIndex(String uid) throws Exception {
-		return this.indexesHandler.delete(uid);
+	public <T> DocumentHandler<T> documents(String uid, Class<T> model) {
+		return new DocumentHandler<>(uid, model, serviceTemplate);
 	}
 }

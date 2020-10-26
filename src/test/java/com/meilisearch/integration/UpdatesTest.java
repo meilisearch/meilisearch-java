@@ -1,12 +1,16 @@
 package com.meilisearch.integration;
 
-import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.UpdateStatus;
+import com.meilisearch.integration.classes.AbstractIT;
+import com.meilisearch.integration.classes.TestData;
+import com.meilisearch.sdk.api.documents.DocumentHandler;
+import com.meilisearch.sdk.api.index.UpdateStatus;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,14 +37,13 @@ public class UpdatesTest extends AbstractIT {
 	@Test
 	public void testGetUpdate() throws Exception {
 		String indexUid = "GetUpdate";
-		Index index = client.createIndex(indexUid);
+		client.index().create(indexUid);
+		DocumentHandler<Movie> documents = client.documents(indexUid, Movie.class);
 
-		UpdateStatus updateInfo = this.gson.fromJson(
-			index.addDocuments(this.testData.getRaw()),
-			UpdateStatus.class
-		);
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = documents.addDocuments(testData.getData());
 
-		UpdateStatus updateStatus =	index.getUpdate(updateInfo.getUpdateId());
+		UpdateStatus updateStatus = client.index().getUpdate(indexUid, updateInfo.getUpdateId());
 		assertNotNull(updateStatus.getStatus());
 		assertNotEquals("", updateStatus.getStatus());
 		assertTrue(updateStatus.getUpdateId() >= 0);
@@ -52,19 +55,15 @@ public class UpdatesTest extends AbstractIT {
 	@Test
 	public void testGetUpdates() throws Exception {
 		String indexUid = "GetUpdates";
-		Index index = client.createIndex(indexUid);
+		client.index().create(indexUid);
+		DocumentHandler<Movie> documents = client.documents(indexUid, Movie.class);
 
-		UpdateStatus updateInfo = this.gson.fromJson(
-			index.addDocuments(this.testData.getRaw()),
-			UpdateStatus.class
-		);
-		updateInfo = this.gson.fromJson(
-			index.addDocuments(this.testData.getRaw()),
-			UpdateStatus.class
-		);
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = documents.addDocuments(testData.getData());
+		updateInfo = documents.addDocuments(testData.getData());
 
-		UpdateStatus[] updateStatus = index.getUpdates();
-		assertTrue(updateStatus.length == 2);
+		List<UpdateStatus> updateStatus = client.index().getUpdates(indexUid);
+		assertEquals(2, updateStatus.size());
 	}
 
 	/**
@@ -73,19 +72,19 @@ public class UpdatesTest extends AbstractIT {
 	@Test
 	public void testWaitForPendingUpdate() throws Exception {
 		String indexUid = "WaitForPendingUpdate";
-		Index index = client.createIndex(indexUid);
+		client.index().create(indexUid);
+		DocumentHandler<Movie> documents = client.documents(indexUid, Movie.class);
 
-		UpdateStatus updateInfo = this.gson.fromJson(
-			index.addDocuments(this.testData.getRaw()),
-			UpdateStatus.class
-		);
-		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = documents.addDocuments(testData.getData());
 
-		UpdateStatus updateStatus = index.getUpdate(updateInfo.getUpdateId());
+		client.index().waitForPendingUpdate(indexUid, updateInfo.getUpdateId());
+
+		UpdateStatus updateStatus = client.index().getUpdate(indexUid, updateInfo.getUpdateId());
 
 		assertEquals("processed", updateStatus.getStatus());
 
-		client.deleteIndex(index.getUid());
+		client.index().delete(indexUid);
 	}
 
 	/**
@@ -94,21 +93,14 @@ public class UpdatesTest extends AbstractIT {
 	@Test
 	public void testWaitForPendingUpdateTimoutInMs() throws Exception {
 		String indexUid = "WaitForPendingUpdateTimoutInMs";
-		Index index = client.createIndex(indexUid);
+		client.index().create(indexUid);
+		DocumentHandler<Movie> documents = client.documents(indexUid, Movie.class);
 
-		UpdateStatus updateInfo = this.gson.fromJson(
-			index.addDocuments(this.testData.getRaw()),
-			UpdateStatus.class
-		);
-		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = documents.addDocuments(testData.getData());
 
-		assertThrows(
-			Exception.class,
-			() -> index.waitForPendingUpdate(updateInfo.getUpdateId(), 0, 50)
-		);
+		client.index().waitForPendingUpdate(indexUid, updateInfo.getUpdateId());
 
-		client.deleteIndex(index.getUid());
+		client.index().delete(indexUid);
 	}
-
-	
 }

@@ -1,14 +1,17 @@
 package com.meilisearch.integration;
 
-import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.UpdateStatus;
+import com.meilisearch.integration.classes.AbstractIT;
+import com.meilisearch.integration.classes.TestData;
+import com.meilisearch.sdk.api.documents.DocumentHandler;
+import com.meilisearch.sdk.api.index.UpdateStatus;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Tag("integration")
 public class SearchTest extends AbstractIT {
@@ -35,20 +38,17 @@ public class SearchTest extends AbstractIT {
 	@Test
 	public void testSearch() throws Exception {
 		String indexUid = "BasicSearch";
-		Index index = client.createIndex(indexUid);
+		client.index().create(indexUid);
+		DocumentHandler<Movie> documents = client.documents(indexUid, Movie.class);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-		UpdateStatus updateInfo = this.gson.fromJson(
-			index.addDocuments(testData.getRaw()),
-			UpdateStatus.class
-		);
+		UpdateStatus updateInfo = documents.addDocuments(testData.getData());
 
-		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		client.index().waitForPendingUpdate(indexUid, updateInfo.getUpdateId());
 
-		String s = index.search("a");
-		assertNotEquals("", s);
+		Movie s = documents.search(indexUid, "a");
 		assertNotNull(s);
 	}
 
-	
+
 }

@@ -1,11 +1,11 @@
-package com.meilisearch.integration;
+package com.meilisearch.integration.classes;
 
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.Client;
 import com.meilisearch.sdk.Config;
-import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.api.index.Index;
 import com.meilisearch.sdk.utils.Movie;
 
 import java.io.*;
@@ -57,9 +57,9 @@ public abstract class AbstractIT {
 	static public void deleteAllIndexes() {
 		try {
 			Client ms = new Client(new Config("http://localhost:7700", "masterKey"));
-			Index[] indexes = ms.getIndexList();
+			List<Index> indexes = ms.index().getAll();
 			for (Index index : indexes) {
-				ms.deleteIndex(index.getUid());
+				ms.index().delete(index.getUid());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

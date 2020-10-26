@@ -4,11 +4,11 @@ import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.BasicHttpResponse;
 import com.meilisearch.sdk.http.response.HttpResponse;
-import org.apache.hc.client5.http.async.HttpAsyncClient;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
 import org.apache.hc.client5.http.async.methods.SimpleRequestProducer;
 import org.apache.hc.client5.http.async.methods.SimpleResponseConsumer;
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.concurrent.FutureCallback;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 public class ApacheHttpClient extends AbstractHttpClient {
 
-	private final HttpAsyncClient client;
+	private final CloseableHttpAsyncClient client;
 
 	public ApacheHttpClient(Config config) {
 		super(config);
@@ -37,9 +37,11 @@ public class ApacheHttpClient extends AbstractHttpClient {
 		this.client = HttpAsyncClients.custom()
 			.setIOReactorConfig(ioReactorConfig)
 			.build();
+
+		this.client.start();
 	}
 
-	public ApacheHttpClient(Config config, HttpAsyncClient client) {
+	public ApacheHttpClient(Config config, CloseableHttpAsyncClient client) {
 		super(config);
 		this.client = client;
 	}
@@ -83,7 +85,7 @@ public class ApacheHttpClient extends AbstractHttpClient {
 	}
 
 	private SimpleHttpRequest mapRequest(HttpRequest<?> request) {
-		SimpleHttpRequest httpRequest = new SimpleHttpRequest(request.getMethod().name(), request.getPath());
+		SimpleHttpRequest httpRequest = new SimpleHttpRequest(request.getMethod().name(), this.config.getHostUrl() + request.getPath());
 		if (request.hasContent())
 			httpRequest.setBody(request.getContentAsBytes(), ContentType.APPLICATION_JSON);
 		httpRequest.addHeader("X-Meili-API-Key", this.config.getApiKey());
@@ -112,7 +114,7 @@ public class ApacheHttpClient extends AbstractHttpClient {
 
 			@Override
 			public void cancelled() {
-				completableFuture.cancel(false);
+				completableFuture.cancel(true);
 			}
 		};
 	}

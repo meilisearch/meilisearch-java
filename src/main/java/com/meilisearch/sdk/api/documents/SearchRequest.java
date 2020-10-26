@@ -1,45 +1,45 @@
-package com.meilisearch.sdk;
+package com.meilisearch.sdk.api.documents;
 
 /**
  * Search request query string builder
  */
-class SearchRequest {
-	private String q;
-	private int offset;
-	private int limit;
-	private String attributesToRetrieve;
-	private String attributesToCrop;
-	private int cropLength;
-	private String attributesToHighlight;
-	private String filters;
-	private boolean matches;
+public class SearchRequest {
+	private final String q;
+	private final int offset;
+	private final int limit;
+	private final String attributesToRetrieve;
+	private final String attributesToCrop;
+	private final int cropLength;
+	private final String attributesToHighlight;
+	private final String filters;
+	private final boolean matches;
 
-	SearchRequest(String q) {
+	public SearchRequest(String q) {
 		this(q, 0);
 	}
 
-	SearchRequest(String q, int offset) {
+	public SearchRequest(String q, int offset) {
 		this(q, offset, 20);
 	}
 
-	SearchRequest(String q, int offset, int limit) {
+	public SearchRequest(String q, int offset, int limit) {
 		this(q, offset, limit, "*");
 	}
 
-	SearchRequest(String q, int offset, int limit, String attributesToRetrieve) {
+	public SearchRequest(String q, int offset, int limit, String attributesToRetrieve) {
 		this(q, offset, limit, attributesToRetrieve, null, 200, null, null, false);
 	}
 
-	SearchRequest(String q,
-				  int offset,
-				  int limit,
-				  String attributesToRetrieve,
-				  String attributesToCrop,
-				  int cropLength,
-				  String attributesToHighlight,
-				  String filters,
-				  boolean matches) {
-		this.q = q.replaceAll("\\s+?", "%20");
+	public SearchRequest(String q,
+						 int offset,
+						 int limit,
+						 String attributesToRetrieve,
+						 String attributesToCrop,
+						 int cropLength,
+						 String attributesToHighlight,
+						 String filters,
+						 boolean matches) {
+		this.q = q;
 		this.offset = offset;
 		this.limit = limit;
 		this.attributesToRetrieve = attributesToRetrieve;
@@ -86,11 +86,11 @@ class SearchRequest {
 		return matches;
 	}
 
-	String getQuery() {
+	public String getQuery() {
 		StringBuilder sb = new StringBuilder();
 
 		// Default parameters
-		sb.append("?q=").append(this.q)
+		sb.append("?q=").append(this.q.replaceAll("\\s+?", "%20"))
 			.append("&offset=").append(this.offset)
 			.append("&limit=").append(this.limit)
 			.append("&attributesToRetrieve=").append(this.attributesToRetrieve)

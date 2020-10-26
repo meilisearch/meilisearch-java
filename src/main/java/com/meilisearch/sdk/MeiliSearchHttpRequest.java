@@ -6,6 +6,7 @@ import com.meilisearch.sdk.http.factory.BasicRequestFactory;
 import com.meilisearch.sdk.http.factory.RequestFactory;
 import com.meilisearch.sdk.http.request.HttpMethod;
 import com.meilisearch.sdk.http.response.HttpResponse;
+import com.meilisearch.sdk.json.GsonJsonHandler;
 
 import java.util.Collections;
 
@@ -15,7 +16,7 @@ class MeiliSearchHttpRequest {
 
 	protected MeiliSearchHttpRequest(Config config) {
 		this.client = new DefaultHttpClient(config);
-		this.factory = new BasicRequestFactory();
+		this.factory = new BasicRequestFactory(new GsonJsonHandler());
 	}
 
 	public MeiliSearchHttpRequest(AbstractHttpClient client, RequestFactory factory) {

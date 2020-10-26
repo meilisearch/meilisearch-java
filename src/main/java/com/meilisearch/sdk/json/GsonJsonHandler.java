@@ -16,7 +16,7 @@ public class GsonJsonHandler implements JsonHandler {
 
 	@Override
 	public String encode(Object o) throws Exception {
-		if (o.getClass() == String.class) {
+		if (o != null && o.getClass() == String.class) {
 			return (String) o;
 		}
 		try {

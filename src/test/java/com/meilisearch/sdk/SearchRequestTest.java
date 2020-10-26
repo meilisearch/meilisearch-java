@@ -1,5 +1,6 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.api.documents.SearchRequest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,7 +20,7 @@ class SearchRequestTest {
 		classToTest = new SearchRequest("This is a Test", 200, 900, "bubble", "crop", 900, "highlight", "test", true);
 		assertEquals("?q=This%20is%20a%20Test&offset=200&limit=900&attributesToRetrieve=bubble&cropLength=900&matches=true&attributesToCrop=crop&attributesToHighlight=highlight&filters=test", classToTest.getQuery());
 
-		assertEquals("This%20is%20a%20Test", classToTest.getQ());
+		assertEquals("This is a Test", classToTest.getQ());
 		assertEquals(200, classToTest.getOffset());
 		assertEquals(900, classToTest.getLimit());
 		assertEquals("bubble", classToTest.getAttributesToRetrieve());
