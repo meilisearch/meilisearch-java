@@ -113,7 +113,7 @@ public class Client {
 	 *
 	 * @param uid        Unique identifier for the index to create
 	 * @param primaryKey The primary key of the documents in that index
-	 * @return Meilisearch API response
+	 * @return Index instance
 	 * @throws Exception If an error occurss
 	 */
 	public Index getOrCreateIndex(String uid, String primaryKey) throws Exception {
