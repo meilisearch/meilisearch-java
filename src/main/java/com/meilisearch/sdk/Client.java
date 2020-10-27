@@ -91,12 +91,12 @@ public class Client {
 
 		public ClientBuilder withAutodetectHttpClient() {
 			try {
-				Class.forName("com.google.gson.Gson");
+				Class.forName("com.google.gson.Gson", false, null);
 				this.httpClient = new ApacheHttpClient(config);
 				return this;
 			} catch (ClassNotFoundException e) {/* noop */}
 			try {
-				Class.forName("com.fasterxml.jackson.databind.ObjectMapper");
+				Class.forName("com.fasterxml.jackson.databind.ObjectMapper", false, null);
 				this.httpClient = new CustomOkHttpClient(config);
 				return this;
 			} catch (ClassNotFoundException e) {/* noop */}
@@ -111,17 +111,17 @@ public class Client {
 
 		public ClientBuilder withAutodetectJsonHandler() {
 			try {
-				Class.forName("com.google.gson.Gson");
+				Class.forName("com.google.gson.Gson", false, null);
 				this.jsonHandler = new GsonJsonHandler();
 				return this;
 			} catch (ClassNotFoundException e) {/* noop */}
 			try {
-				Class.forName("com.fasterxml.jackson.databind.ObjectMapper");
+				Class.forName("com.fasterxml.jackson.databind.ObjectMapper", false, null);
 				this.jsonHandler = new JacksonJsonHandler();
 				return this;
 			} catch (ClassNotFoundException e) {/* noop */}
 			try {
-				Class.forName("javax.json.bind.Jsonb");
+				Class.forName("javax.json.bind.Jsonb", false, null);
 				this.jsonHandler = new JsonbJsonHandler();
 				return this;
 			} catch (ClassNotFoundException e) {/* noop */}
