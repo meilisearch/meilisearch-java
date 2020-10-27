@@ -21,7 +21,7 @@
 
 <p align="center">⚡ The MeiliSearch API client written for Java</p>
 
-**MeiliSearch Java** is a client for **MeiliSearch** written in Java. **MeiliSearch** is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, facets and synonyms are provided out-of-the-box.
+**MeiliSearch Java** is the MeiliSearch API client for Java developers. **MeiliSearch** is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, facets and synonyms are provided out-of-the-box.
 
 ### ⚠️ Important!: this is WIP, and not available for production ⚠️
 
