@@ -28,6 +28,7 @@ class GsonJsonHandlerTest {
 	}
 
 	@Test
+	@SuppressWarnings({"ConfusingArgumentToVarargsMethod", "RedundantArrayCreation"})
 	void deserialize() {
 		assertDoesNotThrow(() -> classToTest.decode("{}", Movie.class));
 		assertDoesNotThrow(() -> classToTest.decode("{}", Movie.class, null));

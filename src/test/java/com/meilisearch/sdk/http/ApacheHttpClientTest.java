@@ -4,7 +4,6 @@ import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.http.request.BasicHttpRequest;
 import com.meilisearch.sdk.http.request.HttpMethod;
 import com.meilisearch.sdk.http.response.BasicHttpResponse;
-import org.apache.hc.client5.http.async.HttpAsyncClient;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
 import org.apache.hc.client5.http.async.methods.SimpleRequestProducer;
@@ -127,6 +126,7 @@ class ApacheHttpClientTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	void withCancelledRequest() {
 		reset(client);
 		when(client.execute(any(), any(), any(), any(), any())).then(invocation -> {
@@ -140,6 +140,7 @@ class ApacheHttpClientTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	void withException() {
 		reset(client);
 		when(client.execute(any(), any(), any(), any(), any())).then(invocation -> {

@@ -6,6 +6,8 @@ import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.Client;
 import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.api.index.Index;
+import com.meilisearch.sdk.http.ApacheHttpClient;
+import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.utils.Movie;
 
 import java.io.*;
@@ -32,8 +34,14 @@ public abstract class AbstractIT {
 	}
 
 	public void setUp() {
-		if (client == null)
-			client = new Client(new Config("http://localhost:7700", "masterKey"));
+		if (client == null) {
+			Config config = new Config("http://localhost:7700", "masterKey");
+			client = Client.ClientBuilder
+				.withConfig(config)
+				.withHttpClient(new ApacheHttpClient(config))
+				.withJsonHandler(new GsonJsonHandler())
+				.build();
+		}
 	}
 
 
@@ -56,7 +64,12 @@ public abstract class AbstractIT {
 
 	static public void deleteAllIndexes() {
 		try {
-			Client ms = new Client(new Config("http://localhost:7700", "masterKey"));
+			Config config = new Config("http://localhost:7700", "masterKey");
+			Client ms = Client.ClientBuilder
+				.withConfig(config)
+				.withHttpClient(new ApacheHttpClient(config))
+				.withJsonHandler(new GsonJsonHandler())
+				.build();
 			List<Index> indexes = ms.index().getAll();
 			for (Index index : indexes) {
 				ms.index().delete(index.getUid());
