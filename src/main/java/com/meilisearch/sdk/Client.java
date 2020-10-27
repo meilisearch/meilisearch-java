@@ -120,7 +120,10 @@ public class Client {
 		try {
 			return this.createIndex(uid, primaryKey);
 		} catch (Exception e) {
-			return this.getIndex(uid);
+			if(e.getMessage().contains("index_already_exists")) {
+				return this.getIndex(uid);
+			}
+			throw e;
 		}
 	}
 }
