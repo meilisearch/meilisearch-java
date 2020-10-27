@@ -107,4 +107,20 @@ public class Client {
 	public String deleteIndex(String uid) throws Exception {
 		return this.indexesHandler.delete(uid);
 	}
+
+	/**
+	 * Get single index by uid or if it does not exists, Create index
+	 *
+	 * @param uid        Unique identifier for the index to create
+	 * @param primaryKey The primary key of the documents in that index
+	 * @return Meilisearch API response
+	 * @throws Exception If an error occurss
+	 */
+	public Index getOrCreateIndex(String uid, String primaryKey) throws Exception {
+		try {
+			return this.createIndex(uid, primaryKey);
+		} catch (Exception e) {
+			return this.getIndex(uid);
+		}
+	}
 }
