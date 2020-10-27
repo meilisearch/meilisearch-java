@@ -67,7 +67,8 @@ public class Main {
 			+ "]";
 
 		Client client = new Client(new Config("http://localhost:7700", "masterKey"));
-		Index index = client.createIndex("books");
+		Index index = client.createIndex("books"); // If your index does not exist
+		Index index = client.getIndex("books"); // If you already created your index
 
 		index.addDocuments(documents);
 	}
@@ -78,24 +79,9 @@ public class Main {
 #### Basic Search <!-- omit in toc -->
 
 ```java
-
-import com.meilisearch.sdk.Client;
-import com.meilisearch.sdk.Config;
-import com.meilisearch.sdk.Index;
-
-public class Main {
-
-	public static void main(String[] args) throws Exception {
-
-		Client client = new Client(new Config("http://localhost:7700", "masterKey"));
-		Index index = client.getIndex("books");
-
-		// MeiliSearch is typo-tolerant:
-		String results = index.search("harry pottre");
-		System.out.println(results);
-	}
-
-}
+	// MeiliSearch is typo-tolerant:
+	String results = index.search("harry pottre");
+	System.out.println(results);
 ```
 
 Output:
