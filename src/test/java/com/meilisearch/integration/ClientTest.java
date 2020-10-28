@@ -53,6 +53,42 @@ public class ClientTest extends AbstractIT {
 		client.deleteIndex(index.getUid());
 	}
 
+	@Test
+	public void testCreateIndexWithPrimaryKeyIfIndexDoesNotExists() throws Exception {
+		String indexUid = "dummyIndexUid";
+		Index index = client.getOrCreateIndex(indexUid, this.primaryKey);
+		assertEquals(index.getUid(), indexUid);
+		assertEquals(index.getPrimaryKey(), this.primaryKey);
+		client.deleteIndex(index.getUid());
+	}
+
+	@Test
+	public void testGetIndexWithPrimaryKeyIfIndexAlreadyExists() throws Exception {
+		String indexUid = "dummyIndexUid";
+		Index createdIndex = client.getOrCreateIndex(indexUid, this.primaryKey);
+		assertEquals(createdIndex.getUid(), indexUid);
+
+		Index retrievedIndex = client.getOrCreateIndex(indexUid, this.primaryKey);
+		assertEquals(retrievedIndex.getUid(), indexUid);
+		assertEquals(createdIndex.getUid(), retrievedIndex.getUid());
+
+		client.deleteIndex(createdIndex.getUid());
+	}
+
+	@Test
+	public void testGetOrCreateIndexShouldNotThrowAnyException() throws Exception {
+		String indexUid = "dummyIndexUid";
+		Index createdIndex = null;
+		try {
+			createdIndex = client.getOrCreateIndex(indexUid, this.primaryKey);
+			Index retrievedIndex = client.getOrCreateIndex(indexUid, this.primaryKey);
+		} catch (Exception e) {
+			client.deleteIndex(createdIndex.getUid());
+			fail("Should Not Throw Any Exception");
+		}
+		client.deleteIndex(createdIndex.getUid());
+	}
+
 	/**
 	 * Test update Index PrimaryKey
 	 */
