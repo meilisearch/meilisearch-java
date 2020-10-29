@@ -45,7 +45,7 @@ class Documents {
 		JsonArray requestData = new JsonArray(identifiers.size());
 		identifiers.forEach(requestData::add);
 
-		return meilisearchHttpRequest.post(requestQuery,requestData.getAsString());
+		return meilisearchHttpRequest.post(requestQuery,requestData.toString());
 	}
 
 	String deleteAllDocuments(String uid) throws Exception {
