@@ -6,6 +6,7 @@ import com.meilisearch.sdk.http.factory.BasicRequestFactory;
 import com.meilisearch.sdk.http.factory.RequestFactory;
 import com.meilisearch.sdk.http.request.HttpMethod;
 import com.meilisearch.sdk.http.response.HttpResponse;
+import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 
 import java.util.Collections;
 
@@ -34,14 +35,20 @@ class MeiliSearchHttpRequest {
 	}
 
 
-	String post(String api, String body) throws Exception {
+	String post(String api, String body) throws Exception, MeiliSearchApiException {
 		HttpResponse<?> httpResponse = this.client.post(factory.create(HttpMethod.POST, api, Collections.emptyMap(), body));
+		if (httpResponse.getStatusCode() >= 400) {
+			throw new MeiliSearchApiException(httpResponse.getContent().toString());
+		}
 		return new String(httpResponse.getContentAsBytes());
 	}
 
 
 	String put(String api, String body) throws Exception {
 		HttpResponse<?> httpResponse = this.client.put(factory.create(HttpMethod.PUT, api, Collections.emptyMap(), body));
+		if (httpResponse.getStatusCode() >= 400) {
+			throw new MeiliSearchApiException(httpResponse.getContent().toString());
+		}
 		return new String(httpResponse.getContentAsBytes());
 	}
 

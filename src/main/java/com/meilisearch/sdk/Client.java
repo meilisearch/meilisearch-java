@@ -5,6 +5,8 @@ package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
 
+import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+
 /**
  * Meilisearch client
  */
@@ -32,10 +34,8 @@ public class Client {
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public Index createIndex(String uid) throws Exception {
-		Index index = gson.fromJson(this.indexesHandler.create(uid), Index.class);
-		index.setConfig(this.config);
-		return index;
+	public Index createIndex(String uid) throws Exception, MeiliSearchApiException {
+		return this.createIndex(uid, null);
 	}
 
 	/**
@@ -47,8 +47,7 @@ public class Client {
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public Index createIndex(String uid, String primaryKey) throws Exception {
-		// return this.indexesHandler.create(uid, primaryKey);
+	public Index createIndex(String uid, String primaryKey) throws Exception, MeiliSearchApiException {
 		Index index = gson.fromJson(this.indexesHandler.create(uid, primaryKey), Index.class);
 		index.setConfig(this.config);
 		return index;

@@ -2,6 +2,8 @@ package com.meilisearch.sdk;
 
 import com.google.gson.JsonObject;
 
+import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+
 /**
  * Wrapper around the MeilisearchHttpRequest class to ease usage for Meilisearch indexes
  */
@@ -24,7 +26,7 @@ class IndexesHandler {
 	 * @return Meilisearch API response
 	 * @throws Exception If something goes wrong
 	 */
-	String create(String uid) throws Exception {
+	String create(String uid) throws Exception, MeiliSearchApiException {
 		return this.create(uid, null);
 	}
 
@@ -36,13 +38,12 @@ class IndexesHandler {
 	 * @return Meilisearch API response
 	 * @throws Exception If something goes wrong
 	 */
-	String create(String uid, String primaryKey) throws Exception {
+	String create(String uid, String primaryKey) throws Exception, MeiliSearchApiException {
 		JsonObject params = new JsonObject();
 		params.addProperty("uid", uid);
 		if (primaryKey != null) {
 			params.addProperty("primaryKey", primaryKey);
 		}
-
 		return meilisearchHttpRequest.post("/indexes", params.toString());
 	}
 
