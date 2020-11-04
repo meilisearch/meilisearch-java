@@ -11,6 +11,8 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+
 @Tag("integration")
 public class ClientTest extends AbstractIT {
 
@@ -50,6 +52,22 @@ public class ClientTest extends AbstractIT {
 		Index index = client.createIndex(indexUid, this.primaryKey);
 		assertEquals(index.getUid(), indexUid);
 		assertEquals(index.getPrimaryKey(), this.primaryKey);
+		client.deleteIndex(index.getUid());
+	}
+
+	/**
+	 * Test Index creation error: already exists
+	 */
+	@Test
+	public void testCreateIndexAlreadyExists() throws Exception {
+		String indexUid = "CreateIndexAlreadyExists";
+		Index index = client.createIndex(indexUid, this.primaryKey);
+		assertEquals(index.getUid(), indexUid);
+		assertEquals(index.getPrimaryKey(), this.primaryKey);
+		assertThrows(
+			MeiliSearchApiException.class,
+			() -> client.createIndex(indexUid, this.primaryKey)
+		);
 		client.deleteIndex(index.getUid());
 	}
 
@@ -107,7 +125,7 @@ public class ClientTest extends AbstractIT {
 		Index index = client.createIndex(indexUid);
 		client.deleteIndex(index.getUid());
 		assertThrows(
-			Exception.class,
+			MeiliSearchApiException.class,
 			() -> client.getIndex(indexUid)
 		);
 	}

@@ -6,6 +6,7 @@ import com.meilisearch.sdk.http.factory.BasicRequestFactory;
 import com.meilisearch.sdk.http.factory.RequestFactory;
 import com.meilisearch.sdk.http.request.HttpMethod;
 import com.meilisearch.sdk.http.response.HttpResponse;
+import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 
 import java.util.Collections;
 
@@ -24,30 +25,42 @@ class MeiliSearchHttpRequest {
 	}
 
 
-	public String get(String api) throws Exception {
+	public String get(String api) throws Exception, MeiliSearchApiException {
 		return this.get(api, "");
 	}
 
-	String get(String api, String param) throws Exception {
+	String get(String api, String param) throws Exception, MeiliSearchApiException {
 		HttpResponse<?> httpResponse = this.client.get(factory.create(HttpMethod.GET, api + param, Collections.emptyMap(), null));
+		if (httpResponse.getStatusCode() >= 400) {
+			throw new MeiliSearchApiException(httpResponse.getContent().toString());
+		}
 		return new String(httpResponse.getContentAsBytes());
 	}
 
 
-	String post(String api, String body) throws Exception {
+	String post(String api, String body) throws Exception, MeiliSearchApiException {
 		HttpResponse<?> httpResponse = this.client.post(factory.create(HttpMethod.POST, api, Collections.emptyMap(), body));
+		if (httpResponse.getStatusCode() >= 400) {
+			throw new MeiliSearchApiException(httpResponse.getContent().toString());
+		}
 		return new String(httpResponse.getContentAsBytes());
 	}
 
 
-	String put(String api, String body) throws Exception {
+	String put(String api, String body) throws Exception, MeiliSearchApiException {
 		HttpResponse<?> httpResponse = this.client.put(factory.create(HttpMethod.PUT, api, Collections.emptyMap(), body));
+		if (httpResponse.getStatusCode() >= 400) {
+			throw new MeiliSearchApiException(httpResponse.getContent().toString());
+		}
 		return new String(httpResponse.getContentAsBytes());
 	}
 
 
-	String delete(String api) throws Exception {
+	String delete(String api) throws Exception, MeiliSearchApiException {
 		HttpResponse<?> httpResponse = this.client.put(factory.create(HttpMethod.DELETE, api, Collections.emptyMap(), null));
+		if (httpResponse.getStatusCode() >= 400) {
+			throw new MeiliSearchApiException(httpResponse.getContent().toString());
+		}
 		return new String(httpResponse.getContentAsBytes());
 	}
 }
