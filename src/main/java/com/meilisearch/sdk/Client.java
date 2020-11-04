@@ -125,4 +125,15 @@ public class Client {
 			throw e;
 		}
 	}
+
+	/**
+	 * Get single index by uid or if it does not exists, Create index
+	 *
+	 * @param uid        Unique identifier for the index to create
+	 * @return Index instance
+	 * @throws Exception If an error occurss
+	 */
+	public Index getOrCreateIndex(String uid) throws Exception {
+		return getOrCreateIndex(uid, null);
+	}
 }
