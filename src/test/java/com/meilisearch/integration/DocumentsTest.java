@@ -16,6 +16,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+
 @Tag("integration")
 public class DocumentsTest extends AbstractIT {
 
@@ -186,7 +188,7 @@ public class DocumentsTest extends AbstractIT {
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
 		assertThrows(
-			Exception.class,
+			MeiliSearchApiException.class,
 			() -> index.getDocument(toDelete.getId())
 		);
 	}
