@@ -1,5 +1,6 @@
 package com.meilisearch.integration;
 
+import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.exceptions.MeiliSearchException;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
