@@ -119,8 +119,8 @@ public class Client {
 	public Index getOrCreateIndex(String uid, String primaryKey) throws Exception {
 		try {
 			return this.createIndex(uid, primaryKey);
-		} catch (Exception e) {
-			if(e.getMessage().contains("index_already_exists")) {
+		} catch (MeiliSearchApiException e) {
+			if(e.getErrorCode().equals("index_already_exists")) {
 				return this.getIndex(uid);
 			}
 			throw e;
