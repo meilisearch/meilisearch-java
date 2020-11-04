@@ -65,7 +65,7 @@ public class ClientTest extends AbstractIT {
 		assertEquals(index.getUid(), indexUid);
 		assertEquals(index.getPrimaryKey(), this.primaryKey);
 		assertThrows(
-			Exception.class,
+			MeiliSearchApiException.class,
 			() -> client.createIndex(indexUid, this.primaryKey)
 		);
 		client.deleteIndex(index.getUid());
@@ -125,7 +125,7 @@ public class ClientTest extends AbstractIT {
 		Index index = client.createIndex(indexUid);
 		client.deleteIndex(index.getUid());
 		assertThrows(
-			Exception.class,
+			MeiliSearchApiException.class,
 			() -> client.getIndex(indexUid)
 		);
 	}

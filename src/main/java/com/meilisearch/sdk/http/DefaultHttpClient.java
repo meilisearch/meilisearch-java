@@ -53,13 +53,18 @@ public class DefaultHttpClient extends AbstractHttpClient {
 			connection.getOutputStream().write(request.getContentAsBytes());
 		}
 
-		InputStream errorStream = connection.getErrorStream();
-		InputStream contentStream = (errorStream != null ? errorStream : connection.getInputStream());
+		if (connection.getResponseCode() >= 400) {
+			return new BasicHttpResponse(
+				Collections.emptyMap(),
+				connection.getResponseCode(),
+				new BufferedReader(new InputStreamReader(connection.getErrorStream())).lines().collect(Collectors.joining("\n"))
+			);
+		}
 
 		return new BasicHttpResponse(
 			Collections.emptyMap(),
 			connection.getResponseCode(),
-			new BufferedReader(new InputStreamReader(contentStream)).lines().collect(Collectors.joining("\n"))
+			new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining("\n"))
 		);
 	}
 

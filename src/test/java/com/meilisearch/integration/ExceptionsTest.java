@@ -1,12 +1,12 @@
 package com.meilisearch.integration;
 
+import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.exceptions.MeiliSearchException;
+import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-
-import com.meilisearch.sdk.exceptions.MeiliSearchException;
-import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +25,7 @@ public class ExceptionsTest extends AbstractIT {
 	}
 
 	/**
-	 * Test MeiliSearchApiError serialization and getters
+	 * Test MeiliSearchApiException serialization and getters
 	 */
 	@Test
 	public void testErrorSerializeAndGetters() throws Exception {
@@ -46,6 +46,24 @@ public class ExceptionsTest extends AbstractIT {
 			assertEquals(errorCode, e.getErrorCode());
 			assertEquals(errorType, e.getErrorType());
 			assertEquals(errorLink, e.getErrorLink());
+		}
+	}
+
+	/**
+	 * Test MeiliSearchApiException is thrown on MeiliSearch bad request
+	 */
+	@Test
+	public void testMeiliSearchApiExceptionBadRequest () throws Exception {
+		String indexUid = "MeiliSearchApiExceptionBadRequest";
+		Index index = client.createIndex(indexUid);
+		assertThrows(
+			MeiliSearchException.class,
+			() -> client.createIndex(indexUid)
+		);
+		try {
+			client.createIndex(indexUid);
+		} catch (MeiliSearchApiException e) {
+			assertEquals("index_already_exists", e.getErrorCode());
 		}
 	}
 }
