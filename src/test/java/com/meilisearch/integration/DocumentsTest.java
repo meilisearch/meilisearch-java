@@ -1,12 +1,18 @@
 package com.meilisearch.integration;
 
+import com.meilisearch.integration.classes.AbstractIT;
+import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.utils.Movie;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -207,8 +213,53 @@ public class DocumentsTest extends AbstractIT {
 		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
 		assertEquals(20, movies.length);
 
+		List<String> identifiersToDelete =	getIdentifiersToDelete(movies);
+
 		updateInfo = this.gson.fromJson(
-			index.deleteDocuments(),
+			index.deleteDocuments(identifiersToDelete),
+			UpdateStatus.class
+		);
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+
+		boolean containsDeletedMovie =
+			Arrays.stream(movies)
+				.anyMatch(movie -> identifiersToDelete.contains(movie.getId()));
+
+		assertFalse(containsDeletedMovie);
+	}
+
+	@NotNull
+	private List<String> getIdentifiersToDelete(Movie[] movies) {
+		return Arrays.asList(
+			movies[1].getId(),
+			movies[4].getId(),
+			movies[10].getId(),
+			movies[16].getId());
+	}
+
+	/**
+	 * Test deleteAllDocuments
+	 */
+	@Test
+	public void testDeleteAllDocuments() throws Exception {
+		String indexUid = "DeleteAllDocuments";
+		client.createIndex(indexUid);
+		Index index = client.getIndex(indexUid);
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+		assertEquals(20, movies.length);
+
+		updateInfo = this.gson.fromJson(
+			index.deleteAllDocuments(),
 			UpdateStatus.class
 		);
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
