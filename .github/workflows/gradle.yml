@@ -5,14 +5,15 @@ name: Java CI with Gradle
 
 on:
     push:
-        branches: [ master, develop ]
+        # trying and staging branches are for BORS config
+        branches: [ master, develop, trying, staging ]
     pull_request:
         branches: [ master ]
 
 jobs:
     build:
-
         runs-on: ubuntu-latest
+        name: java-tests
 
         steps:
             -   uses: actions/checkout@v2
