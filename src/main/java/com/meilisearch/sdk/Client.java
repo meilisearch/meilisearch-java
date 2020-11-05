@@ -106,4 +106,34 @@ public class Client {
 	public String deleteIndex(String uid) throws Exception {
 		return this.indexesHandler.delete(uid);
 	}
+
+	/**
+	 * Get single index by uid or if it does not exists, Create index
+	 *
+	 * @param uid        Unique identifier for the index to create
+	 * @param primaryKey The primary key of the documents in that index
+	 * @return Index instance
+	 * @throws Exception If an error occurss
+	 */
+	public Index getOrCreateIndex(String uid, String primaryKey) throws Exception {
+		try {
+			return this.createIndex(uid, primaryKey);
+		} catch (MeiliSearchApiException e) {
+			if(e.getErrorCode().equals("index_already_exists")) {
+				return this.getIndex(uid);
+			}
+			throw e;
+		}
+	}
+
+	/**
+	 * Get single index by uid or if it does not exists, Create index
+	 *
+	 * @param uid        Unique identifier for the index to create
+	 * @return Index instance
+	 * @throws Exception If an error occurss
+	 */
+	public Index getOrCreateIndex(String uid) throws Exception {
+		return getOrCreateIndex(uid, null);
+	}
 }
