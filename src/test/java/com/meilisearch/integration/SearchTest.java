@@ -2,6 +2,7 @@ package com.meilisearch.integration;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
+import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.utils.Movie;
@@ -16,6 +17,16 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SearchTest extends AbstractIT {
 
 	private TestData<Movie> testData;
+
+	final class Results {
+		Movie[] hits;
+		int offset;
+		int limit;
+		int nbHits;
+		boolean exhaustiveNbHits;
+		int processingTimeMs;
+		String query;
+	}
 
 	@BeforeEach
 	public void initialize() {
@@ -35,22 +46,28 @@ public class SearchTest extends AbstractIT {
 	 * Test basic search
 	 */
 	@Test
-	public void testSearch() throws Exception {
+	public void testBasicSearch() throws Exception {
 		String indexUid = "BasicSearch";
 		Index index = client.createIndex(indexUid);
+		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-		UpdateStatus updateInfo = this.gson.fromJson(
+		UpdateStatus updateInfo = jsonGson.decode(
 			index.addDocuments(testData.getRaw()),
 			UpdateStatus.class
 		);
 
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
-		String s = index.search("a");
-		assertNotEquals("", s);
-		assertNotNull(s);
+		String query = "batman";
+		Results res_gson = jsonGson.decode(index.search(query), Results.class);
+		assertEquals(1, res_gson.hits.length);
+		assertEquals(0, res_gson.offset);
+		assertEquals(20, res_gson.limit);
+		assertEquals(false, res_gson.exhaustiveNbHits);
+		assertEquals(1, res_gson.nbHits);
+		assertNotEquals(0, res_gson.processingTimeMs);
+		assertEquals(query, res_gson.query);
 	}
-
 	
 }
