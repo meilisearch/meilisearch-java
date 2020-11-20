@@ -1,6 +1,17 @@
 package com.meilisearch.sdk.utils;
 
 public class Movie {
+
+	class Formated {
+		public String id;
+		public String title;
+		public String poster;
+		public String overview;
+		public String release_date;
+		public String language;
+		public String[] genres;
+	}
+
 	private String id;
 	private String title;
 	private String poster;
@@ -8,6 +19,7 @@ public class Movie {
 	private String release_date;
 	private String language;
 	private String[] genres;
+	private Movie _formatted;
 
 	public Movie() {
 	}
@@ -77,6 +89,15 @@ public class Movie {
 
 	public Movie setGenres(String[] genres) {
 		this.genres = genres;
+		return this;
+	}
+
+	public Movie getFormatted() {
+		return _formatted;
+	}
+
+	public Movie setFormatted(Movie _formatted) {
+		this._formatted = _formatted;
 		return this;
 	}
 }

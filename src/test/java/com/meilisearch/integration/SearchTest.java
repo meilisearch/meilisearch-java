@@ -11,8 +11,13 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @Tag("integration")
 public class SearchTest extends AbstractIT {
@@ -28,6 +33,8 @@ public class SearchTest extends AbstractIT {
 		int processingTimeMs;
 		String query;
 	}
+
+
 
 	@BeforeEach
 	public void initialize() {
@@ -123,6 +130,68 @@ public class SearchTest extends AbstractIT {
 		);
 		assertEquals(2, res_gson.hits.length);
 		assertEquals(30, res_gson.nbHits);
+	}
+
+	/**
+	 * Test search attributesToRetrieve
+	 */
+	@Test
+	public void testSearchAttributesToRetrieve() throws Exception {
+		String indexUid = "SearchAttributesToRetrieve";
+		Index index = client.createIndex(indexUid);
+		GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = jsonGson.decode(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		SearchRequest searchRequest = new SearchRequest("a")
+			.setAttributesToRetrieve(new String[]{"id", "title"});
+		Results res_gson = jsonGson.decode(
+			index.search(searchRequest),
+			Results.class
+		);
+		assertEquals(20, res_gson.hits.length);
+		assertThat(res_gson.hits[0].getId(), instanceOf(String.class));
+		assertThat(res_gson.hits[0].getTitle(), instanceOf(String.class));
+		assertEquals(null, res_gson.hits[0].getPoster());
+		assertEquals(null, res_gson.hits[0].getOverview());
+		assertEquals(null, res_gson.hits[0].getRelease_date());
+		assertEquals(null, res_gson.hits[0].getLanguage());
+		assertEquals(null, res_gson.hits[0].getGenres());
+	}
+
+	/**
+	 * Test search crop
+	 */
+	@Test
+	public void testSearchCrop() throws Exception {
+		String indexUid = "SearchCrop";
+		Index index = client.createIndex(indexUid);
+		GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = jsonGson.decode(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		SearchRequest searchRequest = new SearchRequest("and")
+			.setAttributesToCrop(new String[]{"overview"})
+			.setCropLength(5)
+		;
+		Results res_gson = jsonGson.decode(
+			index.search(searchRequest),
+			Results.class
+		);
+		assertEquals(20, res_gson.hits.length);
+		assertEquals("aunt and uncle", res_gson.hits[0].getFormatted().getOverview());
 	}
 	
 }

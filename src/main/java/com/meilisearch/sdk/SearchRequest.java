@@ -7,8 +7,8 @@ public class SearchRequest {
 	private String q;
 	private int offset;
 	private int limit;
-	private String attributesToRetrieve;
-	private String attributesToCrop;
+	private String[] attributesToRetrieve;
+	private String[] attributesToCrop;
 	private int cropLength;
 	private String attributesToHighlight;
 	private String filters;
@@ -26,18 +26,18 @@ public class SearchRequest {
 	}
 
 	public SearchRequest(String q, int offset, int limit) {
-		this(q, offset, limit, "*");
+		this(q, offset, limit, new String[]{"*"});
 	}
 
-	public SearchRequest(String q, int offset, int limit, String attributesToRetrieve) {
+	public SearchRequest(String q, int offset, int limit, String[] attributesToRetrieve) {
 		this(q, offset, limit, attributesToRetrieve, null, 200, null, null, false);
 	}
 
 	public SearchRequest(String q,
 				  int offset,
 				  int limit,
-				  String attributesToRetrieve,
-				  String attributesToCrop,
+				  String[] attributesToRetrieve,
+				  String[] attributesToCrop,
 				  int cropLength,
 				  String attributesToHighlight,
 				  String filters,
@@ -65,11 +65,11 @@ public class SearchRequest {
 		return limit;
 	}
 
-	public String getAttributesToRetrieve() {
+	public String[] getAttributesToRetrieve() {
 		return attributesToRetrieve;
 	}
 
-	public String getAttributesToCrop() {
+	public String[] getAttributesToCrop() {
 		return attributesToCrop;
 	}
 
@@ -100,7 +100,20 @@ public class SearchRequest {
 		return this;
 	}
 
-	
+	public SearchRequest setAttributesToRetrieve(String[] attributesToRetrieve) {
+		this.attributesToRetrieve = attributesToRetrieve;
+		return this;
+	}
+
+	public SearchRequest setAttributesToCrop(String[] attributesToCrop) {
+		this.attributesToCrop = attributesToCrop;
+		return this;
+	}
+
+	public SearchRequest setCropLength(int cropLength) {
+		this.cropLength = cropLength;
+		return this;
+	}
 
 	public boolean isMatches() {
 		return matches;
@@ -113,12 +126,12 @@ public class SearchRequest {
 		sb.append("?q=").append(this.q)
 			.append("&offset=").append(this.offset)
 			.append("&limit=").append(this.limit)
-			.append("&attributesToRetrieve=").append(this.attributesToRetrieve)
+			.append("&attributesToRetrieve=").append(String.join(",", this.attributesToRetrieve))
 			.append("&cropLength=").append(this.cropLength)
 			.append("&matches=").append(this.matches);
 
 		if (this.attributesToCrop != null) {
-			sb.append("&attributesToCrop=").append(this.attributesToCrop);
+			sb.append("&attributesToCrop=").append(String.join(",", this.attributesToCrop));
 		}
 
 		if (this.attributesToHighlight != null) {
