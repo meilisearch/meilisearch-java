@@ -20,7 +20,7 @@ public class Search {
 				  String[] attributesToRetrieve,
 				  String[] attributesToCrop,
 				  int cropLength,
-				  String attributesToHighlight,
+				  String[] attributesToHighlight,
 				  String filters,
 				  boolean matches
 	) throws Exception {

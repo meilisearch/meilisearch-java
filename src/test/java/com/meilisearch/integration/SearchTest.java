@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.containsString;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -192,6 +193,34 @@ public class SearchTest extends AbstractIT {
 		);
 		assertEquals(20, res_gson.hits.length);
 		assertEquals("aunt and uncle", res_gson.hits[0].getFormatted().getOverview());
+	}
+
+	/**
+	 * Test search highlight
+	 */
+	@Test
+	public void testSearchHighlight() throws Exception {
+		String indexUid = "SearchHighlight";
+		Index index = client.createIndex(indexUid);
+		GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = jsonGson.decode(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		SearchRequest searchRequest = new SearchRequest("and")
+			.setAttributesToHighlight(new String[]{"overview"});
+		Results res_gson = jsonGson.decode(
+			index.search(searchRequest),
+			Results.class
+		);
+		assertEquals(20, res_gson.hits.length);
+		assertTrue(res_gson.hits[0].getFormatted().getOverview().contains("<em>"));
+		assertTrue(res_gson.hits[0].getFormatted().getOverview().contains("</em>"));
 	}
 	
 }

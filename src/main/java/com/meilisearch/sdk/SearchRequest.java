@@ -10,7 +10,7 @@ public class SearchRequest {
 	private String[] attributesToRetrieve;
 	private String[] attributesToCrop;
 	private int cropLength;
-	private String attributesToHighlight;
+	private String[] attributesToHighlight;
 	private String filters;
 	private boolean matches;
 
@@ -39,7 +39,7 @@ public class SearchRequest {
 				  String[] attributesToRetrieve,
 				  String[] attributesToCrop,
 				  int cropLength,
-				  String attributesToHighlight,
+				  String[] attributesToHighlight,
 				  String filters,
 				  boolean matches) {
 		this.q = q.replaceAll("\\s+?", "%20");
@@ -77,7 +77,7 @@ public class SearchRequest {
 		return cropLength;
 	}
 
-	public String getAttributesToHighlight() {
+	public String[] getAttributesToHighlight() {
 		return attributesToHighlight;
 	}
 
@@ -115,6 +115,11 @@ public class SearchRequest {
 		return this;
 	}
 
+	public SearchRequest setAttributesToHighlight(String[] attributesToHighlight) {
+		this.attributesToHighlight = attributesToHighlight;
+		return this;
+	}
+
 	public boolean isMatches() {
 		return matches;
 	}
@@ -135,7 +140,7 @@ public class SearchRequest {
 		}
 
 		if (this.attributesToHighlight != null) {
-			sb.append("&attributesToHighlight=").append(this.attributesToHighlight);
+			sb.append("&attributesToHighlight=").append(String.join(",", this.attributesToHighlight));
 		}
 
 		if (this.filters != null) {
