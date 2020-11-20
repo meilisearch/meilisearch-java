@@ -222,5 +222,61 @@ public class SearchTest extends AbstractIT {
 		assertTrue(res_gson.hits[0].getFormatted().getOverview().contains("<em>"));
 		assertTrue(res_gson.hits[0].getFormatted().getOverview().contains("</em>"));
 	}
+
+	/**
+	 * Test search filters
+	 */
+	@Test
+	public void testSearchFilters() throws Exception {
+		String indexUid = "SearchFilters";
+		Index index = client.createIndex(indexUid);
+		GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = jsonGson.decode(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		SearchRequest searchRequest = new SearchRequest("and")
+			.setFilters("title = \"The Dark Knight\"");
+		Results res_gson = jsonGson.decode(
+			index.search(searchRequest),
+			Results.class
+		);
+		assertEquals(1, res_gson.hits.length);
+		assertEquals("155", res_gson.hits[0].getId());
+		assertEquals("The Dark Knight", res_gson.hits[0].getTitle());
+	}
+
+	/**
+	 * Test search filters complex
+	 */
+	@Test
+	public void testSearchFiltersComplex() throws Exception {
+		String indexUid = "SearchFiltersComplex";
+		Index index = client.createIndex(indexUid);
+		GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = jsonGson.decode(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		SearchRequest searchRequest = new SearchRequest("and")
+			.setFilters("title = \"The Dark Knight\" OR id = 290859");
+		Results res_gson = jsonGson.decode(
+			index.search(searchRequest),
+			Results.class
+		);
+		assertEquals(2, res_gson.hits.length);
+		assertEquals("155", res_gson.hits[0].getId());
+		assertEquals("290859", res_gson.hits[1].getId());
+	}
 	
 }

@@ -1,5 +1,9 @@
 package com.meilisearch.sdk;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.io.UnsupportedEncodingException;
+
 /**
  * Search request query string builder
  */
@@ -49,7 +53,7 @@ public class SearchRequest {
 		this.attributesToCrop = attributesToCrop;
 		this.cropLength = cropLength;
 		this.attributesToHighlight = attributesToHighlight;
-		this.filters = filters;
+		this.setFilters(filters);
 		this.matches = matches;
 	}
 
@@ -117,6 +121,17 @@ public class SearchRequest {
 
 	public SearchRequest setAttributesToHighlight(String[] attributesToHighlight) {
 		this.attributesToHighlight = attributesToHighlight;
+		return this;
+	}
+
+	public SearchRequest setFilters(String filters) {
+		if (filters != null) {
+			try {
+				this.filters = URLEncoder.encode(filters, StandardCharsets.UTF_8.toString());
+			} catch (UnsupportedEncodingException ex) {
+				throw new RuntimeException(ex.getCause());
+			}
+		}
 		return this;
 	}
 
