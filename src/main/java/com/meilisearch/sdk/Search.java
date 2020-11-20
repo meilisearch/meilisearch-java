@@ -28,4 +28,9 @@ public class Search {
 		SearchRequest sr = new SearchRequest(q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength, attributesToHighlight, filters, matches);
 		return meilisearchHttpRequest.get(requestQuery, sr.getQuery());
 	}
+
+	String search(String uid, SearchRequest searchRequest) throws Exception {
+		String requestQuery = "/indexes/" + uid + "/search";
+		return meilisearchHttpRequest.get(requestQuery, searchRequest.getQuery());
+	}
 }

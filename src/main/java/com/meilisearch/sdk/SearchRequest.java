@@ -3,7 +3,7 @@ package com.meilisearch.sdk;
 /**
  * Search request query string builder
  */
-class SearchRequest {
+public class SearchRequest {
 	private String q;
 	private int offset;
 	private int limit;
@@ -14,23 +14,26 @@ class SearchRequest {
 	private String filters;
 	private boolean matches;
 
-	SearchRequest(String q) {
+	public SearchRequest() {
+	}
+
+	public SearchRequest(String q) {
 		this(q, 0);
 	}
 
-	SearchRequest(String q, int offset) {
+	public SearchRequest(String q, int offset) {
 		this(q, offset, 20);
 	}
 
-	SearchRequest(String q, int offset, int limit) {
+	public SearchRequest(String q, int offset, int limit) {
 		this(q, offset, limit, "*");
 	}
 
-	SearchRequest(String q, int offset, int limit, String attributesToRetrieve) {
+	public SearchRequest(String q, int offset, int limit, String attributesToRetrieve) {
 		this(q, offset, limit, attributesToRetrieve, null, 200, null, null, false);
 	}
 
-	SearchRequest(String q,
+	public SearchRequest(String q,
 				  int offset,
 				  int limit,
 				  String attributesToRetrieve,
@@ -81,6 +84,23 @@ class SearchRequest {
 	public String getFilters() {
 		return filters;
 	}
+
+	public SearchRequest setQ(String q) {
+		this.q = q;
+		return this;
+	}
+
+	public SearchRequest setOffset(int offset) {
+		this.offset = offset;
+		return this;
+	}
+
+	public SearchRequest setLimit(int limit) {
+		this.limit = limit;
+		return this;
+	}
+
+	
 
 	public boolean isMatches() {
 		return matches;
