@@ -1,5 +1,7 @@
 package com.meilisearch.sdk.utils;
 
+import java.util.*;
+
 public class Movie {
 
 	private String id;
@@ -10,6 +12,12 @@ public class Movie {
 	private String language;
 	private String[] genres;
 	private Movie _formatted;
+	private HashMap<String, List<Match>> _matchesInfo;
+
+	public class Match {
+		public int start;
+		public int length;
+	}
 
 	public Movie() {
 	}
@@ -88,6 +96,15 @@ public class Movie {
 
 	public Movie setFormatted(Movie _formatted) {
 		this._formatted = _formatted;
+		return this;
+	}
+
+	public HashMap<String, List<Match>> getMatchesInfo() {
+		return _matchesInfo;
+	}
+
+	public Movie setMatchesInfo(HashMap<String, List<Match>> _matchesInfo) {
+		this._matchesInfo = _matchesInfo;
 		return this;
 	}
 }

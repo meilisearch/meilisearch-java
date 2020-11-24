@@ -89,6 +89,11 @@ public class SearchRequest {
 		return filters;
 	}
 
+	public boolean getMatches() {
+		return matches;
+	}
+
+
 	public SearchRequest setQ(String q) {
 		this.q = q;
 		return this;
@@ -135,8 +140,9 @@ public class SearchRequest {
 		return this;
 	}
 
-	public boolean isMatches() {
-		return matches;
+	public SearchRequest setMatches(boolean matches) {
+		this.matches=matches;
+		return this;
 	}
 
 	String getQuery() {

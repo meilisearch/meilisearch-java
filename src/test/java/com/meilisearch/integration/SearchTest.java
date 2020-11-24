@@ -11,7 +11,10 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
 import java.util.List;
+import java.util.HashMap;
+import com.google.gson.Gson;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -277,6 +280,40 @@ public class SearchTest extends AbstractIT {
 		assertEquals(2, res_gson.hits.length);
 		assertEquals("155", res_gson.hits[0].getId());
 		assertEquals("290859", res_gson.hits[1].getId());
+	}
+
+	/**
+	 * Test search matches
+	 */
+	@Test
+	public void testSearchMatches() throws Exception {
+		String indexUid = "SearchMatches";
+		Index index = client.createIndex(indexUid);
+		GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = jsonGson.decode(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		SearchRequest searchRequest = new SearchRequest("and")
+			.setMatches(true);
+		// Can't use GsonJsonHandler.decode, bug in deserialization of _matchesInfo
+		String searchResult = index.search(searchRequest);
+		Results res_gson = new Gson().fromJson(
+			searchResult,
+			Results.class
+		);
+		assertEquals(20, res_gson.hits.length);
+		assertEquals(52, res_gson.hits[0].getMatchesInfo().get("overview").get(0).start);
+		assertEquals(3, res_gson.hits[0].getMatchesInfo().get("overview").get(0).length);
+		assertEquals(214, res_gson.hits[0].getMatchesInfo().get("overview").get(1).start);
+		assertEquals(3, res_gson.hits[0].getMatchesInfo().get("overview").get(1).length);
+		assertEquals(375, res_gson.hits[0].getMatchesInfo().get("overview").get(2).start);
+		assertEquals(3, res_gson.hits[0].getMatchesInfo().get("overview").get(2).length);
 	}
 	
 }
