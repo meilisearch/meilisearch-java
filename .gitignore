@@ -58,3 +58,5 @@ atlassian-ide-plugin.xml
 .gradletasknamecache
 
 .vscode
+
+*.gpg
