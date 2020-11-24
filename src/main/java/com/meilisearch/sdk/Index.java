@@ -139,6 +139,17 @@ public class Index implements Serializable {
 	}
 
 	/**
+	 * Search documents in index
+	 *
+	 * @param sr SearchRequest SearchRequest
+	 * @return Meilisearch API response
+	 * @throws Exception If something goes wrong
+	 */
+	public String search(SearchRequest sr) throws Exception {
+		return this.search.search(this.uid, sr);
+	}
+
+	/**
 	 * Get an index update by its id
 	 *
 	 * @param updateId ID of the index update

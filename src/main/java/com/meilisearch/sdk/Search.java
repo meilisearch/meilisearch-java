@@ -17,15 +17,20 @@ public class Search {
 				  String q,
 				  int offset,
 				  int limit,
-				  String attributesToRetrieve,
-				  String attributesToCrop,
+				  String[] attributesToRetrieve,
+				  String[] attributesToCrop,
 				  int cropLength,
-				  String attributesToHighlight,
+				  String[] attributesToHighlight,
 				  String filters,
 				  boolean matches
 	) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/search";
 		SearchRequest sr = new SearchRequest(q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength, attributesToHighlight, filters, matches);
 		return meilisearchHttpRequest.get(requestQuery, sr.getQuery());
+	}
+
+	String search(String uid, SearchRequest searchRequest) throws Exception {
+		String requestQuery = "/indexes/" + uid + "/search";
+		return meilisearchHttpRequest.get(requestQuery, searchRequest.getQuery());
 	}
 }

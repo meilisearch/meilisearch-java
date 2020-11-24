@@ -1,42 +1,49 @@
 package com.meilisearch.sdk;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.io.UnsupportedEncodingException;
+
 /**
  * Search request query string builder
  */
-class SearchRequest {
+public class SearchRequest {
 	private String q;
 	private int offset;
 	private int limit;
-	private String attributesToRetrieve;
-	private String attributesToCrop;
+	private String[] attributesToRetrieve;
+	private String[] attributesToCrop;
 	private int cropLength;
-	private String attributesToHighlight;
+	private String[] attributesToHighlight;
 	private String filters;
 	private boolean matches;
 
-	SearchRequest(String q) {
+	public SearchRequest() {
+	}
+
+	public SearchRequest(String q) {
 		this(q, 0);
 	}
 
-	SearchRequest(String q, int offset) {
+	public SearchRequest(String q, int offset) {
 		this(q, offset, 20);
 	}
 
-	SearchRequest(String q, int offset, int limit) {
-		this(q, offset, limit, "*");
+	public SearchRequest(String q, int offset, int limit) {
+		this(q, offset, limit, new String[]{"*"});
 	}
 
-	SearchRequest(String q, int offset, int limit, String attributesToRetrieve) {
+	public SearchRequest(String q, int offset, int limit, String[] attributesToRetrieve) {
 		this(q, offset, limit, attributesToRetrieve, null, 200, null, null, false);
 	}
 
-	SearchRequest(String q,
+	public SearchRequest(String q,
 				  int offset,
 				  int limit,
-				  String attributesToRetrieve,
-				  String attributesToCrop,
+				  String[] attributesToRetrieve,
+				  String[] attributesToCrop,
 				  int cropLength,
-				  String attributesToHighlight,
+				  String[] attributesToHighlight,
 				  String filters,
 				  boolean matches) {
 		this.q = q.replaceAll("\\s+?", "%20");
@@ -46,7 +53,7 @@ class SearchRequest {
 		this.attributesToCrop = attributesToCrop;
 		this.cropLength = cropLength;
 		this.attributesToHighlight = attributesToHighlight;
-		this.filters = filters;
+		this.setFilters(filters);
 		this.matches = matches;
 	}
 
@@ -62,11 +69,11 @@ class SearchRequest {
 		return limit;
 	}
 
-	public String getAttributesToRetrieve() {
+	public String[] getAttributesToRetrieve() {
 		return attributesToRetrieve;
 	}
 
-	public String getAttributesToCrop() {
+	public String[] getAttributesToCrop() {
 		return attributesToCrop;
 	}
 
@@ -74,7 +81,7 @@ class SearchRequest {
 		return cropLength;
 	}
 
-	public String getAttributesToHighlight() {
+	public String[] getAttributesToHighlight() {
 		return attributesToHighlight;
 	}
 
@@ -82,8 +89,60 @@ class SearchRequest {
 		return filters;
 	}
 
-	public boolean isMatches() {
+	public boolean getMatches() {
 		return matches;
+	}
+
+
+	public SearchRequest setQ(String q) {
+		this.q = q;
+		return this;
+	}
+
+	public SearchRequest setOffset(int offset) {
+		this.offset = offset;
+		return this;
+	}
+
+	public SearchRequest setLimit(int limit) {
+		this.limit = limit;
+		return this;
+	}
+
+	public SearchRequest setAttributesToRetrieve(String[] attributesToRetrieve) {
+		this.attributesToRetrieve = attributesToRetrieve;
+		return this;
+	}
+
+	public SearchRequest setAttributesToCrop(String[] attributesToCrop) {
+		this.attributesToCrop = attributesToCrop;
+		return this;
+	}
+
+	public SearchRequest setCropLength(int cropLength) {
+		this.cropLength = cropLength;
+		return this;
+	}
+
+	public SearchRequest setAttributesToHighlight(String[] attributesToHighlight) {
+		this.attributesToHighlight = attributesToHighlight;
+		return this;
+	}
+
+	public SearchRequest setFilters(String filters) {
+		if (filters != null) {
+			try {
+				this.filters = URLEncoder.encode(filters, StandardCharsets.UTF_8.toString());
+			} catch (UnsupportedEncodingException ex) {
+				throw new RuntimeException(ex.getCause());
+			}
+		}
+		return this;
+	}
+
+	public SearchRequest setMatches(boolean matches) {
+		this.matches=matches;
+		return this;
 	}
 
 	String getQuery() {
@@ -93,16 +152,16 @@ class SearchRequest {
 		sb.append("?q=").append(this.q)
 			.append("&offset=").append(this.offset)
 			.append("&limit=").append(this.limit)
-			.append("&attributesToRetrieve=").append(this.attributesToRetrieve)
+			.append("&attributesToRetrieve=").append(String.join(",", this.attributesToRetrieve))
 			.append("&cropLength=").append(this.cropLength)
 			.append("&matches=").append(this.matches);
 
 		if (this.attributesToCrop != null) {
-			sb.append("&attributesToCrop=").append(this.attributesToCrop);
+			sb.append("&attributesToCrop=").append(String.join(",", this.attributesToCrop));
 		}
 
 		if (this.attributesToHighlight != null) {
-			sb.append("&attributesToHighlight=").append(this.attributesToHighlight);
+			sb.append("&attributesToHighlight=").append(String.join(",", this.attributesToHighlight));
 		}
 
 		if (this.filters != null) {
