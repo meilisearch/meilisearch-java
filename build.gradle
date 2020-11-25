@@ -112,51 +112,64 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
+
+
 signing {
-    sign configurations.archives
+	if (project.hasProperty("releaseSDK")){
+		useGpgCmd()
+		sign configurations.archives
+	}
 }
 
 uploadArchives {
-  repositories {
-    mavenDeployer {
-      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
+	def ossrhUsername = findProperty("ossrhUsername")
+	def ossrhPassword = findProperty("ossrhPassword")
+	
+	project.logger.lifecycle('Trying to upload files to Maven repository...')
 
-      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
+	repositories {
+		mavenDeployer {
+			beforeDeployment { 
+				MavenDeployment deployment -> signing.signPom(deployment) 
+			}
 
-      pom.project {
-        name 'com.meilisearch.sdk:meilisearch-java'
-        packaging 'jar'
-        artifactId 'meilisearch-java'
-        description 'MeiliSearch is a powerful, fast, open-source, easy to use and deploy search engine.'
-        url 'https://github.com/meilisearch/meilisearch-java'
+			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
 
-        scm {
-          connection 'scm:git:git://github.com/meilisearch/meilisearch-java.git'
-          developerConnection 'scm:git:ssh://github.com:meilisearch/meilisearch-java.git'
-          url 'http://github.com/meilisearch/meilisearch-java'
-        }
+			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
 
-        licenses {
-          license {
-            name 'MIT License'
-            url 'http://www.opensource.org/licenses/mit-license.php'
-          }
-        }
+			pom.project {
+				name 'com.meilisearch.sdk:meilisearch-java'
+				packaging 'jar'
+				artifactId 'meilisearch-java'
+				description 'MeiliSearch is a powerful, fast, open-source, easy to use and deploy search engine.'
+				url 'https://github.com/meilisearch/meilisearch-java'
 
-        developers {
-          developer {
-            id 'eskombro'
-            name 'Samuel Jimenez'
-            email 'samuel@meilisearch.com'
-          }
-        }
-      }
-    }
-  }
+				scm {
+					connection 'scm:git:git://github.com/meilisearch/meilisearch-java.git'
+					developerConnection 'scm:git:ssh://github.com:meilisearch/meilisearch-java.git'
+					url 'http://github.com/meilisearch/meilisearch-java'
+				}
+
+				licenses {
+					license {
+					name 'MIT License'
+					url 'http://www.opensource.org/licenses/mit-license.php'
+					}
+				}
+
+				developers {
+					developer {
+					id 'eskombro'
+					name 'Samuel Jimenez'
+					email 'samuel@meilisearch.com'
+					}
+				}
+			}
+		}
+	}
 }
