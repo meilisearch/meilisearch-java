@@ -122,7 +122,8 @@ Output:
 
 #### Custom Search <!-- omit in toc -->
 
-If you want a custom search, the easiest way is to create a `SearchRequest` object, and set the parameters that you need:
+If you want a custom search, the easiest way is to create a `SearchRequest` object, and set the parameters that you need.<br>
+All the supported options are described in the [search parameters](https://docs.meilisearch.com/guides/advanced_guides/search_parameters.html) section of the documentation.
 
 ```java
 
