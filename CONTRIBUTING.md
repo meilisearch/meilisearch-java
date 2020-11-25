@@ -2,4 +2,171 @@
 
 First of all, thank you for contributing to MeiliSearch! The goal of this document is to provide everything you need to know in order to contribute to MeiliSearch and its different integrations.
 
+<!-- MarkdownTOC autolink="true" style="ordered" indent="   " -->
+
+- [Assumptions](#assumptions)
+- [How to Contribute](#how-to-contribute)
+- [Development Workflow](#development-workflow)
+- [Git Guidelines](#git-guidelines)
+- [Release Process (for Admin only)](#release-process-for-admin-only)
+
+<!-- /MarkdownTOC -->
+
+## Assumptions
+
+1. **You're familiar with [GitHub](https://github.com) and the [Pull Request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests)(PR) workflow.**
+2. **You've read the MeiliSearch [documentation](https://docs.meilisearch.com) and the [README](/README.md).**
+3. **You know about the [MeiliSearch community](https://docs.meilisearch.com/resources/contact.html). Please use this for help.**
+
+## How to Contribute
+
+1. Make sure that the contribution you want to make is explained or detailed in a GitHub issue! Find an [existing issue](https://github.com/meilisearch/meilisearch-java/issues/) or [open a new one](https://github.com/meilisearch/meilisearch-java/issues/new).
+2. Once done, [fork the meilisearch-java repository](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) in your own GitHub account. Ask a maintainer if you want your issue to be checked before making a PR.
+3. [Create a new Git branch](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-and-deleting-branches-within-your-repository).
+4. Review the [Development Workflow](#workflow) section that describes the steps to maintain the repository.
+5. Make the changes on your branch.
+6. [Submit the branch as a PR](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork) pointing to the `master` branch of the main meilisearch-java repository. A maintainer should comment and/or review your Pull Request within a few days. Although depending on the circumstances, it may take longer.<br>
+ We do not enforce a naming convention for the PRs, but **please use something descriptive of your changes**, having in mind that the title of your PR will be automatically added to the next [release changelog](https://github.com/meilisearch/meilisearch-java/releases/).
+
+## Development Workflow
+
+### Setup
+
+```bash
+$ ./gradlew install
+```
+
+### Tests and linter
+
+Each PR should pass the tests to be accepted.
+
+```bash
+# Tests
+$ docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearch image from Docker Hub
+$ docker run -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
+$ ./gradlew test
+```
+
+Integration tests will be run in your PR to check everything is OK, but you can run this test in your local environment
+
+```bash
+# Tests
+$ ./gradlew test IntegrationTest
+```
+
+No linter has been set for the moment, but please try to keep the code clean and tidy!
+
+## Git Guidelines
+
+### Git Branches
+
+All changes must be made in a branch and submitted as PR.
+We do not enforce any branch naming style, but please use something descriptive of your changes.
+
+### Git Commits
+
+As minimal requirements, your commit message should:
+- be capitalized
+- not finish by a dot or any other punctuation character (!,?)
+- start with a verb so that we can read your commit message this way: "This commit will ...", where "..." is the commit message.
+  e.g.: "Fix the home page button" or "Add more tests for create_index method"
+
+We don't follow any other convention, but if you want to use one, we recommend [this one](https://chris.beams.io/posts/git-commit/).
+
+### GitHub Pull Requests
+
+Some notes on GitHub PRs:
+
+- [Convert your PR as a draft](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/changing-the-stage-of-a-pull-request) if your changes are a work in progress: no one will review it until you pass your PR as ready for review.<br>
+  The draft PR can be very useful if you want to show that you are working on something and make your work visible.
+- The branch related to the PR must be **up-to-date with `master`** before merging. Fortunately, this project [integrates a bot](https://github.com/meilisearch/integration-guides/blob/master/guides/bors.md) to automatically enforce this requirement without the PR author having to do it manually.
+- All PRs must be reviewed and approved by at least one maintainer.
+- The PR title should be accurate and descriptive of the changes. The title of the PR will be indeed automatically added to the next [release changelogs](https://github.com/meilisearch/meilisearch-java/releases/).
+
+## Release Process (for Admin only)
+
+MeiliSearch tools follow the [Semantic Versioning Convention](https://semver.org/).
+
+### Automation to Rebase and Merge the PRs
+
 // TODO
+
+### Automated Changelogs
+
+// TODO
+
+### How to Publish the Release
+
+#### Prepare your environment (first time)
+
+Steps:
+
+1. Clone the repository
+
+```bash
+$ https://github.com/meilisearch/meilisearch-java.git
+```
+
+2. Install `gpg`
+
+```bash
+$ sudo apt install gnupg
+```
+
+    or 
+
+```bash
+$ brew install gpg
+```
+
+3. Create a `genkey` file
+
+```
+Key-Type: 1
+Key-Length: 4096
+Subkey-Type: 1
+Subkey-Length: 4096
+Name-Real: <your-name>
+Name-Email: <your-email>
+Expire-Date: 0
+Passphrase: <your-passphrase>
+```
+
+4. Create a gpg key
+
+```bash
+# May need sudo privilege
+$ gpg --gen-key --batch genkey 
+```
+
+5. Update your `gradle.properties` file:
+
+```
+signing.gnupg.executable=gpg
+signing.gnupg.keyName=<last-8-digits-of-your-key-hash>
+signing.gnupg.passphrase=<your-passphrase>
+```
+
+6. Publish your public key to a public repository:
+
+```bash
+$ gpg --keyserver hkp://pool.sks-keyservers.net --send-keys <last-8-digits-of-your-key-hash>
+```
+
+#### Sign your files and upload to Maven Repository
+
+1. Sign your files and upload them to Maven repository :
+
+```bash
+# May need sudo privilege
+$ ./gradlew build -P releaseSDK
+```
+
+2. Login to sonatype `Nexus` [here](https://oss.sonatype.org)
+3. Navigate to `Staging repositories`
+4. Close your repository. Checks will be made by nexus.
+5. Click on `Release` button.
+
+<hr>
+
+Thank you again for reading this through, we can not wait to begin to work with you if you made your way through this contributing guide ❤️

@@ -42,8 +42,28 @@ See our [Documentation](https://docs.meilisearch.com/guides/introduction/quick_s
 
 ## 🔧 Installation
 
-// TODO:
+`meilisearch-java` is available from JCentral official repository. To be able to import this package, declare it as a dependency in your project:
 
+### Maven
+
+Add the following code to the `<dependencies>` section of your project:
+
+```xml
+<dependency>
+  <groupId>com.meilisearch.sdk</groupId>
+  <artifactId>meilisearch-java</artifactId>
+  <version>0.1.0</version>
+  <type>pom</type>
+</dependency>
+```
+
+### Gradle
+
+Add the following line to the `dependencies` section of your `build.gradle`:
+
+```
+implementation 'com.meilisearch.sdk:meilisearch-java:0.1.0'
+```
 
 ## 🚀 Getting Started
 
@@ -54,8 +74,7 @@ import com.meilisearch.sdk.Client;
 import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.Index;
 
-public class Main {
-
+class TestMeiliSearch {
 	public static void main(String[] args) throws Exception {
 
 		final String documents = "["
@@ -68,16 +87,16 @@ public class Main {
 			+ "]";
 
 		Client client = new Client(new Config("http://localhost:7700", "masterKey"));
-		Index index = client.createIndex("books"); // If your index does not exist
-		Index index = client.getIndex("books"); // If you already created your index
+		Index index = client.getOrCreateIndex("books");
 
 		index.addDocuments(documents);
-	}
-
+    }
 }
 ```
 
 #### Basic Search <!-- omit in toc -->
+
+A basic search can be performed by calling the `index.search()` method, with a simple String query
 
 ```java
 	// MeiliSearch is typo-tolerant:
@@ -103,11 +122,53 @@ Output:
 
 #### Custom Search <!-- omit in toc -->
 
-// TODO:
+If you want a custom search, the easiest way is to create a `SearchRequest` object, and set the parameters that you need.<br>
+All the supported options are described in the [search parameters](https://docs.meilisearch.com/guides/advanced_guides/search_parameters.html) section of the documentation.
+
+```java
+
+	import com.meilisearch.sdk.SearchRequest;
+
+	...
+
+	String results = index.search(
+		new SearchRequest("in")
+		.setMatches(true)
+		.setAttributesToHighlight(new String[]{"title"})
+	);
+	System.out.println(results);
+```
+
+Output:
+
+```json
+{
+	"hits":[{
+		"book_id":1,
+		"title":"Alice In Wonderland",
+		"_formatted":{
+			"book_id":1,
+			"title":"Alice <em>In</em> Wonderland"
+		},
+		"_matchesInfo":{
+			"title":[{
+				"start":6,
+				"length":2
+			}]
+		}
+	}],
+	"offset":0,
+	"limit":20,
+	"nbHits":1,
+	"exhaustiveNbHits":false,
+	"processingTimeMs":2,
+	"query":"In"
+}
+```
 
 ## 🤖 Compatibility with MeiliSearch
 
-This package only guarantees the compatibility with the [version v0.15.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.15.0).
+This package only guarantees the compatibility with the [version v0.16.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.15.0).
 
 ## 💡 Learn More
 
