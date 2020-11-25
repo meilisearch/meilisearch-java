@@ -7,6 +7,10 @@ class StatusType {
 	int number = 0;
 }
 
+/**
+ *
+ * MeiliSearch response for an Update Status
+ */
 public class UpdateStatus {
 	protected String status = "";
 	protected int updateId = 0;

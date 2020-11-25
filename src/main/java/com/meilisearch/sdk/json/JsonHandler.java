@@ -10,11 +10,11 @@ public interface JsonHandler {
 	String encode(Object o) throws Exception;
 
 	/**
-	 * e.g. deserialize(somesthing, List.class, String.class) will try to deserialize "somestring" into a List<String>
 	 *
 	 * @param o Object to deserialize, most of the time this is a string
 	 * @param targetClass return type
 	 * @param parameters in case the return type is a generic class, this is a list of types to use with that generic.
+	 * @param <T> Abstract type to deserialize
 	 * @return the deserialized object
 	 * @throws Exception wrapped exceptions of the used json library
 	 */

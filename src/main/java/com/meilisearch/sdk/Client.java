@@ -34,7 +34,7 @@ public class Client {
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public Index createIndex(String uid) throws Exception, MeiliSearchApiException {
+	public Index createIndex(String uid) throws Exception {
 		return this.createIndex(uid, null);
 	}
 
@@ -47,7 +47,7 @@ public class Client {
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public Index createIndex(String uid, String primaryKey) throws Exception, MeiliSearchApiException {
+	public Index createIndex(String uid, String primaryKey) throws Exception {
 		Index index = gson.fromJson(this.indexesHandler.create(uid, primaryKey), Index.class);
 		index.setConfig(this.config);
 		return index;
