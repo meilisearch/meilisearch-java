@@ -15,7 +15,7 @@ jobs:
     # Will still run for each push to bump-meilisearch-v*
     if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
     runs-on: ubuntu-latest
-    name: unit-and-integration-tests
+    name: integration-and-unit-tests
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 1.8
