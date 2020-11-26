@@ -93,7 +93,8 @@ MeiliSearch tools follow the [Semantic Versioning Convention](https://semver.org
 
 ### Automated Changelogs
 
-// TODO
+This project integrates a tool to create automated changelogs.<br>
+_[Read more about this](https://github.com/meilisearch/integration-guides/blob/master/guides/release-drafter.md)._
 
 ### How to Publish the Release
 
@@ -113,7 +114,7 @@ $ https://github.com/meilisearch/meilisearch-java.git
 $ sudo apt install gnupg
 ```
 
-    or 
+or
 
 ```bash
 $ brew install gpg
@@ -136,7 +137,7 @@ Passphrase: <your-passphrase>
 
 ```bash
 # May need sudo privilege
-$ gpg --gen-key --batch genkey 
+$ gpg --gen-key --batch genkey
 ```
 
 5. Update your `gradle.properties` file:
