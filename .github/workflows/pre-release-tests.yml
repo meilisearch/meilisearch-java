@@ -1,0 +1,31 @@
+# Testing the code base against the MeiliSearch pre-releases
+name: Pre-Release Tests
+
+# Will only run for PRs and pushes to bump-meilisearch-v*
+on:
+  push:
+    branches: bump-meilisearch-v*
+  pull_request:
+    branches: bump-meilisearch-v*
+
+jobs:
+  tests:
+    # Will not run if the event is a PR to bump-meilisearch-v* (so a pre-release PR)
+    # Will still run for each push to bump-meilisearch-v*
+    if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
+    runs-on: ubuntu-latest
+    name: integration-and-unit-tests-against-rc
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Get the latest MeiliSearch RC
+      run: echo "MEILISEARCH_VERSION=$(curl https://raw.githubusercontent.com/meilisearch/integration-guides/master/scripts/get-latest-meilisearch-rc.sh | bash)" >> $GITHUB_ENV
+    - name: MeiliSearch (${{ env.MEILISEARCH_VERSION }}) setup with Docker
+      run: docker run -d -p 7700:7700 getmeili/meilisearch:${{ env.MEILISEARCH_VERSION }} ./meilisearch --master-key=masterKey --no-analytics=true
+    - name: Build and run unit and integration tests
+      run: ./gradlew build integrationTest

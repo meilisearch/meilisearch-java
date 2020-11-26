@@ -1,3 +1,3 @@
-status = ['java-tests']
+status = ['integration-and-unit-tests']
 # 1 hour timeout
 timeout-sec = 3600
