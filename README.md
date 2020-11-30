@@ -61,7 +61,7 @@ Add the following code to the `<dependencies>` section of your project:
 
 Add the following line to the `dependencies` section of your `build.gradle`:
 
-```java
+```groovy
 implementation 'com.meilisearch.sdk:meilisearch-java:0.1.0'
 ```
 
