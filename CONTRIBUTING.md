@@ -38,23 +38,23 @@ $ ./gradlew install
 
 ### Tests and linter
 
-Each PR should pass the tests to be accepted.
+Integration and unit tests will be run in your PR to check everything is OK. Each PR should pass all the tests to be accepted.
+
+To run the unit tests in your local environment, use:
 
 ```bash
-# Tests
-$ docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearch image from Docker Hub
-$ docker run -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
 $ ./gradlew test
 ```
 
-Integration tests will be run in your PR to check everything is OK, but you can run this test in your local environment
+You can also launch the integration tests, which run against a local MeiliSearch instance. To make it run in your local environment, use:
 
 ```bash
-# Tests
+$ docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearch image from Docker Hub
+$ docker run -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
 $ ./gradlew test IntegrationTest
 ```
 
-No linter has been set for the moment, but please try to keep the code clean and tidy!
+⚠️ No linter has been set for the moment, but please try to keep the code clean and tidy!
 
 ## Git Guidelines
 
@@ -89,7 +89,8 @@ MeiliSearch tools follow the [Semantic Versioning Convention](https://semver.org
 
 ### Automation to Rebase and Merge the PRs
 
-// TODO
+This project integrates a bot that helps us manage pull requests merging.<br>
+_[Read more about this](https://github.com/meilisearch/integration-guides/blob/master/guides/bors.md)._
 
 ### Automated Changelogs
 
@@ -152,6 +153,14 @@ signing.gnupg.passphrase=<your-passphrase>
 
 ```bash
 $ gpg --keyserver hkp://pool.sks-keyservers.net --send-keys <last-8-digits-of-your-key-hash>
+```
+
+#### Update the version
+
+Make a PR modifying the file [`build.gradle`](/build.gradle) with the right version.
+
+```java
+version = 'X.X.X'
 ```
 
 #### Sign your files and upload to Maven Repository

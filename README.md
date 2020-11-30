@@ -15,16 +15,16 @@
 </h4>
 
 <p align="center">
+  <a href="https://maven-badges.herokuapp.com/maven-central/com.meilisearch.sdk/meilisearch-java"><img src="https://maven-badges.herokuapp.com/maven-central/com.meilisearch.sdk/meilisearch-java/badge.svg" alt="Version"></a>
+  <a href="https://github.com/meilisearch/meilisearch-java/actions"><img src="https://github.com/meilisearch/meilisearch-java/workflows/Tests/badge.svg" alt="Tests"></a>
   <a href="https://github.com/meilisearch/meilisearch-java/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
   <a href="https://slack.meilisearch.com"><img src="https://img.shields.io/badge/slack-MeiliSearch-blue.svg?logo=slack" alt="Slack"></a>
-  <a href="https://github.com/meilisearch/MeiliSearch/discussions" alt="Discussions"><img src="https://img.shields.io/badge/github-discussions-red" /></a>
+  <a href="https://app.bors.tech/repositories/29365"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </p>
 
-<p align="center">⚡ The MeiliSearch API client written for Java</p>
+<p align="center">⚡ The MeiliSearch API client written for Java ☕️</p>
 
 **MeiliSearch Java** is the MeiliSearch API client for Java developers. **MeiliSearch** is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, facets and synonyms are provided out-of-the-box.
-
-### ⚠️ Important!: this is WIP, and not available for production ⚠️
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -44,7 +44,7 @@ See our [Documentation](https://docs.meilisearch.com/guides/introduction/quick_s
 
 `meilisearch-java` is available from JCentral official repository. To be able to import this package, declare it as a dependency in your project:
 
-### Maven
+### Maven <!-- omit in toc -->
 
 Add the following code to the `<dependencies>` section of your project:
 
@@ -57,11 +57,11 @@ Add the following code to the `<dependencies>` section of your project:
 </dependency>
 ```
 
-### Gradle
+### Gradle <!-- omit in toc -->
 
 Add the following line to the `dependencies` section of your `build.gradle`:
 
-```
+```groovy
 implementation 'com.meilisearch.sdk:meilisearch-java:0.1.0'
 ```
 
@@ -89,19 +89,21 @@ class TestMeiliSearch {
 		Client client = new Client(new Config("http://localhost:7700", "masterKey"));
 		Index index = client.getOrCreateIndex("books");
 
-		index.addDocuments(documents);
+		index.addDocuments(documents); // => { "updateId": 0 }
     }
 }
 ```
 
+With the `updateId`, you can check the status (`enqueued`, `processed` or `failed`) of your documents addition using the [update endpoint](https://docs.meilisearch.com/references/updates.html#get-an-update-status).
+
 #### Basic Search <!-- omit in toc -->
 
-A basic search can be performed by calling the `index.search()` method, with a simple String query
+A basic search can be performed by calling the `index.search()` method, with a simple string query.
 
 ```java
-	// MeiliSearch is typo-tolerant:
-	String results = index.search("harry pottre");
-	System.out.println(results);
+// MeiliSearch is typo-tolerant:
+String results = index.search("harry pottre");
+System.out.println(results);
 ```
 
 Output:

@@ -3,7 +3,7 @@
  *
  * This generated file contains a sample Java Library project to get you started.
  * For more details take a look at the Java Libraries chapter in the Gradle
- * User Manual available at https://docs.gradle.org/6.0.1/userguide/java_library_plugin.html
+ * User Manual available at https://docs.gradle.org/6.3/userguide/java_library_plugin.html
  */
 
 plugins {
@@ -12,7 +12,7 @@ plugins {
 }
 
 group = 'com.meilisearch.sdk'
-archivesBaseName = "meilisearch-java"
+archivesBaseName = 'meilisearch-java'
 version = '0.1.0'
 
 apply plugin: 'maven'
@@ -125,13 +125,13 @@ uploadArchives {
 
 	def ossrhUsername = findProperty("ossrhUsername")
 	def ossrhPassword = findProperty("ossrhPassword")
-	
+
 	project.logger.lifecycle('Trying to upload files to Maven repository...')
 
 	repositories {
 		mavenDeployer {
-			beforeDeployment { 
-				MavenDeployment deployment -> signing.signPom(deployment) 
+			beforeDeployment {
+				MavenDeployment deployment -> signing.signPom(deployment)
 			}
 
 			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
