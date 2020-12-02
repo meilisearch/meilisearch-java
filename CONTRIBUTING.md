@@ -186,7 +186,7 @@ $ ./gradlew uploadArchive -P releaseSDK
 
 3. Login to [Sonatype Nexus](https://oss.sonatype.org).
 4. Navigate to `Staging repositories`.
-5. Close your repository by clicking on the `Close` button. Checks will be made by nexus. It might take time.
+5. Close your repository by clicking on the `Close` button. Checks will be made by nexus. It might take time. If any error occurs, it will be visible in the `Activity` tab.
 6. Once the check have succeeded, you should be able to click on the `Release` button. The release will be now processed and might take a long time to appear in [Maven Central](https://search.maven.org/artifact/com.meilisearch.sdk/meilisearch-java).
 
 <hr>
