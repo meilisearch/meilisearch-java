@@ -68,6 +68,38 @@ public class Client {
 		return meiliSearchIndexList;
 	}
 
+	
+
+	/**
+	 * Create a local reference to an index identified by `uid`, without doing an HTTP call.
+	 * Calling this method doesn't create an index by itself, but grants access to all the other methods in the Index class.
+	 *
+	 * @param uid Unique identifier of the index
+	 * @return Index instance
+	 * @throws Exception If an error occurs
+	 */
+	public Index index(String uid) throws Exception {
+		return this.index(uid, null);
+	}
+
+	/**
+	 * Create a local reference to an index identified by `uid`, without doing an HTTP call.
+	 * Calling this method doesn't create an index by itself, but grants access to all the other methods in the Index class.
+	 *
+	 * @param uid Unique identifier of the index
+	 * @param primaryKey The primary key of the documents in that index
+	 * @return Index instance
+	 * @throws Exception If an error occurs
+	 */
+	public Index index(String uid, String primaryKey) throws Exception {
+		Index index = new Index();
+		index.uid = uid;
+		index.primaryKey = primaryKey;
+		index.setConfig(this.config);
+		System.out.println(this.config);
+		return index;
+	}
+
 	/**
 	 * Get single index by uid
 	 * Refer https://docs.meilisearch.com/references/indexes.html#get-one-index
