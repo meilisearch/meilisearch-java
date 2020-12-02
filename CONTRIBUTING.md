@@ -99,17 +99,13 @@ _[Read more about this](https://github.com/meilisearch/integration-guides/blob/m
 
 ### How to Publish the Release
 
-#### Prepare your environment (first time)
+#### Create signature credentials (first time)
+
+⚠️ All these steps (create and publish a GPG key) have already been done by the Meili team and the key is shared internally. Please ask a maintainer to get the credentials if needed.
 
 Steps:
 
-1. Clone the repository
-
-```bash
-$ https://github.com/meilisearch/meilisearch-java.git
-```
-
-2. Install `gpg`
+1. Install `gpg`
 
 ```bash
 $ sudo apt install gnupg
@@ -121,7 +117,7 @@ or
 $ brew install gpg
 ```
 
-3. Create a `genkey` file
+2. Create a `genkey` file
 
 ```
 Key-Type: 1
@@ -134,22 +130,14 @@ Expire-Date: 0
 Passphrase: <your-passphrase>
 ```
 
-4. Create a gpg key
+3. Create a gpg key
 
 ```bash
 # May need sudo privilege
 $ gpg --gen-key --batch genkey
 ```
 
-5. Update your `gradle.properties` file:
-
-```
-signing.gnupg.executable=gpg
-signing.gnupg.keyName=<last-8-digits-of-your-key-hash>
-signing.gnupg.passphrase=<your-passphrase>
-```
-
-6. Publish your public key to a public repository:
+4. Publish your public key to a public repository:
 
 ```bash
 $ gpg --keyserver hkp://pool.sks-keyservers.net --send-keys <last-8-digits-of-your-key-hash>
@@ -157,25 +145,49 @@ $ gpg --keyserver hkp://pool.sks-keyservers.net --send-keys <last-8-digits-of-yo
 
 #### Update the version
 
-Make a PR modifying the file [`build.gradle`](/build.gradle) with the right version.
+Make a PR modifying the following files with the right version:
+
+- [`build.gradle`](/build.gradle)
 
 ```java
 version = 'X.X.X'
 ```
 
+- [`README.md`](/README.md) in the `Installation` section
+
+```xml
+<version>X.X.X</version>
+```
+
+```groovy
+implementation 'com.meilisearch.sdk:meilisearch-java:X.X.X'
+```
+
 #### Sign your files and upload to Maven Repository
 
-1. Sign your files and upload them to Maven repository :
+1. Prepare the environement by filling the `gradle.properties` file with all the credentials:
+
+```
+ossrhUsername=<maven-username>
+ossrhPassword=<maven-password>
+
+signing.gnupg.executable=gpg
+signing.gnupg.keyName=<email-associated-to-the-gpg-key>
+signing.gnupg.passphrase=<passphrase-associated-to-the-gpg-key>
+```
+
+2. Sign your files and upload them to Maven repository:
 
 ```bash
 # May need sudo privilege
 $ ./gradlew build -P releaseSDK
+$ ./gradlew uploadArchive -P releaseSDK
 ```
 
-2. Login to sonatype `Nexus` [here](https://oss.sonatype.org)
-3. Navigate to `Staging repositories`
-4. Close your repository. Checks will be made by nexus.
-5. Click on `Release` button.
+3. Login to Sonatype Nexus [here](https://oss.sonatype.org).
+4. Navigate to `Staging repositories`.
+5. Close your repository by clicking on the `Close` button. Checks will be made by nexus. It might take time.
+6. Once the check have succeeded, you should be able to click on the `Release` button. The release will be now processed and might take a long time to appear in [Maven Central](https://search.maven.org/artifact/com.meilisearch.sdk/meilisearch-java).
 
 <hr>
 
