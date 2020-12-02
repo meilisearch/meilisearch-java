@@ -24,8 +24,6 @@ java {
 }
 
 repositories {
-	// Use jcenter for resolving dependencies.
-	// You can declare any Maven/Ivy/file repository here.
 	mavenCentral() // Required for Lombok dependency
 	jcenter()
 }
