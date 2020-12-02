@@ -24,9 +24,7 @@ java {
 }
 
 repositories {
-	// Use jcenter for resolving dependencies.
-	// You can declare any Maven/Ivy/file repository here.
-	mavenCentral()  // Required for Lombok dependency
+	mavenCentral() // Required for Lombok dependency
 	jcenter()
 }
 
@@ -59,7 +57,6 @@ dependencies {
 	compileOnly group: 'jakarta.json.bind', name: 'jakarta.json.bind-api', version: '1.0.2'
 	testImplementation group: 'org.eclipse', name: 'yasson', version: '1.0.8'
 
-
 	// Lombok
 	compileOnly 'org.projectlombok:lombok:1.18.16'
 	annotationProcessor 'org.projectlombok:lombok:1.18.12'
@@ -73,49 +70,49 @@ task buildJar(type: Jar) {
 		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
 	}
 		{
-			exclude "META-INF/*.SF"
-			exclude "META-INF/*.DSA"
-			exclude "META-INF/*.RSA"
+			exclude 'META-INF/*.SF'
+			exclude 'META-INF/*.DSA'
+			exclude 'META-INF/*.RSA'
 		}
 	with jar
 }
 
 test {
 	useJUnitPlatform {
-		excludeTags("integration")
+		excludeTags('integration')
 	}
 	testLogging {
-		events "passed", "skipped", "failed"
+		events 'passed', 'skipped', 'failed'
 	}
 }
 
 task integrationTest(type: Test) {
 	useJUnitPlatform {
-		includeTags("integration")
+		includeTags('integration')
 	}
 	testLogging {
-		events "passed", "skipped", "failed"
+		events 'passed', 'skipped', 'failed'
 	}
 }
 
 task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
+		classifier = 'javadoc'
+		from javadoc
 }
 
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+		classifier = 'sources'
+		from sourceSets.main.allSource
 }
 
 artifacts {
-    archives javadocJar, sourcesJar
+		archives javadocJar, sourcesJar
 }
 
 
 
 signing {
-	if (project.hasProperty("releaseSDK")){
+	if (project.hasProperty('releaseSDK')){
 		useGpgCmd()
 		sign configurations.archives
 	}
@@ -123,8 +120,8 @@ signing {
 
 uploadArchives {
 
-	def ossrhUsername = findProperty("ossrhUsername")
-	def ossrhPassword = findProperty("ossrhPassword")
+	def ossrhUsername = findProperty('ossrhUsername')
+	def ossrhPassword = findProperty('ossrhPassword')
 
 	project.logger.lifecycle('Trying to upload files to Maven repository...')
 
@@ -134,11 +131,11 @@ uploadArchives {
 				MavenDeployment deployment -> signing.signPom(deployment)
 			}
 
-			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+			repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
 				authentication(userName: ossrhUsername, password: ossrhPassword)
 			}
 
-			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+			snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
 				authentication(userName: ossrhUsername, password: ossrhPassword)
 			}
 
