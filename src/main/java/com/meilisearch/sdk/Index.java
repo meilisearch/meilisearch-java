@@ -210,4 +210,21 @@ public class Index implements Serializable {
 			elapsedTime = new Date().getTime() - startTime;
 		}
 	}
+
+	/**
+	 * Fetch the primary key of the index in the Meilisearch instance
+	 *
+	 * @param uid Uinque identifier of the index
+	 * @return Primary key
+	 * @throws Exception If something goes wrong
+	 */
+	public void fetchPrimaryKey() throws Exception {
+		String requestQuery = "/indexes/" + this.uid;
+		MeiliSearchHttpRequest meilisearchHttpRequest = new MeiliSearchHttpRequest(config);;
+		Index retrievedIndex = new Gson().fromJson(
+			meilisearchHttpRequest.get(requestQuery),
+			Index.class
+		);
+		this.primaryKey = retrievedIndex.getPrimaryKey();
+	}
 }
