@@ -86,9 +86,12 @@ class TestMeiliSearch {
 			+ "{\"book_id\": 2, \"title\": \"The Hitchhiker\'s Guide to the Galaxy\"}"
 			+ "]";
 
-		Client client = new Client(new Config("http://localhost:7700", "masterKey"));
+    Client client = new Client(new Config("http://localhost:7700", "masterKey"));
+    
+    // An index is where the documents are stored.
 		Index index = client.getOrCreateIndex("books");
 
+    // If the index 'books' does not exist, MeiliSearch creates it when you first add the documents.
 		index.addDocuments(documents); // => { "updateId": 0 }
     }
 }
