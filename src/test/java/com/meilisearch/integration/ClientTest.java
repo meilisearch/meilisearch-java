@@ -168,4 +168,58 @@ public class ClientTest extends AbstractIT {
 		);
 	}
 
+	/**
+	 * Test call to index method with an inexistent index
+	 */
+	@Test
+	public void testIndexMethodCallInexistentIndex() throws Exception {
+		String indexUid = "IndexMethodCallInexistentIndex";
+		Index index = client.index(indexUid);
+		assertEquals(indexUid, index.getUid());
+		assertThrows(
+			MeiliSearchApiException.class,
+			() -> client.getIndex(indexUid)
+		);
+	}
+
+	/**
+	 * Test call to index method with an inexistent index with primary key
+	 */
+	@Test
+	public void testIndexMethodCallInexistentIndexWithPrimayKey() throws Exception {
+		String indexUid = "IndexMethodCallInexistentIndexWithPrimayKey";
+		String primaryKey = "PrimaryKey";
+		Index index = client.index(indexUid, primaryKey);
+		assertEquals(indexUid, index.getUid());
+		assertThrows(
+			MeiliSearchApiException.class,
+			() -> client.getIndex(indexUid)
+		);
+	}
+
+	/**
+	 * Test call to index method with an existing index
+	 */
+	@Test
+	public void testIndexMethodCallExistingIndex() throws Exception {
+		String indexUid = "IndexMethodCallExistingIndex";
+		Index createdIndex = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
+		assertEquals(createdIndex.getUid(), index.getUid());
+		assertEquals(null, index.getPrimaryKey());
+	}
+
+	/**
+	 * Test call to index method with an existing index with primary key
+	 */
+	@Test
+	public void testIndexMethodCallExistingIndexWithPrimaryKey() throws Exception {
+		String indexUid = "IndexMethodCallExistingIndexWithPrimaryKey";
+		String primaryKey = "PrimaryKey";
+		Index createdIndex = client.createIndex(indexUid, primaryKey);
+		Index index = client.index(indexUid);
+		assertEquals(createdIndex.getUid(), index.getUid());
+		assertEquals(null, index.getPrimaryKey());
+	}
+
 }

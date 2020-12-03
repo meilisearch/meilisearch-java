@@ -96,7 +96,6 @@ public class Client {
 		index.uid = uid;
 		index.primaryKey = primaryKey;
 		index.setConfig(this.config);
-		System.out.println(this.config);
 		return index;
 	}
 
