@@ -1,11 +1,6 @@
 package com.meilisearch.sdk;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.io.UnsupportedEncodingException;
 
 /**
  * Search request query string builder
@@ -134,7 +129,7 @@ public class SearchRequest {
 
 	public SearchRequest setFilters(String filters) {
 		if (filters != null) {
-			this.filters = filters;// URLEncoder.encode(filters, StandardCharsets.UTF_8.toString())
+			this.filters = filters;
 		}
 		return this;
 	}
