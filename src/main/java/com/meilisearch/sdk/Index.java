@@ -214,8 +214,6 @@ public class Index implements Serializable {
 	/**
 	 * Fetch the primary key of the index in the Meilisearch instance
 	 *
-	 * @param uid Uinque identifier of the index
-	 * @return Primary key
 	 * @throws Exception If something goes wrong
 	 */
 	public void fetchPrimaryKey() throws Exception {
