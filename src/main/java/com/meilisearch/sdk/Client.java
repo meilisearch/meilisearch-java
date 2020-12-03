@@ -148,10 +148,10 @@ public class Client {
 	 */
 	public Index getOrCreateIndex(String uid, String primaryKey) throws Exception {
 		try {
-			return this.createIndex(uid, primaryKey);
+			return this.getIndex(uid);
 		} catch (MeiliSearchApiException e) {
-			if(e.getErrorCode().equals("index_already_exists")) {
-				return this.getIndex(uid);
+			if(e.getErrorCode().equals("index_not_found")) {
+				return this.createIndex(uid, primaryKey);
 			}
 			throw e;
 		}
