@@ -89,7 +89,7 @@ class TestMeiliSearch {
     Client client = new Client(new Config("http://localhost:7700", "masterKey"));
     
     // An index is where the documents are stored.
-		Index index = client.getOrCreateIndex("books");
+		Index index = client.index("books");
 
     // If the index 'books' does not exist, MeiliSearch creates it when you first add the documents.
 		index.addDocuments(documents); // => { "updateId": 0 }
