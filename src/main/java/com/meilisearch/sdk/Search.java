@@ -10,7 +10,7 @@ public class Search {
 	String search(String uid, String q) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/search";
 		SearchRequest sr = new SearchRequest(q);
-		return meilisearchHttpRequest.get(requestQuery, sr.getQuery());
+		return meilisearchHttpRequest.post(requestQuery, sr.getQuery());
 	}
 
 	String search(String uid,
@@ -26,11 +26,11 @@ public class Search {
 	) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/search";
 		SearchRequest sr = new SearchRequest(q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength, attributesToHighlight, filters, matches);
-		return meilisearchHttpRequest.get(requestQuery, sr.getQuery());
+		return meilisearchHttpRequest.post(requestQuery, sr.getQuery());
 	}
 
 	String search(String uid, SearchRequest searchRequest) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/search";
-		return meilisearchHttpRequest.get(requestQuery, searchRequest.getQuery());
+		return meilisearchHttpRequest.post(requestQuery, searchRequest.getQuery());
 	}
 }
