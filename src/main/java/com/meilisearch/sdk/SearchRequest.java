@@ -1,5 +1,8 @@
 package com.meilisearch.sdk;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.io.UnsupportedEncodingException;
@@ -46,7 +49,7 @@ public class SearchRequest {
 				  String[] attributesToHighlight,
 				  String filters,
 				  boolean matches) {
-		this.q = q.replaceAll("\\s+?", "%20");
+		this.q = q;
 		this.offset = offset;
 		this.limit = limit;
 		this.attributesToRetrieve = attributesToRetrieve;
@@ -131,11 +134,7 @@ public class SearchRequest {
 
 	public SearchRequest setFilters(String filters) {
 		if (filters != null) {
-			try {
-				this.filters = URLEncoder.encode(filters, StandardCharsets.UTF_8.toString());
-			} catch (UnsupportedEncodingException ex) {
-				throw new RuntimeException(ex.getCause());
-			}
+			this.filters = filters;// URLEncoder.encode(filters, StandardCharsets.UTF_8.toString())
 		}
 		return this;
 	}
@@ -146,28 +145,23 @@ public class SearchRequest {
 	}
 
 	String getQuery() {
-		StringBuilder sb = new StringBuilder();
 
-		// Default parameters
-		sb.append("?q=").append(this.q)
-			.append("&offset=").append(this.offset)
-			.append("&limit=").append(this.limit)
-			.append("&attributesToRetrieve=").append(String.join(",", this.attributesToRetrieve))
-			.append("&cropLength=").append(this.cropLength)
-			.append("&matches=").append(this.matches);
-
+		JSONObject jsonObject = new JSONObject()
+		.put("q", this.q)
+		.put("offset",this.offset)
+		.put("limit", this.limit)
+		.put("attributesToRetrieve", this.attributesToRetrieve)
+		.put("cropLength",this.cropLength)
+		.put("matches", this.matches);
 		if (this.attributesToCrop != null) {
-			sb.append("&attributesToCrop=").append(String.join(",", this.attributesToCrop));
+			jsonObject.put("attributesToCrop",this.attributesToCrop);
 		}
-
 		if (this.attributesToHighlight != null) {
-			sb.append("&attributesToHighlight=").append(String.join(",", this.attributesToHighlight));
+			jsonObject.put("attributesToHighlight",this.attributesToHighlight);
 		}
-
 		if (this.filters != null) {
-			sb.append("&filters=").append(this.filters);
+			jsonObject.put("filters",this.filters);
 		}
-
-		return sb.toString();
+		return jsonObject.toString();
 	}
 }
