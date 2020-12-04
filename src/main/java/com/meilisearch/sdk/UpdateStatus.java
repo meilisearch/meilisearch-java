@@ -8,7 +8,6 @@ class StatusType {
 }
 
 /**
- *
  * MeiliSearch response for an Update Status
  */
 public class UpdateStatus {

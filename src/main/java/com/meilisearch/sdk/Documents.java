@@ -15,16 +15,36 @@ class Documents {
 		meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
 	}
 
+	/**
+	 * Retrieves the document at the specified uid with the specified identifier
+	 * @param uid Partial path to the requested document
+	 * @param identifier ID of the document
+	 * @return Requested document
+	 * @throws Exception if client request causes an error
+	 */
 	String getDocument(String uid, String identifier) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/documents/" + identifier;
 		return meilisearchHttpRequest.get(requestQuery);
 	}
 
+	/**
+	 * Retrieves the documents at the specified uid
+	 * @param uid Partial path to the requested documents
+	 * @return Requested documents
+	 * @throws Exception if the client request causes an error
+	 */
 	String getDocuments(String uid) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/documents";
 		return meilisearchHttpRequest.get(requestQuery);
 	}
 
+	/**
+	 * Retrieves the documents at the specified uid
+	 * @param uid Partial path to the requested documents
+	 * @param limit Limit on the requested documents to be returned
+	 * @return Requested documents
+	 * @throws Exception if the client request causes an error
+	 */
 	String getDocuments(String uid, int limit) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/documents?limit=" + limit;
 		return meilisearchHttpRequest.get(requestQuery);
