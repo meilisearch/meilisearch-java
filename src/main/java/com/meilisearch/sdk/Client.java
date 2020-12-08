@@ -45,7 +45,7 @@ public class Client {
 	 * @param uid Unique identifier for the index to create
 	 * @param primaryKey The primary key of the documents in that index
 	 * @return Meilisearch API response
-	 * @throws Exception if the JSON cannot be parsed correctly
+	 * @throws Exception If an error occurs
 	 */
 	public Index createIndex(String uid, String primaryKey) throws Exception {
 		Index index = gson.fromJson(this.indexesHandler.create(uid, primaryKey), Index.class);
@@ -58,7 +58,7 @@ public class Client {
 	 * Refer https://docs.meilisearch.com/references/indexes.html#list-all-indexes
 	 *
 	 * @return List of indexes in the Meilisearch client
-	 * @throws Exception if the JSON cannot be parsed correctly
+	 * @throws Exception if an error occurs
 	 */
 	public Index[] getIndexList() throws Exception {
 		Index[] meiliSearchIndexList = gson.fromJson(this.indexesHandler.getAll(), Index[].class);
@@ -74,7 +74,7 @@ public class Client {
 	 *
 	 * @param uid Unique identifier of the index to get
 	 * @return Meilisearch API response
-	 * @throws Exception if the JSON cannot be parsed correctly
+	 * @throws Exception if an error occurs
 	 */
 	public Index getIndex(String uid) throws Exception {
 		Index indexes = gson.fromJson(this.indexesHandler.get(uid), Index.class);
