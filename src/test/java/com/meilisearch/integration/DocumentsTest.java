@@ -86,6 +86,40 @@ public class DocumentsTest extends AbstractIT {
 	}
 
 	/**
+	 * Test Update a document
+	 */
+
+	@Test
+	public void testUpdateDocument() throws Exception {
+
+		String indexUid = "UpdateDocument";
+		Index index = client.createIndex(indexUid);
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+		Movie toUpdate = movies[0];
+		toUpdate.setTitle("The Perks of Being a Wallflower");
+		toUpdate.setOverview("The best movie I've ever seen");
+
+		updateInfo = this.gson.fromJson(
+			index.updateDocuments("[" + this.gson.toJson(toUpdate) + "]"),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		Movie responseUpdate = this.gson.fromJson(index.getDocument(toUpdate.getId()), Movie.class);
+
+		assertEquals(toUpdate.getTitle(), responseUpdate.getTitle());
+		assertEquals(toUpdate.getOverview(), responseUpdate.getOverview());
+	}
+
+	/**
 	 * Test GetDocument
 	 */
 	@Test
