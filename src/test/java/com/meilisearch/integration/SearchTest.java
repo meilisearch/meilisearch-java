@@ -60,7 +60,7 @@ public class SearchTest extends AbstractIT {
 	@Test
 	public void testBasicSearch() throws Exception {
 		String indexUid = "BasicSearch";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
@@ -90,7 +90,7 @@ public class SearchTest extends AbstractIT {
 	@Test
 	public void testSearchOffset() throws Exception {
 		String indexUid = "SearchOffset";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
@@ -116,7 +116,7 @@ public class SearchTest extends AbstractIT {
 	@Test
 	public void testSearchLimit() throws Exception {
 		String indexUid = "SearchLimit";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
@@ -142,7 +142,7 @@ public class SearchTest extends AbstractIT {
 	@Test
 	public void testSearchAttributesToRetrieve() throws Exception {
 		String indexUid = "SearchAttributesToRetrieve";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
@@ -175,7 +175,7 @@ public class SearchTest extends AbstractIT {
 	@Test
 	public void testSearchCrop() throws Exception {
 		String indexUid = "SearchCrop";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
@@ -204,7 +204,7 @@ public class SearchTest extends AbstractIT {
 	@Test
 	public void testSearchHighlight() throws Exception {
 		String indexUid = "SearchHighlight";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
@@ -232,7 +232,7 @@ public class SearchTest extends AbstractIT {
 	@Test
 	public void testSearchFilters() throws Exception {
 		String indexUid = "SearchFilters";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
@@ -260,7 +260,7 @@ public class SearchTest extends AbstractIT {
 	@Test
 	public void testSearchFiltersComplex() throws Exception {
 		String indexUid = "SearchFiltersComplex";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
@@ -288,7 +288,7 @@ public class SearchTest extends AbstractIT {
 	@Test
 	public void testSearchMatches() throws Exception {
 		String indexUid = "SearchMatches";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);

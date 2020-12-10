@@ -72,7 +72,7 @@ class IndexesHandler {
 	/**
 	 * Update the primary key of an index in the Meilisearch instance
 	 *
-	 * @param uid        Unique identifier of the index to update
+	 * @param uid Unique identifier of the index to update
 	 * @param primaryKey New primary key field to use for documents in that index
 	 * @return Meilisearch API response
 	 * @throws Exception If something goes wrong
