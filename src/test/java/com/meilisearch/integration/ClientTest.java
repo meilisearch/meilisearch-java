@@ -183,21 +183,6 @@ public class ClientTest extends AbstractIT {
 	}
 
 	/**
-	 * Test call to index method with an inexistent index with primary key
-	 */
-	@Test
-	public void testIndexMethodCallInexistentIndexWithPrimayKey() throws Exception {
-		String indexUid = "IndexMethodCallInexistentIndexWithPrimayKey";
-		String primaryKey = "PrimaryKey";
-		Index index = client.index(indexUid, primaryKey);
-		assertEquals(indexUid, index.getUid());
-		assertThrows(
-			MeiliSearchApiException.class,
-			() -> client.getIndex(indexUid)
-		);
-	}
-
-	/**
 	 * Test call to index method with an existing index
 	 */
 	@Test
