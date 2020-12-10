@@ -97,6 +97,17 @@ public class Index implements Serializable {
 	}
 
 	/**
+	 * Update a document in the index
+	 *
+	 * @param document Document to update in JSON string format
+	 * @return Meilisearch API response
+	 * @throws Exception If something goes wrong
+	 */
+	public String updateDocuments(String document) throws Exception {
+		return this.documents.updateDocuments(this.uid, document);
+	}
+
+	/**
 	 * Delete a document from the index
 	 *
 	 * @param identifier Identifier of the document to delete

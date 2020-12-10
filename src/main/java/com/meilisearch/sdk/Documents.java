@@ -35,6 +35,11 @@ class Documents {
 		return meilisearchHttpRequest.post(requestQuery, document);
 	}
 
+	String updateDocuments(String uid, String document) throws Exception {
+		String requestQuery = "/indexes/" + uid + "/documents";
+		return meilisearchHttpRequest.put(requestQuery, document);
+	}
+
 	String deleteDocument(String uid, String identifier) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/documents/" + identifier;
 		return meilisearchHttpRequest.delete(requestQuery);
