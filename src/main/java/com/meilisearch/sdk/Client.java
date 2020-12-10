@@ -68,11 +68,10 @@ public class Client {
 		return meiliSearchIndexList;
 	}
 
-	
 
 	/**
 	 * Create a local reference to an index identified by `uid`, without doing an HTTP call.
-	 * Calling this method doesn't create an index by itself, but grants access to all the other methods in the Index class.
+	 * Calling this method doesn't create an index in the MeiliSearch instance, but grants access to all the other methods in the Index class.
 	 *
 	 * @param uid Unique identifier of the index
 	 * @return Index instance
