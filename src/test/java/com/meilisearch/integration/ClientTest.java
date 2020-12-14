@@ -118,8 +118,8 @@ public class ClientTest extends AbstractIT {
 		Index index = client.createIndex(indexUid);
 		assertEquals(index.getUid(), indexUid);
 		assertNull(index.getPrimaryKey());
-		client.updateIndex(indexUid, this.primaryKey);
-		index = client.getIndex(indexUid);
+		index = client.updateIndex(indexUid, this.primaryKey);
+		assertTrue(index instanceof Index);
 		assertEquals(index.getUid(), indexUid);
 		assertEquals(index.getPrimaryKey(), this.primaryKey);
 		client.deleteIndex(index.getUid());
