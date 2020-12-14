@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class DocumentsTest extends AbstractIT {
 	public void testAddDocumentsSingle() throws Exception {
 
 		String indexUid = "AddDocumentsSingle";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		String singleDocument = this.gson.toJson(testData.getData().get(0));
@@ -70,7 +71,7 @@ public class DocumentsTest extends AbstractIT {
 	public void testAddDocumentsMultiple() throws Exception {
 
 		String indexUid = "AddDocumentsMultiple";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		UpdateStatus updateInfo = this.gson.fromJson(
@@ -86,13 +87,82 @@ public class DocumentsTest extends AbstractIT {
 	}
 
 	/**
+	 * Test Update a document
+	 */
+	@Test
+	public void testUpdateDocument() throws Exception {
+
+		String indexUid = "UpdateDocument";
+		Index index = client.createIndex(indexUid);
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+		Movie toUpdate = movies[0];
+		toUpdate.setTitle("The Perks of Being a Wallflower");
+		toUpdate.setOverview("The best movie I've ever seen");
+
+		updateInfo = this.gson.fromJson(
+			index.updateDocuments("[" + this.gson.toJson(toUpdate) + "]"),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		Movie responseUpdate = this.gson.fromJson(index.getDocument(toUpdate.getId()), Movie.class);
+
+		assertEquals(toUpdate.getTitle(), responseUpdate.getTitle());
+		assertEquals(toUpdate.getOverview(), responseUpdate.getOverview());
+	}
+
+	/**
+	 * Test Update multiple documents
+	 */
+	@Test
+	public void testUpdateDocuments() throws Exception {
+		String indexUid = "UpdateDocuments";
+		Index index = client.createIndex(indexUid);
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = this.gson.fromJson(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+		List<Movie> toUpdate = new ArrayList<>();
+		for (int i = 0; i < 5; i++) {
+			movies[i].setTitle("Star wars episode: " + i);
+			movies[i].setOverview("This star wars movie is for the episode: " + i);
+			toUpdate.add(movies[i]);
+		}
+
+		updateInfo = this.gson.fromJson(
+			index.updateDocuments(this.gson.toJson(toUpdate)),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		for (int j = 0; j < 5; j++) {
+			Movie responseUpdate = this.gson.fromJson(index.getDocument(toUpdate.get(j).getId()), Movie.class);
+			assertEquals(toUpdate.get(j).getTitle(), responseUpdate.getTitle());
+			assertEquals(toUpdate.get(j).getOverview(), responseUpdate.getOverview());
+		}
+	}
+
+	/**
 	 * Test GetDocument
 	 */
 	@Test
 	public void testGetDocument() throws Exception {
 
 		String indexUid = "GetDocument";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		UpdateStatus updateInfo = this.gson.fromJson(
@@ -115,7 +185,7 @@ public class DocumentsTest extends AbstractIT {
 	public void testGetDocuments() throws Exception {
 
 		String indexUid = "GetDocuments";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		UpdateStatus updateInfo = this.gson.fromJson(
@@ -145,8 +215,7 @@ public class DocumentsTest extends AbstractIT {
 
 		String indexUid = "GetDocumentsLimit";
 		int limit = 24;
-		client.createIndex(indexUid);
-		Index index = client.getIndex(indexUid);
+		Index index = client.index(indexUid);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		UpdateStatus updateInfo = this.gson.fromJson(
@@ -169,8 +238,7 @@ public class DocumentsTest extends AbstractIT {
 	public void testDeleteDocument() throws Exception {
 
 		String indexUid = "DeleteDocument";
-		client.createIndex(indexUid);
-		Index index = client.getIndex(indexUid);
+		Index index = client.index(indexUid);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		UpdateStatus updateInfo = this.gson.fromJson(
@@ -200,8 +268,7 @@ public class DocumentsTest extends AbstractIT {
 	public void testDeleteDocuments() throws Exception {
 
 		String indexUid = "DeleteDocuments";
-		client.createIndex(indexUid);
-		Index index = client.getIndex(indexUid);
+		Index index = client.index(indexUid);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		UpdateStatus updateInfo = this.gson.fromJson(
@@ -245,8 +312,7 @@ public class DocumentsTest extends AbstractIT {
 	@Test
 	public void testDeleteAllDocuments() throws Exception {
 		String indexUid = "DeleteAllDocuments";
-		client.createIndex(indexUid);
-		Index index = client.getIndex(indexUid);
+		Index index = client.index(indexUid);
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		UpdateStatus updateInfo = this.gson.fromJson(

@@ -62,6 +62,18 @@ class Documents {
 	}
 
 	/**
+	 * Replaces a document at the specified uid
+	 * @param uid Partial index identifier for the document
+	 * @param document String containing the document to replace the existing document
+	 * @return A String containing the added document
+	 * @throws Exception if the client request causes an error
+	 */
+	String updateDocuments(String uid, String document) throws Exception {
+		String requestQuery = "/indexes/" + uid + "/documents";
+		return meilisearchHttpRequest.put(requestQuery, document);
+	}
+
+	/**
 	 * Deletes the document at the specified uid with the specified identifier
 	 * @param uid Partial index identifier for the requested document
 	 * @param identifier ID of the document

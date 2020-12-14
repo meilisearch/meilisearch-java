@@ -97,6 +97,17 @@ public class Index implements Serializable {
 	}
 
 	/**
+	 * Update a document in the index
+	 *
+	 * @param document Document to update in JSON string format
+	 * @return Meilisearch API response
+	 * @throws Exception If something goes wrong
+	 */
+	public String updateDocuments(String document) throws Exception {
+		return this.documents.updateDocuments(this.uid, document);
+	}
+
+	/**
 	 * Delete a document from the index
 	 *
 	 * @param identifier Identifier of the document to delete
@@ -209,5 +220,20 @@ public class Index implements Serializable {
 			Thread.sleep(intervalInMs);
 			elapsedTime = new Date().getTime() - startTime;
 		}
+	}
+
+	/**
+	 * Fetch the primary key of the index in the Meilisearch instance
+	 *
+	 * @throws Exception If something goes wrong
+	 */
+	public void fetchPrimaryKey() throws Exception {
+		String requestQuery = "/indexes/" + this.uid;
+		MeiliSearchHttpRequest meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+		Index retrievedIndex = new Gson().fromJson(
+			meilisearchHttpRequest.get(requestQuery),
+			Index.class
+		);
+		this.primaryKey = retrievedIndex.getPrimaryKey();
 	}
 }

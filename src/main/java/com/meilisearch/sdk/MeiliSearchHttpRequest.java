@@ -11,7 +11,7 @@ import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import java.util.Collections;
 
 /**
- * The requests for the different functions to be done through MeiliSearch
+ * The HTTP requests for the different functions to be done through MeiliSearch
  */
 class MeiliSearchHttpRequest {
 	private final AbstractHttpClient client;

@@ -35,7 +35,7 @@ public class UpdatesTest extends AbstractIT {
 	@Test
 	public void testGetUpdate() throws Exception {
 		String indexUid = "GetUpdate";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 
 		UpdateStatus updateInfo = this.gson.fromJson(
 			index.addDocuments(this.testData.getRaw()),
@@ -54,7 +54,7 @@ public class UpdatesTest extends AbstractIT {
 	@Test
 	public void testGetUpdates() throws Exception {
 		String indexUid = "GetUpdates";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 
 		UpdateStatus updateInfo = this.gson.fromJson(
 			index.addDocuments(this.testData.getRaw()),
@@ -75,7 +75,7 @@ public class UpdatesTest extends AbstractIT {
 	@Test
 	public void testWaitForPendingUpdate() throws Exception {
 		String indexUid = "WaitForPendingUpdate";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 
 		UpdateStatus updateInfo = this.gson.fromJson(
 			index.addDocuments(this.testData.getRaw()),
@@ -96,7 +96,7 @@ public class UpdatesTest extends AbstractIT {
 	@Test
 	public void testWaitForPendingUpdateTimoutInMs() throws Exception {
 		String indexUid = "WaitForPendingUpdateTimoutInMs";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index(indexUid);
 
 		UpdateStatus updateInfo = this.gson.fromJson(
 			index.addDocuments(this.testData.getRaw()),

@@ -86,9 +86,12 @@ class TestMeiliSearch {
 			+ "{\"book_id\": 2, \"title\": \"The Hitchhiker\'s Guide to the Galaxy\"}"
 			+ "]";
 
-		Client client = new Client(new Config("http://localhost:7700", "masterKey"));
-		Index index = client.getOrCreateIndex("books");
+    Client client = new Client(new Config("http://localhost:7700", "masterKey"));
+    
+    // An index is where the documents are stored.
+		Index index = client.index("books");
 
+    // If the index 'books' does not exist, MeiliSearch creates it when you first add the documents.
 		index.addDocuments(documents); // => { "updateId": 0 }
     }
 }
@@ -170,7 +173,7 @@ Output:
 
 ## 🤖 Compatibility with MeiliSearch
 
-This package only guarantees the compatibility with the [version v0.16.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.15.0).
+This package only guarantees the compatibility with the [version v0.17.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.17.0).
 
 ## 💡 Learn More
 
