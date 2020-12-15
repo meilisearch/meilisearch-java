@@ -30,7 +30,7 @@ class GsonJsonHandlerTest {
 	@Test
 	void deserialize() {
 		assertDoesNotThrow(() -> classToTest.decode("{}", Movie.class));
-		assertDoesNotThrow(() -> classToTest.decode("{}", Movie.class, null));
+		assertDoesNotThrow(() -> classToTest.decode("{}", Movie.class, (Class<?>[]) null));
 		assertDoesNotThrow(() -> classToTest.decode("{}", Movie.class, new Class[0]));
 	}
 
@@ -48,7 +48,7 @@ class GsonJsonHandlerTest {
 	@Test
 	@SuppressWarnings({"RedundantArrayCreation", "ConfusingArgumentToVarargsMethod"})
 	void deserializeWithParametersEmpty() throws Exception {
-		assertNotNull(classToTest.decode("{}", Movie.class, null));
+		assertNotNull(classToTest.decode("{}", Movie.class, (Class<?> []) null));
 		assertNotNull(classToTest.decode("{}", Movie.class, new Class[0]));
 	}
 
