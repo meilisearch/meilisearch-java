@@ -42,7 +42,7 @@ public class Client {
 	 * Create index
 	 * Refer https://docs.meilisearch.com/references/indexes.html#create-an-index
 	 *
-	 * @param uid        Unique identifier for the index to create
+	 * @param uid Unique identifier for the index to create
 	 * @param primaryKey The primary key of the documents in that index
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
@@ -58,7 +58,7 @@ public class Client {
 	 * Refer https://docs.meilisearch.com/references/indexes.html#list-all-indexes
 	 *
 	 * @return List of indexes in the Meilisearch client
-	 * @throws Exception If an error occurs
+	 * @throws Exception if an error occurs
 	 */
 	public Index[] getIndexList() throws Exception {
 		Index[] meiliSearchIndexList = gson.fromJson(this.indexesHandler.getAll(), Index[].class);
@@ -89,7 +89,7 @@ public class Client {
 	 *
 	 * @param uid Unique identifier of the index to get
 	 * @return Meilisearch API response
-	 * @throws Exception If an error occurs
+	 * @throws Exception if an error occurs
 	 */
 	public Index getIndex(String uid) throws Exception {
 		Index indexes = gson.fromJson(this.indexesHandler.get(uid), Index.class);
@@ -101,7 +101,7 @@ public class Client {
 	 * Update index by uid
 	 * Refer https://docs.meilisearch.com/references/indexes.html#update-an-index
 	 *
-	 * @param uid        Unique identifier of the index to update
+	 * @param uid Unique identifier of the index to update
 	 * @param primaryKey Primary key of the documents in the index
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
@@ -125,10 +125,10 @@ public class Client {
 	/**
 	 * Get single index by uid or if it does not exists, Create index
 	 *
-	 * @param uid        Unique identifier for the index to create
+	 * @param uid Unique identifier for the index to create
 	 * @param primaryKey The primary key of the documents in that index
 	 * @return Index instance
-	 * @throws Exception If an error occurss
+	 * @throws Exception If an error occurs
 	 */
 	public Index getOrCreateIndex(String uid, String primaryKey) throws Exception {
 		try {
@@ -144,9 +144,9 @@ public class Client {
 	/**
 	 * Get single index by uid or if it does not exists, Create index
 	 *
-	 * @param uid        Unique identifier for the index to create
+	 * @param uid Unique identifier for the index to create
 	 * @return Index instance
-	 * @throws Exception If an error occurss
+	 * @throws Exception If an error occurs
 	 */
 	public Index getOrCreateIndex(String uid) throws Exception {
 		return getOrCreateIndex(uid, null);

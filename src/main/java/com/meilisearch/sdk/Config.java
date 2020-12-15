@@ -27,10 +27,18 @@ public class Config {
 		this.apiKey = apiKey;
 	}
 
+	/**
+	 * Method for returning the hostUrl
+	 * @return The Host Url String of the Meilisearch Instance
+	 */
 	public String getHostUrl() {
 		return hostUrl;
 	}
 
+	/**
+	 * Method for returning the apiKey
+	 * @return The API Key String
+	 */
 	public String getApiKey() {
 		return apiKey;
 	}
