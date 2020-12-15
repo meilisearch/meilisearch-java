@@ -16,9 +16,10 @@ class Documents {
 
 	/**
 	 * Retrieves the document at the specified uid with the specified identifier
+	 *
 	 * @param uid Partial index identifier for the requested documents
 	 * @param identifier ID of the document
-	 * @return A String containing the requested document
+	 * @return string containing the requested document
 	 * @throws Exception if client request causes an error
 	 */
 	String getDocument(String uid, String identifier) throws Exception {
@@ -28,8 +29,9 @@ class Documents {
 
 	/**
 	 * Retrieves the documents at the specified uid
+	 *
 	 * @param uid Partial index identifier for the requested documents
-	 * @return A String containing the requested document
+	 * @return string containing the requested document
 	 * @throws Exception if the client request causes an error
 	 */
 	String getDocuments(String uid) throws Exception {
@@ -39,9 +41,10 @@ class Documents {
 
 	/**
 	 * Retrieves the documents at the specified uid
+	 *
 	 * @param uid Partial index identifier for the requested documents
 	 * @param limit Limit on the requested documents to be returned
-	 * @return A String containing the requested document
+	 * @return string containing the requested document
 	 * @throws Exception if the client request causes an error
 	 */
 	String getDocuments(String uid, int limit) throws Exception {
@@ -51,9 +54,10 @@ class Documents {
 
 	/**
 	 * Adds/Replaces a document at the specified uid
+	 *
 	 * @param uid Partial index identifier for the document
 	 * @param document String containing the document to add
-	 * @return A String containing the added document
+	 * @return string containing the added document
 	 * @throws Exception if the client request causes an error
 	 */
 	String addDocuments(String uid, String document) throws Exception {
@@ -63,9 +67,10 @@ class Documents {
 
 	/**
 	 * Replaces a document at the specified uid
+	 *
 	 * @param uid Partial index identifier for the document
 	 * @param document String containing the document to replace the existing document
-	 * @return A String containing the added document
+	 * @return string containing the added document
 	 * @throws Exception if the client request causes an error
 	 */
 	String updateDocuments(String uid, String document) throws Exception {
@@ -75,9 +80,10 @@ class Documents {
 
 	/**
 	 * Deletes the document at the specified uid with the specified identifier
+	 *
 	 * @param uid Partial index identifier for the requested document
 	 * @param identifier ID of the document
-	 * @return The corresponding updateId JSON
+	 * @return the corresponding updateId JSON
 	 * @throws Exception if the client request causes an error
 	 */
 	String deleteDocument(String uid, String identifier) throws Exception {
@@ -87,9 +93,10 @@ class Documents {
 
 	/**
 	 * Deletes the documents at the specified uid with the specified identifiers
+	 *
 	 * @param uid Partial index identifier for the requested documents
 	 * @param identifiers ID of documents to delete
-	 * @return The corresponding updateId JSON
+	 * @return the corresponding updateId JSON
 	 * @throws Exception if the client request causes an error
 	 */
 	String deleteDocuments(String uid, List<String> identifiers) throws Exception {
@@ -102,8 +109,9 @@ class Documents {
 
 	/**
 	 * Deletes all documents at the specified uid
+	 *
 	 * @param uid Partial index identifier for the requested documents
-	 * @return The corresponding updateId JSON
+	 * @return the corresponding updateId JSON
 	 * @throws Exception if the client request causes an error
 	 */
 	String deleteAllDocuments(String uid) throws Exception {

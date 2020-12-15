@@ -19,6 +19,7 @@ class MeiliSearchHttpRequest {
 
 	/**
 	 * Constructor for the MeiliSearchHttpRequest
+	 *
 	 * @param config Meilisearch configuration
 	 */
 	protected MeiliSearchHttpRequest(Config config) {
@@ -28,6 +29,7 @@ class MeiliSearchHttpRequest {
 
 	/**
 	 * Constructor for the MeiliSearchHttpRequest
+	 *
 	 * @param client HttpClient for making calls to server
 	 * @param factory RequestFactory for generating calls to server
 	 */
@@ -39,8 +41,9 @@ class MeiliSearchHttpRequest {
 
 	/**
 	 * Gets a document at the specified path
+	 *
 	 * @param api Path to document
-	 * @return Document that was requested
+	 * @return document that was requested
 	 * @throws Exception if the client has an error
 	 * @throws MeiliSearchApiException if the response is an error
 	 */
@@ -50,9 +53,10 @@ class MeiliSearchHttpRequest {
 
 	/**
 	 * Gets a document at the specified path with a given parameter
+	 *
 	 * @param api Path to document
 	 * @param param Parameter to be passed
-	 * @return Document that was requested
+	 * @return document that was requested
 	 * @throws Exception if the client has an error
 	 * @throws MeiliSearchApiException if the response is an error
 	 */
@@ -66,9 +70,10 @@ class MeiliSearchHttpRequest {
 
 	/**
 	 * Adds a document to the specified path
+	 *
 	 * @param api Path to server
 	 * @param body Query for search
-	 * @return Results of the search
+	 * @return results of the search
 	 * @throws Exception if the client has an error
 	 * @throws MeiliSearchApiException if the response is an error
 	 */
@@ -82,9 +87,10 @@ class MeiliSearchHttpRequest {
 
 	/**
 	 * Replaces the requested resource with new data
+	 *
 	 * @param api Path to the requested resource
 	 * @param body Replacement data for the requested resource
-	 * @return Updated resource
+	 * @return updated resource
 	 * @throws Exception if the client has an error
 	 * @throws MeiliSearchApiException if the response is an error
 	 */
@@ -99,6 +105,7 @@ class MeiliSearchHttpRequest {
 
 	/**
 	 * Deletes the specified resource
+	 *
 	 * @param api Path to the requested resource
 	 * @return deleted resource
 	 * @throws Exception if the client has an error

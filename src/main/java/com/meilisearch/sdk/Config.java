@@ -8,7 +8,7 @@ public class Config {
 	String apiKey;
 
 	/**
-	 * Create a configuration without an API key
+	 * Creates a configuration without an API key
 	 *
 	 * @param hostUrl URL of the Meilisearch instance
 	 */
@@ -17,7 +17,7 @@ public class Config {
 	}
 
 	/**
-	 * Create a configuration with an API key
+	 * Creates a configuration with an API key
 	 *
 	 * @param hostUrl URL of the Meilisearch instance
 	 * @param apiKey  API key to pass to the header of requests sent to Meilisearch
@@ -29,7 +29,7 @@ public class Config {
 
 	/**
 	 * Method for returning the hostUrl
-	 * @return The Host Url String of the Meilisearch Instance
+	 * @return host URL string of the Meilisearch instance
 	 */
 	public String getHostUrl() {
 		return hostUrl;
@@ -37,7 +37,7 @@ public class Config {
 
 	/**
 	 * Method for returning the apiKey
-	 * @return The API Key String
+	 * @return API key string
 	 */
 	public String getApiKey() {
 		return apiKey;

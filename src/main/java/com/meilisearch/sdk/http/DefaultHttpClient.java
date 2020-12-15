@@ -27,7 +27,7 @@ public class DefaultHttpClient extends AbstractHttpClient {
 	 * @param method HTTP method to use for the connection
 	 * @param apiKey API Key to use for the connection
 	 * @return Validated connection (otherwise, will throw a {@link IOException})
-	 * @throws IOException If unable to establish connection
+	 * @throws IOException if unable to establish connection
 	 */
 	private HttpURLConnection getConnection(final URL url, final String method, final String apiKey) throws IOException {
 		if (url == null || "".equals(method)) throw new IOException("Unable to open an HttpURLConnection with no URL or method");

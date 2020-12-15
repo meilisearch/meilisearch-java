@@ -8,6 +8,7 @@ public class Search {
 
 	/**
 	 * Constructor for the Meilisearch Search object
+	 *
 	 * @param config Meilisearch configuration
 	 */
 	protected Search(Config config) {
@@ -16,6 +17,7 @@ public class Search {
 
 	/**
 	 * Performs a search on a given index with a given query
+	 *
 	 * @param uid Index identifier
 	 * @param q Query to search on index
 	 * @return search results
@@ -29,6 +31,7 @@ public class Search {
 
 	/**
 	 * Performs a search on a given index with a given query
+	 *
 	 * @param q Query string
 	 * @param offset Number of documents to skip
 	 * @param limit Maximum number of documents returned
@@ -59,6 +62,7 @@ public class Search {
 
 	/**
 	 * Performs a search on a given index with a given query
+	 *
 	 * @param uid Index identifier
 	 * @param searchRequest SearchRequest to search on index
 	 * @return search results

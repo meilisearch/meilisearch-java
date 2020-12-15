@@ -28,6 +28,7 @@ public class UpdateStatus {
 
 	/**
 	 * Method to return the JSON String of the Update Status
+	 *
 	 * @return JSON string of the Update Status object
 	 */
 	@Override
@@ -37,7 +38,8 @@ public class UpdateStatus {
 
 	/**
 	 * Method to return the status of the Update Status object
-	 * @return String containing the status of the Update Status Object
+	 *
+	 * @return string containing the status of the Update Status Object
 	 */
 	public String getStatus() {
 		return this.status;
@@ -45,7 +47,7 @@ public class UpdateStatus {
 
 	/**
 	 * Method to return the id of the Update
-	 * @return String containing the identifier of the Update
+	 * @return string containing the identifier of the Update
 	 */
 	public int getUpdateId() {
 		return this.updateId;
@@ -53,7 +55,7 @@ public class UpdateStatus {
 
 	/**
 	 * Method to return the name and quantity of the Update Status
-	 * @return StatusType Object of the name and quantity of the Update Status
+	 * @return statusType Object of the name and quantity of the Update Status
 	 */
 	public StatusType getStatusType() {
 		return this.type;
@@ -69,7 +71,7 @@ public class UpdateStatus {
 
 	/**
 	 * Method to return the time that the Update was enqueued at
-	 * @return String value of the date and time of the Update when it was enqueued
+	 * @return string value of the date and time of the Update when it was enqueued
 	 */
 	public String getEnqueuedAt() {
 		return this.enqueuedAt;
@@ -77,7 +79,7 @@ public class UpdateStatus {
 
 	/**
 	 * Method to return the time that the Update was processed at
-	 * @return String value of the date and time of the  Update when it was processed
+	 * @return string value of the date and time of the  Update when it was processed
 	 */
 	public String getProcessedAt() {
 		return this.processedAt;
@@ -85,7 +87,7 @@ public class UpdateStatus {
 
 	/**
 	 * Method to return the error code of the Update Status
-	 * @return String value of the error code of the Update Status
+	 * @return string value of the error code of the Update Status
 	 */
 	public String getErrorCode() {
 		return this.errorCode;
@@ -93,7 +95,7 @@ public class UpdateStatus {
 
 	/**
 	 * Method to return the error type of the Update Status
-	 * @return String value of the error type of the Update Status
+	 * @return string value of the error type of the Update Status
 	 */
 	public String getErrorType() {
 		return this.errorType;
@@ -101,7 +103,7 @@ public class UpdateStatus {
 
 	/**
 	 * Method to return the link of the error of the Update
-	 * @return String value of the errorLink of the Update
+	 * @return string value of the errorLink of the Update
 	 * */
 	public String getErrorLink() {
 		return this.errorLink;
