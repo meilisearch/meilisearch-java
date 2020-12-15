@@ -106,8 +106,10 @@ public class Client {
 	 * @return Meilisearch API response
 	 * @throws Exception If an error occurs
 	 */
-	public String updateIndex(String uid, String primaryKey) throws Exception {
-		return this.indexesHandler.updatePrimaryKey(uid, primaryKey);
+	public Index updateIndex(String uid, String primaryKey) throws Exception {
+		Index index = gson.fromJson(this.indexesHandler.updatePrimaryKey(uid, primaryKey), Index.class);
+		index.setConfig(this.config);
+		return index;
 	}
 
 	/**
