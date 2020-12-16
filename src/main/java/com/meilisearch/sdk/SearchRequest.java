@@ -110,7 +110,7 @@ public class SearchRequest {
 
 	/**
 	 * Method for returning the Query String
-	 * @return Query String
+	 * @return query String
 	 */
 	public String getQ() {
 		return q;
@@ -118,7 +118,7 @@ public class SearchRequest {
 
 	/**
 	 * Method for returning the offset
-	 * @return Number of documents to skip
+	 * @return number of documents to skip
 	 */
 	public int getOffset() {
 		return offset;
@@ -126,7 +126,7 @@ public class SearchRequest {
 
 	/**
 	 * Method for returning the limit
-	 * @return Maximum number of documents returned
+	 * @return maximum number of documents returned
 	 */
 	public int getLimit() {
 		return limit;
@@ -134,7 +134,7 @@ public class SearchRequest {
 
 	/**
 	 * Method for returning the attributesToRetrieve
-	 * @return Attributes whose values will contain highlighted matching terms
+	 * @return attributes whose values will contain highlighted matching terms
 	 */
 	public String[] getAttributesToRetrieve() {
 		return attributesToRetrieve;
@@ -142,7 +142,7 @@ public class SearchRequest {
 
 	/**
 	 * Method for returning the attributesToCrop
-	 * @return Attributes whose values have to be cropped
+	 * @return attributes whose values have to be cropped
 	 */
 	public String[] getAttributesToCrop() {
 		return attributesToCrop;
@@ -150,7 +150,8 @@ public class SearchRequest {
 
 	/**
 	 * Method for returning the cropLength
-	 * @return Length used to crop field values
+	 *
+	 * @return length used to crop field values
 	 */
 	public int getCropLength() {
 		return cropLength;
@@ -158,7 +159,8 @@ public class SearchRequest {
 
 	/**
 	 * Method for returning the attributesToHighlight
-	 * @return Attributes whose values will contain highlighted matching terms
+	 *
+	 * @return attributes whose values will contain highlighted matching terms
 	 */
 	public String[] getAttributesToHighlight() {
 		return attributesToHighlight;
@@ -166,7 +168,8 @@ public class SearchRequest {
 
 	/**
 	 * Method to return the filters
-	 * @return Filter queries by an attribute value
+	 *
+	 * @return filter queries by an attribute value
 	 */
 	public String getFilters() {
 		return filters;
@@ -174,6 +177,7 @@ public class SearchRequest {
 
 	/**
 	 * Method to return the matches
+	 *
 	 * @return Defines whether an object that contains information about the matches should be returned or not
 	 */
 	public boolean getMatches() {
@@ -182,6 +186,7 @@ public class SearchRequest {
 
 	/**
 	 * Method to set the Query String
+	 *
 	 * @param q Query String
 	 * @return altered SearchRequest
 	 */
@@ -192,6 +197,7 @@ public class SearchRequest {
 
 	/**
 	 * Method to set the offset
+	 *
 	 * @param offset Number of documents to skip
 	 * @return altered SearchRequest
 	 */
@@ -202,6 +208,7 @@ public class SearchRequest {
 
 	/**
 	 * Method to set the limit
+	 *
 	 * @param limit Maximum number of documents returned
 	 * @return altered SearchRequest
 	 */
@@ -212,6 +219,7 @@ public class SearchRequest {
 
 	/**
 	 * Method to set the attributesToRetrieve
+	 *
 	 * @param attributesToRetrieve Attributes to display in the returned documents
 	 * @return altered SearchRequest
 	 */
@@ -222,6 +230,7 @@ public class SearchRequest {
 
 	/**
 	 * Method to set the attributesToCrop
+	 *
 	 * @param attributesToCrop Attributes whose values have been cropped
 	 * @return altered SearchRequest
 	 */
@@ -232,6 +241,7 @@ public class SearchRequest {
 
 	/**
 	 * Method to set the cropLength
+	 *
 	 * @param cropLength Length used to crop field values
 	 * @return altered SearchRequest
 	 */
@@ -242,6 +252,7 @@ public class SearchRequest {
 
 	/**
 	 * Method to set the attributesToHighlight
+	 *
 	 * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
 	 * @return altered SearchRequest
 	 */
@@ -252,6 +263,7 @@ public class SearchRequest {
 
 	/**
 	 * Method to set the filters
+	 *
 	 * @param filters Filter queries by an attribute value
 	 * @return altered SearchRequest
 	 */
@@ -264,6 +276,7 @@ public class SearchRequest {
 
 	/**
 	 * Method to set the matches boolean
+	 *
 	 * @param matches Defines whether an object that contains information about the matches should be returned or not
 	 * @return altered SearchRequest
 	 */
@@ -274,6 +287,7 @@ public class SearchRequest {
 
 	/**
 	 * Method that returns the JSON String of the SearchRequest
+	 *
 	 * @return JSON String of the SearchRequest query
 	 */
 	String getQuery() {

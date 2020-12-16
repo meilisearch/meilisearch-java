@@ -28,6 +28,7 @@ public class UpdateStatus {
 
 	/**
 	 * Method to return the JSON String of the Update Status
+	 *
 	 * @return JSON string of the Update Status object
 	 */
 	@Override
@@ -37,6 +38,7 @@ public class UpdateStatus {
 
 	/**
 	 * Method to return the status of the Update Status object
+	 *
 	 * @return String containing the status of the Update Status Object
 	 */
 	public String getStatus() {
@@ -53,7 +55,7 @@ public class UpdateStatus {
 
 	/**
 	 * Method to return the name and quantity of the Update Status
-	 * @return StatusType Object of the name and quantity of the Update Status
+	 * @return statusType Object of the name and quantity of the Update Status
 	 */
 	public StatusType getStatusType() {
 		return this.type;

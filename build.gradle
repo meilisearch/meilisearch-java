@@ -109,8 +109,6 @@ artifacts {
 		archives javadocJar, sourcesJar
 }
 
-
-
 signing {
 	if (project.hasProperty('releaseSDK')){
 		useGpgCmd()
@@ -123,10 +121,9 @@ uploadArchives {
 	def ossrhUsername = findProperty('ossrhUsername')
 	def ossrhPassword = findProperty('ossrhPassword')
 
-	project.logger.lifecycle('Trying to upload files to Maven repository...')
-
 	repositories {
 		mavenDeployer {
+			project.logger.lifecycle('Trying to upload files to Maven repository...')
 			beforeDeployment {
 				MavenDeployment deployment -> signing.signPom(deployment)
 			}

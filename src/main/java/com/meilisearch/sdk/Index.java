@@ -42,7 +42,7 @@ public class Index implements Serializable {
 	Gson gson = new Gson();
 
 	/**
-	 * Set the Meilisearch configuration for the index
+	 * Sets the Meilisearch configuration for the index
 	 *
 	 * @param config Meilisearch configuration to use
 	 */
@@ -54,118 +54,118 @@ public class Index implements Serializable {
 	}
 
 	/**
-	 * Get a document in the index
+	 * Gets a document in the index
 	 *
 	 * @param identifier Identifier of the document to get
 	 * @return Meilisearch API response
-	 * @throws Exception If something goes wrong
+	 * @throws Exception if something goes wrong
 	 */
 	public String getDocument(String identifier) throws Exception {
 		return this.documents.getDocument(this.uid, identifier);
 	}
 
 	/**
-	 * Get documents in the index
+	 * Gets documents in the index
 	 *
 	 * @return Meilisearch API response
-	 * @throws Exception If something goes wrong
+	 * @throws Exception if something goes wrong
 	 */
 	public String getDocuments() throws Exception {
 		return this.documents.getDocuments(this.uid);
 	}
 
 	/**
-	 * Get documents in the index and limit the number of documents returned
+	 * Gets documents in the index and limit the number of documents returned
 	 *
 	 * @param limits Maximum amount of documents to return
 	 * @return Meilisearch API response
-	 * @throws Exception If something goes wrong
+	 * @throws Exception if something goes wrong
 	 */
 	public String getDocuments(int limits) throws Exception {
 		return this.documents.getDocuments(this.uid, limits);
 	}
 
 	/**
-	 * Add a document in the index
+	 * Adds a document in the index
 	 *
 	 * @param document Document to add in JSON string format
 	 * @return Meilisearch API response
-	 * @throws Exception If something goes wrong
+	 * @throws Exception if something goes wrong
 	 */
 	public String addDocuments(String document) throws Exception {
 		return this.documents.addDocuments(this.uid, document);
 	}
 
 	/**
-	 * Update a document in the index
+	 * Updates a document in the index
 	 *
 	 * @param document Document to update in JSON string format
 	 * @return Meilisearch API response
-	 * @throws Exception If something goes wrong
+	 * @throws Exception if something goes wrong
 	 */
 	public String updateDocuments(String document) throws Exception {
 		return this.documents.updateDocuments(this.uid, document);
 	}
 
 	/**
-	 * Delete a document from the index
+	 * Deletes a document from the index
 	 *
 	 * @param identifier Identifier of the document to delete
 	 * @return Meilisearch API response
-	 * @throws Exception If something goes wrong
+	 * @throws Exception if something goes wrong
 	 */
 	public String deleteDocument(String identifier) throws Exception {
 		return this.documents.deleteDocument(this.uid, identifier);
 	}
 
 	/**
-	 * Delete list of documents from the index
+	 * Deletes list of documents from the index
 	 * @param documentsIdentifiers list of identifiers of documents to delete
 	 * @return Meilisearch API response
-	 * @throws Exception If something goes wrong
+	 * @throws Exception if something goes wrong
 	 */
 	public String deleteDocuments(List<String> documentsIdentifiers) throws Exception{
 		return this.documents.deleteDocuments(this.uid, documentsIdentifiers);
 	}
 
 	/**
-	 * Delete all documents in the index
+	 * Deletes all documents in the index
 	 *
 	 * @return Meilisearch API response
-	 * @throws Exception If something goes wrong
+	 * @throws Exception if something goes wrong
 	 */
 	public String deleteAllDocuments() throws Exception {
 		return this.documents.deleteAllDocuments(this.uid);
 	}
 
 	/**
-	 * Search documents in index
+	 * Searches documents in index
 	 *
 	 * @param q Query string
 	 * @return Meilisearch API response
-	 * @throws Exception If something goes wrong
+	 * @throws Exception if something goes wrong
 	 */
 	public String search(String q) throws Exception {
 		return this.search.search(this.uid, q);
 	}
 
 	/**
-	 * Search documents in index
+	 * Searches documents in index
 	 *
 	 * @param sr SearchRequest SearchRequest
 	 * @return Meilisearch API response
-	 * @throws Exception If something goes wrong
+	 * @throws Exception if something goes wrong
 	 */
 	public String search(SearchRequest sr) throws Exception {
 		return this.search.search(this.uid, sr);
 	}
 
 	/**
-	 * Get an index update by its id
+	 * Gets an index update by its id
 	 *
 	 * @param updateId ID of the index update
 	 * @return UpdateStatus
-	 * @throws Exception If something goes wrong
+	 * @throws Exception if something goes wrong
 	 */
 	public UpdateStatus getUpdate(int updateId) throws Exception {
 		return this.gson.fromJson(
@@ -175,10 +175,10 @@ public class Index implements Serializable {
 	}
 
 	/**
-	 * Get all updates of the index
+	 * Gets all updates of the index
 	 *
-	 * @return List of updates in the index
-	 * @throws Exception If something goes wrong
+	 * @return list of updates in the index
+	 * @throws Exception if something goes wrong
 	 */
 	public UpdateStatus[] getUpdates() throws Exception {
 		return this.gson.fromJson(
@@ -188,17 +188,17 @@ public class Index implements Serializable {
 	}
 
 	/**
-	 * Wait for a pending update to be processed
+	 * Waits for a pending update to be processed
 	 *
 	 * @param updateId ID of the index update
-	 * @throws Exception If timeout is reached
+	 * @throws Exception if timeout is reached
 	 */
 	public void waitForPendingUpdate(int updateId) throws Exception {
 		this.waitForPendingUpdate(updateId, 5000, 50);
 	}
 
 	/**
-	 * Wait for a pending update to be processed
+	 * Waits for a pending update to be processed
 	 *
 	 * @param updateId ID of the index update
 	 * @param timeoutInMs number of milliseconds before throwing an Exception
@@ -223,9 +223,9 @@ public class Index implements Serializable {
 	}
 
 	/**
-	 * Fetch the primary key of the index in the Meilisearch instance
+	 * Fetches the primary key of the index in the Meilisearch instance
 	 *
-	 * @throws Exception If something goes wrong
+	 * @throws Exception if something goes wrong
 	 */
 	public void fetchPrimaryKey() throws Exception {
 		String requestQuery = "/indexes/" + this.uid;

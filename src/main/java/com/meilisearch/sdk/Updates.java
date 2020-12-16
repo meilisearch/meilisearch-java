@@ -12,6 +12,7 @@ public class Updates {
 
 	/**
 	 * Retrieves the Update at the specified iud with the specified updateId
+	 *
 	 * @param uid Index identifier to the requested Update
 	 * @param updateId Identifier of the requested Update
 	 * @return String containing the requested Update
@@ -24,6 +25,7 @@ public class Updates {
 
 	/**
 	 * Retrieves all Updates at the specified iud
+	 *
 	 * @param uid Index identifier to the requested Updates
 	 * @return String containing the requested Updates
 	 * @throws Exception if client request causes an error
