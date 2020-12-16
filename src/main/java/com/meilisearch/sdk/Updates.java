@@ -15,7 +15,7 @@ public class Updates {
 	 *
 	 * @param uid Index identifier to the requested Update
 	 * @param updateId Identifier of the requested Update
-	 * @return string containing the requested Update
+	 * @return String containing the requested Update
 	 * @throws Exception if client request causes an error
 	 */
 	String getUpdate(String uid, int updateId) throws Exception {
@@ -27,7 +27,7 @@ public class Updates {
 	 * Retrieves all Updates at the specified iud
 	 *
 	 * @param uid Index identifier to the requested Updates
-	 * @return string containing the requested Updates
+	 * @return String containing the requested Updates
 	 * @throws Exception if client request causes an error
 	 */
 	String getUpdates(String uid) throws Exception {

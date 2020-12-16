@@ -123,8 +123,8 @@ uploadArchives {
 
 	repositories {
 		mavenDeployer {
+			project.logger.lifecycle('Trying to upload files to Maven repository...')
 			beforeDeployment {
-				project.logger.lifecycle('Trying to upload files to Maven repository...')
 				MavenDeployment deployment -> signing.signPom(deployment)
 			}
 

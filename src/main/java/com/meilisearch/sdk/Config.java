@@ -37,7 +37,7 @@ public class Config {
 
 	/**
 	 * Method for returning the apiKey
-	 * @return API key string
+	 * @return API key String
 	 */
 	public String getApiKey() {
 		return apiKey;
