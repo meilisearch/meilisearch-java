@@ -338,12 +338,6 @@ public class SearchTest extends AbstractIT {
 		);
 		assertEquals(index.search(""), index.search(new SearchRequest(null)));
 		assertEquals(20, res_gson.hits.length);
-		assertEquals("419704", res_gson.hits[0].getId());
-		assertEquals("Ad Astra", res_gson.hits[0].getTitle());
-		assertEquals("920", res_gson.hits[10].getId());
-		assertEquals("Cars", res_gson.hits[10].getTitle());
-		assertEquals("420817", res_gson.hits[19].getId());
-		assertEquals("Aladdin", res_gson.hits[19].getTitle());
 	}
 
 	/**
