@@ -315,5 +315,58 @@ public class SearchTest extends AbstractIT {
 		assertEquals(375, res_gson.hits[0].getMatchesInfo().get("overview").get(2).start);
 		assertEquals(3, res_gson.hits[0].getMatchesInfo().get("overview").get(2).length);
 	}
-	
+	/**
+	 * Test place holder search
+	 */
+	@Test
+	public void testPlaceHolder() throws Exception {
+		String indexUid = "placeHolder";
+		Index index = client.index(indexUid);
+		GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = jsonGson.decode(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		Results res_gson = jsonGson.decode(
+			index.search(""),
+			Results.class
+		);
+		assertEquals(index.search(""), index.search(new SearchRequest(null)));
+		assertEquals(20, res_gson.hits.length);
+		assertEquals("419704", res_gson.hits[0].getId());
+		assertEquals("Ad Astra", res_gson.hits[0].getTitle());
+		assertEquals("920", res_gson.hits[10].getId());
+		assertEquals("Cars", res_gson.hits[10].getTitle());
+		assertEquals("420817", res_gson.hits[19].getId());
+		assertEquals("Aladdin", res_gson.hits[19].getTitle());
+	}
+
+	/**
+	 * Test place holder search
+	 */
+	@Test
+	public void testPlaceHolderWithLimit() throws Exception {
+		String indexUid = "BasicSearch";
+		Index index = client.index(indexUid);
+		GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = jsonGson.decode(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		Results res_gson = jsonGson.decode(
+			index.search(new SearchRequest(null).setLimit(10)),
+			Results.class
+		);
+		assertEquals(10, res_gson.hits.length);
+	}
 }
