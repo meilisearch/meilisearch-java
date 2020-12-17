@@ -332,11 +332,12 @@ public class SearchTest extends AbstractIT {
 
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
+		String result = index.search("");
 		Results res_gson = jsonGson.decode(
-			index.search(""),
+			result,
 			Results.class
 		);
-		assertEquals(index.search(""), index.search(new SearchRequest(null)));
+		assertEquals(result, index.search(new SearchRequest(null)));
 		assertEquals(20, res_gson.hits.length);
 	}
 
