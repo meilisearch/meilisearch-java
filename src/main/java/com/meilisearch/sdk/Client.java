@@ -14,6 +14,7 @@ public class Client {
 	public Config config;
 	public IndexesHandler indexesHandler;
 	public Gson gson;
+	public Dump dump;
 
 	/**
 	 * Calls instance for MeiliSearch client
@@ -24,6 +25,7 @@ public class Client {
 		this.config = config;
 		this.gson = new Gson();
 		this.indexesHandler = new IndexesHandler(config);
+		this.dump = new Dump(config);
 	}
 
 	/**
@@ -152,5 +154,27 @@ public class Client {
 	 */
 	public Index getOrCreateIndex(String uid) throws Exception {
 		return getOrCreateIndex(uid, null);
+	}
+
+	/**
+	 * Triggers the creation of a MeiliSearch dump.
+	 * Refer https://docs.meilisearch.com/references/dump.html#create-a-dump
+	 *
+	 * @throws Exception if an error occurs
+	 */
+	public Dump createDump() throws Exception {
+		return this.dump.createDump();
+	}
+
+	/**
+	 * Gets the status of a MeiliSearch dump.
+	 * https://docs.meilisearch.com/references/dump.html#get-dump-status
+	 *
+	 * @param uid Unique identifier for correspondent dump
+	 * @return String with dump status
+	 * @throws Exception if an error occurs
+	 */
+	public String getDumpStatus(String uid) throws Exception {
+		return this.dump.getStatusByUid(uid);
 	}
 }
