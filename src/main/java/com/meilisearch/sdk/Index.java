@@ -194,8 +194,8 @@ public class Index implements Serializable {
 	 * @return updateId is the id of the update
 	 * @throws Exception if something goes wrong
 	 */
-	public void resetSettings() throws Exception {
-		this.settings.resetSettings(this.uid);
+	public String resetSettings() throws Exception {
+		return this.settings.resetSettings(this.uid);
 	}
 
 	/**

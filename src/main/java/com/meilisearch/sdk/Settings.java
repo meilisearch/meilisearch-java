@@ -47,7 +47,7 @@ public class Settings {
 	 *
 	 * @param uid Index identifier
 	 * @return updateId is the id of the update
-	 * @throws Exception
+	 * @throws Exception if something goes wrong
 	 */
 	public String resetSettings(String uid) throws Exception {
 		return meilisearchHttpRequest.delete("/indexes/" + uid + "/settings");
