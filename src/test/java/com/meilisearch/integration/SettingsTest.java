@@ -33,8 +33,6 @@ public class SettingsTest extends AbstractIT {
 		cleanup();
 	}
 
-	// TODO: Real Search tests after search refactor
-
 	/**
 	 * Test get settings from an index by uid
 	 */
