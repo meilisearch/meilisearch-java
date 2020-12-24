@@ -169,7 +169,7 @@ public class Index implements Serializable {
 	 * Refer https://docs.meilisearch.com/references/settings.html#get-settings
 	 *
 	 * @return settings of a given uid as String
-	 * @throws Exception
+	 * @throws Exception if something goes wrong
 	 */
 	public String getSettings() throws Exception {
 		return this.settings.getSettings(this.uid);
@@ -180,8 +180,8 @@ public class Index implements Serializable {
 	 * Refer https://docs.meilisearch.com/references/settings.html#update-settings
 	 *
 	 * @param settingsRequest the object that contains the data with the new settings
-	 * @return updateId
-	 * @throws Exception
+	 * @return updateId is the id of the update
+	 * @throws Exception if something goes wrong
 	 */
 	public String updateSettings(SettingsRequest settingsRequest) throws Exception {
 		return this.settings.updateSettings(this.uid, settingsRequest);
@@ -191,8 +191,8 @@ public class Index implements Serializable {
 	 * Resets the settings of the index
 	 * Refer https://docs.meilisearch.com/references/settings.html#reset-settings
 	 *
-	 * @return updateId
-	 * @throws Exception
+	 * @return updateId is the id of the update
+	 * @throws Exception if something goes wrong
 	 */
 	public void resetSettings() throws Exception {
 		this.settings.resetSettings(this.uid);

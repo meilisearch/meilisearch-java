@@ -22,7 +22,7 @@ public class Settings {
 	 *
 	 * @param uid Index identifier
 	 * @return settings of a given uid as String
-	 * @throws Exception
+	 * @throws Exception if something goes wrong
 	 */
 	public String getSettings(String uid) throws Exception {
 		return meilisearchHttpRequest.get("/indexes/" + uid + "/settings");
@@ -34,8 +34,8 @@ public class Settings {
 	 *
 	 * @param uid             Index identifier
 	 * @param settingsRequest the data that contains the new settings
-	 * @return updateId
-	 * @throws Exception
+	 * @return updateId is the id of the update
+	 * @throws Exception if something goes wrong
 	 */
 	public String updateSettings(String uid, SettingsRequest settingsRequest) throws Exception {
 		return meilisearchHttpRequest.post("/indexes/" + uid + "/settings", settingsRequest.getUpdateQuery());
@@ -46,7 +46,7 @@ public class Settings {
 	 * Refer https://docs.meilisearch.com/references/settings.html#reset-settings
 	 *
 	 * @param uid Index identifier
-	 * @return updateId
+	 * @return updateId is the id of the update
 	 * @throws Exception
 	 */
 	public String resetSettings(String uid) throws Exception {
