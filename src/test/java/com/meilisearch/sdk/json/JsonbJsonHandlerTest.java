@@ -1,11 +1,11 @@
 package com.meilisearch.sdk.json;
 
 import com.meilisearch.sdk.utils.Movie;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbException;
 import org.junit.jupiter.api.Test;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbException;
 import java.util.HashMap;
 import java.util.List;
 
