@@ -41,7 +41,7 @@ public class DumpHandler {
 	 * @return Meilisearch API response with dump status and dump uid
 	 * @throws Exception if something goes wrong
 	 */
-	public String getStatusByUid(String uid) throws Exception, MeiliSearchApiException {
+	public String getDumpStatus(String uid) throws Exception, MeiliSearchApiException {
 		return this.meiliSearchHttpRequest.get("/dumps/" + uid + "/status");
 	}
 }
