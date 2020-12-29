@@ -217,7 +217,6 @@ public class ClientTest extends AbstractIT {
 	public void testCreateDump() throws Exception {
 		Dump dump = client.createDump();
 		String status = dump.getStatus();
-		System.out.println(dump.getUid());
 		assertEquals(status, "in_progress");
 	}
 
