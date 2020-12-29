@@ -14,6 +14,7 @@ public class Client {
 	public Config config;
 	public IndexesHandler indexesHandler;
 	public Gson gson;
+	public DumpHandler dumpHandler;
 
 	/**
 	 * Calls instance for MeiliSearch client
@@ -24,6 +25,7 @@ public class Client {
 		this.config = config;
 		this.gson = new Gson();
 		this.indexesHandler = new IndexesHandler(config);
+		this.dumpHandler = new DumpHandler(config);
 	}
 
 	/**
@@ -42,7 +44,7 @@ public class Client {
 	 * Creates index
 	 * Refer https://docs.meilisearch.com/references/indexes.html#create-an-index
 	 *
-	 * @param uid Unique identifier for the index to create
+	 * @param uid        Unique identifier for the index to create
 	 * @param primaryKey The primary key of the documents in that index
 	 * @return Meilisearch API response
 	 * @throws Exception if an error occurs
@@ -101,7 +103,7 @@ public class Client {
 	 * Updates single index by uid
 	 * Refer https://docs.meilisearch.com/references/indexes.html#update-an-index
 	 *
-	 * @param uid Unique identifier of the index to update
+	 * @param uid        Unique identifier of the index to update
 	 * @param primaryKey Primary key of the documents in the index
 	 * @return Meilisearch API response
 	 * @throws Exception if an error occurs
@@ -127,7 +129,7 @@ public class Client {
 	/**
 	 * Gets single index by uid or if it does not exists, Create index
 	 *
-	 * @param uid Unique identifier for the index to create
+	 * @param uid        Unique identifier for the index to create
 	 * @param primaryKey The primary key of the documents in that index
 	 * @return Index instance
 	 * @throws Exception if an error occurs
@@ -136,7 +138,7 @@ public class Client {
 		try {
 			return this.getIndex(uid);
 		} catch (MeiliSearchApiException e) {
-			if(e.getErrorCode().equals("index_not_found")) {
+			if (e.getErrorCode().equals("index_not_found")) {
 				return this.createIndex(uid, primaryKey);
 			}
 			throw e;
@@ -152,5 +154,27 @@ public class Client {
 	 */
 	public Index getOrCreateIndex(String uid) throws Exception {
 		return getOrCreateIndex(uid, null);
+	}
+
+	/**
+	 * Triggers the creation of a MeiliSearch dump.
+	 * Refer https://docs.meilisearch.com/references/dump.html#create-a-dump
+	 *
+	 * @throws Exception if an error occurs
+	 */
+	public Dump createDump() throws Exception {
+		return this.dumpHandler.createDump();
+	}
+
+	/**
+	 * Gets the status of a MeiliSearch dump.
+	 * https://docs.meilisearch.com/references/dump.html#get-dump-status
+	 *
+	 * @param uid Unique identifier for correspondent dump
+	 * @return String with dump status
+	 * @throws Exception if an error occurs
+	 */
+	public String getDumpStatus(String uid) throws Exception {
+		return this.dumpHandler.getDumpStatus(uid);
 	}
 }
