@@ -229,5 +229,6 @@ public class ClientTest extends AbstractIT {
 		String uid = dump.getUid();
 		String status = client.getDumpStatus(uid);
 		assertNotNull(status);
+		assertNotNull(uid);
 	}
 }
