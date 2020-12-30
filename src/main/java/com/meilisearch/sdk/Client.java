@@ -44,7 +44,7 @@ public class Client {
 	 * Creates index
 	 * Refer https://docs.meilisearch.com/references/indexes.html#create-an-index
 	 *
-	 * @param uid        Unique identifier for the index to create
+	 * @param uid Unique identifier for the index to create
 	 * @param primaryKey The primary key of the documents in that index
 	 * @return Meilisearch API response
 	 * @throws Exception if an error occurs
@@ -103,7 +103,7 @@ public class Client {
 	 * Updates single index by uid
 	 * Refer https://docs.meilisearch.com/references/indexes.html#update-an-index
 	 *
-	 * @param uid        Unique identifier of the index to update
+	 * @param uid Unique identifier of the index to update
 	 * @param primaryKey Primary key of the documents in the index
 	 * @return Meilisearch API response
 	 * @throws Exception if an error occurs
@@ -129,7 +129,7 @@ public class Client {
 	/**
 	 * Gets single index by uid or if it does not exists, Create index
 	 *
-	 * @param uid        Unique identifier for the index to create
+	 * @param uid Unique identifier for the index to create
 	 * @param primaryKey The primary key of the documents in that index
 	 * @return Index instance
 	 * @throws Exception if an error occurs
