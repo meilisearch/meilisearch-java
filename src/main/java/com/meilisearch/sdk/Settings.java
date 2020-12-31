@@ -1,57 +1,66 @@
 package com.meilisearch.sdk;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 /**
- * Settings Object for index customization
+ * Data Structure for the Settings in an {@link Index}
+ *
  * Refer https://docs.meilisearch.com/references/settings.html
  */
 public class Settings {
-	private final MeiliSearchHttpRequest meilisearchHttpRequest;
+	@Getter @Setter
+	private HashMap<String, String[]> synonyms;
+	@Getter @Setter
+	private String[] stopWords;
+	@Getter @Setter
+	private String[] rankingRules;
+	@Getter @Setter
+	private String[] attributesForFaceting;
+	@Getter @Setter
+	private String distinctAttribute;
+	@Getter @Setter
+	private String[] searchableAttributes;
+	@Getter @Setter
+	private String[] displayedAttributes;
 
 	/**
-	 * Constructor for the Meilisearch Settings object
-	 *
-	 * @param config Meilisearch configuration
+	 * Empty SettingsRequest constructor
 	 */
-	public Settings(Config config) {
-		meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+	public Settings() {
 	}
 
 	/**
-	 * Gets the settings of a given index
-	 * Refer https://docs.meilisearch.com/references/settings.html#get-settings
+	 * Method that returns the JSON String of the update settings query
 	 *
-	 * @param uid Index identifier
-	 * @return settings of a given uid as String
-	 * @throws Exception if something goes wrong
+	 * @return JSON String of the update settings query
 	 */
-	public String getSettings(String uid) throws Exception {
-		return meilisearchHttpRequest.get("/indexes/" + uid + "/settings");
-	}
-
-	/**
-	 * Updates the settings of a given index
-	 * Refer https://docs.meilisearch.com/references/settings.html#update-settings
-	 *
-	 * @param uid             Index identifier
-	 * @param settingsRequest the data that contains the new settings
-	 * @return updateId is the id of the update
-	 * @throws Exception if something goes wrong
-	 */
-	public String updateSettings(String uid, SettingsRequest settingsRequest) throws Exception {
-		return meilisearchHttpRequest.post("/indexes/" + uid + "/settings", settingsRequest.getUpdateQuery());
-	}
-
-	/**
-	 * Resets the settings of a given index
-	 * Refer https://docs.meilisearch.com/references/settings.html#reset-settings
-	 *
-	 * @param uid Index identifier
-	 * @return updateId is the id of the update
-	 * @throws Exception if something goes wrong
-	 */
-	public String resetSettings(String uid) throws Exception {
-		return meilisearchHttpRequest.delete("/indexes/" + uid + "/settings");
+	String getUpdateQuery() {
+		JSONObject jsonObject = new JSONObject();
+		if (this.getSynonyms() != null) {
+			jsonObject.put("synonyms", this.getSynonyms());
+		}
+		if (this.getStopWords() != null) {
+			jsonObject.put("stopWords", this.getStopWords());
+		}
+		if (this.getRankingRules() != null) {
+			jsonObject.put("rankingRules", this.getRankingRules());
+		}
+		if (this.getAttributesForFaceting() != null) {
+			jsonObject.put("attributesForFaceting", this.getAttributesForFaceting());
+		}
+		if (this.getDistinctAttribute() != null) {
+			jsonObject.put("distinctAttribute", this.getDistinctAttribute());
+		}
+		if (this.getSearchableAttributes() != null) {
+			jsonObject.put("searchableAttributes", this.getSearchableAttributes());
+		}
+		if (this.getDisplayedAttributes() != null) {
+			jsonObject.put("displayedAttributes", this.getDisplayedAttributes());
+		}
+		return jsonObject.toString();
 	}
 }
-
-
