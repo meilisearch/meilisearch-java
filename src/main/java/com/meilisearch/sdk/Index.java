@@ -40,7 +40,7 @@ public class Index implements Serializable {
 	Search search;
 
 	@ToString.Exclude
-	Settings settings;
+	SettingsHandler settingsHandler;
 
 	Gson gson = new Gson();
 
@@ -54,7 +54,7 @@ public class Index implements Serializable {
 		this.documents = new Documents(config);
 		this.updates = new Updates(config);
 		this.search = new Search(config);
-		this.settings = new Settings(config);
+		this.settingsHandler = new SettingsHandler(config);
 	}
 
 	/**
@@ -171,31 +171,31 @@ public class Index implements Serializable {
 	 * @return settings of a given uid as String
 	 * @throws Exception if something goes wrong
 	 */
-	public String getSettings() throws Exception {
-		return this.settings.getSettings(this.uid);
+	public Settings getSettings() throws Exception {
+		return this.settingsHandler.getSettings(this.uid);
 	}
 
 	/**
-	 * Updates the settings in index
+	 * Updates the settings of the index
 	 * Refer https://docs.meilisearch.com/references/settings.html#update-settings
 	 *
-	 * @param settingsRequest the object that contains the data with the new settings
-	 * @return updateId is the id of the update
+	 * @param settings the object that contains the data with the new settings
+	 * @return UpdateStatus
 	 * @throws Exception if something goes wrong
 	 */
-	public String updateSettings(SettingsRequest settingsRequest) throws Exception {
-		return this.settings.updateSettings(this.uid, settingsRequest);
+	public UpdateStatus updateSettings(Settings settings) throws Exception {
+		return this.settingsHandler.updateSettings(this.uid, settings);
 	}
 
 	/**
 	 * Resets the settings of the index
 	 * Refer https://docs.meilisearch.com/references/settings.html#reset-settings
 	 *
-	 * @return updateId is the id of the update
+	 * @return UpdateStatus
 	 * @throws Exception if something goes wrong
 	 */
-	public String resetSettings() throws Exception {
-		return this.settings.resetSettings(this.uid);
+	public UpdateStatus resetSettings() throws Exception {
+		return this.settingsHandler.resetSettings(this.uid);
 	}
 
 	/**
