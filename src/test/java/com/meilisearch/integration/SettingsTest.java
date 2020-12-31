@@ -5,7 +5,6 @@ import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.*;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.utils.Movie;
-import okhttp3.internal.http2.Settings;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @Tag("integration")
 public class SettingsTest extends AbstractIT {
@@ -38,7 +36,7 @@ public class SettingsTest extends AbstractIT {
 	 */
 	@Test
 	public void testGetSettings() throws Exception {
-		String indexUid = "updateSettings";
+		String indexUid = "getSettings";
 		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
@@ -49,12 +47,9 @@ public class SettingsTest extends AbstractIT {
 		);
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
-		SettingsRequest settingsRequest = jsonGson.decode(
-			index.getSettings(),
-			SettingsRequest.class
-		);
+		Settings settings = index.getSettings();
 
-		assertEquals(6, settingsRequest.getRankingRules().length);
+		assertEquals(6, settings.getRankingRules().length);
 	}
 
 	/**
@@ -73,10 +68,7 @@ public class SettingsTest extends AbstractIT {
 		);
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
-		SettingsRequest settings = jsonGson.decode(
-			index.getSettings(),
-			SettingsRequest.class
-		);
+		Settings settings = index.getSettings();
 
 		settings.setRankingRules(new String[]{
 			"typo",
@@ -87,15 +79,8 @@ public class SettingsTest extends AbstractIT {
 			"exactness",
 			"desc(release_date)",
 			"desc(rank)"});
-
-		index.updateSettings(settings);
-		Thread.sleep(1000);
-
-		SettingsRequest newSettings = jsonGson.decode(
-			index.getSettings(),
-			SettingsRequest.class
-		);
-
+		index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+		Settings newSettings = index.getSettings();
 		assertEquals(8, newSettings.getRankingRules().length);
 	}
 
@@ -115,33 +100,26 @@ public class SettingsTest extends AbstractIT {
 		);
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
-		SettingsRequest settings = jsonGson.decode(
-			index.getSettings(),
-			SettingsRequest.class
-		);
+		Settings settings = index.getSettings();
 
 		HashMap<String, String[]> synonyms = new HashMap();
 		synonyms.put("wolverine", new String[] {"xmen", "logan"});
 		synonyms.put("logan", new String[] {"wolverine"});
 		settings.setSynonyms(synonyms);
 
-		index.updateSettings(settings);
-		Thread.sleep(1000);
+		index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
 
-		SettingsRequest newSettings = jsonGson.decode(
-			index.getSettings(),
-			SettingsRequest.class
-		);
+		Settings newSettings = index.getSettings();
 
 		assertEquals(2, newSettings.getSynonyms().size());
 	}
 
 	/**
-	 * Test update settings changing the synonyms
+	 * Test reset settings
 	 */
 	@Test
 	public void testResetSettings() throws Exception {
-		String indexUid = "updateSettingsSynonyms";
+		String indexUid = "testResetSettings";
 		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
@@ -152,32 +130,20 @@ public class SettingsTest extends AbstractIT {
 		);
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
-		SettingsRequest settings = jsonGson.decode(
-			index.getSettings(),
-			SettingsRequest.class
-		);
+		Settings initialSettings = index.getSettings();
 
+		Settings settingsWithSynonyms = new Settings();
 		HashMap<String, String[]> synonyms = new HashMap();
 		synonyms.put("wolverine", new String[] {"xmen", "logan"});
 		synonyms.put("logan", new String[] {"wolverine"});
-		settings.setSynonyms(synonyms);
+		settingsWithSynonyms.setSynonyms(synonyms);
 
-		index.updateSettings(settings);
-		Thread.sleep(1000);
-		SettingsRequest newSettings = jsonGson.decode(
-			index.getSettings(),
-			SettingsRequest.class
-		);
+		index.waitForPendingUpdate(index.updateSettings(settingsWithSynonyms).getUpdateId());
+		settingsWithSynonyms = index.getSettings();
+		assertEquals(2, settingsWithSynonyms.getSynonyms().size());
 
-		assertEquals(2, newSettings.getSynonyms().size());
-
-		index.resetSettings();
-		Thread.sleep(1000);
-		SettingsRequest settingsAfterReset = jsonGson.decode(
-			index.getSettings(),
-			SettingsRequest.class
-		);
-		assertEquals(0, settingsAfterReset.getSynonyms().size());
+		index.waitForPendingUpdate(index.resetSettings().getUpdateId());
+		Settings settingsAfterReset = index.getSettings();
+		assertEquals(initialSettings.getSynonyms().size(), settingsAfterReset.getSynonyms().size());
 	}
-
 }
