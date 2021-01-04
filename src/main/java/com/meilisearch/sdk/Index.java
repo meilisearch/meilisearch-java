@@ -39,6 +39,9 @@ public class Index implements Serializable {
 	@ToString.Exclude
 	Search search;
 
+	@ToString.Exclude
+	SettingsHandler settingsHandler;
+
 	Gson gson = new Gson();
 
 	/**
@@ -51,6 +54,7 @@ public class Index implements Serializable {
 		this.documents = new Documents(config);
 		this.updates = new Updates(config);
 		this.search = new Search(config);
+		this.settingsHandler = new SettingsHandler(config);
 	}
 
 	/**
@@ -158,6 +162,40 @@ public class Index implements Serializable {
 	 */
 	public String search(SearchRequest sr) throws Exception {
 		return this.search.search(this.uid, sr);
+	}
+
+	/**
+	 * Gets the settings of the index
+	 * Refer https://docs.meilisearch.com/references/settings.html#get-settings
+	 *
+	 * @return settings of a given uid as String
+	 * @throws Exception if something goes wrong
+	 */
+	public Settings getSettings() throws Exception {
+		return this.settingsHandler.getSettings(this.uid);
+	}
+
+	/**
+	 * Updates the settings of the index
+	 * Refer https://docs.meilisearch.com/references/settings.html#update-settings
+	 *
+	 * @param settings the object that contains the data with the new settings
+	 * @return UpdateStatus
+	 * @throws Exception if something goes wrong
+	 */
+	public UpdateStatus updateSettings(Settings settings) throws Exception {
+		return this.settingsHandler.updateSettings(this.uid, settings);
+	}
+
+	/**
+	 * Resets the settings of the index
+	 * Refer https://docs.meilisearch.com/references/settings.html#reset-settings
+	 *
+	 * @return UpdateStatus
+	 * @throws Exception if something goes wrong
+	 */
+	public UpdateStatus resetSettings() throws Exception {
+		return this.settingsHandler.resetSettings(this.uid);
 	}
 
 	/**
