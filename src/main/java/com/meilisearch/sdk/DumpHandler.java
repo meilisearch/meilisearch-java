@@ -4,16 +4,16 @@ import com.google.gson.Gson;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 
 /**
- * Wrapper around the MeilisearchHttpRequest class to ease usage for Meilisearch dumps
+ * Wrapper around the MeilisearchHttpRequest class to ease usage for MeiliSearch dumps
  */
 public class DumpHandler {
 
 	private MeiliSearchHttpRequest meiliSearchHttpRequest;
 
 	/**
-	 * Creates and sets up an instance of Dump to simplify Meilisearch API calls to manage dumps
+	 * Creates and sets up an instance of Dump to simplify MeiliSearch API calls to manage dumps
 	 *
-	 * @param config Meilisearch configuration
+	 * @param config MeiliSearch configuration
 	 */
 	public DumpHandler(Config config) {
 		this.meiliSearchHttpRequest = new MeiliSearchHttpRequest(config);
@@ -23,7 +23,7 @@ public class DumpHandler {
 	 * Creates a dump
 	 * Refer https://docs.meilisearch.com/references/dump.html#create-a-dump
 	 *
-	 * @return Dump object with Meilisearch API response
+	 * @return Dump object with MeiliSearch API response
 	 * @throws Exception if something goes wrong
 	 */
 	public Dump createDump() throws Exception, MeiliSearchApiException {
@@ -38,7 +38,7 @@ public class DumpHandler {
 	 * Refer https://docs.meilisearch.com/references/dump.html#get-dump-status
 	 *
 	 * @param uid Unique identifier for correspondent dump
-	 * @return Meilisearch API response with dump status and dump uid
+	 * @return MeiliSearch API response with dump status and dump uid
 	 * @throws Exception if something goes wrong
 	 */
 	public String getDumpStatus(String uid) throws Exception, MeiliSearchApiException {

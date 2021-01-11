@@ -20,7 +20,7 @@ class MeiliSearchHttpRequest {
 	/**
 	 * Constructor for the MeiliSearchHttpRequest
 	 *
-	 * @param config Meilisearch configuration
+	 * @param config MeiliSearch configuration
 	 */
 	protected MeiliSearchHttpRequest(Config config) {
 		this.client = new DefaultHttpClient(config);

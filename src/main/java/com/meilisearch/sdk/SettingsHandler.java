@@ -12,9 +12,9 @@ public class SettingsHandler {
 	Gson gson = new Gson();
 
 	/**
-	 * Constructor for the Meilisearch Settings object
+	 * Constructor for the MeiliSearch Settings object
 	 *
-	 * @param config Meilisearch configuration
+	 * @param config MeiliSearch configuration
 	 */
 	public SettingsHandler(Config config) {
 		meilisearchHttpRequest = new MeiliSearchHttpRequest(config);

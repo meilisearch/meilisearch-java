@@ -5,7 +5,7 @@ import com.google.gson.JsonArray;
 import java.util.List;
 
 /**
- * Wrapper around MeilisearchHttpRequest class to use for Meilisearch documents
+ * Wrapper around MeilisearchHttpRequest class to use for MeiliSearch documents
  */
 class Documents {
 	private final MeiliSearchHttpRequest meilisearchHttpRequest;

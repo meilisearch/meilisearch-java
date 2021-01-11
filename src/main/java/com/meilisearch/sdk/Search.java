@@ -7,9 +7,9 @@ public class Search {
 	private final MeiliSearchHttpRequest meilisearchHttpRequest;
 
 	/**
-	 * Constructor for the Meilisearch Search object
+	 * Constructor for the MeiliSearch Search object
 	 *
-	 * @param config Meilisearch configuration
+	 * @param config MeiliSearch configuration
 	 */
 	protected Search(Config config) {
 		meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
