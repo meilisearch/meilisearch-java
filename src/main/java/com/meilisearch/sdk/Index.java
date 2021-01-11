@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Meilisearch index
+ * MeiliSearch index
  */
 @ToString
 public class Index implements Serializable {
@@ -45,9 +45,9 @@ public class Index implements Serializable {
 	Gson gson = new Gson();
 
 	/**
-	 * Sets the Meilisearch configuration for the index
+	 * Sets the MeiliSearch configuration for the index
 	 *
-	 * @param config Meilisearch configuration to use
+	 * @param config MeiliSearch configuration to use
 	 */
 	void setConfig(Config config) {
 		this.config = config;
@@ -61,7 +61,7 @@ public class Index implements Serializable {
 	 * Gets a document in the index
 	 *
 	 * @param identifier Identifier of the document to get
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if something goes wrong
 	 */
 	public String getDocument(String identifier) throws Exception {
@@ -71,7 +71,7 @@ public class Index implements Serializable {
 	/**
 	 * Gets documents in the index
 	 *
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if something goes wrong
 	 */
 	public String getDocuments() throws Exception {
@@ -82,7 +82,7 @@ public class Index implements Serializable {
 	 * Gets documents in the index and limit the number of documents returned
 	 *
 	 * @param limits Maximum amount of documents to return
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if something goes wrong
 	 */
 	public String getDocuments(int limits) throws Exception {
@@ -93,7 +93,7 @@ public class Index implements Serializable {
 	 * Adds a document in the index
 	 *
 	 * @param document Document to add in JSON string format
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if something goes wrong
 	 */
 	public String addDocuments(String document) throws Exception {
@@ -104,7 +104,7 @@ public class Index implements Serializable {
 	 * Updates a document in the index
 	 *
 	 * @param document Document to update in JSON string format
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if something goes wrong
 	 */
 	public String updateDocuments(String document) throws Exception {
@@ -115,7 +115,7 @@ public class Index implements Serializable {
 	 * Deletes a document from the index
 	 *
 	 * @param identifier Identifier of the document to delete
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if something goes wrong
 	 */
 	public String deleteDocument(String identifier) throws Exception {
@@ -125,7 +125,7 @@ public class Index implements Serializable {
 	/**
 	 * Deletes list of documents from the index
 	 * @param documentsIdentifiers list of identifiers of documents to delete
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if something goes wrong
 	 */
 	public String deleteDocuments(List<String> documentsIdentifiers) throws Exception{
@@ -135,7 +135,7 @@ public class Index implements Serializable {
 	/**
 	 * Deletes all documents in the index
 	 *
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if something goes wrong
 	 */
 	public String deleteAllDocuments() throws Exception {
@@ -146,7 +146,7 @@ public class Index implements Serializable {
 	 * Searches documents in index
 	 *
 	 * @param q Query string
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if something goes wrong
 	 */
 	public String search(String q) throws Exception {
@@ -157,7 +157,7 @@ public class Index implements Serializable {
 	 * Searches documents in index
 	 *
 	 * @param sr SearchRequest SearchRequest
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if something goes wrong
 	 */
 	public String search(SearchRequest sr) throws Exception {
@@ -261,7 +261,7 @@ public class Index implements Serializable {
 	}
 
 	/**
-	 * Fetches the primary key of the index in the Meilisearch instance
+	 * Fetches the primary key of the index in the MeiliSearch instance
 	 *
 	 * @throws Exception if something goes wrong
 	 */

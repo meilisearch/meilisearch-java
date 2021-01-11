@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 
 /**
- * Meilisearch client
+ * MeiliSearch client
  */
 public class Client {
 	public Config config;
@@ -19,7 +19,7 @@ public class Client {
 	/**
 	 * Calls instance for MeiliSearch client
 	 *
-	 * @param config Configuration to connect to Meilisearch instance
+	 * @param config Configuration to connect to MeiliSearch instance
 	 */
 	public Client(Config config) {
 		this.config = config;
@@ -33,7 +33,7 @@ public class Client {
 	 * Refer https://docs.meilisearch.com/references/indexes.html#create-an-index
 	 *
 	 * @param uid Unique identifier for the index to create
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if an error occurs
 	 */
 	public Index createIndex(String uid) throws Exception {
@@ -46,7 +46,7 @@ public class Client {
 	 *
 	 * @param uid Unique identifier for the index to create
 	 * @param primaryKey The primary key of the documents in that index
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if an error occurs
 	 */
 	public Index createIndex(String uid, String primaryKey) throws Exception {
@@ -59,7 +59,7 @@ public class Client {
 	 * Gets all indexes
 	 * Refer https://docs.meilisearch.com/references/indexes.html#list-all-indexes
 	 *
-	 * @return list of indexes in the Meilisearch client
+	 * @return list of indexes in the MeiliSearch client
 	 * @throws Exception if an error occurs
 	 */
 	public Index[] getIndexList() throws Exception {
@@ -90,7 +90,7 @@ public class Client {
 	 * Refer https://docs.meilisearch.com/references/indexes.html#get-one-index
 	 *
 	 * @param uid Unique identifier of the index to get
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if an error occurs
 	 */
 	public Index getIndex(String uid) throws Exception {
@@ -105,7 +105,7 @@ public class Client {
 	 *
 	 * @param uid Unique identifier of the index to update
 	 * @param primaryKey Primary key of the documents in the index
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if an error occurs
 	 */
 	public Index updateIndex(String uid, String primaryKey) throws Exception {
@@ -119,7 +119,7 @@ public class Client {
 	 * Refer https://docs.meilisearch.com/references/indexes.html#get-one-index
 	 *
 	 * @param uid Unique identifier of the index to delete
-	 * @return Meilisearch API response
+	 * @return MeiliSearch API response
 	 * @throws Exception if an error occurs
 	 */
 	public String deleteIndex(String uid) throws Exception {
