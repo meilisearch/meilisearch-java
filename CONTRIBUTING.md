@@ -165,7 +165,7 @@ implementation 'com.meilisearch.sdk:meilisearch-java:X.X.X'
 
 #### Sign your files and upload to Maven Repository
 
-1. Prepare the environement by filling the `gradle.properties` file with all the credentials:
+1. Prepare the environment by filling the `gradle.properties` file with all the credentials:
 
 ```
 ossrhUsername=<maven-username>
