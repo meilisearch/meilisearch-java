@@ -52,7 +52,7 @@ Add the following code to the `<dependencies>` section of your project:
 <dependency>
   <groupId>com.meilisearch.sdk</groupId>
   <artifactId>meilisearch-java</artifactId>
-  <version>0.1.1</version>
+  <version>0.2.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -62,7 +62,7 @@ Add the following code to the `<dependencies>` section of your project:
 Add the following line to the `dependencies` section of your `build.gradle`:
 
 ```groovy
-implementation 'com.meilisearch.sdk:meilisearch-java:0.1.1'
+implementation 'com.meilisearch.sdk:meilisearch-java:0.2.0'
 ```
 
 ## 🚀 Getting Started
@@ -87,7 +87,7 @@ class TestMeiliSearch {
       + "]";
 
     Client client = new Client(new Config("http://localhost:7700", "masterKey"));
-    
+
     // An index is where the documents are stored.
     Index index = client.index("books");
 
