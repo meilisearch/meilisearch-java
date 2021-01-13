@@ -163,6 +163,8 @@ version = 'X.X.X'
 implementation 'com.meilisearch.sdk:meilisearch-java:X.X.X'
 ```
 
+Once the changes are merged on `master`, you can publish the current draft release via the [GitHub interface](https://github.com/meilisearch/meilisearch-java/releases).
+
 #### Sign your files and upload to Maven Repository
 
 1. Prepare the environment by filling the `gradle.properties` file with all the credentials:
