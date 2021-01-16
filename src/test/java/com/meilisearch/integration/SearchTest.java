@@ -6,6 +6,7 @@ import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.SearchRequest;
+import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -332,13 +333,8 @@ public class SearchTest extends AbstractIT {
 
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
-		String result = index.search("");
-		Results res_gson = jsonGson.decode(
-			result,
-			Results.class
-		);
-		assertEquals(result, index.search(new SearchRequest(null)));
-		assertEquals(20, res_gson.hits.length);
+		SearchResult result = index.search("");
+		assertEquals(20, result.getLimit());
 	}
 
 	/**

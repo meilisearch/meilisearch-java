@@ -1,10 +1,14 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.json.GsonJsonHandler;
+import com.meilisearch.sdk.model.SearchResult;
+
 /**
  * Search Object for searching on indexes
  */
 public class Search {
 	private final MeiliSearchHttpRequest meilisearchHttpRequest;
+	private GsonJsonHandler jsonGson = new GsonJsonHandler();
 
 	/**
 	 * Constructor for the MeiliSearch Search object
@@ -23,10 +27,13 @@ public class Search {
 	 * @return search results
 	 * @throws Exception Search Exception or Client Error
 	 */
-	String search(String uid, String q) throws Exception {
+	SearchResult search(String uid, String q) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/search";
 		SearchRequest sr = new SearchRequest(q);
-		return meilisearchHttpRequest.post(requestQuery, sr.getQuery());
+		return jsonGson.decode(
+			meilisearchHttpRequest.post(requestQuery, sr.getQuery()),
+			SearchResult.class
+		);
 	}
 
 	/**
