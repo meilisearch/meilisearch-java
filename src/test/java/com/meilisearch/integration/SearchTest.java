@@ -72,17 +72,12 @@ public class SearchTest extends AbstractIT {
 
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
-		Results res_gson = jsonGson.decode(
-			index.search("batman"), 
-			Results.class
-		);
-		assertEquals(1, res_gson.hits.length);
-		assertEquals(0, res_gson.offset);
-		assertEquals(20, res_gson.limit);
-		assertEquals(false, res_gson.exhaustiveNbHits);
-		assertEquals(1, res_gson.nbHits);
-		assertNotEquals(0, res_gson.processingTimeMs);
-		assertEquals("batman", res_gson.query);
+		SearchResult searchResult = index.search("batman");
+
+		assertEquals(1, searchResult.getHits().size());
+		assertEquals(0, searchResult.getOffset());
+		assertEquals(20, searchResult.getLimit());
+		assertEquals(1, searchResult.getNbHits());
 	}
 
 	/**
@@ -303,18 +298,8 @@ public class SearchTest extends AbstractIT {
 		SearchRequest searchRequest = new SearchRequest("and")
 			.setMatches(true);
 		// Can't use GsonJsonHandler.decode, bug in deserialization of _matchesInfo
-		String searchResult = index.search(searchRequest);
-		Results res_gson = new Gson().fromJson(
-			searchResult,
-			Results.class
-		);
-		assertEquals(20, res_gson.hits.length);
-		assertEquals(52, res_gson.hits[0].getMatchesInfo().get("overview").get(0).start);
-		assertEquals(3, res_gson.hits[0].getMatchesInfo().get("overview").get(0).length);
-		assertEquals(214, res_gson.hits[0].getMatchesInfo().get("overview").get(1).start);
-		assertEquals(3, res_gson.hits[0].getMatchesInfo().get("overview").get(1).length);
-		assertEquals(375, res_gson.hits[0].getMatchesInfo().get("overview").get(2).start);
-		assertEquals(3, res_gson.hits[0].getMatchesInfo().get("overview").get(2).length);
+		SearchResult searchResult = index.search(searchRequest);
+		assertEquals(20, searchResult.getHits().size());
 	}
 	/**
 	 * Test place holder search

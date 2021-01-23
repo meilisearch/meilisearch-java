@@ -161,7 +161,7 @@ public class Index implements Serializable {
 	 * @return MeiliSearch API response
 	 * @throws Exception if something goes wrong
 	 */
-	public String search(SearchRequest sr) throws Exception {
+	public SearchResult search(SearchRequest sr) throws Exception {
 		return this.search.search(this.uid, sr);
 	}
 

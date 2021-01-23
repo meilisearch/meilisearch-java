@@ -51,7 +51,7 @@ public class Search {
 	 * @return search results
 	 * @throws Exception Search Exception or Client Error
 	 */
-	String search(String uid,
+	SearchResult search(String uid,
 				  String q,
 				  int offset,
 				  int limit,
@@ -64,19 +64,25 @@ public class Search {
 	) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/search";
 		SearchRequest sr = new SearchRequest(q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength, attributesToHighlight, filters, matches);
-		return meilisearchHttpRequest.post(requestQuery, sr.getQuery());
+		return jsonGson.decode(
+			meilisearchHttpRequest.post(requestQuery, sr.getQuery()),
+			SearchResult.class
+		);
 	}
 
 	/**
 	 * Performs a search on a given index with a given query
 	 *
 	 * @param uid Index identifier
-	 * @param searchRequest SearchRequest to search on index
+	 * @param sr SearchRequest to search on index
 	 * @return search results
 	 * @throws Exception Search Exception or Client Error
 	 */
-	String search(String uid, SearchRequest searchRequest) throws Exception {
+	SearchResult search(String uid, SearchRequest sr) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/search";
-		return meilisearchHttpRequest.post(requestQuery, searchRequest.getQuery());
+		return jsonGson.decode(
+			meilisearchHttpRequest.post(requestQuery, sr.getQuery()),
+			SearchResult.class
+		);
 	}
 }
