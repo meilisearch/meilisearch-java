@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 /**
  * Result of `search` API
+ * Refer https://docs.meilisearch.com/references/search.html
  */
 @ToString
 public class SearchResult implements Serializable {
@@ -27,6 +28,12 @@ public class SearchResult implements Serializable {
 
 	@Getter
 	boolean exhaustiveNbHits;
+
+	@Getter
+	Object facetsDistribution;
+
+	@Getter
+	boolean exhaustiveFacetsCount;
 
 	@Getter
 	int processingTimeMs;
