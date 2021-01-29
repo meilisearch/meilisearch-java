@@ -99,6 +99,8 @@ _[Read more about this](https://github.com/meilisearch/integration-guides/blob/m
 
 ### How to Publish the Release
 
+⚠️ Before doing anything, make sure you got through the guide about [Releasing an Integration Tool](https://github.com/meilisearch/integration-guides/blob/master/guides/integration-tool-release.md).
+
 #### Create signature credentials (first time)
 
 ⚠️ All these steps (create and publish a GPG key) have already been done by the Meili team and the key is shared internally. Please ask a maintainer to get the credentials if needed.
