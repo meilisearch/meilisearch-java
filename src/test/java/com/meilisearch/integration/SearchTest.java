@@ -53,14 +53,16 @@ public class SearchTest extends AbstractIT {
 		);
 
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		String query = "batman";
 
-		SearchResult searchResult = index.search("batman");
+		SearchResult searchResult = index.search(query);
 
-		System.out.println(searchResult.getFacetsDistribution());
 		assertEquals(1, searchResult.getHits().size());
 		assertEquals(0, searchResult.getOffset());
 		assertEquals(20, searchResult.getLimit());
 		assertEquals(1, searchResult.getNbHits());
+		assertEquals(query, searchResult.getQuery());
+		assertFalse(searchResult.isExhaustiveFacetsCount());
 	}
 
 	/**
@@ -185,8 +187,8 @@ public class SearchTest extends AbstractIT {
 			.setAttributesToHighlight(new String[]{"overview"});
 
 		SearchResult searchResult = index.search(searchRequest);
-
 		assertEquals(20, searchResult.getHits().size());
+		assertTrue(searchResult.getHits().get(0));
 	}
 
 	/**
