@@ -46,7 +46,7 @@ dependencies {
 	compileOnly 'com.squareup.okhttp3:okhttp:4.9.0'
 
 	// Use JUnit test framework
-	testImplementation(platform('org.junit:junit-bom:5.7.0'))
+	testImplementation(platform('org.junit:junit-bom:5.7.1'))
 	testImplementation('org.junit.jupiter:junit-jupiter')
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:3.7.7'
