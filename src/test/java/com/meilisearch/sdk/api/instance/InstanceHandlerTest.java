@@ -63,24 +63,10 @@ class InstanceHandlerTest {
 		assertThat(stats.getIndexes().keySet(), hasItems("movies", "rangemovies"));
 		IndexStats movies = stats.getIndexes().get("movies");
 		assertThat(movies.getNumberOfDocuments(), is(19654));
-		assertThat(movies.isIndexing(), is(false));
+		assertThat(movies.getIsIndexing(), is(false));
 		assertThat(movies.getFieldsDistribution().keySet(), hasItems("overview", "id", "title"));
 		assertThat(movies.getFieldsDistribution().get("overview"), is(19654));
 		assertThat(movies.getFieldsDistribution().get("id"), is(19654));
 		assertThat(movies.getFieldsDistribution().get("title"), is(19654));
-	}
-
-	@Test
-	void singleStats() throws Exception {
-		when(client.get(any(HttpRequest.class)))
-			.thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"numberOfDocuments\": 19654,\"isIndexing\": false,\"fieldsDistribution\": {\"poster\": 19654,\"release_date\": 19654,\"title\": 19654,\"id\": 19654,\"overview\": 19654}}"))
-			.thenThrow(MeiliSearchRuntimeException.class);
-		IndexStats stats = classToTest.getStats("index");
-		assertThat(stats.getNumberOfDocuments(), is(19654));
-		assertThat(stats.isIndexing(), is(false));
-		assertThat(stats.getFieldsDistribution().keySet(), hasItems("overview", "id", "title", "release_date", "poster"));
-		assertThat(stats.getFieldsDistribution().get("overview"), is(19654));
-		assertThat(stats.getFieldsDistribution().get("id"), is(19654));
-		assertThat(stats.getFieldsDistribution().get("title"), is(19654));
 	}
 }

@@ -3,6 +3,8 @@ package com.meilisearch.sdk.api.index;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.meilisearch.sdk.GenericServiceTemplate;
 import com.meilisearch.sdk.api.documents.Update;
+import com.meilisearch.sdk.api.instance.IndexStats;
+import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
 import com.meilisearch.sdk.http.AbstractHttpClient;
 import com.meilisearch.sdk.http.factory.BasicRequestFactory;
 import com.meilisearch.sdk.http.factory.RequestFactory;
@@ -18,11 +20,10 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 class IndexHandlerTest {
 
@@ -103,5 +104,20 @@ class IndexHandlerTest {
 		assertThat(classToTest.getSettings("test"), is(equalTo(dummySettings)));
 		assertThat(classToTest.resetSettings("test"), is(equalTo(dummyUpdate)));
 		assertThat(classToTest.updateSettings("test", dummySettings), is(equalTo(dummyUpdate)));
+	}
+
+
+	@Test
+	void singleStats() throws Exception {
+		when(client.get(any(HttpRequest.class)))
+			.thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"numberOfDocuments\": 19654,\"isIndexing\": false,\"fieldsDistribution\": {\"poster\": 19654,\"release_date\": 19654,\"title\": 19654,\"id\": 19654,\"overview\": 19654}}"))
+			.thenThrow(MeiliSearchRuntimeException.class);
+		IndexStats stats = classToTest.getStats("index");
+		assertThat(stats.getNumberOfDocuments(), is(19654));
+		assertThat(stats.getIsIndexing(), is(false));
+		assertThat(stats.getFieldsDistribution().keySet(), hasItems("overview", "id", "title", "release_date", "poster"));
+		assertThat(stats.getFieldsDistribution().get("overview"), is(19654));
+		assertThat(stats.getFieldsDistribution().get("id"), is(19654));
+		assertThat(stats.getFieldsDistribution().get("title"), is(19654));
 	}
 }

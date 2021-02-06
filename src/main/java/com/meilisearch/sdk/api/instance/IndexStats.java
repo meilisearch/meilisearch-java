@@ -24,11 +24,11 @@ public class IndexStats {
 		this.numberOfDocuments = numberOfDocuments;
 	}
 
-	public boolean isIndexing() {
+	public boolean getIsIndexing() {
 		return isIndexing;
 	}
 
-	public void setIndexing(boolean indexing) {
+	public void setIsIndexing(boolean indexing) {
 		isIndexing = indexing;
 	}
 

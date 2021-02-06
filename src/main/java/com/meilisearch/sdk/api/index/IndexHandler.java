@@ -2,6 +2,7 @@ package com.meilisearch.sdk.api.index;
 
 import com.meilisearch.sdk.ServiceTemplate;
 import com.meilisearch.sdk.api.documents.Update;
+import com.meilisearch.sdk.api.instance.IndexStats;
 import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
 import com.meilisearch.sdk.http.factory.RequestFactory;
 import com.meilisearch.sdk.http.request.HttpMethod;
@@ -128,5 +129,21 @@ public class IndexHandler {
 	 */
 	public Update resetSettings(String index) throws MeiliSearchRuntimeException {
 		return settingsHandler.resetSettings(index);
+	}
+
+
+	/**
+	 * Get Index Stats
+	 * Refer https://docs.meilisearch.com/reference/api/stats.html#get-stat-of-an-index
+	 *
+	 * @return Index Stats
+	 * @throws MeiliSearchRuntimeException if something goes wrong
+	 */
+	public IndexStats getStats(String index) {
+		String requestQuery = "/indexes/" + index + "/stats";
+		return serviceTemplate.execute(
+			requestFactory.create(HttpMethod.GET, requestQuery, Collections.emptyMap(), null),
+			IndexStats.class
+		);
 	}
 }

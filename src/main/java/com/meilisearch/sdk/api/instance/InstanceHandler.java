@@ -19,6 +19,8 @@ public class InstanceHandler {
 	}
 
 	/**
+	 * Refer https://docs.meilisearch.com/reference/api/health.html
+	 *
 	 * @return true if everything is ok, false if meilisearch is in maintenance mode
 	 */
 	public boolean isHealthy() {
@@ -31,6 +33,8 @@ public class InstanceHandler {
 	}
 
 	/**
+	 * Refer https://docs.meilisearch.com/reference/api/stats.html
+	 *
 	 * @return a map with version information of meilisearch
 	 */
 	public Map<String, String> getVersion() {
@@ -46,20 +50,49 @@ public class InstanceHandler {
 		}
 	}
 
-
-	public IndexStats getStats(String index) {
-		String requestQuery = index + "/stats";
-		return serviceTemplate.execute(
-			requestFactory.create(HttpMethod.GET, requestQuery, Collections.emptyMap(), null),
-			IndexStats.class
-		);
-	}
-
+	/**
+	 * Get Stats
+	 * Refer https://docs.meilisearch.com/reference/api/stats.html
+	 *
+	 * @return Instance Stats
+	 * @throws MeiliSearchRuntimeException if something goes wrong
+	 */
 	public Stats getStats() {
 		String requestQuery = "/stats";
 		return serviceTemplate.execute(
 			requestFactory.create(HttpMethod.GET, requestQuery, Collections.emptyMap(), null),
 			Stats.class
+		);
+	}
+
+	/**
+	 * Creates a dump
+	 * Refer https://docs.meilisearch.com/references/dump.html#create-a-dump
+	 *
+	 * @return Dump status
+	 * @throws MeiliSearchRuntimeException if something goes wrong
+	 */
+	public Dump createDump() {
+		String requestQuery = "/dumps";
+		return serviceTemplate.execute(
+			requestFactory.create(HttpMethod.POST, requestQuery, Collections.emptyMap(), null),
+			Dump.class
+		);
+	}
+
+	/**
+	 * Gets dump status
+	 * Refer https://docs.meilisearch.com/references/dump.html#get-dump-status
+	 *
+	 * @param uid Unique identifier for correspondent dump
+	 * @return dump status
+	 * @throws MeiliSearchRuntimeException if something goes wrong
+	 */
+	public Dump getDumpStatus(String uid) {
+		String requestQuery = "/dumps/" + uid + "/status";
+		return serviceTemplate.execute(
+			requestFactory.create(HttpMethod.GET, requestQuery, Collections.emptyMap(), null),
+			Dump.class
 		);
 	}
 
