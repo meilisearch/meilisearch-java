@@ -67,7 +67,7 @@ public class UpdatesTest extends AbstractIT {
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		List<Update> updates = movies.getUpdates();
-		assertEquals(3, updates.size());
+		assertEquals(4, updates.size());
 	}
 
 	/**
