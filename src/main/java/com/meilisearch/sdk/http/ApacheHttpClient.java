@@ -9,6 +9,7 @@ import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
 import org.apache.hc.client5.http.async.methods.SimpleRequestProducer;
 import org.apache.hc.client5.http.async.methods.SimpleResponseConsumer;
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.concurrent.FutureCallback;
@@ -34,9 +35,11 @@ public class ApacheHttpClient extends AbstractHttpClient {
 			.setSoTimeout(Timeout.ofSeconds(5))
 			.build();
 
-		this.client = HttpAsyncClients.custom()
+		CloseableHttpAsyncClient build = HttpAsyncClients.custom()
 			.setIOReactorConfig(ioReactorConfig)
 			.build();
+		build.start();
+		this.client = build;
 	}
 
 	public ApacheHttpClient(Config config, HttpAsyncClient client) {

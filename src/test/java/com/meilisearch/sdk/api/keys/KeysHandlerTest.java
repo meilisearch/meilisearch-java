@@ -1,6 +1,7 @@
 package com.meilisearch.sdk.api.keys;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.GenericServiceTemplate;
 import com.meilisearch.sdk.http.AbstractHttpClient;
 import com.meilisearch.sdk.http.factory.BasicRequestFactory;
@@ -21,7 +22,8 @@ import static org.mockito.Mockito.*;
 class KeysHandlerTest {
 	private final AbstractHttpClient client = mock(AbstractHttpClient.class);
 	private final JsonHandler processor = new JacksonJsonHandler(new ObjectMapper());
-	private final RequestFactory requestFactory = new BasicRequestFactory(processor);
+	private final Config config = new Config("http://localhost:7700","masterKey");
+	private final RequestFactory requestFactory = new BasicRequestFactory(processor, config);
 	private final GenericServiceTemplate serviceTemplate = new GenericServiceTemplate(client, processor, requestFactory);
 	private final KeysHandler classToTest = new KeysHandler(serviceTemplate, requestFactory);
 

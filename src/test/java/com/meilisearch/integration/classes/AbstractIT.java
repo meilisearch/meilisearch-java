@@ -4,12 +4,16 @@ package com.meilisearch.integration.classes;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.Client;
+import com.meilisearch.sdk.ClientBuilder;
 import com.meilisearch.sdk.Config;
-import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.api.index.Index;
+import com.meilisearch.sdk.http.ApacheHttpClient;
+import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.utils.Movie;
 
 import java.io.*;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +36,13 @@ public abstract class AbstractIT {
 	}
 
 	public void setUp() {
-		if (client == null)
-			client = new Client(new Config("http://localhost:7700", "masterKey"));
+		if (client == null) {
+			Map<String, Class<?>> modelMapping = Collections.singletonMap("movies", Movie.class);
+			Config config = new Config("http://localhost:7700", "masterKey", modelMapping);
+			ApacheHttpClient httpClient = new ApacheHttpClient(config);
+			GsonJsonHandler handler = new GsonJsonHandler();
+			client = ClientBuilder.withConfig(config).withHttpClient(httpClient).withJsonHandler(handler).build();
+		}
 	}
 
 
@@ -56,10 +65,15 @@ public abstract class AbstractIT {
 
 	static public void deleteAllIndexes() {
 		try {
-			Client ms = new Client(new Config("http://localhost:7700", "masterKey"));
-			Index[] indexes = ms.getIndexList();
+			Map<String, Class<?>> modelMapping = Collections.singletonMap("movies", Movie.class);
+			Config config = new Config("http://localhost:7700", "masterKey", modelMapping);
+			ApacheHttpClient httpClient = new ApacheHttpClient(config);
+			GsonJsonHandler handler = new GsonJsonHandler();
+			Client ms = ClientBuilder.withConfig(config).withHttpClient(httpClient).withJsonHandler(handler).build();
+
+			Index[] indexes = ms.index().getAllIndexes();
 			for (Index index : indexes) {
-				ms.deleteIndex(index.getUid());
+				ms.index().deleteIndex(index.getUid());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

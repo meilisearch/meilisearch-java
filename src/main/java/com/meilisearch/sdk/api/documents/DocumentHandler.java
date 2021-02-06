@@ -6,6 +6,7 @@ import com.meilisearch.sdk.http.factory.RequestFactory;
 import com.meilisearch.sdk.http.request.HttpMethod;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class DocumentHandler<T> {
@@ -19,6 +20,10 @@ public class DocumentHandler<T> {
 		this.requestFactory = requestFactory;
 		this.indexName = indexName;
 		this.indexModel = indexModel;
+	}
+
+	public Class<?> getIndexModel() {
+		return indexModel;
 	}
 
 	/**
@@ -138,7 +143,6 @@ public class DocumentHandler<T> {
 		);
 	}
 
-
 	/**
 	 * Add or update a document
 	 *
@@ -180,6 +184,31 @@ public class DocumentHandler<T> {
 		String requestQuery = "/indexes/" + indexName + "/documents";
 		return serviceTemplate.execute(
 			requestFactory.create(HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
+			Update.class
+		);
+	}
+
+	/**
+	 * @return an Update object with the updateId
+	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
+	 */
+	public Update deleteDocuments(List<Integer> data) throws MeiliSearchRuntimeException {
+		String requestQuery = "/indexes/" + indexName + "/documents/delete-batch";
+		return serviceTemplate.execute(
+			requestFactory.create(HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
+			Update.class
+		);
+	}
+
+	/**
+	 * @return an Update object with the updateId
+	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
+	 */
+	public Update deleteDocuments(List<T> data, Function<T, Integer> uidResolverFunc) throws MeiliSearchRuntimeException {
+		List<Integer> documentsToDelete = data.stream().map(uidResolverFunc).collect(Collectors.toList());
+		String requestQuery = "/indexes/" + indexName + "/documents/delete-batch";
+		return serviceTemplate.execute(
+			requestFactory.create(HttpMethod.DELETE, requestQuery, Collections.emptyMap(), documentsToDelete),
 			Update.class
 		);
 	}
@@ -249,5 +278,42 @@ public class DocumentHandler<T> {
 			List.class,
 			Update.class
 		);
+	}
+
+	/**
+	 * Waits for a pending update to be processed
+	 *
+	 * @param updateId ID of the index update
+	 * @throws TimeoutException if timeout is reached
+	 */
+	public void waitForPendingUpdate(int updateId) throws TimeoutException {
+		this.waitForPendingUpdate(updateId, 5000, 50);
+	}
+
+	/**
+	 * Waits for a pending update to be processed
+	 *
+	 * @param updateId     ID of the index update
+	 * @param timeoutInMs  number of milliseconds before throwing an Exception
+	 * @param intervalInMs number of milliseconds before requesting the status again
+	 * @throws TimeoutException if timeout is reached
+	 */
+	public void waitForPendingUpdate(int updateId, int timeoutInMs, int intervalInMs) throws TimeoutException {
+		Update update = new Update();
+		long startTime = new Date().getTime();
+		long elapsedTime = 0;
+
+		while (!"processed".equalsIgnoreCase(update.getStatus())) {
+			if (elapsedTime >= timeoutInMs) {
+				throw new TimeoutException();
+			}
+			update = this.getUpdate(updateId);
+			try {
+				Thread.sleep(intervalInMs);
+			} catch (InterruptedException e) {
+				throw new TimeoutException();
+			}
+			elapsedTime = new Date().getTime() - startTime;
+		}
 	}
 }

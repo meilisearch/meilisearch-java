@@ -4,15 +4,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class SearchRequest {
-	private final String q;
-	private final int offset;
-	private final int limit;
-	private final String filters;
-	private final List<String> attributesToRetrieve;
-	private final List<String> attributesToCrop;
-	private final int cropLength;
-	private final List<String> attributesToHighlight;
-	private final boolean matches;
+	private String q;
+	private int offset;
+	private int limit;
+	private String filters;
+	private List<String> attributesToRetrieve;
+	private List<String> attributesToCrop;
+	private int cropLength;
+	private List<String> attributesToHighlight;
+	private boolean matches;
 
 	public SearchRequest(String q) {
 		this(q, 0);
@@ -84,5 +84,50 @@ public class SearchRequest {
 
 	public boolean isMatches() {
 		return matches;
+	}
+
+	public SearchRequest setQ(String q) {
+		this.q = q;
+		return this;
+	}
+
+	public SearchRequest setOffset(int offset) {
+		this.offset = offset;
+		return this;
+	}
+
+	public SearchRequest setLimit(int limit) {
+		this.limit = limit;
+		return this;
+	}
+
+	public SearchRequest setFilters(String filters) {
+		this.filters = filters;
+		return this;
+	}
+
+	public SearchRequest setAttributesToRetrieve(List<String> attributesToRetrieve) {
+		this.attributesToRetrieve = attributesToRetrieve;
+		return this;
+	}
+
+	public SearchRequest setAttributesToCrop(List<String> attributesToCrop) {
+		this.attributesToCrop = attributesToCrop;
+		return this;
+	}
+
+	public SearchRequest setCropLength(int cropLength) {
+		this.cropLength = cropLength;
+		return this;
+	}
+
+	public SearchRequest setAttributesToHighlight(List<String> attributesToHighlight) {
+		this.attributesToHighlight = attributesToHighlight;
+		return this;
+	}
+
+	public SearchRequest setMatches(boolean matches) {
+		this.matches = matches;
+		return this;
 	}
 }

@@ -25,7 +25,6 @@ java {
 
 repositories {
 	mavenCentral() // Required for Lombok dependency
-	jcenter()
 }
 
 configurations {

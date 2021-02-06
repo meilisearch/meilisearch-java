@@ -1,5 +1,6 @@
 package com.meilisearch.sdk.api.instance;
 
+import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.GenericServiceTemplate;
 import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
 import com.meilisearch.sdk.http.AbstractHttpClient;
@@ -23,7 +24,8 @@ class InstanceHandlerTest {
 
 	private final AbstractHttpClient client = mock(AbstractHttpClient.class);
 	private final JsonHandler handler = new JacksonJsonHandler();
-	private final RequestFactory requestFactory = new BasicRequestFactory(handler);
+	private final Config config = new Config("http://localhost:7700","masterKey");
+	private final RequestFactory requestFactory = new BasicRequestFactory(handler, config);
 	private final GenericServiceTemplate serviceTemplate = new GenericServiceTemplate(client, handler, requestFactory);
 	InstanceHandler classToTest = new InstanceHandler(serviceTemplate, requestFactory);
 

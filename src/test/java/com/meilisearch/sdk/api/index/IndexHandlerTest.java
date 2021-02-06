@@ -1,6 +1,7 @@
 package com.meilisearch.sdk.api.index;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.GenericServiceTemplate;
 import com.meilisearch.sdk.api.documents.Update;
 import com.meilisearch.sdk.api.instance.IndexStats;
@@ -30,7 +31,8 @@ class IndexHandlerTest {
 	private final AbstractHttpClient client = mock(AbstractHttpClient.class);
 	private final JsonHandler jsonHandler = new JacksonJsonHandler(new ObjectMapper());
 	private final SettingsHandler settingsService = mock(SettingsHandler.class);
-	private final RequestFactory requestFactory = new BasicRequestFactory(jsonHandler);
+	private final Config config = new Config("http://localhost:7700","masterKey");
+	private final RequestFactory requestFactory = new BasicRequestFactory(jsonHandler, config);
 	private final GenericServiceTemplate serviceTemplate = new GenericServiceTemplate(client, jsonHandler, requestFactory);
 	private final IndexHandler classToTest = new IndexHandler(serviceTemplate, requestFactory, settingsService);
 

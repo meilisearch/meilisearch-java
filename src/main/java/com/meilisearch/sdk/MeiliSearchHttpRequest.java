@@ -28,7 +28,7 @@ class MeiliSearchHttpRequest {
 	protected MeiliSearchHttpRequest(Config config) {
 		this.client = new DefaultHttpClient(config);
 		this.jsonHandler = new GsonJsonHandler();
-		this.factory = new BasicRequestFactory(jsonHandler);
+		this.factory = new BasicRequestFactory(jsonHandler, config);
 	}
 
 	/**

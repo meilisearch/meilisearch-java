@@ -1,16 +1,21 @@
 package com.meilisearch.integration;
 
 import com.meilisearch.integration.classes.AbstractIT;
-import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.api.index.Index;
 import com.meilisearch.sdk.exceptions.APIError;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
-import org.junit.jupiter.api.*;
+import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Tag("integration")
 public class ExceptionsTest extends AbstractIT {
-	
+
 
 	@BeforeEach
 	public void initialize() {
@@ -32,7 +37,7 @@ public class ExceptionsTest extends AbstractIT {
 		String errorType = "authentication_error";
 		String errorLink = "https://docs.meilisearch.com/errors#missing_authorization_header";
 		try {
-			throw new MeiliSearchApiException(new APIError(errorMessage,errorCode,errorType,errorLink));
+			throw new MeiliSearchApiException(new APIError(errorMessage, errorCode, errorType, errorLink));
 		} catch (MeiliSearchApiException e) {
 			assertEquals(errorMessage, e.getMessage());
 			assertEquals(errorCode, e.getErrorCode());
@@ -45,17 +50,19 @@ public class ExceptionsTest extends AbstractIT {
 	 * Test MeiliSearchApiException is thrown on MeiliSearch bad request
 	 */
 	@Test
-	public void testMeiliSearchApiExceptionBadRequest () throws Exception {
+	public void testMeiliSearchApiExceptionBadRequest() throws Exception {
 		String indexUid = "MeiliSearchApiExceptionBadRequest";
-		Index index = client.createIndex(indexUid);
+		Index index = client.index().createIndex(indexUid);
 		assertThrows(
-			MeiliSearchApiException.class,
-			() -> client.createIndex(indexUid)
+			MeiliSearchRuntimeException.class,
+			() -> client.index().createIndex(indexUid)
 		);
 		try {
-			client.createIndex(indexUid);
-		} catch (MeiliSearchApiException e) {
-			assertEquals("index_already_exists", e.getErrorCode());
+			client.index().createIndex(indexUid);
+		} catch (MeiliSearchRuntimeException e) {
+			if (e.getCause().getClass() == MeiliSearchApiException.class) {
+				assertEquals("index_already_exists", ((MeiliSearchApiException) e.getCause()).getErrorCode());
+			}
 		}
 	}
 }

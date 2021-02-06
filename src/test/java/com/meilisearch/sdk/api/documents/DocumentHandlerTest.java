@@ -1,6 +1,7 @@
 package com.meilisearch.sdk.api.documents;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.GenericServiceTemplate;
 import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
 import com.meilisearch.sdk.http.AbstractHttpClient;
@@ -23,7 +24,8 @@ class DocumentHandlerTest {
 
 	private final AbstractHttpClient client = mock(AbstractHttpClient.class);
 	private final JsonHandler jsonHandler = new JacksonJsonHandler(new ObjectMapper());
-	private final RequestFactory requestFactory = new BasicRequestFactory(jsonHandler);
+	private final Config config = new Config("http://localhost:7700","masterKey");
+	private final RequestFactory requestFactory = new BasicRequestFactory(jsonHandler, config);
 	private final GenericServiceTemplate serviceTemplate = new GenericServiceTemplate(client, jsonHandler, requestFactory);
 	private final DocumentHandler<Movie> classToTest = new DocumentHandler<Movie>(serviceTemplate, requestFactory, "movies", Movie.class);
 

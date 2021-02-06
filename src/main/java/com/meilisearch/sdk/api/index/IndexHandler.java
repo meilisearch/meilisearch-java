@@ -1,6 +1,7 @@
 package com.meilisearch.sdk.api.index;
 
 import com.meilisearch.sdk.ServiceTemplate;
+import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.api.documents.Update;
 import com.meilisearch.sdk.api.instance.IndexStats;
 import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
@@ -9,7 +10,9 @@ import com.meilisearch.sdk.http.request.HttpMethod;
 import com.meilisearch.sdk.http.response.HttpResponse;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.TimeoutException;
 
 public class IndexHandler {
 	private final ServiceTemplate serviceTemplate;
@@ -145,5 +148,21 @@ public class IndexHandler {
 			requestFactory.create(HttpMethod.GET, requestQuery, Collections.emptyMap(), null),
 			IndexStats.class
 		);
+	}
+
+	/**
+	 * Gets single index by uid or if it does not exists, Create index
+	 *
+	 * @param uid        Unique identifier for the index to create
+	 * @param primaryKey The primary key of the documents in that index
+	 * @return Index instance
+	 * @throws MeiliSearchRuntimeException if an error occurs
+	 */
+	public Index getOrCreateIndex(String uid, String primaryKey) {
+		try {
+			return this.getIndex(uid);
+		} catch (MeiliSearchRuntimeException e) {
+			return this.createIndex(uid, primaryKey);
+		}
 	}
 }

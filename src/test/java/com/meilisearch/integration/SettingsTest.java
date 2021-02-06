@@ -2,7 +2,10 @@ package com.meilisearch.integration;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
-import com.meilisearch.sdk.*;
+import com.meilisearch.sdk.api.documents.DocumentHandler;
+import com.meilisearch.sdk.api.documents.Update;
+import com.meilisearch.sdk.api.index.Index;
+import com.meilisearch.sdk.api.index.Settings;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
@@ -13,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Tag("integration")
 public class SettingsTest extends AbstractIT {
@@ -37,17 +41,14 @@ public class SettingsTest extends AbstractIT {
 	@Test
 	public void testGetSettings() throws Exception {
 		String indexUid = "getSettings";
-		Index index = client.index(indexUid);
-		GsonJsonHandler jsonGson = new GsonJsonHandler();
+		Index index = client.index().getOrCreateIndex(indexUid, "");
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-		UpdateStatus updateInfo = jsonGson.decode(
-			index.addDocuments(testData.getRaw()),
-			UpdateStatus.class
-		);
-		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
+		Update update = movies.addDocument(testData.getData());
+		movies.waitForPendingUpdate(update.getUpdateId());
 
-		Settings settings = index.getSettings();
+		Settings settings = client.index().getSettings(indexUid);
 
 		assertEquals(6, settings.getRankingRules().length);
 	}
@@ -58,18 +59,15 @@ public class SettingsTest extends AbstractIT {
 	@Test
 	public void testUpdateSettingsRankingRules() throws Exception {
 		String indexUid = "updateSettingsRankingRules";
-		Index index = client.index(indexUid);
+		Index index = client.index().getOrCreateIndex(indexUid, "");
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-		UpdateStatus updateInfo = jsonGson.decode(
-			index.addDocuments(testData.getRaw()),
-			UpdateStatus.class
-		);
-		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
+		Update update = movies.addDocument(testData.getData());
+		movies.waitForPendingUpdate(update.getUpdateId());
 
-		Settings settings = index.getSettings();
-
+		Settings settings = new Settings();
 		settings.setRankingRules(new String[]{
 			"typo",
 			"words",
@@ -79,8 +77,10 @@ public class SettingsTest extends AbstractIT {
 			"exactness",
 			"desc(release_date)",
 			"desc(rank)"});
-		index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
-		Settings newSettings = index.getSettings();
+
+		update = client.index().updateSettings(indexUid, settings);
+		movies.waitForPendingUpdate(update.getUpdateId());
+		Settings newSettings = client.index().getSettings(indexUid);
 		assertEquals(8, newSettings.getRankingRules().length);
 	}
 
@@ -90,26 +90,24 @@ public class SettingsTest extends AbstractIT {
 	@Test
 	public void testUpdateSettingsSynonyms() throws Exception {
 		String indexUid = "updateSettingsSynonyms";
-		Index index = client.index(indexUid);
+		Index index = client.index().getOrCreateIndex(indexUid, "");
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-		UpdateStatus updateInfo = jsonGson.decode(
-			index.addDocuments(testData.getRaw()),
-			UpdateStatus.class
-		);
-		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
+		Update update = movies.addDocument(testData.getData());
+		movies.waitForPendingUpdate(update.getUpdateId());
 
-		Settings settings = index.getSettings();
+		Settings settings = new Settings();
 
-		HashMap<String, String[]> synonyms = new HashMap();
-		synonyms.put("wolverine", new String[] {"xmen", "logan"});
-		synonyms.put("logan", new String[] {"wolverine"});
+		HashMap<String, String[]> synonyms = new HashMap<>();
+		synonyms.put("wolverine", new String[]{"xmen", "logan"});
+		synonyms.put("logan", new String[]{"wolverine"});
 		settings.setSynonyms(synonyms);
 
-		index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
-
-		Settings newSettings = index.getSettings();
+		update = client.index().updateSettings(indexUid, settings);
+		movies.waitForPendingUpdate(update.getUpdateId());
+		Settings newSettings = client.index().getSettings(indexUid);
 
 		assertEquals(2, newSettings.getSynonyms().size());
 	}
@@ -120,30 +118,30 @@ public class SettingsTest extends AbstractIT {
 	@Test
 	public void testResetSettings() throws Exception {
 		String indexUid = "testResetSettings";
-		Index index = client.index(indexUid);
+		Index index = client.index().getOrCreateIndex(indexUid, "");
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-		UpdateStatus updateInfo = jsonGson.decode(
-			index.addDocuments(testData.getRaw()),
-			UpdateStatus.class
-		);
-		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
+		Update update = movies.addDocument(testData.getData());
+		movies.waitForPendingUpdate(update.getUpdateId());
 
-		Settings initialSettings = index.getSettings();
+		Settings initialSettings = new Settings();
 
 		Settings settingsWithSynonyms = new Settings();
 		HashMap<String, String[]> synonyms = new HashMap();
-		synonyms.put("wolverine", new String[] {"xmen", "logan"});
-		synonyms.put("logan", new String[] {"wolverine"});
+		synonyms.put("wolverine", new String[]{"xmen", "logan"});
+		synonyms.put("logan", new String[]{"wolverine"});
 		settingsWithSynonyms.setSynonyms(synonyms);
+		update = client.index().updateSettings(indexUid, settingsWithSynonyms);
+		movies.waitForPendingUpdate(update.getUpdateId());
 
-		index.waitForPendingUpdate(index.updateSettings(settingsWithSynonyms).getUpdateId());
-		settingsWithSynonyms = index.getSettings();
+		settingsWithSynonyms = client.index().getSettings(indexUid);
 		assertEquals(2, settingsWithSynonyms.getSynonyms().size());
 
-		index.waitForPendingUpdate(index.resetSettings().getUpdateId());
-		Settings settingsAfterReset = index.getSettings();
+		Update resetUpdate = client.index().resetSettings(indexUid);
+		movies.waitForPendingUpdate(resetUpdate.getUpdateId());
+		Settings settingsAfterReset = client.index().getSettings(indexUid);
 		assertEquals(initialSettings.getSynonyms().size(), settingsAfterReset.getSynonyms().size());
 	}
 }

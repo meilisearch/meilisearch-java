@@ -11,7 +11,7 @@ import java.util.Map;
  * Refer https://docs.meilisearch.com/references/settings.html
  */
 public class Settings {
-	private HashMap<String, String[]> synonyms;
+	private HashMap<String, String[]> synonyms = new HashMap<>();
 	private String[] stopWords;
 	private String[] rankingRules;
 	private String[] attributesForFaceting;

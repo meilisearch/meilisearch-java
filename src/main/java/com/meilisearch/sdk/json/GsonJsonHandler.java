@@ -2,6 +2,7 @@ package com.meilisearch.sdk.json;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
 
 public class GsonJsonHandler implements JsonHandler {
 	private final Gson gson;
@@ -16,14 +17,14 @@ public class GsonJsonHandler implements JsonHandler {
 
 	@Override
 	public String encode(Object o) throws Exception {
-		if (o.getClass() == String.class) {
+		if (o != null && o.getClass() == String.class) {
 			return (String) o;
 		}
 		try {
 			return gson.toJson(o);
 		} catch (Exception e) {
 			// todo: use dedicated exception
-			throw new RuntimeException("Error while serializing: ", e);
+			throw new MeiliSearchRuntimeException(e);
 		}
 	}
 
@@ -32,7 +33,7 @@ public class GsonJsonHandler implements JsonHandler {
 	public <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters) throws Exception {
 		if (o == null) {
 			// todo: use dedicated exception
-			throw new RuntimeException("String to deserialize is null");
+			throw new MeiliSearchRuntimeException();
 		}
 		if (targetClass == String.class) {
 			return (T) o;
@@ -46,7 +47,7 @@ public class GsonJsonHandler implements JsonHandler {
 			}
 		} catch (Exception e) {
 			// todo: use dedicated exception
-			throw new RuntimeException("Error while deserializing: ", e);
+			throw new MeiliSearchRuntimeException(e);
 		}
 	}
 }
