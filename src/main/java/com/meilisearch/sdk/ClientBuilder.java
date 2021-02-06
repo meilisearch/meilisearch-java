@@ -94,7 +94,7 @@ public class ClientBuilder {
 			this.withAutodetectHttpClient();
 		}
 		if (this.requestFactory == null) {
-			this.requestFactory = new BasicRequestFactory(this.jsonHandler);
+			this.requestFactory = new BasicRequestFactory(this.jsonHandler, config);
 		}
 		if (serviceTemplate == null) {
 			this.serviceTemplate = new GenericServiceTemplate(this.httpClient, this.jsonHandler, this.requestFactory);

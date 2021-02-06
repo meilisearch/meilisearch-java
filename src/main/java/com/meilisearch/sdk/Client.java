@@ -5,8 +5,9 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.api.documents.DocumentHandler;
 import com.meilisearch.sdk.api.index.IndexHandler;
+import com.meilisearch.sdk.api.instance.InstanceHandler;
+import com.meilisearch.sdk.api.keys.KeysHandler;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -15,12 +16,16 @@ import java.util.stream.Collectors;
  */
 public class Client {
 	private final IndexHandler indexHandler;
+	private final InstanceHandler instanceHandler;
+	private final KeysHandler keysHandler;
 	private final Map<String, DocumentHandler<?>> handlerMap;
 	private final ServiceTemplate serviceTemplate;
 
 	Client(Config config, ServiceTemplate serviceTemplate) {
 		this.serviceTemplate = serviceTemplate;
 		this.indexHandler = new IndexHandler(serviceTemplate, serviceTemplate.getRequestFactory());
+		this.instanceHandler = new InstanceHandler(serviceTemplate, serviceTemplate.getRequestFactory());
+		this.keysHandler = new KeysHandler(serviceTemplate, serviceTemplate.getRequestFactory());
 		this.handlerMap = config.getModelMapping()
 			.entrySet()
 			.stream()
@@ -41,12 +46,10 @@ public class Client {
 		return (DocumentHandler<T>) this.handlerMap.get(uid);
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> DocumentHandler<T> documents(String uid, Class<T> model) {
 		DocumentHandler<T> handler = documents(uid);
 		if (handler != null) {
-			Class<T> handlerType = (Class<T>) ((ParameterizedType) handler.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-			if (handlerType == model) {
+			if (handler.getIndexModel() == model) {
 				return handler;
 			}
 		}
@@ -56,4 +59,11 @@ public class Client {
 		return handler;
 	}
 
+	public InstanceHandler instance() {
+		return instanceHandler;
+	}
+
+	public KeysHandler keys() {
+		return keysHandler;
+	}
 }
