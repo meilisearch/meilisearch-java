@@ -189,6 +189,7 @@ public class DocumentHandler<T> {
 	}
 
 	/**
+	 * @param data a list of model to delete
 	 * @return an Update object with the updateId
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
 	 */
@@ -201,6 +202,8 @@ public class DocumentHandler<T> {
 	}
 
 	/**
+	 * @param data a list of model to delete
+	 * @param uidResolverFunc a function to resolve the id
 	 * @return an Update object with the updateId
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
 	 */

@@ -1,7 +1,5 @@
 package com.meilisearch.sdk.api.index;
 
-import com.meilisearch.sdk.Index;
-
 import java.util.HashMap;
 import java.util.Map;
 

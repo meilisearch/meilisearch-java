@@ -1,7 +1,6 @@
 package com.meilisearch.sdk.api.index;
 
 import com.meilisearch.sdk.ServiceTemplate;
-import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.api.documents.Update;
 import com.meilisearch.sdk.api.instance.IndexStats;
 import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
@@ -10,9 +9,7 @@ import com.meilisearch.sdk.http.request.HttpMethod;
 import com.meilisearch.sdk.http.response.HttpResponse;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.concurrent.TimeoutException;
 
 public class IndexHandler {
 	private final ServiceTemplate serviceTemplate;
@@ -139,6 +136,7 @@ public class IndexHandler {
 	 * Get Index Stats
 	 * Refer https://docs.meilisearch.com/reference/api/stats.html#get-stat-of-an-index
 	 *
+	 * @param index the index name
 	 * @return Index Stats
 	 * @throws MeiliSearchRuntimeException if something goes wrong
 	 */
