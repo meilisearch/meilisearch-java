@@ -59,7 +59,7 @@ class InstanceHandlerTest {
 			.thenThrow(MeiliSearchRuntimeException.class);
 		Stats stats = classToTest.getStats();
 		assertThat(stats.getDatabaseSize(), is(447819776));
-		assertThat(stats.getLastUpdate().toString(), is("Fri Nov 15 12:15:22 CET 2019"));
+		assertThat(stats.getLastUpdate().toInstant().toEpochMilli(), is(1573816522092L));
 		assertThat(stats.getIndexes().keySet(), hasItems("movies", "rangemovies"));
 		IndexStats movies = stats.getIndexes().get("movies");
 		assertThat(movies.getNumberOfDocuments(), is(19654));
