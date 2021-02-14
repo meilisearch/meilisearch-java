@@ -9,7 +9,7 @@ import java.util.HashMap;
 /**
  * Data Structure for the Settings in an {@link Index}
  *
- * Refer https://docs.meilisearch.com/references/settings.html
+ * Refer https://docs.meilisearch.com/reference/api/settings.html
  */
 public class Settings {
 	@Getter @Setter

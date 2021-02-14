@@ -30,7 +30,7 @@ public class Client {
 
 	/**
 	 * Creates index
-	 * Refer https://docs.meilisearch.com/references/indexes.html#create-an-index
+	 * Refer https://docs.meilisearch.com/reference/api/indexes.html#create-an-index
 	 *
 	 * @param uid Unique identifier for the index to create
 	 * @return MeiliSearch API response
@@ -42,7 +42,7 @@ public class Client {
 
 	/**
 	 * Creates index
-	 * Refer https://docs.meilisearch.com/references/indexes.html#create-an-index
+	 * Refer https://docs.meilisearch.com/reference/api/indexes.html#create-an-index
 	 *
 	 * @param uid Unique identifier for the index to create
 	 * @param primaryKey The primary key of the documents in that index
@@ -57,7 +57,7 @@ public class Client {
 
 	/**
 	 * Gets all indexes
-	 * Refer https://docs.meilisearch.com/references/indexes.html#list-all-indexes
+	 * Refer https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
 	 *
 	 * @return list of indexes in the MeiliSearch client
 	 * @throws Exception if an error occurs
@@ -87,7 +87,7 @@ public class Client {
 
 	/**
 	 * Gets single index by uid
-	 * Refer https://docs.meilisearch.com/references/indexes.html#get-one-index
+	 * Refer https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
 	 *
 	 * @param uid Unique identifier of the index to get
 	 * @return MeiliSearch API response
@@ -101,7 +101,7 @@ public class Client {
 
 	/**
 	 * Updates single index by uid
-	 * Refer https://docs.meilisearch.com/references/indexes.html#update-an-index
+	 * Refer https://docs.meilisearch.com/reference/api/indexes.html#update-an-index
 	 *
 	 * @param uid Unique identifier of the index to update
 	 * @param primaryKey Primary key of the documents in the index
@@ -116,7 +116,7 @@ public class Client {
 
 	/**
 	 * Deletes single index by uid
-	 * Refer https://docs.meilisearch.com/references/indexes.html#get-one-index
+	 * Refer https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
 	 *
 	 * @param uid Unique identifier of the index to delete
 	 * @return MeiliSearch API response
@@ -158,7 +158,7 @@ public class Client {
 
 	/**
 	 * Triggers the creation of a MeiliSearch dump.
-	 * Refer https://docs.meilisearch.com/references/dump.html#create-a-dump
+	 * Refer https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
 	 *
 	 * @throws Exception if an error occurs
 	 */
@@ -168,7 +168,7 @@ public class Client {
 
 	/**
 	 * Gets the status of a MeiliSearch dump.
-	 * https://docs.meilisearch.com/references/dump.html#get-dump-status
+	 * https://docs.meilisearch.com/reference/api/dump.html#get-dump-status
 	 *
 	 * @param uid Unique identifier for correspondent dump
 	 * @return String with dump status
