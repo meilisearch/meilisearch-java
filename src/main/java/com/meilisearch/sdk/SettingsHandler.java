@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 /**
  * Settings Handler for manipulation of an Index {@link Settings}
  *
- * Refer https://docs.meilisearch.com/references/settings.html
+ * Refer https://docs.meilisearch.com/reference/api/settings.html
  */
 public class SettingsHandler {
 	private final MeiliSearchHttpRequest meilisearchHttpRequest;
@@ -22,7 +22,7 @@ public class SettingsHandler {
 
 	/**
 	 * Gets the settings of a given index
-	 * Refer https://docs.meilisearch.com/references/settings.html#get-settings
+	 * Refer https://docs.meilisearch.com/reference/api/settings.html#get-settings
 	 *
 	 * @param uid Index identifier
 	 * @return settings of a given uid as String
@@ -37,7 +37,7 @@ public class SettingsHandler {
 
 	/**
 	 * Updates the settings of a given index
-	 * Refer https://docs.meilisearch.com/references/settings.html#update-settings
+	 * Refer https://docs.meilisearch.com/reference/api/settings.html#update-settings
 	 *
 	 * @param uid             Index identifier
 	 * @param settings the data that contains the new settings
@@ -53,7 +53,7 @@ public class SettingsHandler {
 
 	/**
 	 * Resets the settings of a given index
-	 * Refer https://docs.meilisearch.com/references/settings.html#reset-settings
+	 * Refer https://docs.meilisearch.com/reference/api/settings.html#reset-settings
 	 *
 	 * @param uid Index identifier
 	 * @return updateId is the id of the update
