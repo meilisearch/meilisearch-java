@@ -167,7 +167,7 @@ public class Index implements Serializable {
 
 	/**
 	 * Gets the settings of the index
-	 * Refer https://docs.meilisearch.com/references/settings.html#get-settings
+	 * Refer https://docs.meilisearch.com/reference/api/settings.html#get-settings
 	 *
 	 * @return settings of a given uid as String
 	 * @throws Exception if something goes wrong
@@ -178,7 +178,7 @@ public class Index implements Serializable {
 
 	/**
 	 * Updates the settings of the index
-	 * Refer https://docs.meilisearch.com/references/settings.html#update-settings
+	 * Refer https://docs.meilisearch.com/reference/api/settings.html#update-settings
 	 *
 	 * @param settings the object that contains the data with the new settings
 	 * @return UpdateStatus
@@ -190,7 +190,7 @@ public class Index implements Serializable {
 
 	/**
 	 * Resets the settings of the index
-	 * Refer https://docs.meilisearch.com/references/settings.html#reset-settings
+	 * Refer https://docs.meilisearch.com/reference/api/settings.html#reset-settings
 	 *
 	 * @return UpdateStatus
 	 * @throws Exception if something goes wrong
