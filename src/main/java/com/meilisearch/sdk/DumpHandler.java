@@ -21,7 +21,7 @@ public class DumpHandler {
 
 	/**
 	 * Creates a dump
-	 * Refer https://docs.meilisearch.com/references/dump.html#create-a-dump
+	 * Refer https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
 	 *
 	 * @return Dump object with MeiliSearch API response
 	 * @throws Exception if something goes wrong
@@ -35,7 +35,7 @@ public class DumpHandler {
 
 	/**
 	 * Gets dump status
-	 * Refer https://docs.meilisearch.com/references/dump.html#get-dump-status
+	 * Refer https://docs.meilisearch.com/reference/api/dump.html#get-dump-status
 	 *
 	 * @param uid Unique identifier for correspondent dump
 	 * @return MeiliSearch API response with dump status and dump uid
