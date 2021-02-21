@@ -165,6 +165,14 @@ public class Index implements Serializable {
 		return this.search.search(this.uid, sr);
 	}
 
+	public String rawSearch(String q) throws Exception {
+		return this.search.rawSearch(this.uid, q);
+	}
+
+	public String rawSearch(SearchRequest sr) throws Exception {
+		return this.search.rawSearch(this.uid, sr);
+	}
+
 	/**
 	 * Gets the settings of the index
 	 * Refer https://docs.meilisearch.com/references/settings.html#get-settings

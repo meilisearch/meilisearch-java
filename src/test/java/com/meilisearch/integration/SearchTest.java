@@ -23,6 +23,17 @@ public class SearchTest extends AbstractIT {
 
 	private TestData<Movie> testData;
 
+	final class Results {
+		Movie[] hits;
+		int offset;
+		int limit;
+		int nbHits;
+		boolean exhaustiveNbHits;
+		int processingTimeMs;
+		String query;
+	}
+
+
 	@BeforeEach
 	public void initialize() {
 		this.setUp();
@@ -53,16 +64,14 @@ public class SearchTest extends AbstractIT {
 		);
 
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
-		String query = "batman";
 
-		SearchResult searchResult = index.search(query);
+		SearchResult searchResult = index.search("batman");
 
+		System.out.println(searchResult.getFacetsDistribution());
 		assertEquals(1, searchResult.getHits().size());
 		assertEquals(0, searchResult.getOffset());
 		assertEquals(20, searchResult.getLimit());
 		assertEquals(1, searchResult.getNbHits());
-		assertEquals(query, searchResult.getQuery());
-		assertFalse(searchResult.isExhaustiveFacetsCount());
 	}
 
 	/**
@@ -117,7 +126,7 @@ public class SearchTest extends AbstractIT {
 	 * Test search attributesToRetrieve
 	 */
 	@Test
-	public void testSearchAttributesToRetrieve() throws Exception {
+	public void testRawSearchAttributesToRetrieve() throws Exception {
 		String indexUid = "SearchAttributesToRetrieve";
 		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
@@ -133,11 +142,20 @@ public class SearchTest extends AbstractIT {
 		SearchRequest searchRequest = new SearchRequest("a")
 			.setAttributesToRetrieve(new String[]{"id", "title"});
 
-		SearchResult searchResult = index.search(searchRequest);
+		Results res_gson = jsonGson.decode(
+			index.rawSearch(searchRequest),
+			Results.class
+		);
 
-		assertEquals(true, searchResult.getHits().size() > 0);
-		assertThat(searchResult.getHits().get(0).get("id"), instanceOf(Double.class));
-		assertThat(searchResult.getHits().get(0).get("title"), instanceOf(String.class));
+		assertEquals(20, res_gson.hits.length);
+		assertThat(res_gson.hits[0].getId(), instanceOf(String.class));
+		assertThat(res_gson.hits[0].getTitle(), instanceOf(String.class));
+		assertNull(res_gson.hits[0].getPoster());
+		assertNull(res_gson.hits[0].getOverview());
+		assertNull(res_gson.hits[0].getRelease_date());
+		assertNull(res_gson.hits[0].getLanguage());
+		assertNull(res_gson.hits[0].getGenres());
+
 	}
 
 	/**
@@ -187,15 +205,15 @@ public class SearchTest extends AbstractIT {
 			.setAttributesToHighlight(new String[]{"overview"});
 
 		SearchResult searchResult = index.search(searchRequest);
+
 		assertEquals(20, searchResult.getHits().size());
-		assertTrue(searchResult.getHits().get(0));
 	}
 
 	/**
 	 * Test search filters
 	 */
 	@Test
-	public void testSearchFilters() throws Exception {
+	public void testRawSearchFilters() throws Exception {
 		String indexUid = "SearchFilters";
 		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
@@ -210,18 +228,22 @@ public class SearchTest extends AbstractIT {
 
 		SearchRequest searchRequest = new SearchRequest("and")
 			.setFilters("title = \"The Dark Knight\"");
-		SearchResult searchResult = index.search(searchRequest);
 
-		assertEquals(1, searchResult.getHits().size());
-		assertEquals(155.0, searchResult.getHits().get(0).get("id"));
-		assertEquals("The Dark Knight", searchResult.getHits().get(0).get("title"));
+		Results res_gson = jsonGson.decode(
+			index.rawSearch(searchRequest),
+			Results.class
+		);
+
+		assertEquals(1, res_gson.hits.length);
+		assertEquals("155", res_gson.hits[0].getId());
+		assertEquals("The Dark Knight", res_gson.hits[0].getTitle());
 	}
 
 	/**
 	 * Test search filters complex
 	 */
 	@Test
-	public void testSearchFiltersComplex() throws Exception {
+	public void testRawSearchFiltersComplex() throws Exception {
 		String indexUid = "SearchFiltersComplex";
 		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
@@ -236,11 +258,15 @@ public class SearchTest extends AbstractIT {
 
 		SearchRequest searchRequest = new SearchRequest("and")
 			.setFilters("title = \"The Dark Knight\" OR id = 290859");
-		SearchResult searchResult = index.search(searchRequest);
 
-		assertEquals(2, searchResult.getHits().size());
-		assertEquals(155.0, searchResult.getHits().get(0).get("id"));
-		assertEquals(290859.0, searchResult.getHits().get(1).get("id"));
+		Results res_gson = jsonGson.decode(
+			index.rawSearch(searchRequest),
+			Results.class
+		);
+
+		assertEquals(2, res_gson.hits.length);
+		assertEquals("155", res_gson.hits[0].getId());
+		assertEquals("290859", res_gson.hits[1].getId());
 	}
 
 	/**
