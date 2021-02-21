@@ -19,6 +19,35 @@ public class Search {
 		meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
 	}
 
+
+	String rawSearch(String uid, String q) throws Exception {
+		String requestQuery = "/indexes/" + uid + "/search";
+		SearchRequest sr = new SearchRequest(q);
+		return meilisearchHttpRequest.post(requestQuery, sr.getQuery());
+	}
+
+	String rawSearch(String uid,
+					 String q,
+					 int offset,
+					 int limit,
+					 String[] attributesToRetrieve,
+					 String[] attributesToCrop,
+					 int cropLength,
+					 String[] attributesToHighlight,
+					 String filters,
+					 boolean matches
+	) throws Exception {
+		String requestQuery = "/indexes/" + uid + "/search";
+		SearchRequest sr = new SearchRequest(q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength, attributesToHighlight, filters, matches);
+		return meilisearchHttpRequest.post(requestQuery, sr.getQuery());
+	}
+
+	String rawSearch(String uid, SearchRequest sr) throws Exception {
+		String requestQuery = "/indexes/" + uid + "/search";
+		return meilisearchHttpRequest.post(requestQuery, sr.getQuery());
+	}
+
+
 	/**
 	 * Performs a search on a given index with a given query
 	 *
@@ -28,10 +57,8 @@ public class Search {
 	 * @throws Exception Search Exception or Client Error
 	 */
 	SearchResult search(String uid, String q) throws Exception {
-		String requestQuery = "/indexes/" + uid + "/search";
-		SearchRequest sr = new SearchRequest(q);
 		return jsonGson.decode(
-			meilisearchHttpRequest.post(requestQuery, sr.getQuery()),
+			rawSearch(uid, q),
 			SearchResult.class
 		);
 	}
@@ -62,10 +89,8 @@ public class Search {
 				  String filters,
 				  boolean matches
 	) throws Exception {
-		String requestQuery = "/indexes/" + uid + "/search";
-		SearchRequest sr = new SearchRequest(q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength, attributesToHighlight, filters, matches);
 		return jsonGson.decode(
-			meilisearchHttpRequest.post(requestQuery, sr.getQuery()),
+			rawSearch(uid, q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength,attributesToHighlight, filters, matches),
 			SearchResult.class
 		);
 	}
@@ -79,9 +104,8 @@ public class Search {
 	 * @throws Exception Search Exception or Client Error
 	 */
 	SearchResult search(String uid, SearchRequest sr) throws Exception {
-		String requestQuery = "/indexes/" + uid + "/search";
 		return jsonGson.decode(
-			meilisearchHttpRequest.post(requestQuery, sr.getQuery()),
+			rawSearch(uid, sr),
 			SearchResult.class
 		);
 	}
