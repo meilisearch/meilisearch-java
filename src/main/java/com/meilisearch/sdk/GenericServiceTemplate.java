@@ -1,5 +1,7 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.exceptions.APIError;
+import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
 import com.meilisearch.sdk.http.AbstractHttpClient;
 import com.meilisearch.sdk.http.HttpClient;
@@ -7,9 +9,6 @@ import com.meilisearch.sdk.http.factory.RequestFactory;
 import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.HttpResponse;
 import com.meilisearch.sdk.json.JsonHandler;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class GenericServiceTemplate implements ServiceTemplate {
 	private final AbstractHttpClient client;
@@ -57,18 +56,16 @@ public class GenericServiceTemplate implements ServiceTemplate {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T execute(HttpRequest<?> request, Class<?> targetClass, Class<?>... parameter) throws RuntimeException {
-		try {
-			if (targetClass == null) {
-				return (T) makeRequest(request);
-			}
-			return (T) CompletableFuture
-				.completedFuture(makeRequest(request))
-				.thenApply(httpResponse -> decodeResponse(httpResponse.getContent(), targetClass, parameter))
-				.get();
-		} catch (InterruptedException | ExecutionException e) {
-			Thread.currentThread().interrupt();
-			throw new MeiliSearchRuntimeException(e);
+		if (targetClass == null) {
+			return (T) makeRequest(request);
 		}
+		HttpResponse<?> response = makeRequest(request);
+		if (response.getStatusCode() >= 400) {
+			APIError error = decodeResponse(response.getContent(), APIError.class);
+			throw new MeiliSearchRuntimeException(new MeiliSearchApiException(error));
+		}
+
+		return decodeResponse(response.getContent(), targetClass, parameter);
 	}
 
 	private <T> T decodeResponse(Object o, Class<?> targetClass, Class<?>... parameters) {
