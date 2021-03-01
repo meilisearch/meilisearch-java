@@ -120,28 +120,6 @@ the result will be:
 harry pottre
 ```
 
-Or, you can get the full result as raw string with `index.rawSearch()`
-```
-SearchResult results = index.rawSearch("harry pottre");
-System.out.println(results);
-```
-
-this will show:
-```json
-{
-	"hits": [{
-		"book_id": 4,
-		"title": "Harry Potter and the Half-Blood Prince"
-	}],
-	"offset": 0,
-	"limit": 20,
-	"nbHits": 1,
-	"exhaustiveNbHits": false,
-	"processingTimeMs": 2,
-	"query": "harry pottre"
-}
-```
-
 #### Custom Search <!-- omit in toc -->
 
 If you want a custom search, the easiest way is to create a `SearchRequest` object, and set the parameters that you need.<br>
@@ -161,7 +139,6 @@ System.out.println(results.getHits());
 ```
 
 Output:
-
 ```json
 [{
   "book_id":1,
