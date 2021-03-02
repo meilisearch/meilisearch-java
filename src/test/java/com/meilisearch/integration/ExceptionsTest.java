@@ -45,7 +45,6 @@ public class ExceptionsTest extends AbstractIT {
 	 * Test MeiliSearchApiException is thrown on MeiliSearch bad request
 	 */
 	@Test
-	@Disabled
 	public void testMeiliSearchApiExceptionBadRequest () throws Exception {
 		String indexUid = "MeiliSearchApiExceptionBadRequest";
 		Index index = client.createIndex(indexUid);
