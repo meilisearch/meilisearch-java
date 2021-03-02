@@ -120,6 +120,8 @@ public class DocumentHandler<T> {
 	}
 
 	/**
+	 * Delete a document with a specific identifier
+	 *
 	 * @param identifier the id of the document
 	 * @return an Update object with the updateId
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
