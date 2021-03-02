@@ -133,6 +133,7 @@ public class DocumentHandler<T> {
 	}
 
 	/**
+	 * Delete a batch of documents
 	 * @return an Update object with the updateId
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
 	 */
