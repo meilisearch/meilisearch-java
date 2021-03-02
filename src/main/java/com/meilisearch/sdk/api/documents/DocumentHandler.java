@@ -182,6 +182,8 @@ public class DocumentHandler<T> {
 	}
 
 	/**
+	 * Retrieve an update with a specific updated
+	 *
 	 * @param updateId the updateId
 	 * @return the update belonging to the updateID
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
