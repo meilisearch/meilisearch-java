@@ -195,6 +195,8 @@ public class DocumentHandler<T> {
 	}
 
 	/**
+	 * Retrieve a list containing all the updates
+	 *
 	 * @return a List of Updates
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
 	 */
