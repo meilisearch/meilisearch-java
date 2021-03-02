@@ -25,7 +25,7 @@ public class DocumentHandler<T> {
 	 * Retrieve a document with a specific identifier
 	 *
 	 * @param identifier the identifier of the document you are looking for
-	 * @return the Document as the
+	 * @return the document specified by the identifier
 	 * @throws com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
 	 */
 	public T getDocument(String identifier) throws MeiliSearchRuntimeException {
