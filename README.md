@@ -108,16 +108,13 @@ import com.meilisearch.sdk.model.SearchResult;
 
 // MeiliSearch is typo-tolerant:
 SearchResult results = index.search("harry pottre");
-System.out.println(results.getOffset());
-System.out.println(results.getLimit());
-System.out.println(results.getQuery());
+System.out.println(results);
 ```
 
-the result will be:
+- Output:
+
 ```
-0
-20
-harry pottre
+SearchResult(hits=[{book_id=4.0, title=Harry Potter and the Half-Blood Prince}], offset=0, limit=20, nbHits=1, exhaustiveNbHits=false, facetsDistribution=null, exhaustiveFacetsCount=false, processingTimeMs=3, query=harry pottre)
 ```
 
 #### Custom Search <!-- omit in toc -->
@@ -138,7 +135,8 @@ String results = index.search(
 System.out.println(results.getHits());
 ```
 
-Output:
+- Output:
+
 ```json
 [{
   "book_id":1,
