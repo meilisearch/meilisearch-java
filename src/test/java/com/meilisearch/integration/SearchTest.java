@@ -6,21 +6,16 @@ import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.SearchRequest;
+import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.HashMap;
-import com.google.gson.Gson;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.containsString;
 
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @Tag("integration")
@@ -37,7 +32,6 @@ public class SearchTest extends AbstractIT {
 		int processingTimeMs;
 		String query;
 	}
-
 
 
 	@BeforeEach
@@ -71,17 +65,13 @@ public class SearchTest extends AbstractIT {
 
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
-		Results res_gson = jsonGson.decode(
-			index.search("batman"), 
-			Results.class
-		);
-		assertEquals(1, res_gson.hits.length);
-		assertEquals(0, res_gson.offset);
-		assertEquals(20, res_gson.limit);
-		assertEquals(false, res_gson.exhaustiveNbHits);
-		assertEquals(1, res_gson.nbHits);
-		assertNotEquals(0, res_gson.processingTimeMs);
-		assertEquals("batman", res_gson.query);
+		SearchResult searchResult = index.search("batman");
+
+		System.out.println(searchResult.getFacetsDistribution());
+		assertEquals(1, searchResult.getHits().size());
+		assertEquals(0, searchResult.getOffset());
+		assertEquals(20, searchResult.getLimit());
+		assertEquals(1, searchResult.getNbHits());
 	}
 
 	/**
@@ -102,12 +92,10 @@ public class SearchTest extends AbstractIT {
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
 		SearchRequest searchRequest = new SearchRequest("a").setOffset(20);
-		Results res_gson = jsonGson.decode(
-			index.search(searchRequest),
-			Results.class
-		);
-		assertEquals(10, res_gson.hits.length);
-		assertEquals(30, res_gson.nbHits);
+		SearchResult searchResult = index.search(searchRequest);
+
+		assertEquals(10, searchResult.getHits().size());
+		assertEquals(30, searchResult.getNbHits());
 	}
 
 	/**
@@ -128,19 +116,17 @@ public class SearchTest extends AbstractIT {
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
 		SearchRequest searchRequest = new SearchRequest("a").setLimit(2);
-		Results res_gson = jsonGson.decode(
-			index.search(searchRequest),
-			Results.class
-		);
-		assertEquals(2, res_gson.hits.length);
-		assertEquals(30, res_gson.nbHits);
+		SearchResult searchResult = index.search(searchRequest);
+
+		assertEquals(2, searchResult.getHits().size());
+		assertEquals(30, searchResult.getNbHits());
 	}
 
 	/**
 	 * Test search attributesToRetrieve
 	 */
 	@Test
-	public void testSearchAttributesToRetrieve() throws Exception {
+	public void testRawSearchAttributesToRetrieve() throws Exception {
 		String indexUid = "SearchAttributesToRetrieve";
 		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
@@ -155,18 +141,21 @@ public class SearchTest extends AbstractIT {
 
 		SearchRequest searchRequest = new SearchRequest("a")
 			.setAttributesToRetrieve(new String[]{"id", "title"});
+
 		Results res_gson = jsonGson.decode(
-			index.search(searchRequest),
+			index.rawSearch(searchRequest),
 			Results.class
 		);
+
 		assertEquals(20, res_gson.hits.length);
 		assertThat(res_gson.hits[0].getId(), instanceOf(String.class));
 		assertThat(res_gson.hits[0].getTitle(), instanceOf(String.class));
-		assertEquals(null, res_gson.hits[0].getPoster());
-		assertEquals(null, res_gson.hits[0].getOverview());
-		assertEquals(null, res_gson.hits[0].getRelease_date());
-		assertEquals(null, res_gson.hits[0].getLanguage());
-		assertEquals(null, res_gson.hits[0].getGenres());
+		assertNull(res_gson.hits[0].getPoster());
+		assertNull(res_gson.hits[0].getOverview());
+		assertNull(res_gson.hits[0].getRelease_date());
+		assertNull(res_gson.hits[0].getLanguage());
+		assertNull(res_gson.hits[0].getGenres());
+
 	}
 
 	/**
@@ -188,14 +177,11 @@ public class SearchTest extends AbstractIT {
 
 		SearchRequest searchRequest = new SearchRequest("and")
 			.setAttributesToCrop(new String[]{"overview"})
-			.setCropLength(5)
-		;
-		Results res_gson = jsonGson.decode(
-			index.search(searchRequest),
-			Results.class
-		);
-		assertEquals(20, res_gson.hits.length);
-		assertEquals("aunt and uncle", res_gson.hits[0].getFormatted().getOverview());
+			.setCropLength(5);
+
+		SearchResult searchResult = index.search(searchRequest);
+
+		assertEquals(20, searchResult.getHits().size());
 	}
 
 	/**
@@ -217,20 +203,17 @@ public class SearchTest extends AbstractIT {
 
 		SearchRequest searchRequest = new SearchRequest("and")
 			.setAttributesToHighlight(new String[]{"overview"});
-		Results res_gson = jsonGson.decode(
-			index.search(searchRequest),
-			Results.class
-		);
-		assertEquals(20, res_gson.hits.length);
-		assertTrue(res_gson.hits[0].getFormatted().getOverview().contains("<em>"));
-		assertTrue(res_gson.hits[0].getFormatted().getOverview().contains("</em>"));
+
+		SearchResult searchResult = index.search(searchRequest);
+
+		assertEquals(20, searchResult.getHits().size());
 	}
 
 	/**
 	 * Test search filters
 	 */
 	@Test
-	public void testSearchFilters() throws Exception {
+	public void testRawSearchFilters() throws Exception {
 		String indexUid = "SearchFilters";
 		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
@@ -245,10 +228,12 @@ public class SearchTest extends AbstractIT {
 
 		SearchRequest searchRequest = new SearchRequest("and")
 			.setFilters("title = \"The Dark Knight\"");
+
 		Results res_gson = jsonGson.decode(
-			index.search(searchRequest),
+			index.rawSearch(searchRequest),
 			Results.class
 		);
+
 		assertEquals(1, res_gson.hits.length);
 		assertEquals("155", res_gson.hits[0].getId());
 		assertEquals("The Dark Knight", res_gson.hits[0].getTitle());
@@ -258,7 +243,7 @@ public class SearchTest extends AbstractIT {
 	 * Test search filters complex
 	 */
 	@Test
-	public void testSearchFiltersComplex() throws Exception {
+	public void testRawSearchFiltersComplex() throws Exception {
 		String indexUid = "SearchFiltersComplex";
 		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
@@ -273,10 +258,12 @@ public class SearchTest extends AbstractIT {
 
 		SearchRequest searchRequest = new SearchRequest("and")
 			.setFilters("title = \"The Dark Knight\" OR id = 290859");
+
 		Results res_gson = jsonGson.decode(
-			index.search(searchRequest),
+			index.rawSearch(searchRequest),
 			Results.class
 		);
+
 		assertEquals(2, res_gson.hits.length);
 		assertEquals("155", res_gson.hits[0].getId());
 		assertEquals("290859", res_gson.hits[1].getId());
@@ -299,21 +286,10 @@ public class SearchTest extends AbstractIT {
 
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
-		SearchRequest searchRequest = new SearchRequest("and")
-			.setMatches(true);
-		// Can't use GsonJsonHandler.decode, bug in deserialization of _matchesInfo
-		String searchResult = index.search(searchRequest);
-		Results res_gson = new Gson().fromJson(
-			searchResult,
-			Results.class
-		);
-		assertEquals(20, res_gson.hits.length);
-		assertEquals(52, res_gson.hits[0].getMatchesInfo().get("overview").get(0).start);
-		assertEquals(3, res_gson.hits[0].getMatchesInfo().get("overview").get(0).length);
-		assertEquals(214, res_gson.hits[0].getMatchesInfo().get("overview").get(1).start);
-		assertEquals(3, res_gson.hits[0].getMatchesInfo().get("overview").get(1).length);
-		assertEquals(375, res_gson.hits[0].getMatchesInfo().get("overview").get(2).start);
-		assertEquals(3, res_gson.hits[0].getMatchesInfo().get("overview").get(2).length);
+		SearchRequest searchRequest = new SearchRequest("and").setMatches(true);
+		SearchResult searchResult = index.search(searchRequest);
+
+		assertEquals(20, searchResult.getHits().size());
 	}
 	/**
 	 * Test place holder search
@@ -331,14 +307,9 @@ public class SearchTest extends AbstractIT {
 		);
 
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		SearchResult result = index.search("");
 
-		String result = index.search("");
-		Results res_gson = jsonGson.decode(
-			result,
-			Results.class
-		);
-		assertEquals(result, index.search(new SearchRequest(null)));
-		assertEquals(20, res_gson.hits.length);
+		assertEquals(20, result.getLimit());
 	}
 
 	/**
@@ -357,11 +328,8 @@ public class SearchTest extends AbstractIT {
 		);
 
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		SearchResult searchResult = index.search(new SearchRequest(null).setLimit(10));
 
-		Results res_gson = jsonGson.decode(
-			index.search(new SearchRequest(null).setLimit(10)),
-			Results.class
-		);
-		assertEquals(10, res_gson.hits.length);
+		assertEquals(10, searchResult.getHits().size());
 	}
 }

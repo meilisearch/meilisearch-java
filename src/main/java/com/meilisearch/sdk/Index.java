@@ -1,6 +1,7 @@
 package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
+import com.meilisearch.sdk.model.SearchResult;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -149,7 +150,7 @@ public class Index implements Serializable {
 	 * @return MeiliSearch API response
 	 * @throws Exception if something goes wrong
 	 */
-	public String search(String q) throws Exception {
+	public SearchResult search(String q) throws Exception {
 		return this.search.search(this.uid, q);
 	}
 
@@ -160,8 +161,16 @@ public class Index implements Serializable {
 	 * @return MeiliSearch API response
 	 * @throws Exception if something goes wrong
 	 */
-	public String search(SearchRequest sr) throws Exception {
+	public SearchResult search(SearchRequest sr) throws Exception {
 		return this.search.search(this.uid, sr);
+	}
+
+	public String rawSearch(String q) throws Exception {
+		return this.search.rawSearch(this.uid, q);
+	}
+
+	public String rawSearch(SearchRequest sr) throws Exception {
+		return this.search.rawSearch(this.uid, sr);
 	}
 
 	/**

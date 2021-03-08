@@ -101,28 +101,20 @@ With the `updateId`, you can check the status (`enqueued`, `processed` or `faile
 
 #### Basic Search <!-- omit in toc -->
 
-A basic search can be performed by calling the `index.search()` method, with a simple string query.
+A basic search can be performed by calling `index.search()` method, with a simple string query.
 
 ```java
+import com.meilisearch.sdk.model.SearchResult;
+
 // MeiliSearch is typo-tolerant:
-String results = index.search("harry pottre");
+SearchResult results = index.search("harry pottre");
 System.out.println(results);
 ```
 
-Output:
-```json
-{
-	"hits": [{
-		"book_id": 4,
-		"title": "Harry Potter and the Half-Blood Prince"
-	}],
-	"offset": 0,
-	"limit": 20,
-	"nbHits": 1,
-	"exhaustiveNbHits": false,
-	"processingTimeMs": 2,
-	"query": "harry pottre"
-}
+- Output:
+
+```
+SearchResult(hits=[{book_id=4.0, title=Harry Potter and the Half-Blood Prince}], offset=0, limit=20, nbHits=1, exhaustiveNbHits=false, facetsDistribution=null, exhaustiveFacetsCount=false, processingTimeMs=3, query=harry pottre)
 ```
 
 #### Custom Search <!-- omit in toc -->
@@ -131,44 +123,35 @@ If you want a custom search, the easiest way is to create a `SearchRequest` obje
 All the supported options are described in the [search parameters](https://docs.meilisearch.com/reference/features/search_parameters.html) section of the documentation.
 
 ```java
+import com.meilisearch.sdk.SearchRequest;
 
-	import com.meilisearch.sdk.SearchRequest;
+// ...
 
-	...
-
-	String results = index.search(
-		new SearchRequest("in")
-		.setMatches(true)
-		.setAttributesToHighlight(new String[]{"title"})
-	);
-	System.out.println(results);
+String results = index.search(
+  new SearchRequest("in")
+  .setMatches(true)
+  .setAttributesToHighlight(new String[]{"title"})
+);
+System.out.println(results.getHits());
 ```
 
-Output:
+- Output:
 
 ```json
-{
-	"hits":[{
-		"book_id":1,
-		"title":"Alice In Wonderland",
-		"_formatted":{
-			"book_id":1,
-			"title":"Alice <em>In</em> Wonderland"
-		},
-		"_matchesInfo":{
-			"title":[{
-				"start":6,
-				"length":2
-			}]
-		}
-	}],
-	"offset":0,
-	"limit":20,
-	"nbHits":1,
-	"exhaustiveNbHits":false,
-	"processingTimeMs":2,
-	"query":"In"
-}
+[{
+  "book_id":1,
+  "title":"Alice In Wonderland",
+  "_formatted":{
+    "book_id":1,
+    "title":"Alice <em>In</em> Wonderland"
+  },
+  "_matchesInfo":{
+    "title":[{
+      "start":6,
+      "length":2
+    }]
+  }
+}]
 ```
 
 ## 🤖 Compatibility with MeiliSearch
