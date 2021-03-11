@@ -94,6 +94,8 @@ public class DocumentHandler<T> {
 	}
 
 	/**
+	 * Add or replace a document
+	 *
 	 * @param data the serialized document
 	 * @return an Update object with the updateId
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
