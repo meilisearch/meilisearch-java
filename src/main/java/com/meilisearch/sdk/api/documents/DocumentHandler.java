@@ -37,6 +37,8 @@ public class DocumentHandler<T> {
 	}
 
 	/**
+	 * Retrieve a list of documents
+	 *
 	 * @return a list of Documents from the index.
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
 	 */
