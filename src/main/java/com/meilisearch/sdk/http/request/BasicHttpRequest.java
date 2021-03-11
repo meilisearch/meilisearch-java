@@ -1,5 +1,6 @@
 package com.meilisearch.sdk.http.request;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class BasicHttpRequest implements HttpRequest<String> {
@@ -60,6 +61,6 @@ public class BasicHttpRequest implements HttpRequest<String> {
 
 	@Override
 	public byte[] getContentAsBytes() {
-		return content.getBytes();
+		return content.getBytes(StandardCharsets.UTF_8);
 	}
 }
