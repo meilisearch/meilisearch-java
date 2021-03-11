@@ -47,6 +47,8 @@ public class DocumentHandler<T> {
 	}
 
 	/**
+	 * Retrieve a list of documents
+	 *
 	 * @param limit maximum number of documents to be returned
 	 * @return a list of Documents from the index.
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
