@@ -29,7 +29,7 @@ First of all, thank you for contributing to MeiliSearch! The goal of this docume
 ### Setup <!-- omit in TOC -->
 
 ```bash
-$ ./gradlew install
+./gradlew install
 ```
 
 ### Tests and linter <!-- omit in TOC -->
@@ -39,15 +39,15 @@ Integration and unit tests will be run in your PR to check everything is OK. Eac
 To run the unit tests in your local environment, use:
 
 ```bash
-$ ./gradlew test
+./gradlew test
 ```
 
 You can also launch the integration tests, which run against a local MeiliSearch instance. To make it run in your local environment, use:
 
 ```bash
-$ docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearch image from Docker Hub
-$ docker run -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
-$ ./gradlew test IntegrationTest
+docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearch image from Docker Hub
+docker run -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
+./gradlew test IntegrationTest
 ```
 
 ⚠️ No linter has been set for the moment, but please try to keep the code clean and tidy!
@@ -106,13 +106,13 @@ Steps:
 1. Install `gpg`
 
 ```bash
-$ sudo apt install gnupg
+sudo apt install gnupg
 ```
 
 or
 
 ```bash
-$ brew install gpg
+brew install gpg
 ```
 
 2. Create a `genkey` file
@@ -132,13 +132,13 @@ Passphrase: <your-passphrase>
 
 ```bash
 # May need sudo privilege
-$ gpg --gen-key --batch genkey
+gpg --gen-key --batch genkey
 ```
 
 4. Publish your public key to a public repository:
 
 ```bash
-$ gpg --keyserver hkp://pool.sks-keyservers.net --send-keys <last-8-digits-of-your-key-hash>
+gpg --keyserver hkp://pool.sks-keyservers.net --send-keys <last-8-digits-of-your-key-hash>
 ```
 
 #### Update the version <!-- omit in TOC -->
@@ -180,8 +180,8 @@ signing.gnupg.passphrase=<passphrase-associated-to-the-gpg-key>
 
 ```bash
 # May need sudo privilege
-$ ./gradlew build -P releaseSDK
-$ ./gradlew uploadArchive -P releaseSDK
+./gradlew build -P releaseSDK
+./gradlew uploadArchive -P releaseSDK
 ```
 
 3. Login to [Sonatype Nexus](https://oss.sonatype.org).
