@@ -43,7 +43,7 @@ public class DocumentHandler<T> {
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
 	 */
 	public List<T> getDocuments() throws MeiliSearchRuntimeException {
-		return getDocuments(20);
+		return getDocuments(0);
 	}
 
 	/**
@@ -54,7 +54,10 @@ public class DocumentHandler<T> {
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
 	 */
 	public List<T> getDocuments(int limit) throws MeiliSearchRuntimeException {
-		String requestQuery = "/indexes/" + indexName + "/documents?limit=" + limit;
+		String requestQuery = "/indexes/" + indexName + "/documents";
+		if (limit > 0) {
+			requestQuery += "?limit=" + limit;
+		}
 		return serviceTemplate.execute(
 			requestFactory.create(HttpMethod.GET, requestQuery, Collections.emptyMap(), null),
 			List.class,
@@ -69,7 +72,7 @@ public class DocumentHandler<T> {
 	 * @return an Update object with the updateId
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
 	 */
-	public Update addDocument(String data) throws MeiliSearchRuntimeException {
+	public Update addDocuments(String data) throws MeiliSearchRuntimeException {
 		String requestQuery = "/indexes/" + indexName + "/documents";
 		return serviceTemplate.execute(
 			requestFactory.create(HttpMethod.POST, requestQuery, Collections.emptyMap(), data),
@@ -84,10 +87,10 @@ public class DocumentHandler<T> {
 	 * @return an Update object with the updateId
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
 	 */
-	public Update addDocument(List<T> data) throws MeiliSearchRuntimeException {
+	public Update addDocuments(List<T> data) throws MeiliSearchRuntimeException {
 		try {
 			String dataString = serviceTemplate.getProcessor().encode(data);
-			return addDocument(dataString);
+			return addDocuments(dataString);
 		} catch (Exception e) {
 			throw new MeiliSearchRuntimeException(e);
 		}
@@ -100,8 +103,8 @@ public class DocumentHandler<T> {
 	 * @return an Update object with the updateId
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
 	 */
-	public Update replaceDocument(String data) throws MeiliSearchRuntimeException {
-		return addDocument(data);
+	public Update replaceDocuments(String data) throws MeiliSearchRuntimeException {
+		return addDocuments(data);
 	}
 
 	/**
@@ -111,10 +114,10 @@ public class DocumentHandler<T> {
 	 * @return an Update object with the updateId
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
 	 */
-	public Update replaceDocument(List<T> data) throws MeiliSearchRuntimeException {
+	public Update replaceDocuments(List<T> data) throws MeiliSearchRuntimeException {
 		try {
 			String dataString = serviceTemplate.getProcessor().encode(data);
-			return replaceDocument(dataString);
+			return replaceDocuments(dataString);
 		} catch (Exception e) {
 			throw new MeiliSearchRuntimeException(e);
 		}
@@ -127,12 +130,29 @@ public class DocumentHandler<T> {
 	 * @return an Update object with the updateId
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
 	 */
-	public Update updateDocument(String data) throws MeiliSearchRuntimeException {
+	public Update updateDocuments(String data) throws MeiliSearchRuntimeException {
 		String requestQuery = "/indexes/" + indexName + "/documents";
 		return serviceTemplate.execute(
 			requestFactory.create(HttpMethod.PUT, requestQuery, Collections.emptyMap(), data),
 			Update.class
 		);
+	}
+
+
+	/**
+	 * Add or update a document
+	 *
+	 * @param data a list of document objects
+	 * @return an Update object with the updateId
+	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
+	 */
+	public Update updateDocuments(List<T> data) throws MeiliSearchRuntimeException {
+		try {
+			String dataString = serviceTemplate.getProcessor().encode(data);
+			return updateDocuments(dataString);
+		} catch (Exception e) {
+			throw new MeiliSearchRuntimeException(e);
+		}
 	}
 
 	/**
@@ -152,6 +172,7 @@ public class DocumentHandler<T> {
 
 	/**
 	 * Delete a batch of documents
+	 *
 	 * @return an Update object with the updateId
 	 * @throws MeiliSearchRuntimeException in case something went wrong (http error, json exceptions, etc)
 	 */
@@ -191,7 +212,7 @@ public class DocumentHandler<T> {
 		try {
 			String requestQuery = "/indexes/" + indexName + "/search";
 			return serviceTemplate.execute(
-				requestFactory.create(HttpMethod.POST, requestQuery,Collections.emptyMap(), serviceTemplate.getProcessor().encode(sr)),
+				requestFactory.create(HttpMethod.POST, requestQuery, Collections.emptyMap(), serviceTemplate.getProcessor().encode(sr)),
 				SearchResponse.class,
 				indexModel
 			);

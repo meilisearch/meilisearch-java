@@ -63,7 +63,7 @@ class DocumentHandlerTest {
 			"A boy is given the ability to become an adult superhero in times of need with a single magic word.",
 			"2019-03-23", "English", "Action", "Comedy", "Fantasy"
 		);
-		Update update = classToTest.replaceDocument(Collections.singletonList(movie));
+		Update update = classToTest.replaceDocuments(Collections.singletonList(movie));
 		assertNotNull(update);
 		assertEquals(1, update.getUpdateId());
 	}
@@ -71,7 +71,7 @@ class DocumentHandlerTest {
 	@Test
 	void addAndUpdateDocument() throws Exception {
 		when(client.put(any(HttpRequest.class))).thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"updateId\":1}"));
-		Update update = classToTest.updateDocument("[{\"id\":287947,\"title\":\"Shazam\",\"poster\":\"https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg\",\"overview\":\"A boy is given the ability to become an adult superhero in times of need with a single magic word.\",\"release_date\":\"2019-03-23\"}]");
+		Update update = classToTest.updateDocuments("[{\"id\":287947,\"title\":\"Shazam\",\"poster\":\"https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg\",\"overview\":\"A boy is given the ability to become an adult superhero in times of need with a single magic word.\",\"release_date\":\"2019-03-23\"}]");
 		assertNotNull(update);
 		assertEquals(1, update.getUpdateId());
 	}
