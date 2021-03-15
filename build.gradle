@@ -13,7 +13,7 @@ plugins {
 
 group = 'com.meilisearch.sdk'
 archivesBaseName = 'meilisearch-java'
-version = '0.3.0'
+version = '0.2.0'
 
 apply plugin: 'maven'
 apply plugin: 'signing'
