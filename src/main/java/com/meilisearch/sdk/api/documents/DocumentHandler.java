@@ -8,6 +8,9 @@ import com.meilisearch.sdk.http.request.HttpMethod;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class DocumentHandler<T> {
 	private final ServiceTemplate serviceTemplate;

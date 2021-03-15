@@ -28,17 +28,6 @@ public class SearchTest extends AbstractIT {
 
 	private TestData<Movie> testData;
 
-	final class Results {
-		Movie[] hits;
-		int offset;
-		int limit;
-		int nbHits;
-		boolean exhaustiveNbHits;
-		int processingTimeMs;
-		String query;
-	}
-
-
 	@BeforeEach
 	public void initialize() {
 		this.setUp();
@@ -64,7 +53,7 @@ public class SearchTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		SearchResponse<Movie> res = movies.search("batman");
@@ -88,7 +77,7 @@ public class SearchTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		SearchRequest searchRequest = new SearchRequest("a").setOffset(20);
@@ -108,7 +97,7 @@ public class SearchTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		SearchRequest searchRequest = new SearchRequest("a").setLimit(2);
@@ -128,7 +117,7 @@ public class SearchTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		SearchRequest searchRequest = new SearchRequest("a")
@@ -155,7 +144,7 @@ public class SearchTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		SearchRequest searchRequest = new SearchRequest("and")
@@ -177,7 +166,7 @@ public class SearchTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		SearchRequest searchRequest = new SearchRequest("and")
@@ -199,7 +188,7 @@ public class SearchTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		SearchRequest searchRequest = new SearchRequest("and")
@@ -221,7 +210,7 @@ public class SearchTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		SearchRequest searchRequest = new SearchRequest("and")
@@ -243,7 +232,7 @@ public class SearchTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		SearchRequest searchRequest = new SearchRequest("and")
@@ -270,7 +259,7 @@ public class SearchTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		SearchResponse<Movie> emptySearch = movies.search("");
@@ -290,7 +279,7 @@ public class SearchTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		SearchResponse<Movie> search = movies.search(new SearchRequest(null).setLimit(10));
