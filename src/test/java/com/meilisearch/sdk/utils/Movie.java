@@ -27,6 +27,16 @@ public class Movie {
 		this.title = title;
 	}
 
+	public Movie(String id, String title, String poster, String overview, String release_date, String language, String... genres) {
+		this.id = id;
+		this.title = title;
+		this.poster = poster;
+		this.overview = overview;
+		this.release_date = release_date;
+		this.language = language;
+		this.genres = genres;
+	}
+
 	public String getId() {
 		return id;
 	}

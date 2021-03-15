@@ -21,7 +21,7 @@ class GenericServiceTemplateTest {
 
 	private final AbstractHttpClient client = mock(AbstractHttpClient.class);
 	private final JsonHandler handler = mock(JsonHandler.class);
-	private final GenericServiceTemplate classToTest = new GenericServiceTemplate(client, handler, new BasicRequestFactory());
+	private final GenericServiceTemplate classToTest = new GenericServiceTemplate(client, handler, new BasicRequestFactory(handler));
 
 	@Test
 	void getClient() {
