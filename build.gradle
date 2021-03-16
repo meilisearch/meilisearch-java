@@ -9,14 +9,13 @@
 plugins {
 	// Apply the java-library plugin to add support for Java Library
 	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
 }
 
 group = 'com.meilisearch.sdk'
 archivesBaseName = 'meilisearch-java'
-version = '0.2.0'
-
-apply plugin: 'maven'
-apply plugin: 'signing'
+version = '0.3.0'
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_1_8
@@ -65,15 +64,15 @@ dependencies {
 }
 
 task buildJar(type: Jar) {
-	baseName = 'meilisearch-java'
+	archiveBaseName = 'meilisearch-java'
 	from {
 		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
 	}
-		{
-			exclude 'META-INF/*.SF'
-			exclude 'META-INF/*.DSA'
-			exclude 'META-INF/*.RSA'
-		}
+	{
+		exclude 'META-INF/*.SF'
+		exclude 'META-INF/*.DSA'
+		exclude 'META-INF/*.RSA'
+	}
 	with jar
 }
 
@@ -96,74 +95,62 @@ task integrationTest(type: Test) {
 }
 
 task javadocJar(type: Jar) {
-		classifier = 'javadoc'
-		from javadoc
+	classifier = 'javadoc'
+	from javadoc
 }
 
 task sourcesJar(type: Jar) {
-		classifier = 'sources'
-		from sourceSets.main.allSource
+	classifier = 'sources'
+	from sourceSets.main.allSource
 }
 
 artifacts {
-		archives javadocJar, sourcesJar
+	archives javadocJar, sourcesJar
 }
 
-signing {
-	if (project.hasProperty('releaseSDK')){
-		useGpgCmd()
-		sign configurations.archives
-	}
-}
-
-uploadArchives {
-
-	def ossrhUsername = findProperty('ossrhUsername')
-	def ossrhPassword = findProperty('ossrhPassword')
-
-	repositories {
-		mavenDeployer {
-			project.logger.lifecycle('Trying to upload files to Maven repository...')
-			beforeDeployment {
-				MavenDeployment deployment -> signing.signPom(deployment)
-			}
-
-			repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-				authentication(userName: ossrhUsername, password: ossrhPassword)
-			}
-
-			snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
-				authentication(userName: ossrhUsername, password: ossrhPassword)
-			}
-
-			pom.project {
-				name 'com.meilisearch.sdk:meilisearch-java'
-				packaging 'jar'
-				artifactId 'meilisearch-java'
-				description 'MeiliSearch is a powerful, fast, open-source, easy to use and deploy search engine.'
-				url 'https://github.com/meilisearch/meilisearch-java'
-
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+			artifactId = 'meilisearch-java'
+            from components.java
+			pom {
+				name = 'com.meilisearch.sdk:meilisearch-java'
+				packaging = 'jar'
+				artifactId = 'meilisearch-java'
+				description = 'MeiliSearch is a powerful, fast, open-source, easy to use and deploy search engine.'
+				url = 'https://github.com/meilisearch/meilisearch-java'
 				scm {
-					connection 'scm:git:git://github.com/meilisearch/meilisearch-java.git'
-					developerConnection 'scm:git:ssh://github.com:meilisearch/meilisearch-java.git'
-					url 'http://github.com/meilisearch/meilisearch-java'
+					connection = 'scm:git:git://github.com/meilisearch/meilisearch-java.git'
+					developerConnection = 'scm:git:ssh://github.com:meilisearch/meilisearch-java.git'
+					url = 'http://github.com/meilisearch/meilisearch-java'
 				}
-
 				licenses {
 					license {
-					name 'MIT License'
-					url 'http://www.opensource.org/licenses/mit-license.php'
+					name = 'MIT License'
+					url = 'http://www.opensource.org/licenses/mit-license.php'
 					}
 				}
-
 				developers {
 					developer {
-					id 'eskombro'
-					name 'Samuel Jimenez'
-					email 'samuel@meilisearch.com'
+					id = 'eskombro'
+					name = 'Samuel Jimenez'
+					email = 'samuel@meilisearch.com'
 					}
 				}
+			}
+        }
+    }
+	repositories {
+		maven {
+			url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+			credentials {
+				username ossrhUsername
+				password ossrhPassword
 			}
 		}
 	}
+}
+
+signing {
+    sign publishing.publications.mavenJava
 }
