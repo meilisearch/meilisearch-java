@@ -177,15 +177,15 @@ Once the changes are merged on `main`, you can publish the current draft release
 
 #### Sign your files and upload to Maven Repository manually <!-- omit in TOC -->
 
-1. Prepare the environment by filling the environment variables needed with all the credentials:
+1. Set the environment variables listed below with the required credentials:
 
-```
-OSSRH_USERNAME=<maven-username>
-OSSRH_PASSWORD=<maven-password>
+```bash
+export OSSRH_USERNAME=<maven-username>
+export OSSRH_PASSWORD=<maven-password>
 
-SIGNINT_KEY_ID=<id-associated-to-the-gpg-key>
-SIGNING_PASSWORD=<passphrase-associated-to-the-gpg-key>
-SIGNING_SECRET_KEY_RING_FILE=<gpg-key-encoded-in-base64>
+export SIGNINT_KEY_ID=<id-associated-to-the-gpg-key>
+export SIGNING_PASSWORD=<passphrase-associated-to-the-gpg-key>
+export SIGNING_SECRET_KEY_RING_FILE=<gpg-key-encoded-in-base64>
 ```
 
 2. Decode the gpg key
