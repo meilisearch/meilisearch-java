@@ -11,6 +11,7 @@ plugins {
 	id 'java-library'
 	id 'maven-publish'
 	id 'signing'
+	id 'io.codearte.nexus-staging' version '0.30.0'
 }
 
 group = 'com.meilisearch.sdk'
@@ -109,10 +110,10 @@ artifacts {
 }
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
+	publications {
+		mavenJava(MavenPublication) {
 			artifactId = 'meilisearch-java'
-            from components.java
+			from components.java
 			pom {
 				name = 'com.meilisearch.sdk:meilisearch-java'
 				packaging = 'jar'
@@ -126,31 +127,38 @@ publishing {
 				}
 				licenses {
 					license {
-					name = 'MIT License'
-					url = 'http://www.opensource.org/licenses/mit-license.php'
+						name = 'MIT License'
+						url = 'http://www.opensource.org/licenses/mit-license.php'
 					}
 				}
 				developers {
 					developer {
-					id = 'eskombro'
-					name = 'Samuel Jimenez'
-					email = 'samuel@meilisearch.com'
+						id = 'eskombro'
+						name = 'Samuel Jimenez'
+						email = 'samuel@meilisearch.com'
 					}
 				}
 			}
-        }
-    }
+		}
+	}
 	repositories {
 		maven {
 			url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 			credentials {
-				username ossrhUsername
-				password ossrhPassword
+				username System.getenv('OSSRH_USERNAME')
+				password System.getenv('OSSRH_PASSWORD')
 			}
 		}
 	}
 }
 
 signing {
-    sign publishing.publications.mavenJava
+	sign publishing.publications.mavenJava
+}
+
+nexusStaging {
+	packageGroup = "com.meilisearch"
+	serverUrl = "https://oss.sonatype.org/service/local/"
+	username System.getenv('OSSRH_USERNAME')
+	password System.getenv('OSSRH_PASSWORD')
 }
