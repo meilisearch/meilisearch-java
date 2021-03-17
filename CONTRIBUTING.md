@@ -141,6 +141,18 @@ gpg --gen-key --batch genkey
 gpg --keyserver hkp://pool.sks-keyservers.net --send-keys <last-8-digits-of-your-key-hash>
 ```
 
+5. Export the gpg key in a secring.gpg file
+
+```bash
+gpg --keyring secring.gpg --export-secret-keys > ~/.gnupg/secring.gpg
+```
+
+6. Encode the secring in base64 and store it (Used by the ossrh-publish workflow)
+
+```bash
+base64 ~/.gnupg/secring.gpg > secring.gpg.b64
+```
+
 #### Update the version <!-- omit in TOC -->
 
 Make a PR modifying the following files with the right version:
@@ -163,25 +175,30 @@ implementation 'com.meilisearch.sdk:meilisearch-java:X.X.X'
 
 Once the changes are merged on `main`, you can publish the current draft release via the [GitHub interface](https://github.com/meilisearch/meilisearch-java/releases).
 
-#### Sign your files and upload to Maven Repository <!-- omit in TOC -->
+#### Sign your files and upload to Maven Repository manually <!-- omit in TOC -->
 
-1. Prepare the environment by filling the `gradle.properties` file with all the credentials:
+1. Prepare the environment by filling the environment variables needed with all the credentials:
 
 ```
-ossrhUsername=<maven-username>
-ossrhPassword=<maven-password>
+OSSRH_USERNAME=<maven-username>
+OSSRH_PASSWORD=<maven-password>
 
-signing.gnupg.executable=gpg
-signing.gnupg.keyName=<email-associated-to-the-gpg-key>
-signing.gnupg.passphrase=<passphrase-associated-to-the-gpg-key>
+SIGNINT_KEY_ID=<id-associated-to-the-gpg-key>
+SIGNING_PASSWORD=<passphrase-associated-to-the-gpg-key>
+SIGNING_SECRET_KEY_RING_FILE=<gpg-key-encoded-in-base64>
 ```
 
-2. Sign your files and upload them to Maven repository:
+2. Decode the gpg key
 
 ```bash
-# May need sudo privilege
-./gradlew build -P releaseSDK
-./gradlew uploadArchive -P releaseSDK
+echo $SIGNING_SECRET_KEY_RING_FILE | base64 -d > secring.gpg
+```
+
+3. Sign your files and upload them to Maven repository:
+
+```bash
+# May need sudo privilege and JDK8 
+./gradlew publish -Psigning.keyId=$SIGNING_KEY_ID -Psigning.password=$SIGNING_PASSWORD -Psigning.secretKeyRingFile=$(echo secring.gpg)
 ```
 
 3. Login to [Sonatype Nexus](https://oss.sonatype.org).
