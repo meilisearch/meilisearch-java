@@ -60,3 +60,4 @@ atlassian-ide-plugin.xml
 .vscode
 
 *.gpg
+secring*
