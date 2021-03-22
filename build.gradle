@@ -32,10 +32,6 @@ configurations {
 	testCompile.extendsFrom compileOnly
 }
 
-configurations {
-	testCompile.extendsFrom compileOnly
-}
-
 dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
 	implementation 'com.google.guava:guava:30.1.1-jre'
@@ -95,18 +91,9 @@ task integrationTest(type: Test) {
 	}
 }
 
-task javadocJar(type: Jar) {
-	classifier = 'javadoc'
-	from javadoc
-}
-
-task sourcesJar(type: Jar) {
-	classifier = 'sources'
-	from sourceSets.main.allSource
-}
-
-artifacts {
-	archives javadocJar, sourcesJar
+java {
+	withJavadocJar()
+	withSourcesJar()
 }
 
 publishing {
@@ -154,6 +141,12 @@ publishing {
 
 signing {
 	sign publishing.publications.mavenJava
+}
+
+javadoc {
+	if(JavaVersion.current().isJava9Compatible()) {
+		options.addBooleanOption('html5', true)
+	}
 }
 
 nexusStaging {

@@ -194,17 +194,18 @@ export SIGNING_SECRET_KEY_RING_FILE=<gpg-key-encoded-in-base64>
 echo $SIGNING_SECRET_KEY_RING_FILE | base64 -d > secring.gpg
 ```
 
-3. Sign your files and upload them to Maven repository:
+3. Build, sign your files and upload them to Maven repository:
 
 ```bash
 # May need sudo privilege and JDK8 
+./gradlew build
 ./gradlew publish -Psigning.keyId=$SIGNING_KEY_ID -Psigning.password=$SIGNING_PASSWORD -Psigning.secretKeyRingFile=$(echo secring.gpg)
 ```
 
-3. Login to [Sonatype Nexus](https://oss.sonatype.org).
-4. Navigate to `Staging repositories`.
-5. Close your repository by clicking on the `Close` button. Checks will be made by nexus. It might take time. If any error occurs, it will be visible in the `Activity` tab.
-6. Once the check have succeeded, you should be able to click on the `Release` button. The release will be now processed and might take a long time to appear in [Maven Central](https://search.maven.org/artifact/com.meilisearch.sdk/meilisearch-java).
+4. Login to [Sonatype Nexus](https://oss.sonatype.org).
+5. Navigate to `Staging repositories`.
+6. Close your repository by clicking on the `Close` button. Checks will be made by nexus. It might take time. If any error occurs, it will be visible in the `Activity` tab.
+7. Once the check have succeeded, you should be able to click on the `Release` button. The release will be now processed and might take a long time to appear in [Maven Central](https://search.maven.org/artifact/com.meilisearch.sdk/meilisearch-java).
 
 <hr>
 
