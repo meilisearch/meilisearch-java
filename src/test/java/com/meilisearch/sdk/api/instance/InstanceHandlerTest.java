@@ -29,7 +29,7 @@ class InstanceHandlerTest {
 
 	@Test
 	void isHealthy() throws Exception {
-		when(client.get(any(HttpRequest.class))).thenAnswer(invocation -> new BasicHttpResponse(null, 200, "")).thenThrow(MeiliSearchRuntimeException.class);
+		when(client.get(any(HttpRequest.class))).thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"status\":\"available\"}")).thenThrow(MeiliSearchRuntimeException.class);
 		assertTrue(classToTest.isHealthy());
 		assertFalse(classToTest.isHealthy());
 	}
