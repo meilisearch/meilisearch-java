@@ -26,12 +26,6 @@ First of all, thank you for contributing to MeiliSearch! The goal of this docume
 
 ## Development Workflow
 
-### Setup <!-- omit in TOC -->
-
-```bash
-./gradlew install
-```
-
 ### Tests and linter <!-- omit in TOC -->
 
 Integration and unit tests will be run in your PR to check everything is OK. Each PR should pass all the tests to be accepted.
