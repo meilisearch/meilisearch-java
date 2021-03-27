@@ -1,5 +1,6 @@
 package com.meilisearch.sdk.http.factory;
 
+import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.http.request.HttpMethod;
 import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.json.GsonJsonHandler;
@@ -13,7 +14,7 @@ import static org.hamcrest.Matchers.is;
 
 class BasicRequestFactoryTest {
 
-	private final RequestFactory factory = new BasicRequestFactory(new GsonJsonHandler());
+	private final RequestFactory factory = new BasicRequestFactory(new GsonJsonHandler(),new Config(""));
 
 	@Test
 	void basicUseCase() {

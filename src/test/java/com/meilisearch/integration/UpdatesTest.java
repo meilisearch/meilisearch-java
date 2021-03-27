@@ -41,7 +41,7 @@ public class UpdatesTest extends AbstractIT {
 		Index index = client.index().getOrCreateIndex(indexUid, "");
 
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		update = movies.getUpdate(update.getUpdateId());
@@ -59,11 +59,11 @@ public class UpdatesTest extends AbstractIT {
 		Index index = client.index().getOrCreateIndex(indexUid, "");
 
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
-		update = movies.addDocument(testData.getData());
+		update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
-		update = movies.addDocument(testData.getData());
+		update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		List<Update> updates = movies.getUpdates();
@@ -79,7 +79,7 @@ public class UpdatesTest extends AbstractIT {
 		Index index = client.index().getOrCreateIndex(indexUid, "");
 
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 		update = movies.getUpdate(update.getUpdateId());
 
@@ -97,7 +97,7 @@ public class UpdatesTest extends AbstractIT {
 		Index index = client.index().getOrCreateIndex(indexUid, "");
 
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 
 		assertThrows(
 			Exception.class,

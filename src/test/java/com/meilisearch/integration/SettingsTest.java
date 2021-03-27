@@ -45,7 +45,7 @@ public class SettingsTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		Settings settings = client.index().getSettings(indexUid);
@@ -64,7 +64,7 @@ public class SettingsTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		Settings settings = new Settings();
@@ -95,7 +95,7 @@ public class SettingsTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		Settings settings = new Settings();
@@ -123,7 +123,7 @@ public class SettingsTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movies = client.documents("movies", Movie.class);
-		Update update = movies.addDocument(testData.getData());
+		Update update = movies.addDocuments(testData.getData());
 		movies.waitForPendingUpdate(update.getUpdateId());
 
 		Settings initialSettings = new Settings();

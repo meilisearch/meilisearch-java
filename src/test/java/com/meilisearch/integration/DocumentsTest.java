@@ -46,7 +46,7 @@ public class DocumentsTest extends AbstractIT {
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		Movie singleDocument = testData.getData().get(0);
 		DocumentHandler<Movie> movieHandler = client.documents("movies");
-		Update update = movieHandler.addDocument(Collections.singletonList(singleDocument));
+		Update update = movieHandler.addDocuments(Collections.singletonList(singleDocument));
 		movieHandler.waitForPendingUpdate(update.getUpdateId());
 		Movie[] movies = movieHandler.getDocuments().toArray(new Movie[0]);
 
@@ -74,7 +74,7 @@ public class DocumentsTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movieHandler = client.documents("movies");
-		Update update = movieHandler.addDocument(testData.getData());
+		Update update = movieHandler.addDocuments(testData.getData());
 		movieHandler.waitForPendingUpdate(update.getUpdateId());
 
 		Movie[] movies = movieHandler.getDocuments().toArray(new Movie[0]);
@@ -94,7 +94,7 @@ public class DocumentsTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movieHandler = client.documents("movies");
-		Update update = movieHandler.addDocument(testData.getData());
+		Update update = movieHandler.addDocuments(testData.getData());
 		movieHandler.waitForPendingUpdate(update.getUpdateId());
 		Movie[] movies = movieHandler.getDocuments().toArray(new Movie[0]);
 		Movie toUpdate = movies[0];
@@ -119,7 +119,7 @@ public class DocumentsTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movieHandler = client.documents("movies");
-		Update update = movieHandler.addDocument(testData.getData());
+		Update update = movieHandler.addDocuments(testData.getData());
 		movieHandler.waitForPendingUpdate(update.getUpdateId());
 		Movie[] movies = movieHandler.getDocuments().toArray(new Movie[0]);
 		List<Movie> toUpdate = new ArrayList<>();
@@ -151,7 +151,7 @@ public class DocumentsTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movieHandler = client.documents("movies");
-		Update update = movieHandler.addDocument(testData.getData());
+		Update update = movieHandler.addDocuments(testData.getData());
 		movieHandler.waitForPendingUpdate(update.getUpdateId());
 		Movie movie = movieHandler.getDocument(testData.getData().get(0).getId());
 		assertEquals(movie.getTitle(), testData.getData().get(0).getTitle());
@@ -168,7 +168,7 @@ public class DocumentsTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movieHandler = client.documents("movies");
-		Update update = movieHandler.addDocument(testData.getData());
+		Update update = movieHandler.addDocuments(testData.getData());
 		movieHandler.waitForPendingUpdate(update.getUpdateId());
 		Movie[] movies = movieHandler.getDocuments().toArray(new Movie[0]);
 		assertEquals(20, movies.length);
@@ -195,7 +195,7 @@ public class DocumentsTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movieHandler = client.documents("movies");
-		Update update = movieHandler.addDocument(testData.getData());
+		Update update = movieHandler.addDocuments(testData.getData());
 		movieHandler.waitForPendingUpdate(update.getUpdateId());
 		Movie[] movies = movieHandler.getDocuments(limit).toArray(new Movie[0]);
 		assertEquals(limit, movies.length);
@@ -215,7 +215,7 @@ public class DocumentsTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movieHandler = client.documents("movies");
-		Update update = movieHandler.addDocument(testData.getData());
+		Update update = movieHandler.addDocuments(testData.getData());
 		movieHandler.waitForPendingUpdate(update.getUpdateId());
 
 		Movie[] movies = movieHandler.getDocuments().toArray(new Movie[0]);
@@ -243,7 +243,7 @@ public class DocumentsTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movieHandler = client.documents("movies");
-		Update update = movieHandler.addDocument(testData.getData());
+		Update update = movieHandler.addDocuments(testData.getData());
 		movieHandler.waitForPendingUpdate(update.getUpdateId());
 
 		Movie[] movies = movieHandler.getDocuments().toArray(new Movie[0]);
@@ -288,7 +288,7 @@ public class DocumentsTest extends AbstractIT {
 
 		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 		DocumentHandler<Movie> movieHandler = client.documents("movies");
-		Update update = movieHandler.addDocument(testData.getData());
+		Update update = movieHandler.addDocuments(testData.getData());
 		movieHandler.waitForPendingUpdate(update.getUpdateId());
 
 		Movie[] movies = movieHandler.getDocuments().toArray(new Movie[0]);

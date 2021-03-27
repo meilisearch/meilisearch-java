@@ -67,4 +67,35 @@ public class InstanceHandler {
 		);
 	}
 
+
+	/**
+	 * Creates a dump
+	 * Refer https://docs.meilisearch.com/references/dump.html#create-a-dump
+	 *
+	 * @return Dump status
+	 * @throws MeiliSearchRuntimeException if something goes wrong
+	 */
+	public Dump createDump() {
+		String requestQuery = "/dumps";
+		return serviceTemplate.execute(
+			requestFactory.create(HttpMethod.POST, requestQuery, Collections.emptyMap(), null),
+			Dump.class
+		);
+	}
+
+	/**
+	 * Gets dump status
+	 * Refer https://docs.meilisearch.com/references/dump.html#get-dump-status
+	 *
+	 * @param uid Unique identifier for correspondent dump
+	 * @return dump status
+	 * @throws MeiliSearchRuntimeException if something goes wrong
+	 */
+	public Dump getDumpStatus(String uid) {
+		String requestQuery = "/dumps/" + uid + "/status";
+		return serviceTemplate.execute(
+			requestFactory.create(HttpMethod.GET, requestQuery, Collections.emptyMap(), null),
+			Dump.class
+		);
+	}
 }

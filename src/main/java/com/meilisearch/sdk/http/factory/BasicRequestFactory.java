@@ -21,7 +21,7 @@ public class BasicRequestFactory implements RequestFactory {
 	@Override
 	public <T> HttpRequest<?> create(HttpMethod method, String path, Map<String, String> headers, T content) {
 		try {
-			return new BasicHttpRequest(method, config.getHostUrl() + path, headers, this.jsonHandler.encode(content));
+			return new BasicHttpRequest(method, config.getHostUrl() + path, headers, content == null ? null : this.jsonHandler.encode(content));
 		} catch (Exception e) {
 			throw new MeiliSearchRuntimeException(e);
 		}
