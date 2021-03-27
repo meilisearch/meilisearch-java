@@ -36,12 +36,12 @@ public class ClientBuilder {
 
 	public ClientBuilder withAutodetectHttpClient() {
 		try {
-			Class.forName("com.google.gson.Gson", false, null);
+			Class.forName("org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient", false, null);
 			this.httpClient = new ApacheHttpClient(config);
 			return this;
 		} catch (ClassNotFoundException e) {/* noop */}
 		try {
-			Class.forName("com.fasterxml.jackson.databind.ObjectMapper", false, null);
+			Class.forName("okhttp3.OkHttpClient", false, null);
 			this.httpClient = new CustomOkHttpClient(config);
 			return this;
 		} catch (ClassNotFoundException e) {/* noop */}
@@ -94,7 +94,7 @@ public class ClientBuilder {
 			this.withAutodetectHttpClient();
 		}
 		if (this.requestFactory == null) {
-			this.requestFactory = new BasicRequestFactory(this.jsonHandler);
+			this.requestFactory = new BasicRequestFactory(this.jsonHandler,this.config);
 		}
 		if (serviceTemplate == null) {
 			this.serviceTemplate = new GenericServiceTemplate(this.httpClient, this.jsonHandler, this.requestFactory);
