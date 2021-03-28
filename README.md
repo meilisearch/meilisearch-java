@@ -71,28 +71,73 @@ implementation 'com.meilisearch.sdk:meilisearch-java:0.3.0'
 
 ```java
 import com.meilisearch.sdk.Client;
+import com.meilisearch.sdk.ClientBuilder;
 import com.meilisearch.sdk.Config;
-import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.api.documents.DocumentHandler;
+import com.meilisearch.sdk.api.documents.Update;
+import com.meilisearch.sdk.api.index.Index;
+import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
+import com.meilisearch.sdk.http.ApacheHttpClient;
+import com.meilisearch.sdk.json.GsonJsonHandler;
 
-class TestMeiliSearch {
+import java.util.Collections;
+import java.util.Map;
+
+public class TestMeiliSearch {
   public static void main(String[] args) throws Exception {
 
     final String documents = "["
-      + "{\"book_id\": 123, \"title\": \"Pride and Prejudice\"},"
-      + "{\"book_id\": 456, \"title\": \"Le Petit Prince\"},"
-      + "{\"book_id\": 1, \"title\": \"Alice In Wonderland\"},"
-      + "{\"book_id\": 1344, \"title\": \"The Hobbit\"},"
-      + "{\"book_id\": 4, \"title\": \"Harry Potter and the Half-Blood Prince\"},"
-      + "{\"book_id\": 2, \"title\": \"The Hitchhiker\'s Guide to the Galaxy\"}"
+      + "{\"id\": 123, \"title\": \"Pride and Prejudice\"},"
+      + "{\"id\": 456, \"title\": \"Le Petit Prince\"},"
+      + "{\"id\": 1, \"title\": \"Alice In Wonderland\"},"
+      + "{\"id\": 1344, \"title\": \"The Hobbit\"},"
+      + "{\"id\": 4, \"title\": \"Harry Potter and the Half-Blood Prince\"},"
+      + "{\"id\": 2, \"title\": \"The Hitchhiker\'s Guide to the Galaxy\"}"
       + "]";
 
-    Client client = new Client(new Config("http://localhost:7700", "masterKey"));
+    Map<String, Class<?>> modelMapping = Collections.singletonMap("books", Book.class);
+    Config config = new Config("http://localhost:7700", "masterKey", modelMapping);
+    // set httpClient and JsonHandler explicit
+    ApacheHttpClient httpClient = new ApacheHttpClient(config);
+    GsonJsonHandler handler = new GsonJsonHandler();
+    Client client = ClientBuilder.withConfig(config).withHttpClient(httpClient).withJsonHandler(handler).build();
+    // let the sdk autodetect jsonhandler and httpclient based on the classes in the classpath
+    client = ClientBuilder.withConfig(config).build();
 
-    // An index is where the documents are stored.
-    Index index = client.index("books");
+    try {
+      Index index = client.index().getOrCreateIndex("books", "id");
+      DocumentHandler<Book> bookHandler = client.documents("books");
+      Update update = bookHandler.addDocuments(documents);
+      bookHandler.waitForPendingUpdate(update.getUpdateId());
+      
+      
+    } catch (MeiliSearchRuntimeException e) {
+      // an MeiliSearchRuntimeException will be thrown in case something went wrong
+      e.printStackTrace();
+    }
+  }
+}
 
-    // If the index 'books' does not exist, MeiliSearch creates it when you first add the documents.
-    index.addDocuments(documents); // => { "updateId": 0 }
+public class Book {
+  int id;
+  String title;
+
+  public int getId() {
+    return id;
+  }
+
+  public Book setId(int id) {
+    this.id = id;
+    return this;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public Book setTitle(String title) {
+    this.title = title;
+    return this;
   }
 }
 ```
@@ -101,20 +146,19 @@ With the `updateId`, you can check the status (`enqueued`, `processed` or `faile
 
 #### Basic Search <!-- omit in toc -->
 
-A basic search can be performed by calling `index.search()` method, with a simple string query.
+A basic search can be performed by calling `search()` method on the handler, with a simple string query.
 
 ```java
 import com.meilisearch.sdk.model.SearchResult;
 
-// MeiliSearch is typo-tolerant:
-SearchResult results = index.search("harry pottre");
-System.out.println(results);
+DocumentHandler<Book> bookHandler = client.documents("books");
+SearchResponse<Book> alice = bookHandler.search("Alice");
 ```
 
 - Output:
 
 ```
-SearchResult(hits=[{book_id=4.0, title=Harry Potter and the Half-Blood Prince}], offset=0, limit=20, nbHits=1, exhaustiveNbHits=false, facetsDistribution=null, exhaustiveFacetsCount=false, processingTimeMs=3, query=harry pottre)
+SearchResponse(hits=[{id=4.0, title=Harry Potter and the Half-Blood Prince}], offset=0, limit=20, nbHits=1, exhaustiveNbHits=false, facetsDistribution=null, exhaustiveFacetsCount=false, processingTimeMs=3, query=harry pottre)
 ```
 
 #### Custom Search <!-- omit in toc -->
@@ -127,10 +171,10 @@ import com.meilisearch.sdk.SearchRequest;
 
 // ...
 
-String results = index.search(
+SearchResult<Book> result = bookHandler.search(
   new SearchRequest("in")
   .setMatches(true)
-  .setAttributesToHighlight(new String[]{"title"})
+  .setAttributesToHighlight(Arrays.asList("title"))
 );
 System.out.println(results.getHits());
 ```
@@ -139,10 +183,10 @@ System.out.println(results.getHits());
 
 ```json
 [{
-  "book_id":1,
+  "id":1,
   "title":"Alice In Wonderland",
   "_formatted":{
-    "book_id":1,
+    "id":1,
     "title":"Alice <em>In</em> Wonderland"
   },
   "_matchesInfo":{
