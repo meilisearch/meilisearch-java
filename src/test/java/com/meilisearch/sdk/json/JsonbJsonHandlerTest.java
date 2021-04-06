@@ -32,7 +32,7 @@ class JsonbJsonHandlerTest {
 	@Test
 	void deserialize() {
 		assertDoesNotThrow(() -> classToTest.decode("{}", Movie.class));
-		assertDoesNotThrow(() -> classToTest.decode("{}", Movie.class, null));
+		assertDoesNotThrow(() -> classToTest.decode("{}", Movie.class, (Class<?> []) null));
 		assertDoesNotThrow(() -> classToTest.decode("{}", Movie.class, new Class[0]));
 	}
 
@@ -51,7 +51,7 @@ class JsonbJsonHandlerTest {
 	@SuppressWarnings({"unchecked", "RedundantArrayCreation", "ConfusingArgumentToVarargsMethod"})
 	void deserializeWithParametersEmpty() throws Exception {
 		when(mapper.fromJson(any(String.class), any())).thenReturn(new Movie("1234", "Title"));
-		assertNotNull(classToTest.decode("{}", Movie.class, null));
+		assertNotNull(classToTest.decode("{}", Movie.class, (Class<?> []) null));
 		assertNotNull(classToTest.decode("{}", Movie.class, new Class[0]));
 	}
 
