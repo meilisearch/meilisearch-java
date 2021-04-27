@@ -1,0 +1,25 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  labels:
+  - skip-changelog
+  - dependencies
+  ignore:
+  - dependency-name: com.fasterxml.jackson.core:jackson-databind
+    versions:
+    - "> 2.12.0, < 2.13"
+  - dependency-name: com.squareup.okhttp3:okhttp
+    versions:
+    - "> 4.9.0, < 4.10"
+  - dependency-name: org.junit:junit-bom
+    versions:
+    - "> 5.7.0, < 5.8"
+  - dependency-name: org.projectlombok:lombok
+    versions:
+    - "> 1.18.16, < 1.19"
+  rebase-strategy: disabled
