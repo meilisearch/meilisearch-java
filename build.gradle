@@ -42,10 +42,10 @@ dependencies {
 	compileOnly 'com.squareup.okhttp3:okhttp:4.9.1'
 
 	// Use JUnit test framework
-	testImplementation(platform('org.junit:junit-bom:5.7.0'))
+	testImplementation(platform('org.junit:junit-bom:5.7.1'))
 	testImplementation('org.junit.jupiter:junit-jupiter:5.7.1')
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
-	testImplementation 'org.mockito:mockito-core:3.8.0'
+	testImplementation 'org.mockito:mockito-core:3.9.0'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
@@ -54,7 +54,7 @@ dependencies {
 	testImplementation group: 'org.eclipse', name: 'yasson', version: '2.0.2'
 
 	// Lombok
-	compileOnly 'org.projectlombok:lombok:1.18.16'
+	compileOnly 'org.projectlombok:lombok:1.18.20'
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 	testCompileOnly 'org.projectlombok:lombok:1.18.16'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
