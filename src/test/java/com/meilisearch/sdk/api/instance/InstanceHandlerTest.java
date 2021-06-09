@@ -35,6 +35,17 @@ class InstanceHandlerTest {
 	}
 
 	@Test
+	void health() throws Exception {
+		when(client.get(any(HttpRequest.class)))
+			.thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"status\":\"available\"}"))
+			.thenThrow(MeiliSearchRuntimeException.class);
+		Map<String, String> health = classToTest.health();
+		assertNotNull(health);
+		assertTrue(health.containsKey("status"));
+		assertEquals("available", health.get("status"));
+	}
+
+	@Test
 	void version() throws Exception {
 		when(client.get(any(HttpRequest.class)))
 			.thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"commitSha\":\"b46889b5f0f2f8b91438a08a358ba8f05fc09fc1\",\"buildDate\":\"2019-11-15T09:51:54.278247+00:00\",\"pkgVersion\":\"0.1.1\"}"))
