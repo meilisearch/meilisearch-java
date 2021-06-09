@@ -19,7 +19,7 @@ public class InstanceHandler {
 	}
 
 	/**
-	 * @return a map with health status of meilisearch
+	 * @return a map with health status of MeiliSearch
 	 */
 	public Map<String, String> health() {
 		return serviceTemplate.execute(
