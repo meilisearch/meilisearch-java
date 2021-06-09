@@ -29,7 +29,7 @@ public class InstanceHandler {
 	}
 
 	/**
-	 * @return true if everything is ok, false if meilisearch is in maintenance mode
+	 * @return true if everything is ok, false if Meilisearch is in maintenance mode
 	 */
 	public boolean isHealthy() {
 		try {
@@ -41,7 +41,7 @@ public class InstanceHandler {
 	}
 
 	/**
-	 * @return a map with version information of meilisearch
+	 * @return a map with version information of Meilisearch
 	 */
 	public Map<String, String> getVersion() {
 		try {
