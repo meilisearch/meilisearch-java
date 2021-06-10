@@ -19,11 +19,21 @@ public class InstanceHandler {
 	}
 
 	/**
-	 * @return true if everything is ok, false if meilisearch is in maintenance mode
+	 * @return a map with health status of MeiliSearch
+	 */
+	public Map<String, String> health() {
+		return serviceTemplate.execute(
+			requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), null),
+			HashMap.class
+		);
+	}
+
+	/**
+	 * @return true if everything is ok, false if Meilisearch is in maintenance mode
 	 */
 	public boolean isHealthy() {
 		try {
-			serviceTemplate.execute(requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), null), null);
+			this.health();
 			return true;
 		} catch (MeiliSearchRuntimeException e) {
 			return false;
@@ -31,7 +41,7 @@ public class InstanceHandler {
 	}
 
 	/**
-	 * @return a map with version information of meilisearch
+	 * @return a map with version information of Meilisearch
 	 */
 	public Map<String, String> getVersion() {
 		try {
