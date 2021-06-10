@@ -31,9 +31,20 @@ class InstanceHandlerTest {
 
 	@Test
 	void isHealthy() throws Exception {
-		when(client.get(any(HttpRequest.class))).thenAnswer(invocation -> new BasicHttpResponse(null, 200, "")).thenThrow(MeiliSearchRuntimeException.class);
+		when(client.get(any(HttpRequest.class))).thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"status\":\"available\"}")).thenThrow(MeiliSearchRuntimeException.class);
 		assertTrue(classToTest.isHealthy());
 		assertFalse(classToTest.isHealthy());
+	}
+
+	@Test
+	void health() throws Exception {
+		when(client.get(any(HttpRequest.class)))
+			.thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"status\":\"available\"}"))
+			.thenThrow(MeiliSearchRuntimeException.class);
+		Map<String, String> health = classToTest.health();
+		assertNotNull(health);
+		assertTrue(health.containsKey("status"));
+		assertEquals("available", health.get("status"));
 	}
 
 	@Test

@@ -52,7 +52,7 @@ Add the following code to the `<dependencies>` section of your project:
 <dependency>
   <groupId>com.meilisearch.sdk</groupId>
   <artifactId>meilisearch-java</artifactId>
-  <version>0.3.0</version>
+  <version>0.3.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -62,7 +62,7 @@ Add the following code to the `<dependencies>` section of your project:
 Add the following line to the `dependencies` section of your `build.gradle`:
 
 ```groovy
-implementation 'com.meilisearch.sdk:meilisearch-java:0.3.0'
+implementation 'com.meilisearch.sdk:meilisearch-java:0.3.1'
 ```
 
 ## 🚀 Getting Started
@@ -200,7 +200,7 @@ System.out.println(results.getHits());
 
 ## 🤖 Compatibility with MeiliSearch
 
-This package only guarantees the compatibility with the [version v0.19.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.19.0).
+This package only guarantees the compatibility with the [version v0.20.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.20.0).
 
 ## 💡 Learn More
 
