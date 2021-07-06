@@ -75,13 +75,12 @@ public class SettingsTest extends AbstractIT {
 			"words",
 			"proximity",
 			"attribute",
-			"wordsPosition",
 			"exactness",
 			"desc(release_date)",
 			"desc(rank)"});
 		index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
 		Settings newSettings = index.getSettings();
-		assertEquals(8, newSettings.getRankingRules().length);
+		assertEquals(7, newSettings.getRankingRules().length);
 	}
 
 	/**
