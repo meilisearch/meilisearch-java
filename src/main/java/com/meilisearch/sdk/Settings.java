@@ -19,7 +19,7 @@ public class Settings {
 	@Getter @Setter
 	private String[] rankingRules;
 	@Getter @Setter
-	private String[] attributesForFaceting;
+	private String[] filterableAttributes;
 	@Getter @Setter
 	private String distinctAttribute;
 	@Getter @Setter
@@ -49,8 +49,8 @@ public class Settings {
 		if (this.getRankingRules() != null) {
 			jsonObject.put("rankingRules", this.getRankingRules());
 		}
-		if (this.getAttributesForFaceting() != null) {
-			jsonObject.put("attributesForFaceting", this.getAttributesForFaceting());
+		if (this.getFilterableAttributes() != null) {
+			jsonObject.put("filterableAttributes", this.getFilterableAttributes());
 		}
 		if (this.getDistinctAttribute() != null) {
 			jsonObject.put("distinctAttribute", this.getDistinctAttribute());
