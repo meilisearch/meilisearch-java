@@ -210,11 +210,11 @@ public class SearchTest extends AbstractIT {
 	}
 
 	/**
-	 * Test search filters
+	 * Test search filter
 	 */
 	@Test
-	public void testRawSearchFilters() throws Exception {
-		String indexUid = "SearchFilters";
+	public void testRawSearchFilter() throws Exception {
+		String indexUid = "SearchFilter";
 		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
@@ -227,7 +227,7 @@ public class SearchTest extends AbstractIT {
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
 		SearchRequest searchRequest = new SearchRequest("and")
-			.setFilters("title = \"The Dark Knight\"");
+			.setFilter("title = \"The Dark Knight\"");
 
 		Results res_gson = jsonGson.decode(
 			index.rawSearch(searchRequest),
@@ -240,11 +240,11 @@ public class SearchTest extends AbstractIT {
 	}
 
 	/**
-	 * Test search filters complex
+	 * Test search filter complex
 	 */
 	@Test
-	public void testRawSearchFiltersComplex() throws Exception {
-		String indexUid = "SearchFiltersComplex";
+	public void testRawSearchFilterComplex() throws Exception {
+		String indexUid = "SearchFilterComplex";
 		Index index = client.index(indexUid);
 		GsonJsonHandler jsonGson = new GsonJsonHandler();
 
@@ -257,7 +257,7 @@ public class SearchTest extends AbstractIT {
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
 		SearchRequest searchRequest = new SearchRequest("and")
-			.setFilters("title = \"The Dark Knight\" OR id = 290859");
+			.setFilter("title = \"The Dark Knight\" OR id = 290859");
 
 		Results res_gson = jsonGson.decode(
 			index.rawSearch(searchRequest),

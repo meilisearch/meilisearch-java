@@ -7,7 +7,7 @@ public class SearchRequest {
 	private final String q;
 	private final int offset;
 	private final int limit;
-	private final String filters;
+	private final String filter;
 	private final List<String> attributesToRetrieve;
 	private final List<String> attributesToCrop;
 	private final int cropLength;
@@ -37,7 +37,7 @@ public class SearchRequest {
 						 List<String> attributesToCrop,
 						 int cropLength,
 						 List<String> attributesToHighlight,
-						 String filters,
+						 String filter,
 						 boolean matches) {
 		this.q = q;
 		this.offset = offset;
@@ -46,7 +46,7 @@ public class SearchRequest {
 		this.attributesToCrop = attributesToCrop;
 		this.cropLength = cropLength;
 		this.attributesToHighlight = attributesToHighlight;
-		this.filters = filters;
+		this.filter = filter;
 		this.matches = matches;
 	}
 
@@ -78,8 +78,8 @@ public class SearchRequest {
 		return attributesToHighlight;
 	}
 
-	public String getFilters() {
-		return filters;
+	public String getFilter() {
+		return filter;
 	}
 
 	public boolean isMatches() {
