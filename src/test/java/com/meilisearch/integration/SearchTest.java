@@ -6,6 +6,7 @@ import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.SearchRequest;
+import com.meilisearch.sdk.Settings;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
@@ -226,6 +227,11 @@ public class SearchTest extends AbstractIT {
 
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
 
+		Settings settings = index.getSettings();
+
+		settings.setFilterableAttributes(new String[]{"title"});
+		index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+
 		SearchRequest searchRequest = new SearchRequest("and")
 			.setFilter("title = \"The Dark Knight\"");
 
@@ -255,6 +261,13 @@ public class SearchTest extends AbstractIT {
 		);
 
 		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		Settings settings = index.getSettings();
+
+		settings.setFilterableAttributes(new String[]{
+			"title",
+			"id"});
+		index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
 
 		SearchRequest searchRequest = new SearchRequest("and")
 			.setFilter("title = \"The Dark Knight\" OR id = 290859");

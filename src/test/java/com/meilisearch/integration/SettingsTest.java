@@ -49,7 +49,7 @@ public class SettingsTest extends AbstractIT {
 
 		Settings settings = index.getSettings();
 
-		assertEquals(6, settings.getRankingRules().length);
+		assertEquals(5, settings.getRankingRules().length);
 	}
 
 	/**
