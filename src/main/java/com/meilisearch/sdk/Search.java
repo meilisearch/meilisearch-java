@@ -43,7 +43,7 @@ public class Search {
 	 * @param attributesToCrop Attributes whose values have been cropped
 	 * @param cropLength Length used to crop field values
 	 * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
-	 * @param filters Filter queries by an attribute value
+	 * @param filter Filter queries by an attribute value
 	 * @param matches Defines whether an object that contains information about the matches should be returned or not
 	 * @return search results, as raw data
 	 * @throws Exception Search Exception or Client Error
@@ -56,11 +56,11 @@ public class Search {
 					 String[] attributesToCrop,
 					 int cropLength,
 					 String[] attributesToHighlight,
-					 String filters,
+					 String filter,
 					 boolean matches
 	) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/search";
-		SearchRequest sr = new SearchRequest(q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength, attributesToHighlight, filters, matches);
+		SearchRequest sr = new SearchRequest(q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength, attributesToHighlight, filter, matches);
 		return meilisearchHttpRequest.post(requestQuery, sr.getQuery());
 	}
 
@@ -103,7 +103,7 @@ public class Search {
 	 * @param attributesToCrop Attributes whose values have been cropped
 	 * @param cropLength Length used to crop field values
 	 * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
-	 * @param filters Filter queries by an attribute value
+	 * @param filter Filter queries by an attribute value
 	 * @param matches Defines whether an object that contains information about the matches should be returned or not
 	 * @return search results
 	 * @throws Exception Search Exception or Client Error
@@ -116,11 +116,11 @@ public class Search {
 				  String[] attributesToCrop,
 				  int cropLength,
 				  String[] attributesToHighlight,
-				  String filters,
+				  String filter,
 				  boolean matches
 	) throws Exception {
 		return jsonGson.decode(
-			rawSearch(uid, q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength,attributesToHighlight, filters, matches),
+			rawSearch(uid, q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength,attributesToHighlight, filter, matches),
 			SearchResult.class
 		);
 	}
