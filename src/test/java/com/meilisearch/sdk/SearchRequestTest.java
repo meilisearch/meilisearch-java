@@ -24,7 +24,7 @@ class SearchRequestTest {
 		assertEquals("bubble", classToTest.getAttributesToRetrieve()[0]);
 		assertEquals("highlight", classToTest.getAttributesToHighlight()[0]);
 		assertEquals("crop", classToTest.getAttributesToCrop()[0]);
-		assertEquals("test='test'", classToTest.getFilter());
+		assertEquals("test='test'", classToTest.getFilters());
 		assertEquals("facets", classToTest.getFacetsDistribution()[0]);
 		assertEquals(900, classToTest.getCropLength());
 	}
