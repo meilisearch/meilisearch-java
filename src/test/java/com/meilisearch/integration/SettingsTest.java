@@ -101,7 +101,7 @@ public class SettingsTest extends AbstractIT {
 
 		Settings settings = index.getSettings();
 
-		HashMap<String, String[]> synonyms = new HashMap();
+		HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
 		synonyms.put("wolverine", new String[] {"xmen", "logan"});
 		synonyms.put("logan", new String[] {"wolverine"});
 		settings.setSynonyms(synonyms);
@@ -132,7 +132,7 @@ public class SettingsTest extends AbstractIT {
 		Settings initialSettings = index.getSettings();
 
 		Settings settingsWithSynonyms = new Settings();
-		HashMap<String, String[]> synonyms = new HashMap();
+		HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
 		synonyms.put("wolverine", new String[] {"xmen", "logan"});
 		synonyms.put("logan", new String[] {"wolverine"});
 		settingsWithSynonyms.setSynonyms(synonyms);
