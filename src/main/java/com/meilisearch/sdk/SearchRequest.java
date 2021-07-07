@@ -15,6 +15,7 @@ public class SearchRequest {
 	private String[] attributesToHighlight;
 	private String filters;
 	private boolean matches;
+	private String[] facetsDistribution;
 
 	/**
 	 * Empty SearchRequest constructor
@@ -26,7 +27,8 @@ public class SearchRequest {
 	 * Constructor for SearchRequest for building search queries
 	 * with the default values:
 	 * offset: 0, limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null,
-	 * cropLength: 200, attributesToHighlight: null, filters: null, matches: false
+	 * cropLength: 200, attributesToHighlight: null, filters: null, matches: false,
+	 * facetsDistribution: null
 	 *
 	 * @param q Query String
 	 */
@@ -38,7 +40,7 @@ public class SearchRequest {
 	 * Constructor for SearchRequest for building search queries
 	 * with the default values:
 	 * limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
-	 * attributesToHighlight: null, filters: null, matches: false
+	 * attributesToHighlight: null, filters: null, matches: false, facetsDistribution: null
 	 *
 	 * @param q Query String
 	 * @param offset Number of documents to skip
@@ -51,7 +53,7 @@ public class SearchRequest {
 	 * Constructor for SearchRequest for building search queries
 	 * with the default values:
 	 * attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200, attributesToHighlight: null,
-	 * filters: null, matches: false
+	 * filters: null, matches: false, facetsDistribution: null
 	 *
 	 * @param q Query String
 	 * @param offset Number of documents to skip
@@ -64,7 +66,8 @@ public class SearchRequest {
 	/**
 	 * Constructor for SearchRequest for building search queries
 	 * with the default values:
-	 * attributesToCrop: null, cropLength: 200, attributesToHighlight: null, filters: null, matches: false
+	 * attributesToCrop: null, cropLength: 200, attributesToHighlight: null, filters: null, matches: false,
+	 * facetsDistribution: null
 	 *
 	 * @param q Query String
 	 * @param offset Number of documents to skip
@@ -72,7 +75,7 @@ public class SearchRequest {
 	 * @param attributesToRetrieve Attributes to display in the returned documents
 	 */
 	public SearchRequest(String q, int offset, int limit, String[] attributesToRetrieve) {
-		this(q, offset, limit, attributesToRetrieve, null, 200, null, null, false);
+		this(q, offset, limit, attributesToRetrieve, null, 200, null, null, false, null);
 	}
 
 	/**
@@ -87,6 +90,7 @@ public class SearchRequest {
 	 * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
 	 * @param filters Filter queries by an attribute value
 	 * @param matches Defines whether an object that contains information about the matches should be returned or not
+	 * @param facetsDistribution Facets for which to retrieve the matching count
 	 */
 	public SearchRequest(String q,
 						 int offset,
@@ -96,7 +100,8 @@ public class SearchRequest {
 						 int cropLength,
 						 String[] attributesToHighlight,
 						 String filters,
-						 boolean matches) {
+						 boolean matches,
+						 String[] facetsDistribution) {
 		this.q = q;
 		this.offset = offset;
 		this.limit = limit;
@@ -106,6 +111,7 @@ public class SearchRequest {
 		this.attributesToHighlight = attributesToHighlight;
 		this.setFilters(filters);
 		this.matches = matches;
+		this.facetsDistribution = facetsDistribution;
 	}
 
 	/**
@@ -182,6 +188,15 @@ public class SearchRequest {
 	 */
 	public boolean getMatches() {
 		return matches;
+	}
+
+
+	/**
+	 * Method for returning the facetsDistribution
+	 * @return facets for which to retrieve the matching count
+	 */
+	public String[] getFacetsDistribution() {
+		return facetsDistribution;
 	}
 
 	/**
@@ -286,6 +301,17 @@ public class SearchRequest {
 	}
 
 	/**
+	 * Method to set the facetsDistribution
+	 *
+	 * @param facetsDistribution Facets for which to retrieve the matching count
+	 * @return altered SearchRequest
+	 */
+	public SearchRequest setFacetsDistribution(String[] facetsDistribution) {
+		this.facetsDistribution = facetsDistribution;
+		return this;
+	}
+
+	/**
 	 * Method that returns the JSON String of the SearchRequest
 	 *
 	 * @return JSON String of the SearchRequest query
@@ -298,7 +324,8 @@ public class SearchRequest {
 			.put("limit", this.limit)
 			.put("attributesToRetrieve", this.attributesToRetrieve)
 			.put("cropLength",this.cropLength)
-			.put("matches", this.matches);
+			.put("matches", this.matches)
+			.put("facetsDistribution", this.facetsDistribution);
 		if (this.attributesToCrop != null) {
 			jsonObject.put("attributesToCrop",this.attributesToCrop);
 		}
