@@ -310,6 +310,37 @@ public class SearchTest extends AbstractIT {
 	}
 
 	/**
+	 * Test search facet distribution
+	 */
+	@Test
+	public void testSearchFacetsDistribution() throws Exception {
+		String indexUid = "SearchFacetsDistribution";
+		Index index = client.index(indexUid);
+		GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo = jsonGson.decode(
+			index.addDocuments(testData.getRaw()),
+			UpdateStatus.class
+		);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+		Settings settings = index.getSettings();
+
+		settings.setFilterableAttributes(new String[]{"title"});
+		index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+
+		SearchRequest searchRequest = new SearchRequest("knight")
+			.setFacetsDistribution(new String[]{"*"});
+
+		SearchResult searchResult = index.search(searchRequest);
+
+		assertEquals(3, searchResult.getHits().size());
+		assertNotNull(searchResult.getFacetsDistribution());
+	}
+
+	/**
 	 * Test search matches
 	 */
 	@Test
