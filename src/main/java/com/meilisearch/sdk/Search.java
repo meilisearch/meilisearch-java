@@ -45,6 +45,7 @@ public class Search {
 	 * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
 	 * @param filter Filter queries by an attribute value
 	 * @param matches Defines whether an object that contains information about the matches should be returned or not
+	 * @param facetsDistribution Facets for which to retrieve the matching count
 	 * @return search results, as raw data
 	 * @throws Exception Search Exception or Client Error
 	 */
@@ -57,10 +58,11 @@ public class Search {
 					 int cropLength,
 					 String[] attributesToHighlight,
 					 String filter,
-					 boolean matches
+					 boolean matches,
+					 String[] facetsDistribution
 	) throws Exception {
 		String requestQuery = "/indexes/" + uid + "/search";
-		SearchRequest sr = new SearchRequest(q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength, attributesToHighlight, filter, matches);
+		SearchRequest sr = new SearchRequest(q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength, attributesToHighlight, filter, matches, facetsDistribution);
 		return meilisearchHttpRequest.post(requestQuery, sr.getQuery());
 	}
 
@@ -105,6 +107,7 @@ public class Search {
 	 * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
 	 * @param filter Filter queries by an attribute value
 	 * @param matches Defines whether an object that contains information about the matches should be returned or not
+	 * @param facetsDistribution Facets for which to retrieve the matching count
 	 * @return search results
 	 * @throws Exception Search Exception or Client Error
 	 */
@@ -117,10 +120,11 @@ public class Search {
 				  int cropLength,
 				  String[] attributesToHighlight,
 				  String filter,
-				  boolean matches
+				  boolean matches,
+				  String[] facetsDistribution
 	) throws Exception {
 		return jsonGson.decode(
-			rawSearch(uid, q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength,attributesToHighlight, filter, matches),
+			rawSearch(uid, q, offset, limit, attributesToRetrieve, attributesToCrop, cropLength,attributesToHighlight, filter, matches, facetsDistribution),
 			SearchResult.class
 		);
 	}
