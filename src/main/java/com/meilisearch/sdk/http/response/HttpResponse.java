@@ -3,13 +3,13 @@ package com.meilisearch.sdk.http.response;
 import java.util.Map;
 
 public interface HttpResponse<B> {
-	Map<String, String> getHeaders();
+    Map<String, String> getHeaders();
 
-	int getStatusCode();
+    int getStatusCode();
 
-	boolean hasContent();
+    boolean hasContent();
 
-	B getContent();
+    B getContent();
 
-	byte[] getContentAsBytes();
+    byte[] getContentAsBytes();
 }
