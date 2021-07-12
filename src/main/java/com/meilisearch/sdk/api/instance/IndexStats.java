@@ -5,15 +5,15 @@ import java.util.Map;
 public class IndexStats {
 	private int numberOfDocuments;
 	private boolean isIndexing;
-	private Map<String,Integer> fieldsDistribution;
+	private Map<String,Integer> fieldDistribution;
 
 	public IndexStats() {
 	}
 
-	public IndexStats(int numberOfDocuments, boolean isIndexing, Map<String, Integer> fieldsDistribution) {
+	public IndexStats(int numberOfDocuments, boolean isIndexing, Map<String, Integer> fieldDistribution) {
 		this.numberOfDocuments = numberOfDocuments;
 		this.isIndexing = isIndexing;
-		this.fieldsDistribution = fieldsDistribution;
+		this.fieldDistribution = fieldDistribution;
 	}
 
 	public int getNumberOfDocuments() {
@@ -32,11 +32,11 @@ public class IndexStats {
 		isIndexing = indexing;
 	}
 
-	public Map<String, Integer> getFieldsDistribution() {
-		return fieldsDistribution;
+	public Map<String, Integer> getFieldDistribution() {
+		return fieldDistribution;
 	}
 
-	public void setFieldsDistribution(Map<String, Integer> fieldsDistribution) {
-		this.fieldsDistribution = fieldsDistribution;
+	public void setFieldDistribution(Map<String, Integer> fieldDistribution) {
+		this.fieldDistribution = fieldDistribution;
 	}
 }

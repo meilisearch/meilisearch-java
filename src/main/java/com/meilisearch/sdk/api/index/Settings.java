@@ -14,7 +14,7 @@ public class Settings {
 	private HashMap<String, String[]> synonyms;
 	private String[] stopWords;
 	private String[] rankingRules;
-	private String[] attributesForFaceting;
+	private String[] filterableAttributes;
 	private String distinctAttribute;
 	private String[] searchableAttributes;
 	private String[] displayedAttributes;
@@ -49,12 +49,12 @@ public class Settings {
 		this.rankingRules = rankingRules;
 	}
 
-	public String[] getAttributesForFaceting() {
-		return attributesForFaceting;
+	public String[] getFilterableAttributes() {
+		return filterableAttributes;
 	}
 
-	public void setAttributesForFaceting(String[] attributesForFaceting) {
-		this.attributesForFaceting = attributesForFaceting;
+	public void setFilterableAttributes(String[] filterableAttributes) {
+		this.filterableAttributes = filterableAttributes;
 	}
 
 	public String getDistinctAttribute() {

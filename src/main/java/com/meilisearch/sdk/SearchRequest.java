@@ -13,7 +13,7 @@ public class SearchRequest {
 	private String[] attributesToCrop;
 	private int cropLength;
 	private String[] attributesToHighlight;
-	private String filters;
+	private String filter;
 	private boolean matches;
 	private String[] facetsDistribution;
 
@@ -27,7 +27,7 @@ public class SearchRequest {
 	 * Constructor for SearchRequest for building search queries
 	 * with the default values:
 	 * offset: 0, limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null,
-	 * cropLength: 200, attributesToHighlight: null, filters: null, matches: false,
+	 * cropLength: 200, attributesToHighlight: null, filter: null, matches: false,
 	 * facetsDistribution: null
 	 *
 	 * @param q Query String
@@ -40,7 +40,7 @@ public class SearchRequest {
 	 * Constructor for SearchRequest for building search queries
 	 * with the default values:
 	 * limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
-	 * attributesToHighlight: null, filters: null, matches: false, facetsDistribution: null
+	 * attributesToHighlight: null, filter: null, matches: false, facetsDistribution: null
 	 *
 	 * @param q Query String
 	 * @param offset Number of documents to skip
@@ -53,7 +53,7 @@ public class SearchRequest {
 	 * Constructor for SearchRequest for building search queries
 	 * with the default values:
 	 * attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200, attributesToHighlight: null,
-	 * filters: null, matches: false, facetsDistribution: null
+	 * filter: null, matches: false, facetsDistribution: null
 	 *
 	 * @param q Query String
 	 * @param offset Number of documents to skip
@@ -66,7 +66,7 @@ public class SearchRequest {
 	/**
 	 * Constructor for SearchRequest for building search queries
 	 * with the default values:
-	 * attributesToCrop: null, cropLength: 200, attributesToHighlight: null, filters: null, matches: false,
+	 * attributesToCrop: null, cropLength: 200, attributesToHighlight: null, filter: null, matches: false,
 	 * facetsDistribution: null
 	 *
 	 * @param q Query String
@@ -88,7 +88,7 @@ public class SearchRequest {
 	 * @param attributesToCrop Attributes whose values have been cropped
 	 * @param cropLength Length used to crop field values
 	 * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
-	 * @param filters Filter queries by an attribute value
+	 * @param filter Filter queries by an attribute value
 	 * @param matches Defines whether an object that contains information about the matches should be returned or not
 	 * @param facetsDistribution Facets for which to retrieve the matching count
 	 */
@@ -99,7 +99,7 @@ public class SearchRequest {
 						 String[] attributesToCrop,
 						 int cropLength,
 						 String[] attributesToHighlight,
-						 String filters,
+						 String filter,
 						 boolean matches,
 						 String[] facetsDistribution) {
 		this.q = q;
@@ -109,7 +109,7 @@ public class SearchRequest {
 		this.attributesToCrop = attributesToCrop;
 		this.cropLength = cropLength;
 		this.attributesToHighlight = attributesToHighlight;
-		this.setFilters(filters);
+		this.setFilter(filter);
 		this.matches = matches;
 		this.facetsDistribution = facetsDistribution;
 	}
@@ -173,12 +173,12 @@ public class SearchRequest {
 	}
 
 	/**
-	 * Method to return the filters
+	 * Method to return the filter
 	 *
 	 * @return filter queries by an attribute value
 	 */
-	public String getFilters() {
-		return filters;
+	public String getFilter() {
+		return filter;
 	}
 
 	/**
@@ -277,14 +277,14 @@ public class SearchRequest {
 	}
 
 	/**
-	 * Method to set the filters
+	 * Method to set the filter
 	 *
-	 * @param filters Filter queries by an attribute value
+	 * @param filter Filter queries by an attribute value
 	 * @return altered SearchRequest
 	 */
-	public SearchRequest setFilters(String filters) {
-		if (filters != null) {
-			this.filters = filters;
+	public SearchRequest setFilter(String filter) {
+		if (filter != null) {
+			this.filter = filter;
 		}
 		return this;
 	}
@@ -332,8 +332,8 @@ public class SearchRequest {
 		if (this.attributesToHighlight != null) {
 			jsonObject.put("attributesToHighlight",this.attributesToHighlight);
 		}
-		if (this.filters != null) {
-			jsonObject.put("filters",this.filters);
+		if (this.filter != null) {
+			jsonObject.put("filter",this.filter);
 		}
 		return jsonObject.toString();
 	}
