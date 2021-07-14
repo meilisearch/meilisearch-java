@@ -3,19 +3,19 @@ package com.meilisearch.integration.classes;
 import java.util.List;
 
 public class TestData<T> {
-	private final String raw;
-	private final List<T> data;
+    private final String raw;
+    private final List<T> data;
 
-	public TestData(String raw, List<T> data) {
-		this.raw = raw;
-		this.data = data;
-	}
+    public TestData(String raw, List<T> data) {
+        this.raw = raw;
+        this.data = data;
+    }
 
-	public String getRaw() {
-		return raw;
-	}
+    public String getRaw() {
+        return raw;
+    }
 
-	public List<T> getData() {
-		return data;
-	}
+    public List<T> getData() {
+        return data;
+    }
 }

@@ -4,6 +4,11 @@ import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.BasicHttpResponse;
 import com.meilisearch.sdk.http.response.HttpResponse;
+import java.util.Arrays;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 import org.apache.hc.client5.http.async.HttpAsyncClient;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
@@ -17,103 +22,95 @@ import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.reactor.IOReactorConfig;
 import org.apache.hc.core5.util.Timeout;
 
-import java.util.Arrays;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
-
-
 public class ApacheHttpClient extends AbstractHttpClient {
 
-	private final HttpAsyncClient client;
+    private final HttpAsyncClient client;
 
-	public ApacheHttpClient(Config config) {
-		super(config);
-		final IOReactorConfig ioReactorConfig = IOReactorConfig.custom()
-			.setSoTimeout(Timeout.ofSeconds(5))
-			.build();
+    public ApacheHttpClient(Config config) {
+        super(config);
+        final IOReactorConfig ioReactorConfig =
+                IOReactorConfig.custom().setSoTimeout(Timeout.ofSeconds(5)).build();
 
-		this.client = HttpAsyncClients.custom()
-			.setIOReactorConfig(ioReactorConfig)
-			.build();
-	}
+        this.client = HttpAsyncClients.custom().setIOReactorConfig(ioReactorConfig).build();
+    }
 
-	public ApacheHttpClient(Config config, HttpAsyncClient client) {
-		super(config);
-		this.client = client;
-	}
+    public ApacheHttpClient(Config config, HttpAsyncClient client) {
+        super(config);
+        this.client = client;
+    }
 
+    private HttpResponse<?> execute(HttpRequest<?> request) throws Exception {
+        CompletableFuture<SimpleHttpResponse> response = new CompletableFuture<>();
+        client.execute(
+                SimpleRequestProducer.create(mapRequest(request)),
+                SimpleResponseConsumer.create(),
+                null,
+                HttpClientContext.create(),
+                getCallback(response));
+        try {
+            return response.thenApply(this::mapResponse).get();
+        } catch (CancellationException | ExecutionException e) {
+            // todo: throw dedicated exception
+            throw new Exception(e);
+        }
+    }
 
-	private HttpResponse<?> execute(HttpRequest<?> request) throws Exception {
-		CompletableFuture<SimpleHttpResponse> response = new CompletableFuture<>();
-		client.execute(
-			SimpleRequestProducer.create(mapRequest(request)),
-			SimpleResponseConsumer.create(),
-			null,
-			HttpClientContext.create(),
-			getCallback(response)
-		);
-		try {
-			return response.thenApply(this::mapResponse).get();
-		} catch (CancellationException | ExecutionException e) {
-			// todo: throw dedicated exception
-			throw new Exception(e);
-		}
-	}
+    @Override
+    public HttpResponse<?> get(HttpRequest<?> request) throws Exception {
+        return execute(request);
+    }
 
-	@Override
-	public HttpResponse<?> get(HttpRequest<?> request) throws Exception {
-		return execute(request);
-	}
+    @Override
+    public HttpResponse<?> post(HttpRequest<?> request) throws Exception {
+        return execute(request);
+    }
 
-	@Override
-	public HttpResponse<?> post(HttpRequest<?> request) throws Exception {
-		return execute(request);
-	}
+    @Override
+    public HttpResponse<?> put(HttpRequest<?> request) throws Exception {
+        return execute(request);
+    }
 
-	@Override
-	public HttpResponse<?> put(HttpRequest<?> request) throws Exception {
-		return execute(request);
-	}
+    @Override
+    public HttpResponse<?> delete(HttpRequest<?> request) throws Exception {
+        return execute(request);
+    }
 
-	@Override
-	public HttpResponse<?> delete(HttpRequest<?> request) throws Exception {
-		return execute(request);
-	}
+    private SimpleHttpRequest mapRequest(HttpRequest<?> request) {
+        SimpleHttpRequest httpRequest =
+                new SimpleHttpRequest(request.getMethod().name(), request.getPath());
+        if (request.hasContent())
+            httpRequest.setBody(request.getContentAsBytes(), ContentType.APPLICATION_JSON);
+        httpRequest.addHeader("X-Meili-API-Key", this.config.getApiKey());
+        return httpRequest;
+    }
 
-	private SimpleHttpRequest mapRequest(HttpRequest<?> request) {
-		SimpleHttpRequest httpRequest = new SimpleHttpRequest(request.getMethod().name(), request.getPath());
-		if (request.hasContent())
-			httpRequest.setBody(request.getContentAsBytes(), ContentType.APPLICATION_JSON);
-		httpRequest.addHeader("X-Meili-API-Key", this.config.getApiKey());
-		return httpRequest;
-	}
+    private HttpResponse<?> mapResponse(SimpleHttpResponse response) {
+        return new BasicHttpResponse(
+                Arrays.stream(response.getHeaders())
+                        .collect(
+                                Collectors.toConcurrentMap(
+                                        NameValuePair::getName, NameValuePair::getValue)),
+                response.getCode(),
+                response.getBodyText());
+    }
 
-	private HttpResponse<?> mapResponse(SimpleHttpResponse response) {
-		return new BasicHttpResponse(
-			Arrays.stream(response.getHeaders()).collect(Collectors.toConcurrentMap(NameValuePair::getName, NameValuePair::getValue)),
-			response.getCode(),
-			response.getBodyText()
-		);
-	}
+    private FutureCallback<SimpleHttpResponse> getCallback(
+            CompletableFuture<SimpleHttpResponse> completableFuture) {
+        return new FutureCallback<SimpleHttpResponse>() {
+            @Override
+            public void completed(SimpleHttpResponse result) {
+                completableFuture.complete(result);
+            }
 
-	private FutureCallback<SimpleHttpResponse> getCallback(CompletableFuture<SimpleHttpResponse> completableFuture) {
-		return new FutureCallback<SimpleHttpResponse>() {
-			@Override
-			public void completed(SimpleHttpResponse result) {
-				completableFuture.complete(result);
-			}
+            @Override
+            public void failed(Exception ex) {
+                completableFuture.completeExceptionally(ex);
+            }
 
-			@Override
-			public void failed(Exception ex) {
-				completableFuture.completeExceptionally(ex);
-			}
-
-			@Override
-			public void cancelled() {
-				completableFuture.cancel(false);
-			}
-		};
-	}
+            @Override
+            public void cancelled() {
+                completableFuture.cancel(false);
+            }
+        };
+    }
 }

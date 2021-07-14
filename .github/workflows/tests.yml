@@ -28,3 +28,5 @@ jobs:
       run: docker run -d -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --no-analytics=true --no-sentry=true --master-key='masterKey'
     - name: Build and run unit and integration tests
       run: ./gradlew build integrationTest
+    - name: Run linter
+      run: bash .github/scripts/lint.sh
