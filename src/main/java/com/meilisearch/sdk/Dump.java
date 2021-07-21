@@ -7,6 +7,6 @@ import lombok.ToString;
 public class Dump {
     @Getter private String status;
     @Getter private String uid;
-  	@Getter @ToString.Exclude private String startedAt;
-	  @Getter @ToString.Exclude private String finishedAt;
+    @Getter @ToString.Exclude private String startedAt;
+    @Getter @ToString.Exclude private String finishedAt;
 }
