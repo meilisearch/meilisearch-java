@@ -32,11 +32,11 @@ public class IndexStats {
         isIndexing = indexing;
     }
 
-    public Map<String, Integer> getFieldsDistribution() {
+    public Map<String, Integer> getFieldDistribution() {
         return fieldDistribution;
     }
 
-    public void setFieldsDistribution(Map<String, Integer> fieldDistribution) {
+    public void setFieldDistribution(Map<String, Integer> fieldDistribution) {
         this.fieldDistribution = fieldDistribution;
     }
 }
