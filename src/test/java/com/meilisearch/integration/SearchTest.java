@@ -213,6 +213,11 @@ public class SearchTest extends AbstractIT {
 
         index.waitForPendingUpdate(updateInfo.getUpdateId());
 
+        Settings settings = index.getSettings();
+
+        settings.setFilterableAttributes(new String[] {"title"});
+        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+
         SearchRequest searchRequest =
                 new SearchRequest("and").setFilter("title = \"The Dark Knight\"");
 
