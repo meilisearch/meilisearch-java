@@ -1,3 +1,6 @@
-status = ['integration-and-unit-tests']
+status = [
+    'integration-and-unit-tests',
+    'linter'
+]
 # 1 hour timeout
 timeout-sec = 3600
