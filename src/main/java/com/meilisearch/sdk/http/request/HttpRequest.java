@@ -3,21 +3,21 @@ package com.meilisearch.sdk.http.request;
 import java.util.Map;
 
 public interface HttpRequest<T> {
-	HttpMethod getMethod();
+    HttpMethod getMethod();
 
-	void setMethod(HttpMethod method);
+    void setMethod(HttpMethod method);
 
-	String getPath();
+    String getPath();
 
-	void setPath(String path);
+    void setPath(String path);
 
-	Map<String, String> getHeaders();
+    Map<String, String> getHeaders();
 
-	void setHeaders(Map<String, String> headers);
+    void setHeaders(Map<String, String> headers);
 
-	boolean hasContent();
+    boolean hasContent();
 
-	T getContent();
+    T getContent();
 
-	byte[] getContentAsBytes();
+    byte[] getContentAsBytes();
 }

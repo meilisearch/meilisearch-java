@@ -28,3 +28,14 @@ jobs:
       run: docker run -d -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --no-analytics=true --no-sentry=true --master-key='masterKey'
     - name: Build and run unit and integration tests
       run: ./gradlew build integrationTest
+
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Run linter
+      run: bash scripts/lint.sh

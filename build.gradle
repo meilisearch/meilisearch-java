@@ -12,6 +12,7 @@ plugins {
 	id 'maven-publish'
 	id 'signing'
 	id 'io.codearte.nexus-staging' version '0.30.0'
+	id "com.diffplug.spotless" version "5.14.1"
 }
 
 group = 'com.meilisearch.sdk'
@@ -154,4 +155,13 @@ nexusStaging {
 	serverUrl = "https://oss.sonatype.org/service/local/"
 	username System.getenv('OSSRH_USERNAME')
 	password System.getenv('OSSRH_PASSWORD')
+}
+spotless {
+
+	java {
+		// don't need to set target, it is inferred from java
+
+		// apply a specific flavor of google-java-format
+		googleJavaFormat('1.7').aosp()
+	}
 }

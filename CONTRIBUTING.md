@@ -26,7 +26,7 @@ First of all, thank you for contributing to MeiliSearch! The goal of this docume
 
 ## Development Workflow
 
-### Tests and linter <!-- omit in TOC -->
+### Tests <!-- omit in TOC -->
 
 Integration and unit tests will be run in your PR to check everything is OK. Each PR should pass all the tests to be accepted.
 
@@ -44,7 +44,13 @@ docker run -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=m
 ./gradlew test IntegrationTest
 ```
 
-⚠️ No linter has been set for the moment, but please try to keep the code clean and tidy!
+### Linter <!-- omit in TOC -->
+
+Run:
+
+```bash
+bash ./scripts/lint.sh
+```
 
 ## Git Guidelines
 
@@ -191,7 +197,7 @@ echo $SIGNING_SECRET_KEY_RING_FILE | base64 -d > secring.gpg
 3. Build, sign your files and upload them to Maven repository:
 
 ```bash
-# May need sudo privilege and JDK8 
+# May need sudo privilege and JDK8
 ./gradlew build
 ./gradlew publish -Psigning.keyId=$SIGNING_KEY_ID -Psigning.password=$SIGNING_PASSWORD -Psigning.secretKeyRingFile=$(echo secring.gpg)
 ```
