@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 
 @Tag("integration")
 public class DocumentsTest extends AbstractIT {
-
     @BeforeEach
     public void initialize() {
         this.setUp();
@@ -77,7 +76,10 @@ public class DocumentsTest extends AbstractIT {
         index.waitForPendingUpdate(updateInfo.getUpdateId());
         Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         for (int i = 0; i < movies.length; i++) {
-            assertEquals(movies[i].getTitle(), testData.getData().get(i).getTitle());
+            Movie movie =
+                    this.gson.fromJson(
+                            index.getDocument(testData.getData().get(i).getId()), Movie.class);
+            assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
         }
     }
 
@@ -175,10 +177,12 @@ public class DocumentsTest extends AbstractIT {
         Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         assertEquals(20, movies.length);
         for (int i = 0; i < movies.length; i++) {
-            assertEquals(movies[i].getTitle(), testData.getData().get(i).getTitle());
-            assertEquals(movies[i].getId(), testData.getData().get(i).getId());
+            Movie movie =
+                    this.gson.fromJson(
+                            index.getDocument(testData.getData().get(i).getId()), Movie.class);
+            assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
             String[] expectedGenres = testData.getData().get(i).getGenres();
-            String[] foundGenres = movies[i].getGenres();
+            String[] foundGenres = movie.getGenres();
             for (int x = 0; x < expectedGenres.length; x++) {
                 assertEquals(expectedGenres[x], foundGenres[x]);
             }
@@ -201,7 +205,10 @@ public class DocumentsTest extends AbstractIT {
         Movie[] movies = this.gson.fromJson(index.getDocuments(limit), Movie[].class);
         assertEquals(limit, movies.length);
         for (int i = 0; i < movies.length; i++) {
-            assertEquals(movies[i].getId(), testData.getData().get(i).getId());
+            Movie movie =
+                    this.gson.fromJson(
+                            index.getDocument(testData.getData().get(i).getId()), Movie.class);
+            assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
         }
     }
 

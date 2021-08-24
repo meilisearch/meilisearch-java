@@ -8,6 +8,7 @@ import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.SearchRequest;
+import com.meilisearch.sdk.Settings;
 import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.model.SearchResult;
@@ -60,7 +61,7 @@ public class SearchTest extends AbstractIT {
 
         SearchResult searchResult = index.search("batman");
 
-        System.out.println(searchResult.getFacetsDistribution());
+        assertNull(searchResult.getFacetsDistribution());
         assertEquals(1, searchResult.getHits().size());
         assertEquals(0, searchResult.getOffset());
         assertEquals(20, searchResult.getLimit());
@@ -179,10 +180,10 @@ public class SearchTest extends AbstractIT {
         assertEquals(20, searchResult.getHits().size());
     }
 
-    /** Test search filters */
+    /** Test search with phrase */
     @Test
-    public void testRawSearchFilters() throws Exception {
-        String indexUid = "SearchFilters";
+    public void testSearchPhrase() throws Exception {
+        String indexUid = "SearchPhrase";
         Index index = client.index(indexUid);
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
@@ -192,8 +193,33 @@ public class SearchTest extends AbstractIT {
 
         index.waitForPendingUpdate(updateInfo.getUpdateId());
 
+        Results res_gson = jsonGson.decode(index.rawSearch("coco \"harry\""), Results.class);
+
+        assertEquals(1, res_gson.hits.length);
+        assertEquals("671", res_gson.hits[0].getId());
+        assertEquals("Harry Potter and the Philosopher's Stone", res_gson.hits[0].getTitle());
+    }
+
+    /** Test search filter */
+    @Test
+    public void testRawSearchFilter() throws Exception {
+        String indexUid = "SearchFilter";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        UpdateStatus updateInfo =
+                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+        Settings settings = index.getSettings();
+
+        settings.setFilterableAttributes(new String[] {"title"});
+        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+
         SearchRequest searchRequest =
-                new SearchRequest("and").setFilters("title = \"The Dark Knight\"");
+                new SearchRequest("and").setFilter("title = \"The Dark Knight\"");
 
         Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -202,10 +228,10 @@ public class SearchTest extends AbstractIT {
         assertEquals("The Dark Knight", res_gson.hits[0].getTitle());
     }
 
-    /** Test search filters complex */
+    /** Test search filter complex */
     @Test
-    public void testRawSearchFiltersComplex() throws Exception {
-        String indexUid = "SearchFiltersComplex";
+    public void testRawSearchFilterComplex() throws Exception {
+        String indexUid = "SearchFilterComplex";
         Index index = client.index(indexUid);
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
@@ -215,14 +241,46 @@ public class SearchTest extends AbstractIT {
 
         index.waitForPendingUpdate(updateInfo.getUpdateId());
 
+        Settings settings = index.getSettings();
+
+        settings.setFilterableAttributes(new String[] {"title", "id"});
+        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+
         SearchRequest searchRequest =
-                new SearchRequest("and").setFilters("title = \"The Dark Knight\" OR id = 290859");
+                new SearchRequest("and").setFilter("title = \"The Dark Knight\" OR id = 290859");
 
         Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
         assertEquals(2, res_gson.hits.length);
         assertEquals("155", res_gson.hits[0].getId());
         assertEquals("290859", res_gson.hits[1].getId());
+    }
+
+    /** Test search facet distribution */
+    @Test
+    public void testSearchFacetsDistribution() throws Exception {
+        String indexUid = "SearchFacetsDistribution";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        UpdateStatus updateInfo =
+                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+        Settings settings = index.getSettings();
+
+        settings.setFilterableAttributes(new String[] {"title"});
+        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+
+        SearchRequest searchRequest =
+                new SearchRequest("knight").setFacetsDistribution(new String[] {"*"});
+
+        SearchResult searchResult = index.search(searchRequest);
+
+        assertEquals(3, searchResult.getHits().size());
+        assertNotNull(searchResult.getFacetsDistribution());
     }
 
     /** Test search matches */
@@ -263,7 +321,7 @@ public class SearchTest extends AbstractIT {
     /** Test place holder search */
     @Test
     public void testPlaceHolderWithLimit() throws Exception {
-        String indexUid = "BasicSearch";
+        String indexUid = "placeHolderWithLimit";
         Index index = client.index(indexUid);
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 

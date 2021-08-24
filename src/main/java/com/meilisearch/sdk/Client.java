@@ -157,6 +157,7 @@ public class Client {
      * Triggers the creation of a MeiliSearch dump. Refer
      * https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
      *
+     * @return Dump instance
      * @throws Exception if an error occurs
      */
     public Dump createDump() throws Exception {

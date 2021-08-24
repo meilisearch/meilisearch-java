@@ -14,7 +14,7 @@ public class Settings {
     @Getter @Setter private HashMap<String, String[]> synonyms;
     @Getter @Setter private String[] stopWords;
     @Getter @Setter private String[] rankingRules;
-    @Getter @Setter private String[] attributesForFaceting;
+    @Getter @Setter private String[] filterableAttributes;
     @Getter @Setter private String distinctAttribute;
     @Getter @Setter private String[] searchableAttributes;
     @Getter @Setter private String[] displayedAttributes;
@@ -38,8 +38,8 @@ public class Settings {
         if (this.getRankingRules() != null) {
             jsonObject.put("rankingRules", this.getRankingRules());
         }
-        if (this.getAttributesForFaceting() != null) {
-            jsonObject.put("attributesForFaceting", this.getAttributesForFaceting());
+        if (this.getFilterableAttributes() != null) {
+            jsonObject.put("filterableAttributes", this.getFilterableAttributes());
         }
         if (this.getDistinctAttribute() != null) {
             jsonObject.put("distinctAttribute", this.getDistinctAttribute());

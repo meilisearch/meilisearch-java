@@ -43,7 +43,7 @@ public class SettingsTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        assertEquals(6, settings.getRankingRules().length);
+        assertEquals(5, settings.getRankingRules().length);
     }
 
     /** Test update settings changing the ranking rules */
@@ -66,14 +66,13 @@ public class SettingsTest extends AbstractIT {
                     "words",
                     "proximity",
                     "attribute",
-                    "wordsPosition",
                     "exactness",
                     "desc(release_date)",
                     "desc(rank)"
                 });
         index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
         Settings newSettings = index.getSettings();
-        assertEquals(8, newSettings.getRankingRules().length);
+        assertEquals(7, newSettings.getRankingRules().length);
     }
 
     /** Test update settings changing the synonyms */
@@ -90,7 +89,7 @@ public class SettingsTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        HashMap<String, String[]> synonyms = new HashMap();
+        HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
         synonyms.put("wolverine", new String[] {"xmen", "logan"});
         synonyms.put("logan", new String[] {"wolverine"});
         settings.setSynonyms(synonyms);
@@ -117,7 +116,7 @@ public class SettingsTest extends AbstractIT {
         Settings initialSettings = index.getSettings();
 
         Settings settingsWithSynonyms = new Settings();
-        HashMap<String, String[]> synonyms = new HashMap();
+        HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
         synonyms.put("wolverine", new String[] {"xmen", "logan"});
         synonyms.put("logan", new String[] {"wolverine"});
         settingsWithSynonyms.setSynonyms(synonyms);

@@ -41,7 +41,7 @@ public class Search {
      * @param attributesToCrop Attributes whose values have been cropped
      * @param cropLength Length used to crop field values
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
-     * @param filters Filter queries by an attribute value
+     * @param filter Filter queries by an attribute value
      * @param matches Defines whether an object that contains information about the matches should
      *     be returned or not
      * @param facetsDistribution Facets for which to retrieve the matching count
@@ -57,7 +57,7 @@ public class Search {
             String[] attributesToCrop,
             int cropLength,
             String[] attributesToHighlight,
-            String filters,
+            String filter,
             boolean matches,
             String[] facetsDistribution)
             throws Exception {
@@ -71,7 +71,7 @@ public class Search {
                         attributesToCrop,
                         cropLength,
                         attributesToHighlight,
-                        filters,
+                        filter,
                         matches,
                         facetsDistribution);
         return meilisearchHttpRequest.post(requestQuery, sr.getQuery());
@@ -112,7 +112,7 @@ public class Search {
      * @param attributesToCrop Attributes whose values have been cropped
      * @param cropLength Length used to crop field values
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
-     * @param filters Filter queries by an attribute value
+     * @param filter Filter queries by an attribute value
      * @param matches Defines whether an object that contains information about the matches should
      *     be returned or not
      * @param facetsDistribution Facets for which to retrieve the matching count
@@ -128,7 +128,7 @@ public class Search {
             String[] attributesToCrop,
             int cropLength,
             String[] attributesToHighlight,
-            String filters,
+            String filter,
             boolean matches,
             String[] facetsDistribution)
             throws Exception {
@@ -142,7 +142,7 @@ public class Search {
                         attributesToCrop,
                         cropLength,
                         attributesToHighlight,
-                        filters,
+                        filter,
                         matches,
                         facetsDistribution),
                 SearchResult.class);
