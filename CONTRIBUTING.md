@@ -138,7 +138,7 @@ gpg --gen-key --batch genkey
 4. Publish your public key to a public repository:
 
 ```bash
-gpg --keyserver hkp://pool.sks-keyservers.net --send-keys <last-8-digits-of-your-key-hash>
+gpg --keyserver hkp://keyserver.ubuntu.com --send-keys <last-8-digits-of-your-key-hash>
 ```
 
 5. Export the gpg key in a secring.gpg file
@@ -185,13 +185,13 @@ export OSSRH_PASSWORD=<maven-password>
 
 export SIGNINT_KEY_ID=<id-associated-to-the-gpg-key>
 export SIGNING_PASSWORD=<passphrase-associated-to-the-gpg-key>
-export SIGNING_SECRET_KEY_RING_FILE=<gpg-key-encoded-in-base64>
+export SIGNING_SECRET_KEY_RING_FILE=<path-to-gpg-key-encoded-in-base64>
 ```
 
 2. Decode the gpg key
 
 ```bash
-echo $SIGNING_SECRET_KEY_RING_FILE | base64 -d > secring.gpg
+base64 -d $SIGNING_SECRET_KEY_RING_FILE > secring.gpg
 ```
 
 3. Build, sign your files and upload them to Maven repository:
