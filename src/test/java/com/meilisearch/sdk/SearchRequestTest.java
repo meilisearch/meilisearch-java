@@ -36,7 +36,8 @@ class SearchRequestTest {
                         new String[] {"highlight"},
                         "test='test'",
                         true,
-                        new String[] {"facets"});
+                        new String[] {"facets"},
+                        new String[] {"sort"});
         assertEquals("This is a Test", classToTest.getQ());
         assertEquals(200, classToTest.getOffset());
         assertEquals(900, classToTest.getLimit());
@@ -45,6 +46,7 @@ class SearchRequestTest {
         assertEquals("crop", classToTest.getAttributesToCrop()[0]);
         assertEquals("test='test'", classToTest.getFilter());
         assertEquals("facets", classToTest.getFacetsDistribution()[0]);
+        assertEquals("sort", classToTest.getSort()[0]);
         assertEquals(900, classToTest.getCropLength());
     }
 }

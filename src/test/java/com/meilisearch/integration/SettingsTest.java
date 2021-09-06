@@ -43,7 +43,7 @@ public class SettingsTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        assertEquals(5, settings.getRankingRules().length);
+        assertEquals(6, settings.getRankingRules().length);
     }
 
     /** Test update settings changing the ranking rules */
@@ -64,15 +64,16 @@ public class SettingsTest extends AbstractIT {
                 new String[] {
                     "typo",
                     "words",
+                    "sort",
                     "proximity",
                     "attribute",
                     "exactness",
-                    "desc(release_date)",
-                    "desc(rank)"
+                    "release_date:desc",
+                    "rank:desc"
                 });
         index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
         Settings newSettings = index.getSettings();
-        assertEquals(7, newSettings.getRankingRules().length);
+        assertEquals(8, newSettings.getRankingRules().length);
     }
 
     /** Test update settings changing the synonyms */
@@ -99,6 +100,30 @@ public class SettingsTest extends AbstractIT {
         Settings newSettings = index.getSettings();
 
         assertEquals(2, newSettings.getSynonyms().size());
+    }
+
+    /** Test update settings changing the sort */
+    @Test
+    public void testUpdateSettingsSort() throws Exception {
+        String indexUid = "updateSettingsSort";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        UpdateStatus updateInfo =
+                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+        Settings settings = index.getSettings();
+
+        String[] sort = new String[] {"title", "year"};
+        settings.setSortableAttributes(sort);
+
+        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+
+        Settings newSettings = index.getSettings();
+
+        assertEquals(2, newSettings.getSortableAttributes().length);
     }
 
     /** Test reset settings */
