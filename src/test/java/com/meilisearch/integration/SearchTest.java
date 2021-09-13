@@ -306,10 +306,12 @@ public class SearchTest extends AbstractIT {
         Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
         assertEquals(20, res_gson.hits.length);
-        assertEquals("530915", res_gson.hits[0].getId());
-        assertEquals("1917", res_gson.hits[0].getTitle());
-        assertEquals("509585", res_gson.hits[1].getId());
-        assertEquals("7500", res_gson.hits[1].getTitle());
+        assertEquals("671", res_gson.hits[0].getId());
+        assertEquals("Harry Potter and the Philosopher's Stone", res_gson.hits[0].getTitle());
+        assertEquals("495764", res_gson.hits[1].getId());
+        assertEquals(
+                "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)",
+                res_gson.hits[1].getTitle());
     }
 
     /** Test search sort */
@@ -335,10 +337,12 @@ public class SearchTest extends AbstractIT {
         Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
         assertEquals(20, res_gson.hits.length);
-        assertEquals("155", res_gson.hits[0].getId());
-        assertEquals("The Dark Knight", res_gson.hits[0].getTitle());
-        assertEquals("671", res_gson.hits[1].getId());
-        assertEquals("Harry Potter and the Philosopher's Stone", res_gson.hits[1].getTitle());
+        assertEquals("671", res_gson.hits[0].getId());
+        assertEquals("Harry Potter and the Philosopher's Stone", res_gson.hits[0].getTitle());
+        assertEquals("495764", res_gson.hits[1].getId());
+        assertEquals(
+                "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)",
+                res_gson.hits[1].getTitle());
     }
 
     /** Test search sort */
