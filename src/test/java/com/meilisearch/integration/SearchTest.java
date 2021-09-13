@@ -283,6 +283,128 @@ public class SearchTest extends AbstractIT {
         assertNotNull(searchResult.getFacetsDistribution());
     }
 
+    /** Test search sort */
+    @Test
+    public void testRawSearchSort() throws Exception {
+        String indexUid = "SearchSort";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        UpdateStatus updateInfo =
+                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+        Settings settings = index.getSettings();
+
+        settings.setSortableAttributes(new String[] {"title"});
+        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+
+        SearchRequest searchRequest = new SearchRequest("and").setSort(new String[] {"title:asc"});
+
+        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+
+        assertEquals(20, res_gson.hits.length);
+        assertEquals("671", res_gson.hits[0].getId());
+        assertEquals("Harry Potter and the Philosopher's Stone", res_gson.hits[0].getTitle());
+        assertEquals("495764", res_gson.hits[1].getId());
+        assertEquals(
+                "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)",
+                res_gson.hits[1].getTitle());
+    }
+
+    /** Test search sort */
+    @Test
+    public void testRawSearchSortWithIntParameter() throws Exception {
+        String indexUid = "SearchSortWithIntParameter";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        UpdateStatus updateInfo =
+                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+        Settings settings = index.getSettings();
+
+        settings.setSortableAttributes(new String[] {"id"});
+        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+
+        SearchRequest searchRequest = new SearchRequest("and").setSort(new String[] {"id:asc"});
+
+        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+
+        assertEquals(20, res_gson.hits.length);
+        assertEquals("671", res_gson.hits[0].getId());
+        assertEquals("Harry Potter and the Philosopher's Stone", res_gson.hits[0].getTitle());
+        assertEquals("495764", res_gson.hits[1].getId());
+        assertEquals(
+                "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)",
+                res_gson.hits[1].getTitle());
+    }
+
+    /** Test search sort */
+    @Test
+    public void testRawSearchSortWithMultipleParameter() throws Exception {
+        String indexUid = "SearchSortWithMultipleParameter";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        UpdateStatus updateInfo =
+                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+        Settings settings = index.getSettings();
+
+        settings.setSortableAttributes(new String[] {"id", "title"});
+        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+
+        SearchRequest searchRequest =
+                new SearchRequest("dark").setSort(new String[] {"id:asc", "title:asc"});
+
+        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+
+        assertEquals(3, res_gson.hits.length);
+        assertEquals("155", res_gson.hits[0].getId());
+        assertEquals("The Dark Knight", res_gson.hits[0].getTitle());
+        assertEquals("290859", res_gson.hits[1].getId());
+        assertEquals("Terminator: Dark Fate", res_gson.hits[1].getTitle());
+    }
+
+    /** Test search sort */
+    @Test
+    public void testRawSearchSortWithPlaceHolder() throws Exception {
+        String indexUid = "SearchSortWithPlaceHolder";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        UpdateStatus updateInfo =
+                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+        Settings settings = index.getSettings();
+
+        settings.setSortableAttributes(new String[] {"id", "title"});
+        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+
+        SearchRequest searchRequest =
+                new SearchRequest("").setSort(new String[] {"id:asc", "title:asc"});
+
+        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+
+        assertEquals(20, res_gson.hits.length);
+        assertEquals("155", res_gson.hits[0].getId());
+        assertEquals("The Dark Knight", res_gson.hits[0].getTitle());
+        assertEquals("671", res_gson.hits[1].getId());
+        assertEquals("Harry Potter and the Philosopher's Stone", res_gson.hits[1].getTitle());
+    }
+
     /** Test search matches */
     @Test
     public void testSearchMatches() throws Exception {

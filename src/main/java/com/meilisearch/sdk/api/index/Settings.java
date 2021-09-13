@@ -17,6 +17,7 @@ public class Settings {
     private String distinctAttribute;
     private String[] searchableAttributes;
     private String[] displayedAttributes;
+    private String[] sortableAttributes;
 
     /** Empty SettingsRequest constructor */
     public Settings() {}
@@ -75,5 +76,13 @@ public class Settings {
 
     public void setDisplayedAttributes(String[] displayedAttributes) {
         this.displayedAttributes = displayedAttributes;
+    }
+
+    public String[] getSortableAttributes() {
+        return sortableAttributes;
+    }
+
+    public void setSortableAttributes(String[] sortableAttributes) {
+        this.sortableAttributes = sortableAttributes;
     }
 }

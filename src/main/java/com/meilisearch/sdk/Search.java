@@ -45,6 +45,7 @@ public class Search {
      * @param matches Defines whether an object that contains information about the matches should
      *     be returned or not
      * @param facetsDistribution Facets for which to retrieve the matching count
+     * @param sort Sort queries by an attribute value
      * @return search results, as raw data
      * @throws Exception Search Exception or Client Error
      */
@@ -59,7 +60,8 @@ public class Search {
             String[] attributesToHighlight,
             String filter,
             boolean matches,
-            String[] facetsDistribution)
+            String[] facetsDistribution,
+            String[] sort)
             throws Exception {
         String requestQuery = "/indexes/" + uid + "/search";
         SearchRequest sr =
@@ -73,7 +75,8 @@ public class Search {
                         attributesToHighlight,
                         filter,
                         matches,
-                        facetsDistribution);
+                        facetsDistribution,
+                        sort);
         return meilisearchHttpRequest.post(requestQuery, sr.getQuery());
     }
 
@@ -116,6 +119,7 @@ public class Search {
      * @param matches Defines whether an object that contains information about the matches should
      *     be returned or not
      * @param facetsDistribution Facets for which to retrieve the matching count
+     * @param sort Sort queries by an attribute value
      * @return search results
      * @throws Exception Search Exception or Client Error
      */
@@ -130,7 +134,8 @@ public class Search {
             String[] attributesToHighlight,
             String filter,
             boolean matches,
-            String[] facetsDistribution)
+            String[] facetsDistribution,
+            String[] sort)
             throws Exception {
         return jsonGson.decode(
                 rawSearch(
@@ -144,7 +149,8 @@ public class Search {
                         attributesToHighlight,
                         filter,
                         matches,
-                        facetsDistribution),
+                        facetsDistribution,
+                        sort),
                 SearchResult.class);
     }
 

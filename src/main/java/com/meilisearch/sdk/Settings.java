@@ -18,6 +18,7 @@ public class Settings {
     @Getter @Setter private String distinctAttribute;
     @Getter @Setter private String[] searchableAttributes;
     @Getter @Setter private String[] displayedAttributes;
+    @Getter @Setter private String[] sortableAttributes;
 
     /** Empty SettingsRequest constructor */
     public Settings() {}
@@ -49,6 +50,9 @@ public class Settings {
         }
         if (this.getDisplayedAttributes() != null) {
             jsonObject.put("displayedAttributes", this.getDisplayedAttributes());
+        }
+        if (this.getSortableAttributes() != null) {
+            jsonObject.put("sortableAttributes", this.getSortableAttributes());
         }
         return jsonObject.toString();
     }

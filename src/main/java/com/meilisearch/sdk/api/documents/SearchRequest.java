@@ -13,6 +13,7 @@ public class SearchRequest {
     private final int cropLength;
     private final List<String> attributesToHighlight;
     private final boolean matches;
+    private final List<String> sort;
 
     public SearchRequest(String q) {
         this(q, 0);
@@ -27,7 +28,7 @@ public class SearchRequest {
     }
 
     public SearchRequest(String q, int offset, int limit, List<String> attributesToRetrieve) {
-        this(q, offset, limit, attributesToRetrieve, null, 200, null, null, false);
+        this(q, offset, limit, attributesToRetrieve, null, 200, null, null, false, null);
     }
 
     public SearchRequest(
@@ -39,7 +40,8 @@ public class SearchRequest {
             int cropLength,
             List<String> attributesToHighlight,
             String filter,
-            boolean matches) {
+            boolean matches,
+            List<String> sort) {
         this.q = q;
         this.offset = offset;
         this.limit = limit;
@@ -49,6 +51,7 @@ public class SearchRequest {
         this.attributesToHighlight = attributesToHighlight;
         this.filter = filter;
         this.matches = matches;
+        this.sort = sort;
     }
 
     public String getQ() {
@@ -81,6 +84,10 @@ public class SearchRequest {
 
     public String getFilter() {
         return filter;
+    }
+
+    public List<String> getSort() {
+        return sort;
     }
 
     public boolean isMatches() {
