@@ -121,7 +121,7 @@ Once the changes are merged on `main`, you can publish the current draft release
 
 A GitHub Action will be triggered and publish a new release to Maven repository.
 
-### How to Publish the Release to Maven repository manually if the CI has failed <!-- omit in TOC -->
+### How to Manually Publish the Release to Maven repository  <!-- omit in TOC -->
 
 ⚠️ These following steps are only required if the CI has failed to release the current version in Maven repository.
 
