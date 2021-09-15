@@ -97,9 +97,35 @@ _[Read more about this](https://github.com/meilisearch/integration-guides/blob/m
 
 ⚠️ Before doing anything, make sure you got through the guide about [Releasing an Integration](https://github.com/meilisearch/integration-guides/blob/main/guides/integration-release.md).
 
+Make a PR modifying the following files with the right version:
+
+- [`build.gradle`](/build.gradle)
+
+```java
+version = 'X.X.X'
+```
+
+- [`README.md`](/README.md) in the `Installation` section
+
+```xml
+<version>X.X.X</version>
+```
+
+```groovy
+implementation 'com.meilisearch.sdk:meilisearch-java:X.X.X'
+```
+
+Once the changes are merged on `main`, you can publish the current draft release via the [GitHub interface](https://github.com/meilisearch/meilisearch-java/releases).
+
+A GitHub Action will be triggered and publish a new release to Maven repository.
+
+### How to Manually Publish the Release to Maven repository  <!-- omit in TOC -->
+
+⚠️ These following steps should only be applied if it's impossible to release the current version in the Maven repository via the CI. Keep in mind publishing via the CI should always be privileged.
+
 #### Create signature credentials (first time) <!-- omit in TOC -->
 
-⚠️ All these steps (create and publish a GPG key) have already been done by the Meili team and the key is shared internally. Please ask a maintainer to get the credentials if needed.
+⚠️ These step (create and publish a GPG key) has already been done by the Meili team and the key is shared internally. Please ask a maintainer to get the credentials if needed.
 
 Steps:
 
@@ -152,28 +178,6 @@ gpg --keyring secring.gpg --export-secret-keys > ~/.gnupg/secring.gpg
 ```bash
 base64 ~/.gnupg/secring.gpg > secring.gpg.b64
 ```
-
-#### Update the version <!-- omit in TOC -->
-
-Make a PR modifying the following files with the right version:
-
-- [`build.gradle`](/build.gradle)
-
-```java
-version = 'X.X.X'
-```
-
-- [`README.md`](/README.md) in the `Installation` section
-
-```xml
-<version>X.X.X</version>
-```
-
-```groovy
-implementation 'com.meilisearch.sdk:meilisearch-java:X.X.X'
-```
-
-Once the changes are merged on `main`, you can publish the current draft release via the [GitHub interface](https://github.com/meilisearch/meilisearch-java/releases).
 
 #### Sign your files and upload to Maven Repository manually <!-- omit in TOC -->
 
