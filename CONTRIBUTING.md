@@ -125,7 +125,7 @@ A GitHub Action will be triggered and publish a new release to Maven repository.
 
 #### Create signature credentials (first time) <!-- omit in TOC -->
 
-⚠️ All these steps (create and publish a GPG key) have already been done by the Meili team and the key is shared internally. Please ask a maintainer to get the credentials if needed.
+⚠️ These step (create and publish a GPG key) has already been done by the Meili team and the key is shared internally. Please ask a maintainer to get the credentials if needed.
 
 Steps:
 
