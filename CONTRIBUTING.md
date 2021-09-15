@@ -97,8 +97,6 @@ _[Read more about this](https://github.com/meilisearch/integration-guides/blob/m
 
 ⚠️ Before doing anything, make sure you got through the guide about [Releasing an Integration](https://github.com/meilisearch/integration-guides/blob/main/guides/integration-release.md).
 
-#### Update the version <!-- omit in TOC -->
-
 Make a PR modifying the following files with the right version:
 
 - [`build.gradle`](/build.gradle)
