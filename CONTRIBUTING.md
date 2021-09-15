@@ -121,7 +121,7 @@ A GitHub Action will be triggered and publish a new release to Maven repository.
 
 ### How to Manually Publish the Release to Maven repository  <!-- omit in TOC -->
 
-⚠️ These following steps are only required if the CI has failed to release the current version in Maven repository.
+⚠️ These following steps should only be applied if it's impossible to release the current version in the Maven repository via the CI. Keep in mind publishing via the CI should always be privileged.
 
 #### Create signature credentials (first time) <!-- omit in TOC -->
 
