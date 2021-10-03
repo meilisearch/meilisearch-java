@@ -91,12 +91,12 @@ public class Index implements Serializable {
      * Adds a document in the index
      *
      * @param document Document to add in JSON string format
-     * @param identifier Identifier of the document to add
+     * @param primaryKey PrimaryKey of the document to add
      * @return MeiliSearch API response
      * @throws Exception if something goes wrong
      */
-    public String addDocuments(String document, String identifier) throws Exception {
-        return this.documents.addDocuments(this.uid, document, identifier);
+    public String addDocuments(String document, String primaryKey) throws Exception {
+        return this.documents.addDocuments(this.uid, document, primaryKey);
     }
 
     /**
@@ -114,12 +114,12 @@ public class Index implements Serializable {
      * Updates a document in the index
      *
      * @param document Document to update in JSON string format
-     * @param identifier Identifier of the document
+     * @param primaryKey PrimaryKey of the document
      * @return MeiliSearch API response
      * @throws Exception if something goes wrong
      */
-    public String updateDocuments(String document, String identifier) throws Exception {
-        return this.documents.updateDocuments(this.uid, document, identifier);
+    public String updateDocuments(String document, String primaryKey) throws Exception {
+        return this.documents.updateDocuments(this.uid, document, primaryKey);
     }
 
     /**

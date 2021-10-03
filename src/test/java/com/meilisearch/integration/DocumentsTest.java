@@ -65,9 +65,9 @@ public class DocumentsTest extends AbstractIT {
 
     /** Test add Documents with identifier */
     @Test
-    public void testAddDocumentsWithSuppliedIdentifier() throws Exception {
+    public void testAddDocumentsWithSuppliedPrimaryKey() throws Exception {
 
-        String indexUid = "TestAddWithIdentifier";
+        String indexUid = "TestAddWithPrimaryKey";
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
@@ -155,9 +155,9 @@ public class DocumentsTest extends AbstractIT {
 
     /** Test update Documents with identifier */
     @Test
-    public void testUpdateDocumentsWithSuppliedIdentifier() throws Exception {
+    public void testUpdateDocumentsWithSuppliedPrimaryKey() throws Exception {
 
-        String indexUid = "TestUpdateWithIdentifier";
+        String indexUid = "TestUpdateWithPrimaryKey";
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
