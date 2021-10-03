@@ -58,7 +58,7 @@ public class Search {
             String[] attributesToCrop,
             int cropLength,
             String[] attributesToHighlight,
-            String filter,
+            String[] filter,
             boolean matches,
             String[] facetsDistribution,
             String[] sort)
@@ -132,7 +132,7 @@ public class Search {
             String[] attributesToCrop,
             int cropLength,
             String[] attributesToHighlight,
-            String filter,
+            String[] filter,
             boolean matches,
             String[] facetsDistribution,
             String[] sort)
