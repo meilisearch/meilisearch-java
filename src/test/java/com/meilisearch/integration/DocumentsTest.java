@@ -63,7 +63,7 @@ public class DocumentsTest extends AbstractIT {
         assertEquals("Drama", movies[0].getGenres()[1]);
     }
 
-    /** Test add Documents with identifier */
+    /** Test add Documents with primaryKey */
     @Test
     public void testAddDocumentsWithSuppliedPrimaryKey() throws Exception {
 
@@ -153,7 +153,7 @@ public class DocumentsTest extends AbstractIT {
         assertEquals(toUpdate.getOverview(), responseUpdate.getOverview());
     }
 
-    /** Test update Documents with identifier */
+    /** Test update Documents with primaryKey */
     @Test
     public void testUpdateDocumentsWithSuppliedPrimaryKey() throws Exception {
 
