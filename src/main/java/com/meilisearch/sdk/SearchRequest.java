@@ -11,7 +11,8 @@ public class SearchRequest {
     private String[] attributesToCrop;
     private int cropLength;
     private String[] attributesToHighlight;
-    private String filter;
+    private String[] filter;
+    private String[][] filterArray;
     private boolean matches;
     private String[] facetsDistribution;
     private String[] sort;
@@ -67,7 +68,18 @@ public class SearchRequest {
      * @param attributesToRetrieve Attributes to display in the returned documents
      */
     public SearchRequest(String q, int offset, int limit, String[] attributesToRetrieve) {
-        this(q, offset, limit, attributesToRetrieve, null, 200, null, null, false, null, null);
+        this(
+                q,
+                offset,
+                limit,
+                attributesToRetrieve,
+                null,
+                200,
+                null,
+                (String[]) null,
+                false,
+                null,
+                null);
     }
 
     /**
@@ -94,7 +106,78 @@ public class SearchRequest {
             String[] attributesToCrop,
             int cropLength,
             String[] attributesToHighlight,
-            String filter,
+            String[] filter,
+            boolean matches,
+            String[] facetsDistribution,
+            String[] sort) {
+        this(
+                q,
+                offset,
+                limit,
+                attributesToRetrieve,
+                attributesToCrop,
+                cropLength,
+                attributesToHighlight,
+                filter,
+                null,
+                matches,
+                facetsDistribution,
+                sort);
+    }
+
+    /**
+     * Full SearchRequest Constructor for building search queries with 2D filter Array
+     *
+     * @param q Query string
+     * @param offset Number of documents to skip
+     * @param limit Maximum number of documents returned
+     * @param attributesToRetrieve Attributes to display in the returned documents
+     * @param attributesToCrop Attributes whose values have been cropped
+     * @param cropLength Length used to crop field values
+     * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
+     * @param filterArray String array that can take multiple nested filters
+     * @param matches Defines whether an object that contains information about the matches should
+     *     be returned or not
+     * @param facetsDistribution Facets for which to retrieve the matching count
+     * @param sort Sort queries by an attribute value
+     */
+    public SearchRequest(
+            String q,
+            int offset,
+            int limit,
+            String[] attributesToRetrieve,
+            String[] attributesToCrop,
+            int cropLength,
+            String[] attributesToHighlight,
+            String[][] filterArray,
+            boolean matches,
+            String[] facetsDistribution,
+            String[] sort) {
+        this(
+                q,
+                offset,
+                limit,
+                attributesToRetrieve,
+                attributesToCrop,
+                cropLength,
+                attributesToHighlight,
+                null,
+                filterArray,
+                matches,
+                facetsDistribution,
+                sort);
+    }
+
+    private SearchRequest(
+            String q,
+            int offset,
+            int limit,
+            String[] attributesToRetrieve,
+            String[] attributesToCrop,
+            int cropLength,
+            String[] attributesToHighlight,
+            String[] filter,
+            String[][] filterArray,
             boolean matches,
             String[] facetsDistribution,
             String[] sort) {
@@ -106,11 +189,11 @@ public class SearchRequest {
         this.cropLength = cropLength;
         this.attributesToHighlight = attributesToHighlight;
         this.setFilter(filter);
+        this.setFilterArray(filterArray);
         this.matches = matches;
         this.facetsDistribution = facetsDistribution;
         this.sort = sort;
     }
-
     /**
      * Method for returning the Query String
      *
@@ -179,10 +262,18 @@ public class SearchRequest {
      *
      * @return filter queries by an attribute value
      */
-    public String getFilter() {
+    public String[] getFilter() {
         return filter;
     }
 
+    /**
+     * Method to return the filterArray
+     *
+     * @return filterArray that can have multiple nested filters
+     */
+    public String[][] getFilterArray() {
+        return filterArray;
+    }
     /**
      * Method to return the matches
      *
@@ -294,9 +385,16 @@ public class SearchRequest {
      * @param filter Filter queries by an attribute value
      * @return altered SearchRequest
      */
-    public SearchRequest setFilter(String filter) {
+    public SearchRequest setFilter(String[] filter) {
         if (filter != null) {
             this.filter = filter;
+        }
+        return this;
+    }
+
+    public SearchRequest setFilterArray(String[][] filterArray) {
+        if (filterArray != null) {
+            this.filterArray = filterArray;
         }
         return this;
     }
@@ -360,6 +458,9 @@ public class SearchRequest {
         }
         if (this.filter != null) {
             jsonObject.put("filter", this.filter);
+        }
+        if (this.filterArray != null) {
+            jsonObject.put("filter", this.filterArray);
         }
         return jsonObject.toString();
     }
