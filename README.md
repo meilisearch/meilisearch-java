@@ -82,12 +82,12 @@ class TestMeiliSearch {
 
     JSONArray array = new JSONArray();
     ArrayList items = new ArrayList() {{
-      add(new JSONObject().put("book_id", "123"));
-      add(new JSONObject().put("456", "Le Petit Prince"));
-      add(new JSONObject().put("1", "Alice In Wonderland"));
-      add(new JSONObject().put("1344", "The Hobbit"));
-      add(new JSONObject().put("4", "Harry Potter and the Half-Blood Prince"));
-      add(new JSONObject().put("2", "The Hitchhiker's Guide to the Galaxy"));
+      add(new JSONObject().put("book_id", "123").put("title", "Pride and Prejudice"));
+      add(new JSONObject().put("book_id", "456").put("title", "Le Petit Prince"));
+      add(new JSONObject().put("book_id", "1").put("title", "Alice In Wonderland"));
+      add(new JSONObject().put("book_id", "1344").put("title", "The Hobbit"));
+      add(new JSONObject().put("book_id", "4").put("title", "Harry Potter and the Half-Blood Prince"));
+      add(new JSONObject().put("book_id", "2").put("title", "The Hitchhiker's Guide to the Galaxy"));
     }};
 
     array.put(items);
