@@ -54,11 +54,15 @@ class Documents {
      *
      * @param uid Partial index identifier for the document
      * @param document String containing the document to add
+     * @param identifier Identifier of the document
      * @return String containing the added document
      * @throws Exception if the client request causes an error
      */
-    String addDocuments(String uid, String document) throws Exception {
+    String addDocuments(String uid, String document, String identifier) throws Exception {
         String requestQuery = "/indexes/" + uid + "/documents";
+        if (identifier != null) {
+            requestQuery += "?primaryKey=" + identifier;
+        }
         return meilisearchHttpRequest.post(requestQuery, document);
     }
 
@@ -67,11 +71,15 @@ class Documents {
      *
      * @param uid Partial index identifier for the document
      * @param document String containing the document to replace the existing document
+     * @param identifier Identifier of the document
      * @return String containing the added document
      * @throws Exception if the client request causes an error
      */
-    String updateDocuments(String uid, String document) throws Exception {
+    String updateDocuments(String uid, String document, String identifier) throws Exception {
         String requestQuery = "/indexes/" + uid + "/documents";
+        if (identifier != null) {
+            requestQuery += "?primaryKey=" + identifier;
+        }
         return meilisearchHttpRequest.put(requestQuery, document);
     }
 

@@ -2,6 +2,7 @@ package com.meilisearch.integration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.google.gson.JsonObject;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
@@ -62,6 +63,46 @@ public class DocumentsTest extends AbstractIT {
         assertEquals("Drama", movies[0].getGenres()[1]);
     }
 
+    /** Test add Documents with identifier */
+    @Test
+    public void testAddDocumentsWithSuppliedIdentifier() throws Exception {
+
+        String indexUid = "TestAddWithIdentifier";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+
+        // "language" is going to be our PK
+        Movie firstMovie = testData.getData().get(0);
+        Movie secondMovie = testData.getData().get(1);
+        secondMovie.setLanguage(firstMovie.getLanguage());
+
+        String firstDocument = this.gson.toJson(firstMovie);
+        String secondDocument = this.gson.toJson(secondMovie);
+
+        UpdateStatus firstUpdate =
+                this.gson.fromJson(
+                        index.addDocuments("[" + firstDocument + "]", "language"),
+                        UpdateStatus.class);
+        index.waitForPendingUpdate(firstUpdate.getUpdateId());
+
+        Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        assertEquals(1, movies.length);
+        assertEquals("419704", movies[0].getId());
+        assertEquals("Ad Astra", movies[0].getTitle());
+
+        UpdateStatus secondUpdate =
+                this.gson.fromJson(
+                        index.addDocuments("[" + secondDocument + "]", "language"),
+                        UpdateStatus.class);
+        index.waitForPendingUpdate(secondUpdate.getUpdateId());
+
+        movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        assertEquals(1, movies.length);
+        assertEquals("574982", movies[0].getId());
+        assertEquals("The Blackout", movies[0].getTitle());
+    }
+
     /** Test Add multiple documents */
     @Test
     public void testAddDocumentsMultiple() throws Exception {
@@ -110,6 +151,48 @@ public class DocumentsTest extends AbstractIT {
 
         assertEquals(toUpdate.getTitle(), responseUpdate.getTitle());
         assertEquals(toUpdate.getOverview(), responseUpdate.getOverview());
+    }
+
+    /** Test update Documents with identifier */
+    @Test
+    public void testUpdateDocumentsWithSuppliedIdentifier() throws Exception {
+
+        String indexUid = "TestUpdateWithIdentifier";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+
+        // "language" is going to be our PK
+        Movie firstMovie = testData.getData().get(0);
+        Movie secondMovie = testData.getData().get(1);
+        secondMovie.setLanguage(firstMovie.getLanguage());
+
+        String firstDocument = this.gson.toJson(firstMovie);
+        JsonObject secondJson = this.gson.toJsonTree(secondMovie).getAsJsonObject();
+        secondJson.remove("title");
+        String secondDocument = this.gson.toJson(secondJson);
+
+        UpdateStatus firstUpdate =
+                this.gson.fromJson(
+                        index.updateDocuments("[" + firstDocument + "]", "language"),
+                        UpdateStatus.class);
+        index.waitForPendingUpdate(firstUpdate.getUpdateId());
+
+        Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        assertEquals(1, movies.length);
+        assertEquals("419704", movies[0].getId());
+        assertEquals("Ad Astra", movies[0].getTitle());
+
+        UpdateStatus secondUpdate =
+                this.gson.fromJson(
+                        index.updateDocuments("[" + secondDocument + "]", "language"),
+                        UpdateStatus.class);
+        index.waitForPendingUpdate(secondUpdate.getUpdateId());
+
+        movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        assertEquals(1, movies.length);
+        assertEquals("574982", movies[0].getId()); // Second movie id
+        assertEquals("Ad Astra", movies[0].getTitle()); // First movie title
     }
 
     /** Test Update multiple documents */
