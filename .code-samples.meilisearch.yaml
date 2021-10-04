@@ -37,7 +37,7 @@ delete_all_documents_1: |-
 delete_one_document_1: |-
   client.index("movies").deleteDocument("25684");
 delete_documents_1: |-
-    client.index("movies").deleteDocuments(Arrays.asList(new String[]
+  client.index("movies").deleteDocuments(Arrays.asList(new String[]
 {
 "23488",
 "153738",
