@@ -70,22 +70,28 @@ implementation 'com.meilisearch.sdk:meilisearch-java:0.4.1'
 #### Add documents <!-- omit in toc -->
 
 ```java
-import com.meilisearch.sdk.Client;
-import com.meilisearch.sdk.Config;
-import com.meilisearch.sdk.Index;
+package com.meilisearch.sdk;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 class TestMeiliSearch {
   public static void main(String[] args) throws Exception {
 
-    final String documents = "["
-      + "{\"book_id\": 123, \"title\": \"Pride and Prejudice\"},"
-      + "{\"book_id\": 456, \"title\": \"Le Petit Prince\"},"
-      + "{\"book_id\": 1, \"title\": \"Alice In Wonderland\"},"
-      + "{\"book_id\": 1344, \"title\": \"The Hobbit\"},"
-      + "{\"book_id\": 4, \"title\": \"Harry Potter and the Half-Blood Prince\"},"
-      + "{\"book_id\": 2, \"title\": \"The Hitchhiker\'s Guide to the Galaxy\"}"
-      + "]";
+    JSONArray array = new JSONArray();
+    ArrayList items = new ArrayList() {{
+      add(new JSONObject().put("book_id", "123").put("title", "Pride and Prejudice"));
+      add(new JSONObject().put("book_id", "456").put("title", "Le Petit Prince"));
+      add(new JSONObject().put("book_id", "1").put("title", "Alice In Wonderland"));
+      add(new JSONObject().put("book_id", "1344").put("title", "The Hobbit"));
+      add(new JSONObject().put("book_id", "4").put("title", "Harry Potter and the Half-Blood Prince"));
+      add(new JSONObject().put("book_id", "2").put("title", "The Hitchhiker's Guide to the Galaxy"));
+    }};
 
+    array.put(items);
+    String documents = array.getJSONArray(0).toString();
     Client client = new Client(new Config("http://localhost:7700", "masterKey"));
 
     // An index is where the documents are stored.

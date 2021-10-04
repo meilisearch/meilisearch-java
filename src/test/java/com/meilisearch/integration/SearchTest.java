@@ -219,7 +219,7 @@ public class SearchTest extends AbstractIT {
         index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
 
         SearchRequest searchRequest =
-                new SearchRequest("and").setFilter("title = \"The Dark Knight\"");
+                new SearchRequest("and").setFilter(new String[] {"title = \"The Dark Knight\""});
 
         Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -247,7 +247,8 @@ public class SearchTest extends AbstractIT {
         index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
 
         SearchRequest searchRequest =
-                new SearchRequest("and").setFilter("title = \"The Dark Knight\" OR id = 290859");
+                new SearchRequest("and")
+                        .setFilter(new String[] {"title = \"The Dark Knight\" OR id = 290859"});
 
         Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
