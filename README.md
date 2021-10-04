@@ -159,6 +159,48 @@ System.out.println(results.getHits());
   }
 }]
 ```
+#### Basic JSON <!-- omit in toc -->
+The default JSON can be created by calling the default constructor of <b>JsonbJsonHandler</b> class which will create a config of type JsonbConfig and using this config, it will initialize the mapper variable by calling the create method of <b>JsonbBuilder</b> class.
+
+#### Custom JSON <!-- omit in toc -->
+To create a custom JSON, create an object of JSON and set the required parameters.The supported options are as follows: 
+An object of <b>Jsonb</b> is passed as a parameter to the <b>JsonbJsonHandler’s parameterized constructor</b> which is used to initialize the mapper variable.
+
+The mapper variable is responsible for the encoding and decoding of the JSON. 
+
+#### Custom Client
+To create a custom Client, create an object of <b>Client</b> and set the required parameters.The supported options are as follows:
+Config: Config is class which has 2 member variables <br>
+(a) hostUrl <br>
+(b)apiKey<br>
+
+```
+Config config = new Config(“dummy_url”,”dummy_key”);
+return new Client(config);
+```
+The Client(config) constructor sets the config instance to the member variable. It also sets the 3 other instances namely - <b>gson(),  IndexesHandler(config) and DumpHandler(config).</b>
+
+#### Custom Http Request
+To create a custom HTTP request, create an object of BasicHttpRequest and set the required parameters.The supported options are as follows:<br>
+1. HTTP method (It can consume the following values: HEAD, GET,POST,PUT,DELETE). [Datatype : String]<br>
+2. Path : It accepts the endpoint details of the api [Datatype : String]<br>
+3. Headers: It accepts a Map containing the header parameters in the form of key-value pair. [Datatype : Map<String,String>]<br>
+4. Content of String type<br>
+
+```
+return new BasicHttpRequest(
+                    method,
+                    path,
+                    headers,
+                    content == null ? null : this.jsonHandler.encode(content));
+```
+Alternatively, there is an interface <b>RequestFactory</b> which has a method ‘create’.
+```
+public interface RequestFactory {
+    <T> HttpRequest<?> create(
+            HttpMethod method, String path, Map<String, String> headers, T content);
+```
+In order to call this method, create an object of RequestFactory and call the method by passing the required parameters.
 
 ## 🤖 Compatibility with MeiliSearch
 
