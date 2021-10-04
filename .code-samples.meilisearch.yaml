@@ -14,12 +14,36 @@ update_an_index_1: |-
 delete_an_index_1: |-
   client.deleteIndex("movies");
 get_one_document_1: |-
+get_one_document_1: |-
+  client.index("movies").getDocument("25684");
 get_documents_1: |-
+  client.index("movies").getDocuments();
 add_or_replace_documents_1: |-
+  client.index("movies").addDocuments("[{
+    "id": 287947,
+    "title": "Shazam",
+    "poster": "https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg",
+    "overview": "A boy is given the ability to become an adult superhero in times of need with a single magic word.",
+    "release_date": "2019-03-23"
+  }]");
 add_or_update_documents_1: |-
+  client.index("movies").updateDocuments("[{
+    "id": 287947,
+    "title": "Shazam ⚡️",
+    "genres": "comedy"
+  }]");
 delete_all_documents_1: |-
+  client.index("movies").deleteAllDocuments();
 delete_one_document_1: |-
+  client.index("movies").deleteDocument("25684");
 delete_documents_1: |-
+  client.index("movies").deleteDocument("123");
+  [
+        23488,
+        153738,
+        437035,
+        363869
+    ]
 search_post_1: |-
 get_update_1: |-
 get_all_updates_1: |-
