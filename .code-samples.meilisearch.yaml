@@ -14,7 +14,6 @@ update_an_index_1: |-
 delete_an_index_1: |-
   client.deleteIndex("movies");
 get_one_document_1: |-
-get_one_document_1: |-
   client.index("movies").getDocument("25684");
 get_documents_1: |-
   client.index("movies").getDocuments();
@@ -45,79 +44,225 @@ delete_documents_1: |-
 "363869"
 }));
 search_post_1: |-
+  client.index("movies").search("American ninja");
 get_update_1: |-
+  client.index("movies").getUpdate(1).getStatus();
 get_all_updates_1: |-
+  for(Update update: client.index("movies").getUpdates())
+  {
+    update.getStatus();
+  }
 get_keys_1: |-
+  //Not yet implemented
 get_settings_1: |-
+  client.index("movies").getSettings();
 update_settings_1: |-
+  //Unsure
 reset_settings_1: |-
+  client.index("movies").resetSettings();
 get_synonyms_1: |-
+  client.index("movies").getSynonyms();
 update_synonyms_1: |-
+  //Unsure
 reset_synonyms_1: |-
+  //Not yet implemented
 get_stop_words_1: |-
+  client.index("movies").getStopWords();
 update_stop_words_1: |-
+  client.index("movies").setStopWords(new String[] {"of", "the", "to"});
 reset_stop_words_1: |-
+  //Not yet implemented
 get_ranking_rules_1: |-
+  client.index("movies").getRankingRules();
 update_ranking_rules_1: |-
+  client.index("movies").setRankingRules(new String[]
+  {
+  "words",
+  "typo",
+  "proximity",
+  "attribute",
+  "sort",
+  "exactness",
+  "release_date:asc",
+  "rank:desc"
+  });
 reset_ranking_rules_1: |-
+  //Not yet implemented
 get_distinct_attribute_1: |-
+  client.index("movies").getDistinctAttribute();
 update_distinct_attribute_1: |-
+  client.index("movies").setDistinctAttribute("movie_id");
 reset_distinct_attribute_1: |-
+  //Not yet implemented
 get_searchable_attributes_1: |-
+  client.index("movies").getSearchableAttributes();
 update_searchable_attributes_1: |-
+  client.index("movies").setSearchableAttributes(new String[]
+  {
+  "title",
+  "description",
+  "genre"
+  });
 reset_searchable_attributes_1: |-
+  //Not yet implemented
 get_filterable_attributes_1: |-
+  client.index("movies").getFilterableAttributes();
 update_filterable_attributes_1: |-
+  client.index("movies").setFilterableAttributes(new String[]
+  {
+  "genres",
+  "director"
+  });
 reset_filterable_attributes_1: |-
+  //Not yet implemented
 get_displayed_attributes_1: |-
+  client.index("movies").getDisplayedAttributes();
 update_displayed_attributes_1: |-
+  client.index("movies").setDisplayedAttributes(new String[]
+  {
+  "title",
+  "description",
+  "genre",
+  "release_date"
+  });
 reset_displayed_attributes_1: |-
+  //Not yet implemented
 get_index_stats_1: |-
+  client.index("movies").getStats();
 get_indexes_stats_1: |-
+  client.getStats();
 get_health_1: |-
+  client.health();
 get_version_1: |-
+  client.getVersion();
 distinct_attribute_guide_1: |-
+  client.index("jackets").setDistinctAttribute("product_id");
 field_properties_guide_searchable_1: |-
+  client.index("movies").setSearchableAttributes(new String[]
+  {
+  "title",
+  "description",
+  "genre"
+  });
 field_properties_guide_displayed_1: |-
+  client.index("movies").setDisplayedAttributes(new String[]
+  {
+  "title",
+  "description",
+  "genre",
+  "release_date"
+  });
 filtering_guide_1: |-
+  //unsure
 filtering_guide_2: |-
+  //unsure
 filtering_guide_3: |-
+  //unsure
 filtering_guide_4: |-
+  //unsure
 search_parameter_guide_query_1: |-
+  client.index("movies").search("shifu");
 search_parameter_guide_offset_1: |-
+  //Not yet implemented
 search_parameter_guide_limit_1: |-
+  //Not yet implemented
 search_parameter_guide_retrieve_1: |-
+  //Not yet implemented
 search_parameter_guide_crop_1: |-
+  //Not yet implemented
 search_parameter_guide_highlight_1: |-
+  //Not yet implemented
 search_parameter_guide_filter_1: |-
+  //Not yet implemented
 search_parameter_guide_filter_2: |-
+  //Not yet implemented
 search_parameter_guide_matches_1: |-
+  //Not yet implemented
 settings_guide_synonyms_1: |-
+  //Unsure
 settings_guide_stop_words_1: |-
+  client.index("movies").setStopWords(new String[]
+  {
+  "the",
+  "a",
+  "an"
+  });
 settings_guide_ranking_rules_1: |-
+  client.index("movies").setRankingRules(new String[]
+  {
+  "words",
+  "typo",
+  "proximity",
+  "attribute",
+  "sort",
+  "exactness",
+  "release_date:asc",
+  "rank_desc"
+  });
 settings_guide_distinct_1: |-
+  client.index("jackets").setDistinctAttribute("product_id");
 settings_guide_searchable_1: |-
+  client.index("movies").setSearchableAttributes(new String[]
+  {
+  "title",
+  "description",
+  "genre"
+  });
 settings_guide_displayed_1: |-
+  client.index("movies").setDisplayedAttributes(new String[]
+  {
+  "title",
+  "description",
+  "genre",
+  "release_date"
+  });
 documents_guide_add_movie_1: |-
+  //Unsure
 search_guide_1: |-
+  //Not yet implemented
 search_guide_2: |-
+  //Not yet implemented
 getting_started_add_documents_md: |-
+  //Unsure
 getting_started_search_md: |-
+  //Unsure
 faceted_search_update_settings_1: |-
+  client.index("movies").setFilterableAttributes(new String[]
+  {
+  "director",
+  "genres"
+  });
 faceted_search_filter_1: |-
+  //Unsure
 faceted_search_facets_distribution_1: |-
+  //Unsure
 faceted_search_walkthrough_filterable_attributes_1: |-
+  //Unsure
 faceted_search_walkthrough_filter_1: |-
+  //Unsure
 faceted_search_walkthrough_facets_distribution_1: |-
+  //Unsure
 add_movies_json_1: |-
+  //Unsure
 post_dump_1: |-
+  client.createDump();
 get_dump_status_1: |-
+  client.getDumpStatus("20201101-110357260");
 phrase_search_1: |-
+  client.index("movies").search("\"african american\" horror");
 sorting_guide_update_sortable_attributes_1: |-
 sorting_guide_update_ranking_rules_1: |-
 sorting_guide_sort_parameter_1: |-
 sorting_guide_sort_parameter_2: |-
 get_sortable_attributes_1: |-
+  client.index("books").getSortableAttributes();
 update_sortable_attributes_1: |-
+  client.index("books").setSortableAttributes(new String[]
+  {
+  "price",
+  "author"
+  });
 reset_sortable_attributes_1: |-
+  //Not yet implemented
 search_parameter_guide_sort_1: |-
+  //Unsure
