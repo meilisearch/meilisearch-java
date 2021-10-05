@@ -163,10 +163,22 @@ System.out.println(results.getHits());
 The default JSON can be created by calling the default constructor of <b>JsonbJsonHandler</b> class which will create a config of type JsonbConfig and using this config, it will initialize the mapper variable by calling the create method of <b>JsonbBuilder</b> class.
 
 #### Custom JSON <!-- omit in toc -->
-To create a custom JSON, create an object of JSON and set the required parameters.The supported options are as follows: 
-An object of <b>Jsonb</b> is passed as a parameter to the <b>JsonbJsonHandler’s parameterized constructor</b> which is used to initialize the mapper variable.
+To create a custom JSON, create an object of JacksonJsonHandler and set the required parameters.The supported options are as follows: 
+An object of <b>ObjectMapper</b> is passed as a parameter to the <b>JacksonJsonHandler’s parameterized constructor</b> which is used to initialize the mapper variable.
 
-The mapper variable is responsible for the encoding and decoding of the JSON. 
+The mapper variable is responsible for the encoding and decoding of the JSON. <br>
+<b>Using the custom JSON: </b>
+
+```
+//Declaration
+private final AbstractHttpClient client = mock(AbstractHttpClient.class);
+private final JsonHandler jsonHandler = new JacksonJsonHandler(new ObjectMapper());
+private final RequestFactory requestFactory = new BasicRequestFactory(jsonHandler);
+private final GenericServiceTemplate serviceTemplate = new GenericServiceTemplate(client, jsonHandler, requestFactory);
+
+//Usage
+serviceTemplate.getProcessor().encode("dummy_data");
+```
 
 #### Custom Client
 To create a custom Client, create an object of <b>Client</b> and set the required parameters.The supported options are as follows:
@@ -179,6 +191,17 @@ Config config = new Config(“dummy_url”,”dummy_key”);
 return new Client(config);
 ```
 The Client(config) constructor sets the config instance to the member variable. It also sets the 3 other instances namely - <b>gson(),  IndexesHandler(config) and DumpHandler(config).</b>
+
+<b>Using the custom Client: </b>
+```
+// Declaration
+Config config = new Config("http://localhost:7700", "masterKey");
+HttpAsyncClients.createDefault();
+ApacheHttpClient client = new DefaultHttpClient();
+ApacheHttpClient customClient = new ApacheHttpClient(config, client);
+// Usage
+customClient.index("movies").search("American ninja");
+```
 
 #### Custom Http Request
 To create a custom HTTP request, create an object of BasicHttpRequest and set the required parameters.The supported options are as follows:<br>
@@ -195,13 +218,24 @@ return new BasicHttpRequest(
                     content == null ? null : this.jsonHandler.encode(content));
 ```
 Alternatively, there is an interface <b>RequestFactory</b> which has a method ‘create’.
+In order to call this method, create an object of RequestFactory and call the method by passing the required parameters.<br>
+<b>Using the custom Http Request: </b>
 ```
+//Declaration
 public interface RequestFactory {
     <T> HttpRequest<?> create(
             HttpMethod method, String path, Map<String, String> headers, T content);
-```
-In order to call this method, create an object of RequestFactory and call the method by passing the required parameters.
+ }
 
+private final RequestFactory requestFactory;
+requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), {"book_id":"123"});
+
+//Usage:
+private final ServiceTemplate serviceTemplate;
+return serviceTemplate.execute(
+                requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), null),
+                HashMap.class);
+```
 ## 🤖 Compatibility with MeiliSearch
 
 This package only guarantees the compatibility with the [version v0.22.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.22.0).
