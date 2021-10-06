@@ -115,7 +115,9 @@ reset_synonyms_1: |-
 get_stop_words_1: |-
   client.index("movies").getStopWords();
 update_stop_words_1: |-
-  client.index("movies").setStopWords(new String[] {"of", "the", "to"});
+  Settings settings = new Settings();
+  settings.setStopWords((new String[] {"of", "the", "to"});
+  client.index("movies").updateSettings(settings);
 reset_stop_words_1: |-
   //Not yet implemented
 get_ranking_rules_1: |-
