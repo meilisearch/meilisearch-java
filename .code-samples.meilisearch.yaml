@@ -123,17 +123,19 @@ reset_stop_words_1: |-
 get_ranking_rules_1: |-
   client.index("movies").getRankingRules();
 update_ranking_rules_1: |-
-  client.index("movies").setRankingRules(new String[]
+  Settings settings = new Settings();
+  settings.setRankingRules(new String[]
   {
-  "words",
-  "typo",
-  "proximity",
-  "attribute",
-  "sort",
-  "exactness",
-  "release_date:asc",
-  "rank:desc"
+    "words",
+    "typo",
+    "proximity",
+    "attribute",
+    "sort",
+    "exactness",
+    "release_date:asc",
+    "rank:desc"
   });
+  client.index("movies").updateSettings(settings);
 reset_ranking_rules_1: |-
   //Not yet implemented
 get_distinct_attribute_1: |-
