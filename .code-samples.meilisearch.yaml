@@ -57,7 +57,48 @@ get_keys_1: |-
 get_settings_1: |-
   client.index("movies").getSettings();
 update_settings_1: |-
-  //Unsure
+  Settings settings = new Settings();
+  settings.setRankingRules(
+    new String[] {
+        "typo",
+        "words",
+        "sort",
+        "proximity",
+        "attribute",
+        "exactness",
+        "release_date:desc",
+        "rank:desc"
+    });
+  settings.setDistinctAttribute("movie_id");
+  settings.setSearchableAttributes(
+    new String[] {
+      "title",
+      "description",
+      "genre",
+    });
+  settings.setDisplayedAttributes(
+    new String[] {
+      "title",
+      "description",
+      "genre",
+      "release_date",
+    });
+  settings.setStopWords(
+    new String[] {
+      "the",
+      "a",
+      "an",
+    });
+  settings.setSortableAttributes(
+    new String[] {
+      "title",
+      "release_date",
+    });
+  HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
+  synonyms.put("wolverine", new String[] {"xmen", "logan"});
+  synonyms.put("logan", new String[] {"wolverine"});
+  settings.setSynonyms(synonyms);
+  client.index("movies").updateSettings(settings);
 reset_settings_1: |-
   client.index("movies").resetSettings();
 get_synonyms_1: |-
