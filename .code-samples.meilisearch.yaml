@@ -104,7 +104,12 @@ reset_settings_1: |-
 get_synonyms_1: |-
   client.index("movies").getSynonyms();
 update_synonyms_1: |-
-  //Unsure
+  Settings settings = new Settings();
+  HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
+  synonyms.put("wolverine", new String[] {"xmen", "logan"});
+  synonyms.put("logan", new String[] {"wolverine"});
+  settings.setSynonyms(synonyms);
+  client.index("movies").updateSettings(settings);
 reset_synonyms_1: |-
   //Not yet implemented
 get_stop_words_1: |-
