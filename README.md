@@ -70,22 +70,28 @@ implementation 'com.meilisearch.sdk:meilisearch-java:0.4.1'
 #### Add documents <!-- omit in toc -->
 
 ```java
-import com.meilisearch.sdk.Client;
-import com.meilisearch.sdk.Config;
-import com.meilisearch.sdk.Index;
+package com.meilisearch.sdk;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 class TestMeiliSearch {
   public static void main(String[] args) throws Exception {
 
-    final String documents = "["
-      + "{\"book_id\": 123, \"title\": \"Pride and Prejudice\"},"
-      + "{\"book_id\": 456, \"title\": \"Le Petit Prince\"},"
-      + "{\"book_id\": 1, \"title\": \"Alice In Wonderland\"},"
-      + "{\"book_id\": 1344, \"title\": \"The Hobbit\"},"
-      + "{\"book_id\": 4, \"title\": \"Harry Potter and the Half-Blood Prince\"},"
-      + "{\"book_id\": 2, \"title\": \"The Hitchhiker\'s Guide to the Galaxy\"}"
-      + "]";
+    JSONArray array = new JSONArray();
+    ArrayList items = new ArrayList() {{
+      add(new JSONObject().put("book_id", "123").put("title", "Pride and Prejudice"));
+      add(new JSONObject().put("book_id", "456").put("title", "Le Petit Prince"));
+      add(new JSONObject().put("book_id", "1").put("title", "Alice In Wonderland"));
+      add(new JSONObject().put("book_id", "1344").put("title", "The Hobbit"));
+      add(new JSONObject().put("book_id", "4").put("title", "Harry Potter and the Half-Blood Prince"));
+      add(new JSONObject().put("book_id", "2").put("title", "The Hitchhiker's Guide to the Galaxy"));
+    }};
 
+    array.put(items);
+    String documents = array.getJSONArray(0).toString();
     Client client = new Client(new Config("http://localhost:7700", "masterKey"));
 
     // An index is where the documents are stored.
@@ -153,7 +159,93 @@ System.out.println(results.getHits());
   }
 }]
 ```
+#### Basic JSON <!-- omit in toc -->
+The default JSON can be created by calling the default constructor of <b>JsonbJsonHandler</b> class which will create a config of type JsonbConfig and using this config, it will initialize the mapper variable by calling the create method of <b>JsonbBuilder</b> class.
 
+#### Custom JSON <!-- omit in toc -->
+<b>Creating Custom GsonJsonHandler</b><br>
+To create a custom JSON handler, create an object of GsonJsonHandler and send the GSON object in the parameterized constructor.<br>
+```
+Gson gson = new GsonBuilder()
+             .disableHtmlEscaping()
+             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+             .setPrettyPrinting()
+             .serializeNulls()
+             .create();
+private GsonJsonHandler jsonGson = new GsonJsonHandler(gson);
+jsonGson.encode("dummy_data");
+```
+<b>Creating Custom JacksonJsonHandler</b><br>
+Another method is to create an object of JacksonJsonHandler and set the required parameters. The supported option is an object of <b>ObjectMapper</b> is passed as a parameter to the <b>JacksonJsonHandler’s parameterized constructor</b>. This is used to initialize the mapper variable.
+
+The mapper variable is responsible for the encoding and decoding of the JSON. <br>
+<b>Using the custom JSON: </b>
+
+```
+Config config = new Config("http://localhost:7700", "masterKey");
+HttpAsyncClient client = HttpAsyncClients.createDefault();
+ApacheHttpClient client = new ApacheHttpClient(config, client);
+private final JsonHandler jsonHandler = new JacksonJsonHandler(new ObjectMapper());
+private final RequestFactory requestFactory = new BasicRequestFactory(jsonHandler);
+private final GenericServiceTemplate serviceTemplate = new GenericServiceTemplate(client, jsonHandler, requestFactory);
+
+private final ServiceTemplate serviceTemplate;
+serviceTemplate.getProcessor().encode("dummy_data");
+```
+<b>Creating Custom JsonbJsonHandler</b><br>
+Another method of creating a JSON handler is to create an object of JsonbJsonHandler and send the Jsonb object in the parameterized constructor.<br>
+```
+Jsonb jsonb = JsonbBuilder.create();
+private JsonbJsonHandler jsonbHandler = new JsonbJsonHandler(jsonb);
+jsonbHandler.encode("dummy_data");
+```
+
+#### Custom Client
+To create a custom Client handler, create an object of <b>Client</b> and set the required parameters. The supported options are as follows:
+Config: Config is class which has 2 member variables <br>
+(a) hostUrl <br>
+(b)apiKey<br>
+
+```
+Config config = new Config(“dummy_url”,”dummy_key”);
+return new Client(config);
+```
+The Client(config) constructor sets the config instance to the member variable. It also sets the 3 other instances namely - <b>gson(),  IndexesHandler(config) and DumpHandler(config).</b>
+
+<b>Using the custom Client: </b>
+```
+Config config = new Config("http://localhost:7700", "masterKey");
+HttpAsyncClient client = HttpAsyncClients.createDefault();
+ApacheHttpClient customClient = new ApacheHttpClient(config, client);
+customClient.index("movies").search("American ninja");
+```
+
+#### Custom Http Request
+To create a custom HTTP request, create an object of BasicHttpRequest and set the required parameters.The supported options are as follows:<br>
+1. HTTP method (It can consume the following values: HEAD, GET, POST, PUT, DELETE). [Datatype : String]<br>
+2. Path : It accepts the endpoint details of the api [Datatype : String]<br>
+3. Headers: It accepts a Map containing the header parameters in the form of key-value pair. [Datatype : Map<String,String>]<br>
+4. Content of String type<br>
+
+```
+return new BasicHttpRequest(
+                    method,
+                    path,
+                    headers,
+                    content == null ? null : this.jsonHandler.encode(content));
+```
+Alternatively, there is an interface <b>RequestFactory</b> which has a method ‘create’.
+In order to call this method, create an object of RequestFactory and call the method by passing the required parameters.<br>
+<b>Using the custom Http Request: </b>
+```
+public interface RequestFactory {
+    <T> HttpRequest<?> create(
+            HttpMethod method, String path, Map<String, String> headers, T content);
+ }
+
+private final RequestFactory requestFactory;
+requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), {"book_id":"123"});
+```
 ## 🤖 Compatibility with MeiliSearch
 
 This package only guarantees the compatibility with the [version v0.22.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.22.0).
