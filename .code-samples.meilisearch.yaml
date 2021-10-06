@@ -203,7 +203,9 @@ filtering_guide_1: |-
     new SearchRequest("Avengers").setFilter(new String[] {"release_date > \"795484800\""});
   client.index("movies").search(searchRequest);
 filtering_guide_2: |-
-  //unsure
+  SearchRequest searchRequest =
+    new SearchRequest("Batman").setFilter(new String[] {"release_date > 795484800 AND (director = \"Tim Burton\" OR director = \"Christopher Nolan\")"});
+  client.index("movies").search(searchRequest);
 filtering_guide_3: |-
   //unsure
 filtering_guide_4: |-
