@@ -82,12 +82,12 @@ class TestMeiliSearch {
 
     JSONArray array = new JSONArray();
     ArrayList items = new ArrayList() {{
-      add(new JSONObject().put("book_id", "123").put("title", "Pride and Prejudice"));
-      add(new JSONObject().put("book_id", "456").put("title", "Le Petit Prince"));
-      add(new JSONObject().put("book_id", "1").put("title", "Alice In Wonderland"));
-      add(new JSONObject().put("book_id", "1344").put("title", "The Hobbit"));
-      add(new JSONObject().put("book_id", "4").put("title", "Harry Potter and the Half-Blood Prince"));
-      add(new JSONObject().put("book_id", "2").put("title", "The Hitchhiker's Guide to the Galaxy"));
+      add(new JSONObject().put("movie_id", "1").put("title", "Carol").put("genre",new JSONArray("[\"Romance\",\"Drama\"]")));
+      add(new JSONObject().put("movie_id", "2").put("title", "Wonder Woman").put("genre",new JSONArray("[\"Action\",\"Adventure\"]")));
+      add(new JSONObject().put("movie_id", "3").put("title", "Life of Pi").put("genre",new JSONArray("[\"Adventure\",\"Drama\"]")));
+      add(new JSONObject().put("movie_id", "4").put("title", "Mad Max: Fury Road").put("genre",new JSONArray("[\"Adventure\",\"Science Fiction\"]")));
+      add(new JSONObject().put("movie_id", "5").put("title", "Moana").put("genre",new JSONArray("[\"Fantasy\",\"Action\"]")));
+      add(new JSONObject().put("movie_id", "6").put("title", "Philadelphia").put("genre",new JSONArray("[\"Drama\"]")));
     }};
 
     array.put(items);
@@ -95,9 +95,9 @@ class TestMeiliSearch {
     Client client = new Client(new Config("http://localhost:7700", "masterKey"));
 
     // An index is where the documents are stored.
-    Index index = client.index("books");
+    Index index = client.index("movies");
 
-    // If the index 'books' does not exist, MeiliSearch creates it when you first add the documents.
+    // If the index 'movies' does not exist, MeiliSearch creates it when you first add the documents.
     index.addDocuments(documents); // => { "updateId": 0 }
   }
 }
@@ -113,14 +113,14 @@ A basic search can be performed by calling `index.search()` method, with a simpl
 import com.meilisearch.sdk.model.SearchResult;
 
 // MeiliSearch is typo-tolerant:
-SearchResult results = index.search("harry pottre");
+SearchResult results = index.search("mad max");
 System.out.println(results);
 ```
 
 - Output:
 
 ```
-SearchResult(hits=[{book_id=4.0, title=Harry Potter and the Half-Blood Prince}], offset=0, limit=20, nbHits=1, exhaustiveNbHits=false, facetsDistribution=null, exhaustiveFacetsCount=false, processingTimeMs=3, query=harry pottre)
+SearchResult(hits=[{movie_id=4.0, title=Mad Max: Fury Road, genre:[Adventure, Science Fiction]}], offset=0, limit=20, nbHits=1, exhaustiveNbHits=false, facetsDistribution=null, exhaustiveFacetsCount=false, processingTimeMs=3, query=mad max)
 ```
 
 #### Custom Search <!-- omit in toc -->
@@ -145,11 +145,13 @@ System.out.println(results.getHits());
 
 ```json
 [{
-  "book_id":1,
-  "title":"Alice In Wonderland",
+  "movie_id":1,
+  "title":"Carol",
+  "genre":["Romance","Drama"],
   "_formatted":{
-    "book_id":1,
-    "title":"Alice <em>In</em> Wonderland"
+    "movie_id":1,
+    "title":"Carol",
+    "genre":["Romance","Drama"]
   },
   "_matchesInfo":{
     "title":[{
@@ -244,7 +246,7 @@ public interface RequestFactory {
  }
 
 private final RequestFactory requestFactory;
-requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), {"book_id":"123"});
+requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), {"movie_id":"1"});
 ```
 ## 🤖 Compatibility with MeiliSearch
 
