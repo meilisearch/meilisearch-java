@@ -289,7 +289,11 @@ faceted_search_update_settings_1: |-
   "genres"
   });
 faceted_search_filter_1: |-
-  //Unsure
+  SearchRequest searchRequest =
+    new SearchRequest("thriller").setFilterArray(new String[][] {
+      new String[] {"genres = Horror", "genres = Mystery"},
+      new String[] {"director = \"Jordan Peele\""}});
+  client.index("movies").search(searchRequest);
 faceted_search_facets_distribution_1: |-
   SearchRequest searchRequest =
     new SearchRequest("Batman").setFacetsDistribution(new String[] {"genres"});
