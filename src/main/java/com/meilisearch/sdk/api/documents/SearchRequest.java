@@ -7,7 +7,8 @@ public class SearchRequest {
     private final String q;
     private final int offset;
     private final int limit;
-    private final String filter;
+    private final String[] filter;
+    private final String[][] filterArray;
     private final List<String> attributesToRetrieve;
     private final List<String> attributesToCrop;
     private final int cropLength;
@@ -28,7 +29,7 @@ public class SearchRequest {
     }
 
     public SearchRequest(String q, int offset, int limit, List<String> attributesToRetrieve) {
-        this(q, offset, limit, attributesToRetrieve, null, 200, null, null, false, null);
+        this(q, offset, limit, attributesToRetrieve, null, 200, null, null, null, false, null);
     }
 
     public SearchRequest(
@@ -39,7 +40,47 @@ public class SearchRequest {
             List<String> attributesToCrop,
             int cropLength,
             List<String> attributesToHighlight,
-            String filter,
+            String[] filter,
+            boolean matches,
+            List<String> sort) {
+        this(q, offset, limit, attributesToRetrieve, null, 200, null, filter, null, false, null);
+    }
+
+    public SearchRequest(
+            String q,
+            int offset,
+            int limit,
+            List<String> attributesToRetrieve,
+            List<String> attributesToCrop,
+            int cropLength,
+            List<String> attributesToHighlight,
+            String[][] filterArray,
+            boolean matches,
+            List<String> sort) {
+        this(
+                q,
+                offset,
+                limit,
+                attributesToRetrieve,
+                null,
+                200,
+                null,
+                null,
+                filterArray,
+                false,
+                null);
+    }
+
+    public SearchRequest(
+            String q,
+            int offset,
+            int limit,
+            List<String> attributesToRetrieve,
+            List<String> attributesToCrop,
+            int cropLength,
+            List<String> attributesToHighlight,
+            String[] filter,
+            String[][] filterArray,
             boolean matches,
             List<String> sort) {
         this.q = q;
@@ -50,6 +91,7 @@ public class SearchRequest {
         this.cropLength = cropLength;
         this.attributesToHighlight = attributesToHighlight;
         this.filter = filter;
+        this.filterArray = filterArray;
         this.matches = matches;
         this.sort = sort;
     }
@@ -82,8 +124,12 @@ public class SearchRequest {
         return attributesToHighlight;
     }
 
-    public String getFilter() {
+    public String[] getFilter() {
         return filter;
+    }
+
+    public String[][] getFilterArray() {
+        return filterArray;
     }
 
     public List<String> getSort() {

@@ -84,7 +84,19 @@ public class Index implements Serializable {
      * @throws Exception if something goes wrong
      */
     public String addDocuments(String document) throws Exception {
-        return this.documents.addDocuments(this.uid, document);
+        return this.documents.addDocuments(this.uid, document, null);
+    }
+
+    /**
+     * Adds a document in the index
+     *
+     * @param document Document to add in JSON string format
+     * @param primaryKey PrimaryKey of the document to add
+     * @return MeiliSearch API response
+     * @throws Exception if something goes wrong
+     */
+    public String addDocuments(String document, String primaryKey) throws Exception {
+        return this.documents.addDocuments(this.uid, document, primaryKey);
     }
 
     /**
@@ -95,7 +107,19 @@ public class Index implements Serializable {
      * @throws Exception if something goes wrong
      */
     public String updateDocuments(String document) throws Exception {
-        return this.documents.updateDocuments(this.uid, document);
+        return this.documents.updateDocuments(this.uid, document, null);
+    }
+
+    /**
+     * Updates a document in the index
+     *
+     * @param document Document to update in JSON string format
+     * @param primaryKey PrimaryKey of the document
+     * @return MeiliSearch API response
+     * @throws Exception if something goes wrong
+     */
+    public String updateDocuments(String document, String primaryKey) throws Exception {
+        return this.documents.updateDocuments(this.uid, document, primaryKey);
     }
 
     /**
