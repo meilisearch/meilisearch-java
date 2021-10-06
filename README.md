@@ -163,25 +163,45 @@ System.out.println(results.getHits());
 The default JSON can be created by calling the default constructor of <b>JsonbJsonHandler</b> class which will create a config of type JsonbConfig and using this config, it will initialize the mapper variable by calling the create method of <b>JsonbBuilder</b> class.
 
 #### Custom JSON <!-- omit in toc -->
-To create a custom JSON, create an object of JacksonJsonHandler and set the required parameters.The supported options are as follows: 
-An object of <b>ObjectMapper</b> is passed as a parameter to the <b>JacksonJsonHandler’s parameterized constructor</b> which is used to initialize the mapper variable.
+<b>Creating Custom GsonJsonHandler</b><br>
+To create a custom JSON handler, create an object of GsonJsonHandler and send the GSON object in the parameterized constructor.<br>
+```
+Gson gson = new GsonBuilder()
+             .disableHtmlEscaping()
+             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+             .setPrettyPrinting()
+             .serializeNulls()
+             .create();
+private GsonJsonHandler jsonGson = new GsonJsonHandler(gson);
+jsonGson.encode("dummy_data");
+```
+<b>Creating Custom JacksonJsonHandler</b><br>
+Another method is to create an object of JacksonJsonHandler and set the required parameters. The supported option is an object of <b>ObjectMapper</b> is passed as a parameter to the <b>JacksonJsonHandler’s parameterized constructor</b>. This is used to initialize the mapper variable.
 
 The mapper variable is responsible for the encoding and decoding of the JSON. <br>
 <b>Using the custom JSON: </b>
 
 ```
-//Declaration
-private final AbstractHttpClient client = mock(AbstractHttpClient.class);
+Config config = new Config("http://localhost:7700", "masterKey");
+HttpAsyncClient client = HttpAsyncClients.createDefault();
+ApacheHttpClient client = new ApacheHttpClient(config, client);
 private final JsonHandler jsonHandler = new JacksonJsonHandler(new ObjectMapper());
 private final RequestFactory requestFactory = new BasicRequestFactory(jsonHandler);
 private final GenericServiceTemplate serviceTemplate = new GenericServiceTemplate(client, jsonHandler, requestFactory);
 
-//Usage
+private final ServiceTemplate serviceTemplate;
 serviceTemplate.getProcessor().encode("dummy_data");
+```
+<b>Creating Custom JsonbJsonHandler</b><br>
+Another method of creating a JSON handler is to create an object of JsonbJsonHandler and send the Jsonb object in the parameterized constructor.<br>
+```
+Jsonb jsonb = JsonbBuilder.create();
+private JsonbJsonHandler jsonbHandler = new JsonbJsonHandler(jsonb);
+jsonbHandler.encode("dummy_data");
 ```
 
 #### Custom Client
-To create a custom Client, create an object of <b>Client</b> and set the required parameters.The supported options are as follows:
+To create a custom Client handler, create an object of <b>Client</b> and set the required parameters. The supported options are as follows:
 Config: Config is class which has 2 member variables <br>
 (a) hostUrl <br>
 (b)apiKey<br>
@@ -194,18 +214,15 @@ The Client(config) constructor sets the config instance to the member variable. 
 
 <b>Using the custom Client: </b>
 ```
-// Declaration
 Config config = new Config("http://localhost:7700", "masterKey");
-HttpAsyncClients.createDefault();
-ApacheHttpClient client = new DefaultHttpClient();
+HttpAsyncClient client = HttpAsyncClients.createDefault();
 ApacheHttpClient customClient = new ApacheHttpClient(config, client);
-// Usage
 customClient.index("movies").search("American ninja");
 ```
 
 #### Custom Http Request
 To create a custom HTTP request, create an object of BasicHttpRequest and set the required parameters.The supported options are as follows:<br>
-1. HTTP method (It can consume the following values: HEAD, GET,POST,PUT,DELETE). [Datatype : String]<br>
+1. HTTP method (It can consume the following values: HEAD, GET, POST, PUT, DELETE). [Datatype : String]<br>
 2. Path : It accepts the endpoint details of the api [Datatype : String]<br>
 3. Headers: It accepts a Map containing the header parameters in the form of key-value pair. [Datatype : Map<String,String>]<br>
 4. Content of String type<br>
@@ -221,7 +238,6 @@ Alternatively, there is an interface <b>RequestFactory</b> which has a method �
 In order to call this method, create an object of RequestFactory and call the method by passing the required parameters.<br>
 <b>Using the custom Http Request: </b>
 ```
-//Declaration
 public interface RequestFactory {
     <T> HttpRequest<?> create(
             HttpMethod method, String path, Map<String, String> headers, T content);
@@ -229,12 +245,6 @@ public interface RequestFactory {
 
 private final RequestFactory requestFactory;
 requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), {"book_id":"123"});
-
-//Usage:
-private final ServiceTemplate serviceTemplate;
-return serviceTemplate.execute(
-                requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), null),
-                HashMap.class);
 ```
 ## 🤖 Compatibility with MeiliSearch
 
