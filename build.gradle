@@ -50,7 +50,7 @@ dependencies {
 	testImplementation 'org.hamcrest:hamcrest:2.2'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.5'
+	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.0'
 	compileOnly group: 'jakarta.json.bind', name: 'jakarta.json.bind-api', version: '2.0.0'
 	testImplementation group: 'org.eclipse', name: 'yasson', version: '2.0.2'
 
