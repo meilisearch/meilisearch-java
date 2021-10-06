@@ -199,7 +199,9 @@ field_properties_guide_displayed_1: |-
   "release_date"
   });
 filtering_guide_1: |-
-  //unsure
+  SearchRequest searchRequest =
+    new SearchRequest("Avengers").setFilter(new String[] {"release_date > \"795484800\""});
+  client.index("movies").search(searchRequest);
 filtering_guide_2: |-
   //unsure
 filtering_guide_3: |-
