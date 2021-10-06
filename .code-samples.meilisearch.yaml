@@ -235,7 +235,11 @@ search_parameter_guide_filter_2: |-
 search_parameter_guide_matches_1: |-
   //Not yet implemented
 settings_guide_synonyms_1: |-
-  //Unsure
+  HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
+  synonyms.put("sweater", new String[] {"jumper"});
+  synonyms.put("jumper", new String[] {"sweater"});
+  settings.setSynonyms(synonyms);
+  client.index("movies").updateSynonyms(synonyms);```
 settings_guide_stop_words_1: |-
   client.index("movies").setStopWords(new String[]
   {
