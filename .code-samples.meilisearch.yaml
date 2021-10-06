@@ -291,7 +291,9 @@ faceted_search_update_settings_1: |-
 faceted_search_filter_1: |-
   //Unsure
 faceted_search_facets_distribution_1: |-
-  //Unsure
+  SearchRequest searchRequest =
+    new SearchRequest("Batman").setFacetsDistribution(new String[] {"genres"});
+  client.index("movies").search(searchRequest);
 faceted_search_walkthrough_filterable_attributes_1: |-
   //Unsure
 faceted_search_walkthrough_filter_1: |-
