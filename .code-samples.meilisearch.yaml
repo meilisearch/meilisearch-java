@@ -37,18 +37,18 @@ delete_one_document_1: |-
   client.index("movies").deleteDocument("25684");
 delete_documents_1: |-
   client.index("movies").deleteDocuments(Arrays.asList(new String[]
-{
-"23488",
-"153738",
-"437035",
-"363869"
-}));
+  {
+    "23488",
+    "153738",
+    "437035",
+    "363869"
+  }));
 search_post_1: |-
   client.index("movies").search("American ninja");
 get_update_1: |-
   client.index("movies").getUpdate(1).getStatus();
 get_all_updates_1: |-
-  for(Update update: client.index("movies").getUpdates())
+  for (UpdateStatus update: client.index("movies").getUpdates())
   {
     update.getStatus();
   }
@@ -211,29 +211,46 @@ filtering_guide_2: |-
     new SearchRequest("Batman").setFilter(new String[] {"release_date > 795484800 AND (director = \"Tim Burton\" OR director = \"Christopher Nolan\")"});
   client.index("movies").search(searchRequest);
 filtering_guide_3: |-
-  //unsure
+  SearchRequest searchRequest =
+    new SearchRequest("horror").setFilter(new String[] {"director = \"Jordan Peele\""});
+  client.index("movies").search(searchRequest);
 filtering_guide_4: |-
-  //unsure
+  SearchRequest searchRequest =
+    new SearchRequest("Planet of the Apes").setFilter(new String[] {"rating >= 3 AND (NOT director = \"Tim Burton\""});
+  client.index("movies").search(searchRequest);
 search_parameter_guide_query_1: |-
   client.index("movies").search("shifu");
 search_parameter_guide_offset_1: |-
-  //Not yet implemented
+  SearchRequest searchRequest = new SearchRequest("shifu").setOffset(1);
+  client.index("movies").search(searchRequest);
 search_parameter_guide_limit_1: |-
-  //Not yet implemented
+  SearchRequest searchRequest = new SearchRequest("shifu").setLimit(2);
+  client.index("movies").search(searchRequest);
 search_parameter_guide_retrieve_1: |-
-  //Not yet implemented
+  SearchRequest searchRequest =
+    new SearchRequest("a").setAttributesToRetrieve(new String[] {"overview", "title"});
+  client.index("movies").search(searchRequest);
 search_parameter_guide_crop_1: |-
-  //Not yet implemented
+  SearchRequest searchRequest =
+    new SearchRequest("shifu")
+      .setAttributesToCrop(new String[] {"overview"})
+      .setCropLength(10);
+  client.index("movies").search(searchRequest);
 search_parameter_guide_highlight_1: |-
-  //Not yet implemented
+  SearchRequest searchRequest =
+    new SearchRequest("and").setAttributesToHighlight(new String[] {"overview"});
+  client.index("movies").search(searchRequest);
 search_parameter_guide_filter_1: |-
   SearchRequest searchRequest =
     new SearchRequest("n").setFilter(new String[] {"title = Nightshift"});
   client.index("movies").search(searchRequest);
 search_parameter_guide_filter_2: |-
-  //Not yet implemented
+  SearchRequest searchRequest =
+    new SearchRequest("n").setFilter(new String[] {"title = \"Kung Fu Panda\""});
+  client.index("movies").search(searchRequest);
 search_parameter_guide_matches_1: |-
-  //Not yet implemented
+  SearchRequest searchRequest = new SearchRequest("winter feast").setMatches(true);
+  SearchResult searchResult = index.search(searchRequest);
 settings_guide_synonyms_1: |-
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("sweater", new String[] {"jumper"});
@@ -287,11 +304,9 @@ getting_started_add_documents_md: |-
 getting_started_search_md: |-
   //Unsure
 faceted_search_update_settings_1: |-
-  client.index("movies").setFilterableAttributes(new String[]
-  {
-  "director",
-  "genres"
-  });
+  Settings settings = new Settings();
+  settings.setFilterableAttributes(new String[] {"director", "genres"});
+  client.index("movies").updateSettings(settings);
 faceted_search_filter_1: |-
   SearchRequest searchRequest =
     new SearchRequest("thriller").setFilterArray(new String[][] {
@@ -303,11 +318,19 @@ faceted_search_facets_distribution_1: |-
     new SearchRequest("Batman").setFacetsDistribution(new String[] {"genres"});
   client.index("movies").search(searchRequest);
 faceted_search_walkthrough_filterable_attributes_1: |-
-  //Unsure
+  Settings settings = new Settings();
+  settings.setFilterableAttributes(new String[] {"director", "producer", "genres", "production_companies"});
+  client.index("movies").updateSettings(settings);
 faceted_search_walkthrough_filter_1: |-
-  //Unsure
+  SearchRequest searchRequest =
+    new SearchRequest("thriller").setFilterArray(new String[][] {
+      new String[] {"genres = Horror", "genres = Mystery"},
+      new String[] {"director = \"Jordan Peele\""}});
+  client.index("movies").search(searchRequest);
 faceted_search_walkthrough_facets_distribution_1: |-
-  //Unsure
+  SearchRequest searchRequest =
+    new SearchRequest("Batman").setFacetsDistribution(new String[] {"genres"});
+  client.index("movies").search(searchRequest);
 add_movies_json_1: |-
   //Unsure
 post_dump_1: |-
@@ -323,12 +346,11 @@ sorting_guide_sort_parameter_2: |-
 get_sortable_attributes_1: |-
   client.index("books").getSortableAttributes();
 update_sortable_attributes_1: |-
-  client.index("books").setSortableAttributes(new String[]
-  {
-  "price",
-  "author"
-  });
+  Settings settings = new Settings();
+  settings.setSortableAttributes(new String[] {"price", "author"});
+  client.index("movies").updateSettings(settings);
 reset_sortable_attributes_1: |-
   //Not yet implemented
 search_parameter_guide_sort_1: |-
-  //Unsure
+  SearchRequest searchRequest = new SearchRequest("and").setSort(new String[] {"title:asc"});
+  client.index("movies").search(searchRequest);
