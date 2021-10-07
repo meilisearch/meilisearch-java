@@ -31,6 +31,7 @@
 - [📖 Documentation](#-documentation)
 - [🔧 Installation](#-installation)
 - [🚀 Getting Started](#-getting-started)
+- [🛠 Customization](#-customization)
 - [🤖 Compatibility with MeiliSearch](#-compatibility-with-meilisearch)
 - [💡 Learn More](#-learn-more)
 - [⚙️ Development Workflow and Contributing](#️-development-workflow-and-contributing)
@@ -161,13 +162,20 @@ System.out.println(results.getHits());
   }
 }]
 ```
-#### Basic JSON <!-- omit in toc -->
-The default JSON can be created by calling the default constructor of <b>JsonbJsonHandler</b> class which will create a config of type JsonbConfig and using this config, it will initialize the mapper variable by calling the create method of <b>JsonbBuilder</b> class.
 
-#### Custom JSON <!-- omit in toc -->
-<b>Creating Custom GsonJsonHandler</b><br>
+## 🛠 Customization
+
+### JSON <!-- omit in toc -->
+
+#### Basic JSON <!-- omit in toc -->
+
+The default JSON can be created by calling the default constructor of `JsonbJsonHandler` class which will create a config of type `JsonbConfig` and using this config. It will initialize the mapper variable by calling the create method of `JsonbBuilder` class.
+
+#### Creating a Custom `GsonJsonHandler` <!-- omit in toc -->
+
 To create a custom JSON handler, create an object of GsonJsonHandler and send the GSON object in the parameterized constructor.<br>
-```
+
+```java
 Gson gson = new GsonBuilder()
              .disableHtmlEscaping()
              .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
@@ -175,15 +183,18 @@ Gson gson = new GsonBuilder()
              .serializeNulls()
              .create();
 private GsonJsonHandler jsonGson = new GsonJsonHandler(gson);
-jsonGson.encode("dummy_data");
+jsonGson.encode("your_data");
 ```
-<b>Creating Custom JacksonJsonHandler</b><br>
-Another method is to create an object of JacksonJsonHandler and set the required parameters. The supported option is an object of <b>ObjectMapper</b> is passed as a parameter to the <b>JacksonJsonHandler’s parameterized constructor</b>. This is used to initialize the mapper variable.
 
-The mapper variable is responsible for the encoding and decoding of the JSON. <br>
-<b>Using the custom JSON: </b>
+#### Creating a Custom `JacksonJsonHandler` <!-- omit in toc -->
 
-```
+Another method is to create an object of `JacksonJsonHandler` and set the required parameters. The supported option is an object of `ObjectMapper`. It's passed as a parameter to the `JacksonJsonHandler`’s parameterized constructor. This is used to initialize the mapper variable.
+
+The mapper variable is responsible for the encoding and decoding of the JSON.
+
+Using the custom JSON:
+
+```java
 Config config = new Config("http://localhost:7700", "masterKey");
 HttpAsyncClient client = HttpAsyncClients.createDefault();
 ApacheHttpClient client = new ApacheHttpClient(config, client);
@@ -192,54 +203,66 @@ private final RequestFactory requestFactory = new BasicRequestFactory(jsonHandle
 private final GenericServiceTemplate serviceTemplate = new GenericServiceTemplate(client, jsonHandler, requestFactory);
 
 private final ServiceTemplate serviceTemplate;
-serviceTemplate.getProcessor().encode("dummy_data");
+serviceTemplate.getProcessor().encode("your_data");
 ```
-<b>Creating Custom JsonbJsonHandler</b><br>
-Another method of creating a JSON handler is to create an object of JsonbJsonHandler and send the Jsonb object in the parameterized constructor.<br>
-```
+
+### Creating a Custom `JsonbJsonHandler <!-- omit in toc -->
+
+Another method of creating a JSON handler is to create an object of `JsonbJsonHandler` and send the `Jsonb` object to the parameterized constructor.
+
+```java
 Jsonb jsonb = JsonbBuilder.create();
 private JsonbJsonHandler jsonbHandler = new JsonbJsonHandler(jsonb);
-jsonbHandler.encode("dummy_data");
+jsonbHandler.encode("your_data");
 ```
 
-#### Custom Client
-To create a custom Client handler, create an object of <b>Client</b> and set the required parameters. The supported options are as follows:
-Config: Config is class which has 2 member variables <br>
-(a) hostUrl <br>
-(b)apiKey<br>
+### Custom Client <!-- omit in toc -->
 
-```
-Config config = new Config(“dummy_url”,”dummy_key”);
+To create a custom `Client` handler, create an object of `Client` and set the required parameters.
+
+A `Config` object should be passed, containing your host URL and your API key.
+
+```java
+Config config = new Config("http://localhost:7700", "masterKey");
 return new Client(config);
 ```
-The Client(config) constructor sets the config instance to the member variable. It also sets the 3 other instances namely - <b>gson(),  IndexesHandler(config) and DumpHandler(config).</b>
 
-<b>Using the custom Client: </b>
-```
+The `Client(config)` constructor sets the config instance to the member variable. It also sets the 3 other instances namely `gson()`, `IndexesHandler(config)` and `DumpHandler(config)`.
+
+Using the custom `Client`:
+
+```java
 Config config = new Config("http://localhost:7700", "masterKey");
 HttpAsyncClient client = HttpAsyncClients.createDefault();
 ApacheHttpClient customClient = new ApacheHttpClient(config, client);
 customClient.index("movies").search("American ninja");
 ```
 
-#### Custom Http Request
-To create a custom HTTP request, create an object of BasicHttpRequest and set the required parameters.The supported options are as follows:<br>
-1. HTTP method (It can consume the following values: HEAD, GET, POST, PUT, DELETE). [Datatype : String]<br>
-2. Path : It accepts the endpoint details of the api [Datatype : String]<br>
-3. Headers: It accepts a Map containing the header parameters in the form of key-value pair. [Datatype : Map<String,String>]<br>
-4. Content of String type<br>
+#### Custom Http Request <!-- omit in toc -->
 
-```
+To create a custom HTTP request, create an object of `BasicHttpRequest` and set the required parameters.
+
+The supported options are as follows:
+
+1. HTTP method: a `String` that can be set as following values: `HEAD`, `GET`, `POST`, `PUT`, or `DELETE`.
+2. Path: a `String` corresponding to the endpoint of the API.
+3. Headers: a `Map<String,String>` containing the header parameters in the form of key-value pair.
+4. Content: the `String` of your content.
+
+```java
 return new BasicHttpRequest(
                     method,
                     path,
                     headers,
                     content == null ? null : this.jsonHandler.encode(content));
 ```
-Alternatively, there is an interface <b>RequestFactory</b> which has a method ‘create’.
-In order to call this method, create an object of RequestFactory and call the method by passing the required parameters.<br>
-<b>Using the custom Http Request: </b>
-```
+
+Alternatively, there is an interface `RequestFactory` which has a method `create`.<br>
+In order to call this method, create an object of `RequestFactory` and call the method by passing the required parameters.
+
+Using the custom Http Request:
+
+```java
 public interface RequestFactory {
     <T> HttpRequest<?> create(
             HttpMethod method, String path, Map<String, String> headers, T content);
@@ -248,6 +271,7 @@ public interface RequestFactory {
 private final RequestFactory requestFactory;
 requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), {"movie_id":"3"});
 ```
+
 ## 🤖 Compatibility with MeiliSearch
 
 This package only guarantees the compatibility with the [version v0.22.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.22.0).
