@@ -114,14 +114,14 @@ A basic search can be performed by calling `index.search()` method, with a simpl
 import com.meilisearch.sdk.model.SearchResult;
 
 // MeiliSearch is typo-tolerant:
-SearchResult results = index.search("mad max");
+SearchResult results = index.search("carlo");
 System.out.println(results);
 ```
 
 - Output:
 
 ```
-SearchResult(hits=[{movie_id=4.0, title=Mad Max: Fury Road, genre:[Adventure, Science Fiction]}], offset=0, limit=20, nbHits=1, exhaustiveNbHits=false, facetsDistribution=null, exhaustiveFacetsCount=false, processingTimeMs=3, query=mad max)
+SearchResult(hits=[{movie_id=1.0, title=Carol, genre:[Romance, Drama]}], offset=0, limit=20, nbHits=1, exhaustiveNbHits=false, facetsDistribution=null, exhaustiveFacetsCount=false, processingTimeMs=3, query=carlo)
 ```
 
 #### Custom Search <!-- omit in toc -->
