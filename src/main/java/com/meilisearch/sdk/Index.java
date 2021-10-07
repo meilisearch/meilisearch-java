@@ -98,6 +98,77 @@ public class Index implements Serializable {
     public String addDocuments(String document, String primaryKey) throws Exception {
         return this.documents.addDocuments(this.uid, document, primaryKey);
     }
+	/**
+	 * Adds documents in the index in batches
+	 *
+	 * @param documents An array of Documents to add in JSON string format
+	 * @param primaryKey PrimaryKey of the documents to add
+	 * @return Array of MeiliSearch API responses
+	 * @throws Exception if something goes wrong
+	 */
+	public String[] addDocumentsInBatches(String[] documents, String primaryKey) throws Exception {
+
+		String[] responses = new String[documents.length];
+		for (int index = 0; index < documents.length; index++) {
+			responses[index] = this.documents.addDocuments(this.uid, documents[index], primaryKey);
+		}
+		return responses;
+
+	}
+
+	/**
+	 * Adds documents in the index in batches
+	 *
+	 * @param documents An array of Documents to add in JSON string format
+	 * @return Array of MeiliSearch API responses
+	 * @throws Exception if something goes wrong
+	 */
+	public String[] addDocumentsInBatches(String[] documents) throws Exception {
+
+		String[] responses = new String[documents.length];
+		for (int index = 0; index < documents.length; index++) {
+			responses[index] = this.documents.addDocuments(this.uid, documents[index], null);
+		}
+		return responses;
+
+	}
+
+	/**
+	 * Adds documents in the index in batches
+	 *
+	 * @param documents An array of Documents to add in JSON string format
+	 * @param batchSize The size of the document
+	 * @return Array of MeiliSearch API responses
+	 * @throws Exception if something goes wrong
+	 */
+	public String[] addDocumentsInBatches(String[] documents, Integer batchSize) throws Exception {
+
+		String[] responses = new String[batchSize];
+		for (int index = 0; index < batchSize; index++) {
+			responses[index] = this.documents.addDocuments(this.uid, documents[index], null);
+		}
+		return responses;
+
+	}
+
+	/**
+	 * Adds documents in the index in batches
+	 *
+	 * @param documents An array of Documents to add in JSON string format
+	 * @param batchSize The size of the document
+	 * @param primaryKey PrimaryKey of the document to add
+	 * @return Array of MeiliSearch API responses
+	 * @throws Exception if something goes wrong
+	 */
+	public String[] addDocumentsInBatches(String[] documents, Integer batchSize, String primaryKey) throws Exception {
+
+		String[] responses = new String[batchSize];
+		for (int index = 0; index < batchSize; index++) {
+			responses[index] = this.documents.addDocuments(this.uid, documents[index], primaryKey);
+		}
+		return responses;
+
+	}
 
     /**
      * Updates a document in the index
@@ -109,6 +180,73 @@ public class Index implements Serializable {
     public String updateDocuments(String document) throws Exception {
         return this.documents.updateDocuments(this.uid, document, null);
     }
+
+	/**
+	 * Adds documents in the index in batches
+	 *
+	 * @param documents An array of Documents to update in JSON string format
+	 * @return Array of MeiliSearch API responses
+	 * @throws Exception if something goes wrong
+	 */
+	public String[] updateDocumentsInBatches(String[] documents) throws Exception {
+
+		String[] responses = new String[documents.length];
+		for (int index = 0; index < documents.length; index++) {
+			responses[index] = this.documents.updateDocuments(this.uid, documents[index], null);
+		}
+		return responses;
+	}
+	/**
+	 * Adds documents in the index in batches
+	 *
+	 * @param documents An array of Documents to update in JSON string format
+	 * @param primaryKey PrimaryKey of the document to add
+	 * @return Array of MeiliSearch API responses
+	 * @throws Exception if something goes wrong
+	 */
+	public String[] updateDocumentsInBatches(String[] documents, String primaryKey) throws Exception {
+
+		String[] responses = new String[documents.length];
+		for (int index = 0; index < documents.length; index++) {
+			responses[index] = this.documents.updateDocuments(this.uid, documents[index], primaryKey);
+		}
+		return responses;
+	}
+	/**
+	 * Adds documents in the index in batches
+	 *
+	 * @param documents An array of Documents to update in JSON string format
+	 * @param batchSize The size of the document
+	 * @return Array of MeiliSearch API responses
+	 * @throws Exception if something goes wrong
+	 */
+	public String[] updateDocumentsInBatches(String[] documents, Integer batchSize) throws Exception {
+
+		String[] responses = new String[batchSize];
+		for (int index = 0; index < batchSize; index++) {
+			responses[index] = this.documents.updateDocuments(this.uid, documents[index], null);
+		}
+		return responses;
+	}
+
+	/**
+	 * Adds documents in the index in batches
+	 *
+	 * @param documents An array of Documents to update in JSON string format
+	 * @param batchSize The size of the document
+	 * @param primaryKey PrimaryKey of the document to add
+	 * @return Array of MeiliSearch API responses
+	 * @throws Exception if something goes wrong
+	 */
+	public String[] updateDocumentsInBatches(String[] documents, Integer batchSize, String primaryKey) throws Exception {
+
+		String[] responses = new String[batchSize];
+		for (int index = 0; index < batchSize; index++) {
+			responses[index] = this.documents.updateDocuments(this.uid, documents[index], primaryKey);
+		}
+		return responses;
+	}
+
 
     /**
      * Updates a document in the index
