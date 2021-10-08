@@ -141,40 +141,44 @@ reset_ranking_rules_1: |-
 get_distinct_attribute_1: |-
   client.index("movies").getDistinctAttribute();
 update_distinct_attribute_1: |-
-  client.index("movies").setDistinctAttribute("movie_id");
+  Settings settings = new Settings();
+  settings.setDistinctAttribute("movie_id");
+  client.index("movies").updateSettings(settings);
 reset_distinct_attribute_1: |-
   //Not yet implemented
 get_searchable_attributes_1: |-
   client.index("movies").getSearchableAttributes();
 update_searchable_attributes_1: |-
-  client.index("movies").setSearchableAttributes(new String[]
+  Settings settings = new Settings();
+  settings.setSearchableAttributes(new String[]
   {
-  "title",
-  "description",
-  "genre"
+    "title",
+    "description",
+    "genre"
   });
+  client.index("movies").updateSettings(settings);
 reset_searchable_attributes_1: |-
   //Not yet implemented
 get_filterable_attributes_1: |-
   client.index("movies").getFilterableAttributes();
 update_filterable_attributes_1: |-
-  client.index("movies").setFilterableAttributes(new String[]
-  {
-  "genres",
-  "director"
-  });
+  Settings settings = new Settings();
+  settings.setFilterableAttributes(new String[] {"genres", "director"});
+  client.index("movies").updateSettings(settings);
 reset_filterable_attributes_1: |-
   //Not yet implemented
 get_displayed_attributes_1: |-
   client.index("movies").getDisplayedAttributes();
 update_displayed_attributes_1: |-
-  client.index("movies").setDisplayedAttributes(new String[]
+  Settings settings = new Settings();
+  settings.setDisplayedAttributes(new String[]
   {
-  "title",
-  "description",
-  "genre",
-  "release_date"
+    "title",
+    "description",
+    "genre",
+    "release_date"
   });
+  client.index("movies").updateSettings(settings);
 reset_displayed_attributes_1: |-
   //Not yet implemented
 get_index_stats_1: |-
@@ -186,22 +190,28 @@ get_health_1: |-
 get_version_1: |-
   client.getVersion();
 distinct_attribute_guide_1: |-
-  client.index("jackets").setDistinctAttribute("product_id");
+  Settings settings = new Settings();
+  settings.setDistinctAttribute("product_id");
+  client.index("jackets").updateSettings(settings);
 field_properties_guide_searchable_1: |-
-  client.index("movies").setSearchableAttributes(new String[]
+  Settings settings = new Settings();
+  settings.setSearchableAttributes(new String[]
   {
   "title",
   "description",
   "genre"
   });
+  client.index("movies").updateSettings(settings);
 field_properties_guide_displayed_1: |-
-  client.index("movies").setDisplayedAttributes(new String[]
+  Settings settings = new Settings();
+  settings.setDisplayedAttributes(new String[]
   {
-  "title",
-  "description",
-  "genre",
-  "release_date"
+    "title",
+    "description",
+    "genre",
+    "release_date"
   });
+  client.index("movies").updateSettings(settings);
 filtering_guide_1: |-
   SearchRequest searchRequest =
     new SearchRequest("Avengers").setFilter(new String[] {"release_date > \"795484800\""});
@@ -258,41 +268,51 @@ settings_guide_synonyms_1: |-
   settings.setSynonyms(synonyms);
   client.index("movies").updateSynonyms(synonyms);```
 settings_guide_stop_words_1: |-
-  client.index("movies").setStopWords(new String[]
+  Settings settings = new Settings();
+  settings.setStopWords(new String[]
   {
-  "the",
-  "a",
-  "an"
+    "the",
+    "a",
+    "an"
   });
+  client.index("movies").updateSettings(settings);
 settings_guide_ranking_rules_1: |-
-  client.index("movies").setRankingRules(new String[]
+  Settings settings = new Settings();
+  settings.setRankingRules(new String[]
   {
-  "words",
-  "typo",
-  "proximity",
-  "attribute",
-  "sort",
-  "exactness",
-  "release_date:asc",
-  "rank_desc"
+    "words",
+    "typo",
+    "proximity",
+    "attribute",
+    "sort",
+    "exactness",
+    "release_date:asc",
+    "rank_desc"
   });
+  client.index("movies").updateSettings(settings);
 settings_guide_distinct_1: |-
-  client.index("jackets").setDistinctAttribute("product_id");
+  Settings settings = new Settings();
+  settings.setDistinctAttribute("product_id");
+  client.index("jackets").updateSettings(settings);
 settings_guide_searchable_1: |-
-  client.index("movies").setSearchableAttributes(new String[]
+  Settings settings = new Settings();
+  settings.setSearchableAttributes(new String[]
   {
-  "title",
-  "description",
-  "genre"
+    "title",
+    "description",
+    "genre"
   });
+  client.index("movies").updateSettings(settings);
 settings_guide_displayed_1: |-
-  client.index("movies").setDisplayedAttributes(new String[]
+  Settings settings = new Settings();
+  settings.setDisplayedAttributes(new String[]
   {
-  "title",
-  "description",
-  "genre",
-  "release_date"
+    "title",
+    "description",
+    "genre",
+    "release_date"
   });
+  client.index("movies").updateSettings(settings);
 documents_guide_add_movie_1: |-
   //Unsure
 search_guide_1: |-
