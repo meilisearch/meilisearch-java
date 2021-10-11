@@ -68,7 +68,7 @@ public class Client {
     /**
      * Gets all indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
-     * @return MeiliSearch API response in String
+     * @return MeiliSearch API response as String
      * @throws Exception if an error occurs
      */
     public String getRawIndexList() throws Exception {
@@ -110,7 +110,7 @@ public class Client {
      * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
      *
      * @param uid Unique identifier of the index to get
-     * @return MeiliSearch API response in String
+     * @return MeiliSearch API response as String
      * @throws Exception if an error occurs
      */
     public String getRawIndex(String uid) throws Exception {
