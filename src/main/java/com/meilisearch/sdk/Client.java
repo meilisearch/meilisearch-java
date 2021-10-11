@@ -58,11 +58,21 @@ public class Client {
      * @throws Exception if an error occurs
      */
     public Index[] getIndexList() throws Exception {
-        Index[] meiliSearchIndexList = gson.fromJson(this.indexesHandler.getAll(), Index[].class);
+        Index[] meiliSearchIndexList = gson.fromJson(getRawIndexList(), Index[].class);
         for (Index indexes : meiliSearchIndexList) {
             indexes.setConfig(this.config);
         }
         return meiliSearchIndexList;
+    }
+
+    /**
+     * Gets all indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     *
+     * @return MeiliSearch API response in String
+     * @throws Exception if an error occurs
+     */
+    public String getRawIndexList() throws Exception {
+        return this.indexesHandler.getAll();
     }
 
     /**
@@ -90,9 +100,21 @@ public class Client {
      * @throws Exception if an error occurs
      */
     public Index getIndex(String uid) throws Exception {
-        Index indexes = gson.fromJson(this.indexesHandler.get(uid), Index.class);
+        Index indexes = gson.fromJson(getRawIndex(uid), Index.class);
         indexes.setConfig(this.config);
         return indexes;
+    }
+
+    /**
+     * Gets single index by uid Refer
+     * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
+     *
+     * @param uid Unique identifier of the index to get
+     * @return MeiliSearch API response in String
+     * @throws Exception if an error occurs
+     */
+    public String getRawIndex(String uid) throws Exception {
+        return this.indexesHandler.get(uid);
     }
 
     /**
