@@ -18,19 +18,21 @@ get_one_document_1: |-
 get_documents_1: |-
   client.index("movies").getDocuments();
 add_or_replace_documents_1: |-
-  client.index("movies").addDocuments("[{
-    "id": 287947,
-    "title": "Shazam",
-    "poster": "https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg",
-    "overview": "A boy is given the ability to become an adult superhero in times of need with a single magic word.",
-    "release_date": "2019-03-23"
-  }]");
+  client.index("movies").addDocuments("[{"
+    + "\"id\": 287947,"
+    + "\"title\": \"Shazam\","
+    + "\"poster\": \"https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg\","
+    + "\"overview\": \"A boy is given the ability to become an adult superhero in times of need with a single magic word.\","
+    + "\"release_date\": \"2019-03-23\""
+    + "}]"
+  );
 add_or_update_documents_1: |-
   client.index("movies").updateDocuments("[{
-    "id": 287947,
-    "title": "Shazam ⚡️",
-    "genres": "comedy"
-  }]");
+    + "\"id\": 287947,"
+    + "\"title\": \"Shazam ⚡️\","
+    + "\"genres\": \"comedy\""
+    + "}]"
+  );
 delete_all_documents_1: |-
   client.index("movies").deleteAllDocuments();
 delete_one_document_1: |-
@@ -116,7 +118,7 @@ get_stop_words_1: |-
   client.index("movies").getStopWords();
 update_stop_words_1: |-
   Settings settings = new Settings();
-  settings.setStopWords((new String[] {"of", "the", "to"});
+  settings.setStopWords(new String[] {"of", "the", "to"});
   client.index("movies").updateSettings(settings);
 reset_stop_words_1: |-
   //Not yet implemented
@@ -197,9 +199,9 @@ field_properties_guide_searchable_1: |-
   Settings settings = new Settings();
   settings.setSearchableAttributes(new String[]
   {
-  "title",
-  "description",
-  "genre"
+    "title",
+    "description",
+    "genre"
   });
   client.index("movies").updateSettings(settings);
 field_properties_guide_displayed_1: |-
@@ -226,7 +228,7 @@ filtering_guide_3: |-
   client.index("movies").search(searchRequest);
 filtering_guide_4: |-
   SearchRequest searchRequest =
-    new SearchRequest("Planet of the Apes").setFilter(new String[] {"rating >= 3 AND (NOT director = \"Tim Burton\""});
+    new SearchRequest("Planet of the Apes").setFilter(new String[] {"rating >= 3 AND (NOT director = \"Tim Burton\")"});
   client.index("movies").search(searchRequest);
 search_parameter_guide_query_1: |-
   client.index("movies").search("shifu");
@@ -266,7 +268,7 @@ settings_guide_synonyms_1: |-
   synonyms.put("sweater", new String[] {"jumper"});
   synonyms.put("jumper", new String[] {"sweater"});
   settings.setSynonyms(synonyms);
-  client.index("movies").updateSynonyms(synonyms);```
+  client.index("movies").updateSynonyms(synonyms);
 settings_guide_stop_words_1: |-
   Settings settings = new Settings();
   settings.setStopWords(new String[]
@@ -314,15 +316,22 @@ settings_guide_displayed_1: |-
   });
   client.index("movies").updateSettings(settings);
 documents_guide_add_movie_1: |-
-  //Unsure
+  client.index("movies").addDocuments("[{
+    + "\"movie_id\": 123sq178,"
+    + "\"title\": \"Amelie Poulain\""
+    + "}]"
+  );
 search_guide_1: |-
-  //Not yet implemented
+  SearchRequest searchRequest = new SearchRequest("shifu").setOffset(5).setLimit(10);
+  client.index("movies").search(searchRequest);
 search_guide_2: |-
-  //Not yet implemented
+  SearchRequest searchRequest =
+    new SearchRequest("Avengers").setFilter(new String[] {"release_date > \"795484800\""});
+  client.index("movies").search(searchRequest);
 getting_started_add_documents_md: |-
-  //Unsure
+  //To do
 getting_started_search_md: |-
-  //Unsure
+  //To do
 faceted_search_update_settings_1: |-
   Settings settings = new Settings();
   settings.setFilterableAttributes(new String[] {"director", "genres"});
@@ -352,7 +361,7 @@ faceted_search_walkthrough_facets_distribution_1: |-
     new SearchRequest("Batman").setFacetsDistribution(new String[] {"genres"});
   client.index("movies").search(searchRequest);
 add_movies_json_1: |-
-  //Unsure
+  //To do
 post_dump_1: |-
   client.createDump();
 get_dump_status_1: |-
@@ -360,17 +369,35 @@ get_dump_status_1: |-
 phrase_search_1: |-
   client.index("movies").search("\"african american\" horror");
 sorting_guide_update_sortable_attributes_1: |-
+  Settings settings = new Settings();
+  settings.setSortableAttributes(new String[] {"price", "author"});
+  client.index("books").updateSettings(settings);
 sorting_guide_update_ranking_rules_1: |-
+  Settings settings = new Settings();
+  settings.setRankingRules(new String[]
+  {
+    "words",
+    "sort",
+    "typo",
+    "proximity",
+    "attribute",
+    "exactness"
+  });
+  client.index("books").updateSettings(settings);
 sorting_guide_sort_parameter_1: |-
+  SearchRequest searchRequest = new SearchRequest("science fiction").setSort(new String[] {"price:asc"});
+  client.index("books").search(searchRequest);
 sorting_guide_sort_parameter_2: |-
+  SearchRequest searchRequest = new SearchRequest("butler").setSort(new String[] {"author:desc"});
+  client.index("books").search(searchRequest);
 get_sortable_attributes_1: |-
   client.index("books").getSortableAttributes();
 update_sortable_attributes_1: |-
   Settings settings = new Settings();
   settings.setSortableAttributes(new String[] {"price", "author"});
-  client.index("movies").updateSettings(settings);
+  client.index("books").updateSettings(settings);
 reset_sortable_attributes_1: |-
   //Not yet implemented
 search_parameter_guide_sort_1: |-
-  SearchRequest searchRequest = new SearchRequest("and").setSort(new String[] {"title:asc"});
-  client.index("movies").search(searchRequest);
+  SearchRequest searchRequest = new SearchRequest("science fiction").setSort(new String[] {"price:asc"});
+  client.index("search_parameter_guide_sort_1").search(searchRequest);
