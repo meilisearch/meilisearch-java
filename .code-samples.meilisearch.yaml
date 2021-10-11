@@ -1,0 +1,403 @@
+# This code-samples file is used by the MeiliSearch documentation
+# Every example written here will be automatically fetched by
+# the documentation on build
+# You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
+---
+get_one_index_1: |-
+  client.getIndex("movies");
+list_all_indexes_1: |-
+  client.getAllIndexes();
+create_an_index_1: |-
+  client.createIndex("movies", "movie_id");
+update_an_index_1: |-
+  client.updateIndex("movie_review", "movie_review_id");
+delete_an_index_1: |-
+  client.deleteIndex("movies");
+get_one_document_1: |-
+  client.index("movies").getDocument("25684");
+get_documents_1: |-
+  client.index("movies").getDocuments();
+add_or_replace_documents_1: |-
+  client.index("movies").addDocuments("[{"
+    + "\"id\": 287947,"
+    + "\"title\": \"Shazam\","
+    + "\"poster\": \"https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg\","
+    + "\"overview\": \"A boy is given the ability to become an adult superhero in times of need with a single magic word.\","
+    + "\"release_date\": \"2019-03-23\""
+    + "}]"
+  );
+add_or_update_documents_1: |-
+  client.index("movies").updateDocuments("[{
+    + "\"id\": 287947,"
+    + "\"title\": \"Shazam ⚡️\","
+    + "\"genres\": \"comedy\""
+    + "}]"
+  );
+delete_all_documents_1: |-
+  client.index("movies").deleteAllDocuments();
+delete_one_document_1: |-
+  client.index("movies").deleteDocument("25684");
+delete_documents_1: |-
+  client.index("movies").deleteDocuments(Arrays.asList(new String[]
+  {
+    "23488",
+    "153738",
+    "437035",
+    "363869"
+  }));
+search_post_1: |-
+  client.index("movies").search("American ninja");
+get_update_1: |-
+  client.index("movies").getUpdate(1).getStatus();
+get_all_updates_1: |-
+  for (UpdateStatus update: client.index("movies").getUpdates())
+  {
+    update.getStatus();
+  }
+get_keys_1: |-
+  //Not yet implemented
+get_settings_1: |-
+  client.index("movies").getSettings();
+update_settings_1: |-
+  Settings settings = new Settings();
+  settings.setRankingRules(
+    new String[] {
+        "typo",
+        "words",
+        "sort",
+        "proximity",
+        "attribute",
+        "exactness",
+        "release_date:desc",
+        "rank:desc"
+    });
+  settings.setDistinctAttribute("movie_id");
+  settings.setSearchableAttributes(
+    new String[] {
+      "title",
+      "description",
+      "genre",
+    });
+  settings.setDisplayedAttributes(
+    new String[] {
+      "title",
+      "description",
+      "genre",
+      "release_date",
+    });
+  settings.setStopWords(
+    new String[] {
+      "the",
+      "a",
+      "an",
+    });
+  settings.setSortableAttributes(
+    new String[] {
+      "title",
+      "release_date",
+    });
+  HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
+  synonyms.put("wolverine", new String[] {"xmen", "logan"});
+  synonyms.put("logan", new String[] {"wolverine"});
+  settings.setSynonyms(synonyms);
+  client.index("movies").updateSettings(settings);
+reset_settings_1: |-
+  client.index("movies").resetSettings();
+get_synonyms_1: |-
+  client.index("movies").getSynonyms();
+update_synonyms_1: |-
+  Settings settings = new Settings();
+  HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
+  synonyms.put("wolverine", new String[] {"xmen", "logan"});
+  synonyms.put("logan", new String[] {"wolverine"});
+  settings.setSynonyms(synonyms);
+  client.index("movies").updateSettings(settings);
+reset_synonyms_1: |-
+  //Not yet implemented
+get_stop_words_1: |-
+  client.index("movies").getStopWords();
+update_stop_words_1: |-
+  Settings settings = new Settings();
+  settings.setStopWords(new String[] {"of", "the", "to"});
+  client.index("movies").updateSettings(settings);
+reset_stop_words_1: |-
+  //Not yet implemented
+get_ranking_rules_1: |-
+  client.index("movies").getRankingRules();
+update_ranking_rules_1: |-
+  Settings settings = new Settings();
+  settings.setRankingRules(new String[]
+  {
+    "words",
+    "typo",
+    "proximity",
+    "attribute",
+    "sort",
+    "exactness",
+    "release_date:asc",
+    "rank:desc"
+  });
+  client.index("movies").updateSettings(settings);
+reset_ranking_rules_1: |-
+  //Not yet implemented
+get_distinct_attribute_1: |-
+  client.index("movies").getDistinctAttribute();
+update_distinct_attribute_1: |-
+  Settings settings = new Settings();
+  settings.setDistinctAttribute("movie_id");
+  client.index("movies").updateSettings(settings);
+reset_distinct_attribute_1: |-
+  //Not yet implemented
+get_searchable_attributes_1: |-
+  client.index("movies").getSearchableAttributes();
+update_searchable_attributes_1: |-
+  Settings settings = new Settings();
+  settings.setSearchableAttributes(new String[]
+  {
+    "title",
+    "description",
+    "genre"
+  });
+  client.index("movies").updateSettings(settings);
+reset_searchable_attributes_1: |-
+  //Not yet implemented
+get_filterable_attributes_1: |-
+  client.index("movies").getFilterableAttributes();
+update_filterable_attributes_1: |-
+  Settings settings = new Settings();
+  settings.setFilterableAttributes(new String[] {"genres", "director"});
+  client.index("movies").updateSettings(settings);
+reset_filterable_attributes_1: |-
+  //Not yet implemented
+get_displayed_attributes_1: |-
+  client.index("movies").getDisplayedAttributes();
+update_displayed_attributes_1: |-
+  Settings settings = new Settings();
+  settings.setDisplayedAttributes(new String[]
+  {
+    "title",
+    "description",
+    "genre",
+    "release_date"
+  });
+  client.index("movies").updateSettings(settings);
+reset_displayed_attributes_1: |-
+  //Not yet implemented
+get_index_stats_1: |-
+  client.index("movies").getStats();
+get_indexes_stats_1: |-
+  client.getStats();
+get_health_1: |-
+  client.health();
+get_version_1: |-
+  client.getVersion();
+distinct_attribute_guide_1: |-
+  Settings settings = new Settings();
+  settings.setDistinctAttribute("product_id");
+  client.index("jackets").updateSettings(settings);
+field_properties_guide_searchable_1: |-
+  Settings settings = new Settings();
+  settings.setSearchableAttributes(new String[]
+  {
+    "title",
+    "description",
+    "genre"
+  });
+  client.index("movies").updateSettings(settings);
+field_properties_guide_displayed_1: |-
+  Settings settings = new Settings();
+  settings.setDisplayedAttributes(new String[]
+  {
+    "title",
+    "description",
+    "genre",
+    "release_date"
+  });
+  client.index("movies").updateSettings(settings);
+filtering_guide_1: |-
+  SearchRequest searchRequest =
+    new SearchRequest("Avengers").setFilter(new String[] {"release_date > \"795484800\""});
+  client.index("movies").search(searchRequest);
+filtering_guide_2: |-
+  SearchRequest searchRequest =
+    new SearchRequest("Batman").setFilter(new String[] {"release_date > 795484800 AND (director = \"Tim Burton\" OR director = \"Christopher Nolan\")"});
+  client.index("movies").search(searchRequest);
+filtering_guide_3: |-
+  SearchRequest searchRequest =
+    new SearchRequest("horror").setFilter(new String[] {"director = \"Jordan Peele\""});
+  client.index("movies").search(searchRequest);
+filtering_guide_4: |-
+  SearchRequest searchRequest =
+    new SearchRequest("Planet of the Apes").setFilter(new String[] {"rating >= 3 AND (NOT director = \"Tim Burton\")"});
+  client.index("movies").search(searchRequest);
+search_parameter_guide_query_1: |-
+  client.index("movies").search("shifu");
+search_parameter_guide_offset_1: |-
+  SearchRequest searchRequest = new SearchRequest("shifu").setOffset(1);
+  client.index("movies").search(searchRequest);
+search_parameter_guide_limit_1: |-
+  SearchRequest searchRequest = new SearchRequest("shifu").setLimit(2);
+  client.index("movies").search(searchRequest);
+search_parameter_guide_retrieve_1: |-
+  SearchRequest searchRequest =
+    new SearchRequest("a").setAttributesToRetrieve(new String[] {"overview", "title"});
+  client.index("movies").search(searchRequest);
+search_parameter_guide_crop_1: |-
+  SearchRequest searchRequest =
+    new SearchRequest("shifu")
+      .setAttributesToCrop(new String[] {"overview"})
+      .setCropLength(10);
+  client.index("movies").search(searchRequest);
+search_parameter_guide_highlight_1: |-
+  SearchRequest searchRequest =
+    new SearchRequest("and").setAttributesToHighlight(new String[] {"overview"});
+  client.index("movies").search(searchRequest);
+search_parameter_guide_filter_1: |-
+  SearchRequest searchRequest =
+    new SearchRequest("n").setFilter(new String[] {"title = Nightshift"});
+  client.index("movies").search(searchRequest);
+search_parameter_guide_filter_2: |-
+  SearchRequest searchRequest =
+    new SearchRequest("n").setFilter(new String[] {"title = \"Kung Fu Panda\""});
+  client.index("movies").search(searchRequest);
+search_parameter_guide_matches_1: |-
+  SearchRequest searchRequest = new SearchRequest("winter feast").setMatches(true);
+  SearchResult searchResult = index.search(searchRequest);
+settings_guide_synonyms_1: |-
+  HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
+  synonyms.put("sweater", new String[] {"jumper"});
+  synonyms.put("jumper", new String[] {"sweater"});
+  settings.setSynonyms(synonyms);
+  client.index("movies").updateSynonyms(synonyms);
+settings_guide_stop_words_1: |-
+  Settings settings = new Settings();
+  settings.setStopWords(new String[]
+  {
+    "the",
+    "a",
+    "an"
+  });
+  client.index("movies").updateSettings(settings);
+settings_guide_ranking_rules_1: |-
+  Settings settings = new Settings();
+  settings.setRankingRules(new String[]
+  {
+    "words",
+    "typo",
+    "proximity",
+    "attribute",
+    "sort",
+    "exactness",
+    "release_date:asc",
+    "rank_desc"
+  });
+  client.index("movies").updateSettings(settings);
+settings_guide_distinct_1: |-
+  Settings settings = new Settings();
+  settings.setDistinctAttribute("product_id");
+  client.index("jackets").updateSettings(settings);
+settings_guide_searchable_1: |-
+  Settings settings = new Settings();
+  settings.setSearchableAttributes(new String[]
+  {
+    "title",
+    "description",
+    "genre"
+  });
+  client.index("movies").updateSettings(settings);
+settings_guide_displayed_1: |-
+  Settings settings = new Settings();
+  settings.setDisplayedAttributes(new String[]
+  {
+    "title",
+    "description",
+    "genre",
+    "release_date"
+  });
+  client.index("movies").updateSettings(settings);
+documents_guide_add_movie_1: |-
+  client.index("movies").addDocuments("[{
+    + "\"movie_id\": 123sq178,"
+    + "\"title\": \"Amelie Poulain\""
+    + "}]"
+  );
+search_guide_1: |-
+  SearchRequest searchRequest = new SearchRequest("shifu").setOffset(5).setLimit(10);
+  client.index("movies").search(searchRequest);
+search_guide_2: |-
+  SearchRequest searchRequest =
+    new SearchRequest("Avengers").setFilter(new String[] {"release_date > \"795484800\""});
+  client.index("movies").search(searchRequest);
+getting_started_add_documents_md: |-
+  //To do
+getting_started_search_md: |-
+  //To do
+faceted_search_update_settings_1: |-
+  Settings settings = new Settings();
+  settings.setFilterableAttributes(new String[] {"director", "genres"});
+  client.index("movies").updateSettings(settings);
+faceted_search_filter_1: |-
+  SearchRequest searchRequest =
+    new SearchRequest("thriller").setFilterArray(new String[][] {
+      new String[] {"genres = Horror", "genres = Mystery"},
+      new String[] {"director = \"Jordan Peele\""}});
+  client.index("movies").search(searchRequest);
+faceted_search_facets_distribution_1: |-
+  SearchRequest searchRequest =
+    new SearchRequest("Batman").setFacetsDistribution(new String[] {"genres"});
+  client.index("movies").search(searchRequest);
+faceted_search_walkthrough_filterable_attributes_1: |-
+  Settings settings = new Settings();
+  settings.setFilterableAttributes(new String[] {"director", "producer", "genres", "production_companies"});
+  client.index("movies").updateSettings(settings);
+faceted_search_walkthrough_filter_1: |-
+  SearchRequest searchRequest =
+    new SearchRequest("thriller").setFilterArray(new String[][] {
+      new String[] {"genres = Horror", "genres = Mystery"},
+      new String[] {"director = \"Jordan Peele\""}});
+  client.index("movies").search(searchRequest);
+faceted_search_walkthrough_facets_distribution_1: |-
+  SearchRequest searchRequest =
+    new SearchRequest("Batman").setFacetsDistribution(new String[] {"genres"});
+  client.index("movies").search(searchRequest);
+add_movies_json_1: |-
+  //To do
+post_dump_1: |-
+  client.createDump();
+get_dump_status_1: |-
+  client.getDumpStatus("20201101-110357260");
+phrase_search_1: |-
+  client.index("movies").search("\"african american\" horror");
+sorting_guide_update_sortable_attributes_1: |-
+  Settings settings = new Settings();
+  settings.setSortableAttributes(new String[] {"price", "author"});
+  client.index("books").updateSettings(settings);
+sorting_guide_update_ranking_rules_1: |-
+  Settings settings = new Settings();
+  settings.setRankingRules(new String[]
+  {
+    "words",
+    "sort",
+    "typo",
+    "proximity",
+    "attribute",
+    "exactness"
+  });
+  client.index("books").updateSettings(settings);
+sorting_guide_sort_parameter_1: |-
+  SearchRequest searchRequest = new SearchRequest("science fiction").setSort(new String[] {"price:asc"});
+  client.index("books").search(searchRequest);
+sorting_guide_sort_parameter_2: |-
+  SearchRequest searchRequest = new SearchRequest("butler").setSort(new String[] {"author:desc"});
+  client.index("books").search(searchRequest);
+get_sortable_attributes_1: |-
+  client.index("books").getSortableAttributes();
+update_sortable_attributes_1: |-
+  Settings settings = new Settings();
+  settings.setSortableAttributes(new String[] {"price", "author"});
+  client.index("books").updateSettings(settings);
+reset_sortable_attributes_1: |-
+  //Not yet implemented
+search_parameter_guide_sort_1: |-
+  SearchRequest searchRequest = new SearchRequest("science fiction").setSort(new String[] {"price:asc"});
+  client.index("search_parameter_guide_sort_1").search(searchRequest);
