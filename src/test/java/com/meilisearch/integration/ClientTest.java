@@ -2,6 +2,9 @@ package com.meilisearch.integration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Dump;
@@ -124,6 +127,18 @@ public class ClientTest extends AbstractIT {
         client.deleteIndex(index.getUid());
     }
 
+    /** Test getRawIndex */
+    @Test
+    public void testGetRawIndex() throws Exception {
+        String indexUid = "GetRawIndex";
+        Index index = client.createIndex(indexUid, this.primaryKey);
+        String getIndex = client.getRawIndex(indexUid);
+        JsonObject indexJson = JsonParser.parseString(getIndex).getAsJsonObject();
+        assertEquals(index.getUid(), indexJson.get("uid").getAsString());
+        assertEquals(index.getPrimaryKey(), indexJson.get("primaryKey").getAsString());
+        client.deleteIndex(index.getUid());
+    }
+
     /** Test getIndexList */
     @Test
     public void testGetIndexList() throws Exception {
@@ -134,6 +149,23 @@ public class ClientTest extends AbstractIT {
         assertEquals(2, indexes.length);
         assert (Arrays.asList(indexUids).contains(indexUids[0]));
         assert (Arrays.asList(indexUids).contains(indexUids[1]));
+        client.deleteIndex(indexUids[0]);
+        client.deleteIndex(indexUids[1]);
+    }
+
+    /** Test getRawIndexList */
+    @Test
+    public void testGetRawIndexList() throws Exception {
+        String[] indexUids = {"GetRawIndexList", "GetRawIndexList2"};
+        Index index1 = client.createIndex(indexUids[0]);
+        Index index2 = client.createIndex(indexUids[1], this.primaryKey);
+        String indexes = client.getRawIndexList();
+        JsonArray jsonIndexArray = JsonParser.parseString(indexes).getAsJsonArray();
+        assertEquals(jsonIndexArray.size(), 2);
+        assert (Arrays.asList(indexUids)
+                .contains(jsonIndexArray.get(0).getAsJsonObject().get("uid").getAsString()));
+        assert (Arrays.asList(indexUids)
+                .contains(jsonIndexArray.get(1).getAsJsonObject().get("uid").getAsString()));
         client.deleteIndex(indexUids[0]);
         client.deleteIndex(indexUids[1]);
     }
