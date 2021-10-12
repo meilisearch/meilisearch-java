@@ -31,6 +31,7 @@
 - [📖 Documentation](#-documentation)
 - [🔧 Installation](#-installation)
 - [🚀 Getting Started](#-getting-started)
+- [🛠 Customization](#-customization)
 - [🤖 Compatibility with MeiliSearch](#-compatibility-with-meilisearch)
 - [💡 Learn More](#-learn-more)
 - [⚙️ Development Workflow and Contributing](#️-development-workflow-and-contributing)
@@ -70,28 +71,34 @@ implementation 'com.meilisearch.sdk:meilisearch-java:0.4.1'
 #### Add documents <!-- omit in toc -->
 
 ```java
-import com.meilisearch.sdk.Client;
-import com.meilisearch.sdk.Config;
-import com.meilisearch.sdk.Index;
+package com.meilisearch.sdk;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 class TestMeiliSearch {
   public static void main(String[] args) throws Exception {
 
-    final String documents = "["
-      + "{\"book_id\": 123, \"title\": \"Pride and Prejudice\"},"
-      + "{\"book_id\": 456, \"title\": \"Le Petit Prince\"},"
-      + "{\"book_id\": 1, \"title\": \"Alice In Wonderland\"},"
-      + "{\"book_id\": 1344, \"title\": \"The Hobbit\"},"
-      + "{\"book_id\": 4, \"title\": \"Harry Potter and the Half-Blood Prince\"},"
-      + "{\"book_id\": 2, \"title\": \"The Hitchhiker\'s Guide to the Galaxy\"}"
-      + "]";
+    JSONArray array = new JSONArray();
+    ArrayList items = new ArrayList() {{
+      add(new JSONObject().put("movie_id", "1").put("title", "Carol").put("genre",new JSONArray("[\"Romance\",\"Drama\"]")));
+      add(new JSONObject().put("movie_id", "2").put("title", "Wonder Woman").put("genre",new JSONArray("[\"Action\",\"Adventure\"]")));
+      add(new JSONObject().put("movie_id", "3").put("title", "Life of Pi").put("genre",new JSONArray("[\"Adventure\",\"Drama\"]")));
+      add(new JSONObject().put("movie_id", "4").put("title", "Mad Max: Fury Road").put("genre",new JSONArray("[\"Adventure\",\"Science Fiction\"]")));
+      add(new JSONObject().put("movie_id", "5").put("title", "Moana").put("genre",new JSONArray("[\"Fantasy\",\"Action\"]")));
+      add(new JSONObject().put("movie_id", "6").put("title", "Philadelphia").put("genre",new JSONArray("[\"Drama\"]")));
+    }};
 
+    array.put(items);
+    String documents = array.getJSONArray(0).toString();
     Client client = new Client(new Config("http://localhost:7700", "masterKey"));
 
     // An index is where the documents are stored.
-    Index index = client.index("books");
+    Index index = client.index("movies");
 
-    // If the index 'books' does not exist, MeiliSearch creates it when you first add the documents.
+    // If the index 'movies' does not exist, MeiliSearch creates it when you first add the documents.
     index.addDocuments(documents); // => { "updateId": 0 }
   }
 }
@@ -107,14 +114,14 @@ A basic search can be performed by calling `index.search()` method, with a simpl
 import com.meilisearch.sdk.model.SearchResult;
 
 // MeiliSearch is typo-tolerant:
-SearchResult results = index.search("harry pottre");
+SearchResult results = index.search("carlo");
 System.out.println(results);
 ```
 
 - Output:
 
 ```
-SearchResult(hits=[{book_id=4.0, title=Harry Potter and the Half-Blood Prince}], offset=0, limit=20, nbHits=1, exhaustiveNbHits=false, facetsDistribution=null, exhaustiveFacetsCount=false, processingTimeMs=3, query=harry pottre)
+SearchResult(hits=[{movie_id=1.0, title=Carol, genre:[Romance, Drama]}], offset=0, limit=20, nbHits=1, exhaustiveNbHits=false, facetsDistribution=null, exhaustiveFacetsCount=false, processingTimeMs=3, query=carlo)
 ```
 
 #### Custom Search <!-- omit in toc -->
@@ -128,7 +135,7 @@ import com.meilisearch.sdk.SearchRequest;
 // ...
 
 SearchResult results = index.search(
-  new SearchRequest("in")
+  new SearchRequest("of")
   .setMatches(true)
   .setAttributesToHighlight(new String[]{"title"})
 );
@@ -139,19 +146,130 @@ System.out.println(results.getHits());
 
 ```json
 [{
-  "book_id":1,
-  "title":"Alice In Wonderland",
+  "movie_id":3,
+  "title":"Life of Pi",
+  "genre":["Adventure","Drama"],
   "_formatted":{
-    "book_id":1,
-    "title":"Alice <em>In</em> Wonderland"
+    "movie_id":3,
+    "title":"Life <em>of</em> Pi",
+    "genre":["Adventure","Drama"]
   },
   "_matchesInfo":{
     "title":[{
-      "start":6,
+      "start":5,
       "length":2
     }]
   }
 }]
+```
+
+## 🛠 Customization
+
+### JSON <!-- omit in toc -->
+
+#### Basic JSON <!-- omit in toc -->
+
+The default JSON can be created by calling the default constructor of `JsonbJsonHandler` class which will create a config of type `JsonbConfig` and using this config. It will initialize the mapper variable by calling the create method of `JsonbBuilder` class.
+
+#### Creating a Custom `GsonJsonHandler` <!-- omit in toc -->
+
+To create a custom JSON handler, create an object of GsonJsonHandler and send the GSON object in the parameterized constructor.<br>
+
+```java
+Gson gson = new GsonBuilder()
+             .disableHtmlEscaping()
+             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+             .setPrettyPrinting()
+             .serializeNulls()
+             .create();
+private GsonJsonHandler jsonGson = new GsonJsonHandler(gson);
+jsonGson.encode("your_data");
+```
+
+#### Creating a Custom `JacksonJsonHandler` <!-- omit in toc -->
+
+Another method is to create an object of `JacksonJsonHandler` and set the required parameters. The supported option is an object of `ObjectMapper`. It's passed as a parameter to the `JacksonJsonHandler`’s parameterized constructor. This is used to initialize the mapper variable.
+
+The mapper variable is responsible for the encoding and decoding of the JSON.
+
+Using the custom JSON:
+
+```java
+Config config = new Config("http://localhost:7700", "masterKey");
+HttpAsyncClient client = HttpAsyncClients.createDefault();
+ApacheHttpClient client = new ApacheHttpClient(config, client);
+private final JsonHandler jsonHandler = new JacksonJsonHandler(new ObjectMapper());
+private final RequestFactory requestFactory = new BasicRequestFactory(jsonHandler);
+private final GenericServiceTemplate serviceTemplate = new GenericServiceTemplate(client, jsonHandler, requestFactory);
+
+private final ServiceTemplate serviceTemplate;
+serviceTemplate.getProcessor().encode("your_data");
+```
+
+### Creating a Custom `JsonbJsonHandler <!-- omit in toc -->
+
+Another method of creating a JSON handler is to create an object of `JsonbJsonHandler` and send the `Jsonb` object to the parameterized constructor.
+
+```java
+Jsonb jsonb = JsonbBuilder.create();
+private JsonbJsonHandler jsonbHandler = new JsonbJsonHandler(jsonb);
+jsonbHandler.encode("your_data");
+```
+
+### Custom Client <!-- omit in toc -->
+
+To create a custom `Client` handler, create an object of `Client` and set the required parameters.
+
+A `Config` object should be passed, containing your host URL and your API key.
+
+```java
+Config config = new Config("http://localhost:7700", "masterKey");
+return new Client(config);
+```
+
+The `Client(config)` constructor sets the config instance to the member variable. It also sets the 3 other instances namely `gson()`, `IndexesHandler(config)` and `DumpHandler(config)`.
+
+Using the custom `Client`:
+
+```java
+Config config = new Config("http://localhost:7700", "masterKey");
+HttpAsyncClient client = HttpAsyncClients.createDefault();
+ApacheHttpClient customClient = new ApacheHttpClient(config, client);
+customClient.index("movies").search("American ninja");
+```
+
+#### Custom Http Request <!-- omit in toc -->
+
+To create a custom HTTP request, create an object of `BasicHttpRequest` and set the required parameters.
+
+The supported options are as follows:
+
+1. HTTP method: a `String` that can be set as following values: `HEAD`, `GET`, `POST`, `PUT`, or `DELETE`.
+2. Path: a `String` corresponding to the endpoint of the API.
+3. Headers: a `Map<String,String>` containing the header parameters in the form of key-value pair.
+4. Content: the `String` of your content.
+
+```java
+return new BasicHttpRequest(
+                    method,
+                    path,
+                    headers,
+                    content == null ? null : this.jsonHandler.encode(content));
+```
+
+Alternatively, there is an interface `RequestFactory` which has a method `create`.<br>
+In order to call this method, create an object of `RequestFactory` and call the method by passing the required parameters.
+
+Using the custom Http Request:
+
+```java
+public interface RequestFactory {
+    <T> HttpRequest<?> create(
+            HttpMethod method, String path, Map<String, String> headers, T content);
+ }
+
+private final RequestFactory requestFactory;
+requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), {"movie_id":"3"});
 ```
 
 ## 🤖 Compatibility with MeiliSearch
