@@ -329,9 +329,7 @@ search_guide_2: |-
     new SearchRequest("Avengers").setFilter(new String[] {"release_date > \"795484800\""});
   client.index("movies").search(searchRequest);
 getting_started_add_documents_md: |-
-  //To do
 getting_started_search_md: |-
-  //To do
 faceted_search_update_settings_1: |-
   Settings settings = new Settings();
   settings.setFilterableAttributes(new String[] {"director", "genres"});
@@ -361,7 +359,6 @@ faceted_search_walkthrough_facets_distribution_1: |-
     new SearchRequest("Batman").setFacetsDistribution(new String[] {"genres"});
   client.index("movies").search(searchRequest);
 add_movies_json_1: |-
-  //To do
 post_dump_1: |-
   client.createDump();
 get_dump_status_1: |-
