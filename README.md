@@ -53,7 +53,7 @@ Add the following code to the `<dependencies>` section of your project:
 <dependency>
   <groupId>com.meilisearch.sdk</groupId>
   <artifactId>meilisearch-java</artifactId>
-  <version>0.4.1</version>
+  <version>0.5.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -63,7 +63,7 @@ Add the following code to the `<dependencies>` section of your project:
 Add the following line to the `dependencies` section of your `build.gradle`:
 
 ```groovy
-implementation 'com.meilisearch.sdk:meilisearch-java:0.4.1'
+implementation 'com.meilisearch.sdk:meilisearch-java:0.5.0'
 ```
 
 ## 🚀 Getting Started
