@@ -12,6 +12,8 @@ import com.meilisearch.sdk.utils.Movie;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -124,6 +126,66 @@ public class DocumentsTest extends AbstractIT {
         }
     }
 
+	/** Test add documents in batches*/
+	@Test
+	public void testAddDocumentsInBatch() throws Exception{
+
+		String indexUid = "AddDocumentsBatch";
+		Index index = client.index(indexUid);
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+
+		List<Movie> movieList = testData.getData();
+		List<String> movieData = movieList.stream().map(m -> this.gson.toJson(m, Movie.class)).collect(Collectors.toList());
+
+		UpdateStatus[] updateStatuses = this.gson.fromJson(index.addDocumentsInBatches(movieData, null, null), UpdateStatus[].class);
+
+		for (UpdateStatus updateInfo: updateStatuses) {
+			index.waitForPendingUpdate(updateInfo.getUpdateId());
+		}
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+		for (int i = 0; i < movies.length; i++) {
+			Movie movie =
+				this.gson.fromJson(
+					index.getDocument(testData.getData().get(i).getId()), Movie.class);
+			assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
+		}
+
+	}
+
+	@Test
+	public void testAddDocumentsInBatchSize10() throws Exception{
+
+		String indexUid = "AddDocumentsBatch";
+		Index index = client.index(indexUid);
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+
+		List<Movie> movieList = testData.getData();
+		List<String> movieData = movieList.stream().map(m -> this.gson.toJson(m, Movie.class)).collect(Collectors.toList());
+
+		UpdateStatus[] updateStatuses = this.gson.fromJson(index.addDocumentsInBatches(movieData, 10, null), UpdateStatus[].class);
+
+		for (UpdateStatus updateInfo: updateStatuses) {
+			index.waitForPendingUpdate(updateInfo.getUpdateId());
+		}
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+		for (int i = 0; i < movies.length; i++) {
+			Movie movie =
+				this.gson.fromJson(
+					index.getDocument(testData.getData().get(i).getId()), Movie.class);
+			assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
+		}
+
+	}
+
+
+
+
+
+
+
+
     /** Test Update a document */
     @Test
     public void testUpdateDocument() throws Exception {
@@ -226,6 +288,74 @@ public class DocumentsTest extends AbstractIT {
             assertEquals(toUpdate.get(j).getOverview(), responseUpdate.getOverview());
         }
     }
+
+	/** Test Update documents in batches */
+	@Test
+	public void testUpdateDocumentInBatches() throws Exception {
+		String indexUid = "UpdateDocumentsInBatches";
+		Index index = client.createIndex(indexUid);
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo =
+			this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+		List<Movie> toUpdate = new ArrayList<>();
+		for (int i = 0; i < 5; i++) {
+			movies[i].setTitle("Star wars episode: " + i);
+			movies[i].setOverview("This star wars movie is for the episode: " + i);
+			toUpdate.add(movies[i]);
+		}
+
+		List<String> toUpdateString = toUpdate.stream().map(m -> this.gson.toJson(m, Movie.class)).collect(Collectors.toList());
+		UpdateStatus[] statues = this.gson.fromJson(
+				index.updateDocumentsInBatches(toUpdateString, null, null), UpdateStatus[].class);
+
+		for(UpdateStatus status: statues) {
+			index.waitForPendingUpdate(status.getUpdateId());
+		}
+		for (int j = 0; j < 5; j++) {
+			Movie responseUpdate =
+				this.gson.fromJson(index.getDocument(toUpdate.get(j).getId()), Movie.class);
+			assertEquals(toUpdate.get(j).getTitle(), responseUpdate.getTitle());
+			assertEquals(toUpdate.get(j).getOverview(), responseUpdate.getOverview());
+		}
+	}
+
+	/** Test Update documents in batches */
+	@Test
+	public void testUpdateDocumentInBatchesSize10() throws Exception {
+		String indexUid = "UpdateDocumentsInBatchesSize10";
+		Index index = client.createIndex(indexUid);
+
+		TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+		UpdateStatus updateInfo =
+			this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+
+		index.waitForPendingUpdate(updateInfo.getUpdateId());
+		Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+		List<Movie> toUpdate = new ArrayList<>();
+		for (int i = 0; i < 5; i++) {
+			movies[i].setTitle("Star wars episode: " + i);
+			movies[i].setOverview("This star wars movie is for the episode: " + i);
+			toUpdate.add(movies[i]);
+		}
+
+		List<String> toUpdateString = toUpdate.stream().map(m -> this.gson.toJson(m, Movie.class)).collect(Collectors.toList());
+		UpdateStatus[] statues = this.gson.fromJson(
+			index.updateDocumentsInBatches(toUpdateString, 10, null), UpdateStatus[].class);
+
+		for(UpdateStatus status: statues) {
+			index.waitForPendingUpdate(status.getUpdateId());
+		}
+		for (int j = 0; j < 5; j++) {
+			Movie responseUpdate =
+				this.gson.fromJson(index.getDocument(toUpdate.get(j).getId()), Movie.class);
+			assertEquals(toUpdate.get(j).getTitle(), responseUpdate.getTitle());
+			assertEquals(toUpdate.get(j).getOverview(), responseUpdate.getOverview());
+		}
+	}
 
     /** Test GetDocument */
     @Test
