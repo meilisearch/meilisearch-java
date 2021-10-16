@@ -94,4 +94,16 @@ class IndexesHandler {
         String requestQuery = "/indexes/" + uid;
         return meilisearchHttpRequest.delete(requestQuery);
     }
+
+    /**
+     * Deletes an index if exists in the MeiliSearch instance
+     *
+     * @param uid Unique identifier of the index to delete
+     * @return MeiliSearch API response
+     * @throws Exception if something goes wrong
+     */
+    String deleteIndexIfExists(String uid) throws Exception {
+        String requestQuery = "/indexes/" + uid;
+        return meilisearchHttpRequest.deleteIndexIfExists(requestQuery);
+    }
 }

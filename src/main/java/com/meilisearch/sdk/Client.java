@@ -146,6 +146,18 @@ public class Client {
     }
 
     /**
+     * Deletes single index if exists by uid Refer
+     * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
+     *
+     * @param uid Unique identifier of the index to delete
+     * @return MeiliSearch API response
+     * @throws Exception if an error occurs
+     */
+    public String deleteIndexIfExists(String uid) throws Exception {
+        return this.indexesHandler.deleteIndexIfExists(uid);
+    }
+
+    /**
      * Gets single index by uid or if it does not exists, Create index
      *
      * @param uid Unique identifier for the index to create

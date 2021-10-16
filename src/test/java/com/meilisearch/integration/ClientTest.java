@@ -179,6 +179,27 @@ public class ClientTest extends AbstractIT {
         assertThrows(MeiliSearchApiException.class, () -> client.getIndex(indexUid));
     }
 
+    /** Test deleteIndexIfExists */
+    @Test
+    public void testDeleteIndexIfExistsDeleteIndex() throws Exception {
+        String indexUid = "DeleteIndex";
+        Index index = client.createIndex(indexUid);
+        client.deleteIndexIfExists(index.getUid());
+        assertThrows(MeiliSearchApiException.class, () -> client.getIndex(indexUid));
+    }
+
+    /** Test deleteIndexIfExists */
+    @Test
+    public void testDeleteIndexIfExistsDoesNotThrowException() throws Exception {
+        String indexUid = "DeleteIndex";
+        Index index = client.createIndex(indexUid);
+        client.deleteIndexIfExists(index.getUid());
+        assertDoesNotThrow(() -> client.deleteIndexIfExists(indexUid));
+
+        String response = client.deleteIndexIfExists(indexUid);
+        assertEquals("Index not found", response);
+    }
+
     /** Test call to index method with an inexistent index */
     @Test
     public void testIndexMethodCallInexistentIndex() throws Exception {
@@ -195,7 +216,7 @@ public class ClientTest extends AbstractIT {
         Index createdIndex = client.createIndex(indexUid);
         Index index = client.index(indexUid);
         assertEquals(createdIndex.getUid(), index.getUid());
-        assertEquals(null, index.getPrimaryKey());
+        assertNull(index.getPrimaryKey());
     }
 
     /** Test call to index method with an existing index with primary key */
@@ -206,7 +227,7 @@ public class ClientTest extends AbstractIT {
         Index createdIndex = client.createIndex(indexUid, primaryKey);
         Index index = client.index(indexUid);
         assertEquals(createdIndex.getUid(), index.getUid());
-        assertEquals(null, index.getPrimaryKey());
+        assertNull(index.getPrimaryKey());
         index.fetchPrimaryKey();
         assertEquals(primaryKey, index.getPrimaryKey());
     }
