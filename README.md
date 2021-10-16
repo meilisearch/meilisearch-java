@@ -162,7 +162,7 @@ System.out.println(results.getHits());
   }
 }]
 ```
-
+More details: View [here](./MEILISEARCH-JAVA.md)
 ## 🛠 Customization
 
 ### JSON <!-- omit in toc -->
