@@ -196,8 +196,8 @@ public class ClientTest extends AbstractIT {
         client.deleteIndexIfExists(index.getUid());
         assertDoesNotThrow(() -> client.deleteIndexIfExists(indexUid));
 
-        String response = client.deleteIndexIfExists(indexUid);
-        assertEquals("Index not found", response);
+        boolean response = client.deleteIndexIfExists(indexUid);
+        assertFalse(response);
     }
 
     /** Test call to index method with an inexistent index */

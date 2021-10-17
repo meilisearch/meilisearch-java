@@ -129,23 +129,4 @@ class MeiliSearchHttpRequest {
         }
         return new String(httpResponse.getContentAsBytes());
     }
-
-    /**
-     * Deletes the specified resource if exists
-     *
-     * @param api Path to the requested resource
-     * @return deleted resource
-     * @throws Exception if the client has an error
-     * @throws MeiliSearchApiException if the response is an error
-     */
-    String deleteIndexIfExists(String api) throws Exception, MeiliSearchApiException {
-        try {
-            return delete(api);
-        } catch (MeiliSearchApiException exception) {
-            if (exception.getErrorCode().equals("index_not_found")) {
-                return "Index not found";
-            }
-            throw exception;
-        }
-    }
 }

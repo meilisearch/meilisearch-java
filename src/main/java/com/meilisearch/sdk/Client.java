@@ -153,8 +153,8 @@ public class Client {
      * @return MeiliSearch API response
      * @throws Exception if an error occurs
      */
-    public String deleteIndexIfExists(String uid) throws Exception {
-        return this.indexesHandler.deleteIndexIfExists(uid);
+    public boolean deleteIndexIfExists(String uid) throws Exception {
+        return this.indexesHandler.deleteIfExists(uid);
     }
 
     /**
