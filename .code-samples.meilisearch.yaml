@@ -350,16 +350,21 @@ getting_started_add_documents_md: |-
   import com.meilisearch.sdk;
   import java.nio.file.Files;
   import java.nio.file.Path;
+
   Path fileName = Path.of("movies.json");
   String moviesJson = Files.readString(fileName);
   Client client = new Client(new Config("http://localhost:7700", "masterKey"));
   Index index = client.index("movies");
   index.addDocuments(moviesJson);
   ```
+
+  [About this SDK](https://github.com/meilisearch/meilisearch-java)
 getting_started_search_md: |-
   ```java
   client.index("movies").search("botman");
   ```
+
+  [About this SDK](https://github.com/meilisearch/meilisearch-java)
 faceted_search_update_settings_1: |-
   Settings settings = new Settings();
   settings.setFilterableAttributes(new String[] {"director", "genres"});
@@ -393,6 +398,7 @@ add_movies_json_1: |-
   import org.json.JSONArray;
   import java.nio.file.Files;
   import java.nio.file.Path;
+
   Path fileName = Path.of("movies.json");
   String moviesJson = Files.readString(fileName);
   Client client = new Client(new Config("http://localhost:7700", "masterKey"));
