@@ -1,5 +1,6 @@
 package com.meilisearch.integration;
 
+import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.gson.JsonObject;
@@ -12,11 +13,14 @@ import com.meilisearch.sdk.utils.Movie;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 @Tag("integration")
 public class DocumentsTest extends AbstractIT {
@@ -293,6 +297,95 @@ public class DocumentsTest extends AbstractIT {
                             index.getDocument(testData.getData().get(i).getId()), Movie.class);
             assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
         }
+    }
+
+    /** Test GetDocuments with limit and offset */
+    @Test
+    public void testGetDocumentsLimitAndOffset() throws Exception {
+        String indexUid = "GetDocumentsLimit";
+        int limit = 2;
+        int offset = 2;
+        int secondOffset = 5;
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        UpdateStatus updateInfo =
+                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        Movie[] movies = this.gson.fromJson(index.getDocuments(limit, offset), Movie[].class);
+        Movie[] secondMovies =
+                this.gson.fromJson(index.getDocuments(limit, secondOffset), Movie[].class);
+
+        assertEquals(limit, movies.length);
+        assertEquals(limit, secondMovies.length);
+
+        assertNotEquals(movies[0].getTitle(), secondMovies[0].getTitle());
+        assertNotEquals(movies[1].getTitle(), secondMovies[1].getTitle());
+    }
+
+    /** Test GetDocuments with limit, offset and specified attributesToRetrieve */
+    @Test
+    public void testGetDocumentsLimitAndOffsetAndSpecifiedAttributesToRetrieve() throws Exception {
+        String indexUid = "GetDocumentsLimit";
+        int limit = 2;
+        int offset = 2;
+        List<String> attributesToRetrieve = Arrays.asList("id", "title");
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        UpdateStatus updateInfo =
+                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        Movie[] movies =
+                this.gson.fromJson(
+                        index.getDocuments(limit, offset, attributesToRetrieve), Movie[].class);
+
+        assertEquals(limit, movies.length);
+
+        assertNotNull(movies[0].getId());
+        assertNotNull(movies[0].getTitle());
+
+        assertNull(movies[0].getGenres());
+        assertNull(movies[0].getLanguage());
+        assertNull(movies[0].getOverview());
+        assertNull(movies[0].getPoster());
+        assertNull(movies[0].getRelease_date());
+    }
+
+    /** Test GetDocuments with limit, offset and attributesToRetrieve */
+    @ParameterizedTest
+    @MethodSource("attributesToRetrieve")
+    public void testGetDocumentsLimitAndOffsetAndAttributesToRetrieve(
+            List<String> attributesToRetrieve) throws Exception {
+        String indexUid = "GetDocumentsLimit";
+        int limit = 2;
+        int offset = 2;
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        UpdateStatus updateInfo =
+                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        Movie[] movies =
+                this.gson.fromJson(
+                        index.getDocuments(limit, offset, attributesToRetrieve), Movie[].class);
+
+        assertEquals(limit, movies.length);
+
+        assertNotNull(movies[0].getId());
+        assertNotNull(movies[0].getTitle());
+        assertNotNull(movies[0].getGenres());
+        assertNotNull(movies[0].getLanguage());
+        assertNotNull(movies[0].getOverview());
+        assertNotNull(movies[0].getPoster());
+        assertNotNull(movies[0].getRelease_date());
+    }
+
+    private static Stream<List<Object>> attributesToRetrieve() {
+        return Stream.of(emptyList(), null);
     }
 
     /** Test deleteDocument */
