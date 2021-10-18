@@ -1,5 +1,7 @@
 package com.meilisearch.sdk;
 
+import static java.util.Collections.singletonList;
+
 import com.google.gson.JsonArray;
 import java.util.List;
 
@@ -46,6 +48,50 @@ class Documents {
      */
     String getDocuments(String uid, int limit) throws Exception {
         String requestQuery = "/indexes/" + uid + "/documents?limit=" + limit;
+        return meilisearchHttpRequest.get(requestQuery);
+    }
+
+    /**
+     * Retrieves the documents at the specified uid
+     *
+     * @param uid Partial index identifier for the requested documents
+     * @param limit Limit on the requested documents to be returned
+     * @param offset Specify the offset of the first hit to return
+     * @return String containing the requested document
+     * @throws Exception if the client request causes an error
+     */
+    String getDocuments(String uid, int limit, int offset) throws Exception {
+        String requestQuery = "/indexes/" + uid + "/documents?limit=" + limit + "&offset=" + offset;
+        return meilisearchHttpRequest.get(requestQuery);
+    }
+
+    /**
+     * Retrieves the documents at the specified uid
+     *
+     * @param uid Partial index identifier for the requested documents
+     * @param limit Limit on the requested documents to be returned
+     * @param offset Specify the offset of the first hit to return
+     * @param attributesToRetrieve Document attributes to show
+     * @return String containing the requested document
+     * @throws Exception if the client request causes an error
+     */
+    String getDocuments(String uid, int limit, int offset, List<String> attributesToRetrieve)
+            throws Exception {
+        if (attributesToRetrieve == null || attributesToRetrieve.size() == 0) {
+            attributesToRetrieve = singletonList("*");
+        }
+
+        String attributesToRetrieveCommaSeparated = String.join(",", attributesToRetrieve);
+        String requestQuery =
+                "/indexes/"
+                        + uid
+                        + "/documents?limit="
+                        + limit
+                        + "&offset="
+                        + offset
+                        + "&attributesToRetrieve="
+                        + attributesToRetrieveCommaSeparated;
+
         return meilisearchHttpRequest.get(requestQuery);
     }
 
