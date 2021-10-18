@@ -77,6 +77,32 @@ public class Index implements Serializable {
     }
 
     /**
+     * Gets documents in the index and limit the number of documents returned
+     *
+     * @param limits Maximum amount of documents to return
+     * @param offset Number of documents to skip
+     * @return MeiliSearch API response
+     * @throws Exception if something goes wrong
+     */
+    public String getDocuments(int limits, int offset) throws Exception {
+        return this.documents.getDocuments(this.uid, limits, offset);
+    }
+
+    /**
+     * Gets documents in the index and limit the number of documents returned
+     *
+     * @param limits Maximum amount of documents to return
+     * @param offset Number of documents to skip
+     * @param attributesToRetrieve Document attributes to show
+     * @return MeiliSearch API response
+     * @throws Exception if something goes wrong
+     */
+    public String getDocuments(int limits, int offset, List<String> attributesToRetrieve)
+            throws Exception {
+        return this.documents.getDocuments(this.uid, limits, offset, attributesToRetrieve);
+    }
+
+    /**
      * Adds a document in the index
      *
      * @param document Document to add in JSON string format
