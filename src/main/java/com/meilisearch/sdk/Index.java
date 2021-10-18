@@ -222,7 +222,7 @@ public class Index implements Serializable {
      * Gets the ranking rule settings of the index Refer
      * https://docs.meilisearch.com/reference/api/settings.html#get-settings
      *
-     * @return settings of a given uid as String
+     * @return ranking rules of a given uid as String
      * @throws Exception if something goes wrong
      */
     public String[] getRankingRuleSettings() throws Exception {
@@ -233,7 +233,7 @@ public class Index implements Serializable {
      * Updates the ranking rule settings of the index Refer
      * https://docs.meilisearch.com/reference/api/settings.html#update-settings
      *
-     * @param rankingRules array with the data with the new ranking rules
+     * @param rankingRules array that contain the data with the new ranking rules
      * @return UpdateStatus
      * @throws Exception if something goes wrong
      */
