@@ -342,7 +342,7 @@ getting_started_add_documents_md: |-
 
   **Gradle**
   Add the following line to the `dependencies` section of your `build.gradle`:
-  ```gradle
+  ```java
   implementation 'com.meilisearch.sdk:meilisearch-java:0.5.0'
   ```
 
