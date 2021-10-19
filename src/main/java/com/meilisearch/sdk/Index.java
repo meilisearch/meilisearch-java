@@ -314,6 +314,40 @@ public class Index implements Serializable {
 	}
 
     /**
+     * Gets the stop-words settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/stop_words.html#get-stop-words
+     *
+     * @return stop-words of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String[] getStopWordsSettings() throws Exception {
+        return this.settingsHandler.getStopWordsSettings(this.uid);
+    }
+
+    /**
+     * Updates the stop-words settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/stop_words.html#update-stop-words
+     *
+     * @param stopWords key (String) value (array) pair of synonyms
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateStopWordsSettings(String[] stopWords) throws Exception {
+        return this.settingsHandler.updateStopWordsSettings(this.uid, stopWords);
+    }
+
+    /**
+     * Resets the stop-words settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/stop_words.html#reset-stop-words
+     *
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetStopWordsSettings() throws Exception {
+        return this.settingsHandler.resetStopWordsSettings(this.uid);
+    }
+
+    /**
      * Gets an index update by its id
      *
      * @param updateId ID of the index update

@@ -150,19 +150,68 @@ public class SettingsHandler {
 			Update.class);
 	}
 
-	/**
-	 * Resets the ranking rules settings of a given index Refer
-	 * https://docs.meilisearch.com/reference/api/synonyms.html#reset-synonyms
-	 *
-	 * @param uid Index identifier
-	 * @return updateId is the id of the update
-	 * @throws MeiliSearchRuntimeException if something goes wrong
-	 */
-	public Update resetSynonymsSettings(String uid) throws MeiliSearchRuntimeException {
-		String requestQuery = "/indexes/" + uid + "/settings/synonyms";
-		return serviceTemplate.execute(
-			requestFactory.create(
-				HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
-			Update.class);
-	}
+    /**
+     * Resets the ranking rules settings of a given index Refer
+     * https://docs.meilisearch.com/reference/api/synonyms.html#reset-synonyms
+     *
+     * @param uid Index identifier
+     * @return updateId is the id of the update
+     * @throws MeiliSearchRuntimeException if something goes wrong
+     */
+    public Update resetSynonymsSettings(String uid) throws MeiliSearchRuntimeException {
+        String requestQuery = "/indexes/" + uid + "/settings/synonyms";
+        return serviceTemplate.execute(
+                requestFactory.create(
+                        HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
+                Update.class);
+    }
+
+    /**
+     * Gets the ranking rules settings of a given index Refer
+     * https://docs.meilisearch.com/reference/api/synonyms.html#get-synonyms
+     *
+     * @param uid Index identifier
+     * @return ranking rules settings of a given uid as String
+     * @throws MeiliSearchRuntimeException if something goes wrong
+     */
+    public Settings getStopWordsSettings(String uid) throws MeiliSearchRuntimeException {
+        String requestQuery = "/indexes/" + uid + "/settings/stop-words";
+        return serviceTemplate.execute(
+                requestFactory.create(HttpMethod.GET, requestQuery, Collections.emptyMap(), null),
+                Settings.class);
+    }
+
+    /**
+     * Updates the ranking rules settings of a given index Refer
+     * https://docs.meilisearch.com/reference/api/synonyms.html#update-synonyms
+     *
+     * @param uid Index identifier
+     * @param synonyms the data that contains the new ranking rules settings
+     * @return updateId is the id of the update
+     * @throws MeiliSearchRuntimeException if something goes wrong
+     */
+    public Update updateStopWordsSettings(String uid, String[] synonyms)
+            throws MeiliSearchRuntimeException {
+        String requestQuery = "/indexes/" + uid + "/settings/stop-words";
+        return serviceTemplate.execute(
+                requestFactory.create(
+                        HttpMethod.POST, requestQuery, Collections.emptyMap(), synonyms),
+                Update.class);
+    }
+
+    /**
+     * Resets the ranking rules settings of a given index Refer
+     * https://docs.meilisearch.com/reference/api/synonyms.html#reset-synonyms
+     *
+     * @param uid Index identifier
+     * @return updateId is the id of the update
+     * @throws MeiliSearchRuntimeException if something goes wrong
+     */
+    public Update resetStopWordsSettings(String uid) throws MeiliSearchRuntimeException {
+        String requestQuery = "/indexes/" + uid + "/settings/stop-words";
+        return serviceTemplate.execute(
+                requestFactory.create(
+                        HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
+                Update.class);
+    }
 }

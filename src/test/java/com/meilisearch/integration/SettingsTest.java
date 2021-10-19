@@ -241,6 +241,54 @@ public class SettingsTest extends AbstractIT {
 		assertEquals(synonymsSettings.keySet(), synonymsSettingsAfterReset.keySet());
 	}
 
+    @Test
+    @DisplayName("Test get stop-words settings by uid")
+    public void testGetStopWordsSettings() throws Exception {
+        Index index = createIndex("testGetStopWordsSettings");
+        Settings initialSettings = index.getSettings();
+        String[] initialStopWords = index.getStopWordsSettings();
+
+        assertEquals(initialSettings.getStopWords().length, initialStopWords.length);
+        assertArrayEquals(initialSettings.getStopWords(), initialStopWords);
+    }
+
+    @Test
+    @DisplayName("Test update stop-words settings")
+    public void testUpdateStopWordsSettings() throws Exception {
+        Index index = createIndex("testUpdateStopWordsSettings");
+        String[] initialStopWords = index.getStopWordsSettings();
+        String[] newStopWords = {"of", "the", "to"};
+
+        index.waitForPendingUpdate(index.updateStopWordsSettings(newStopWords).getUpdateId());
+        String[] updatedStopWordsSettings = index.getStopWordsSettings();
+
+        assertEquals(newStopWords.length, updatedStopWordsSettings.length);
+        assertArrayEquals(newStopWords, updatedStopWordsSettings);
+        assertNotEquals(initialStopWords.length, updatedStopWordsSettings.length);
+    }
+
+    @Test
+    @DisplayName("Test reset stop-words settings")
+    public void testResetStopWordsSettings() throws Exception {
+        Index index = createIndex("testResetStopWordsSettings");
+        String[] initialStopWords = index.getStopWordsSettings();
+        String[] newStopWords = {"of", "the", "to"};
+
+        index.waitForPendingUpdate(index.updateStopWordsSettings(newStopWords).getUpdateId());
+        String[] updatedStopWordsSettings = index.getStopWordsSettings();
+
+        assertEquals(newStopWords.length, updatedStopWordsSettings.length);
+        assertArrayEquals(newStopWords, updatedStopWordsSettings);
+        assertNotEquals(initialStopWords.length, updatedStopWordsSettings.length);
+
+        index.waitForPendingUpdate(index.resetStopWordsSettings().getUpdateId());
+        String[] stopWordsAfterReset = index.getStopWordsSettings();
+
+        assertNotEquals(updatedStopWordsSettings.length, stopWordsAfterReset.length);
+        assertEquals(initialStopWords.length, stopWordsAfterReset.length);
+        assertArrayEquals(initialStopWords, stopWordsAfterReset);
+    }
+
     private Index createIndex(String indexUid) throws Exception {
         Index index = client.index(indexUid);
         UpdateStatus updateInfo =

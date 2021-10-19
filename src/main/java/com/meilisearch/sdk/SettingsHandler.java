@@ -153,4 +153,62 @@ public class SettingsHandler {
 			meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/synonyms"),
 			UpdateStatus.class);
 	}
+    /**
+     * Resets the synonyms settings of a given index Refer
+     * https://docs.meilisearch.com/reference/api/synonyms.html#reset-synonyms
+     *
+     * @param uid Index identifier
+     * @return updateId is the id of the update
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetSynonymsSettings(String uid) throws Exception {
+        return this.gson.fromJson(
+                meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/synonyms"),
+                UpdateStatus.class);
+    }
+
+    /**
+     * Gets the stop-words settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/stop_words.html#get-stop-words
+     *
+     * @param uid Index identifier
+     * @return ranking rules settings of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String[] getStopWordsSettings(String uid) throws Exception {
+        return this.gson.fromJson(
+                meilisearchHttpRequest.get("/indexes/" + uid + "/settings/stop-words"),
+                String[].class);
+    }
+
+    /**
+     * Updates the stop-words settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/stop_words.html#update-stop-words
+     *
+     * @param uid Index identifier
+     * @param stopWords the data that contains the new settings
+     * @return updateId is the id of the update
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateStopWordsSettings(String uid, String[] stopWords) throws Exception {
+        String stopWordsAsJson = gson.toJson(stopWords);
+        return this.gson.fromJson(
+                meilisearchHttpRequest.post(
+                        "/indexes/" + uid + "/settings/stop-words", stopWordsAsJson),
+                UpdateStatus.class);
+    }
+
+    /**
+     * Resets the stop-words settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/stop_words.html#reset-stop-words
+     *
+     * @param uid Index identifier
+     * @return updateId is the id of the update
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetStopWordsSettings(String uid) throws Exception {
+        return this.gson.fromJson(
+                meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/stop-words"),
+                UpdateStatus.class);
+    }
 }
