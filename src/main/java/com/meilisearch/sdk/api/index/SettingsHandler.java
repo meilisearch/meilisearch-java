@@ -6,6 +6,7 @@ import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
 import com.meilisearch.sdk.http.factory.RequestFactory;
 import com.meilisearch.sdk.http.request.HttpMethod;
 import java.util.Collections;
+import java.util.Map;
 
 public class SettingsHandler {
     private final ServiceTemplate serviceTemplate;
@@ -115,4 +116,53 @@ public class SettingsHandler {
                         HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
                 Update.class);
     }
+
+	/**
+	 * Gets the ranking rules settings of a given index Refer
+	 * https://docs.meilisearch.com/reference/api/synonyms.html#get-synonyms
+	 *
+	 * @param uid Index identifier
+	 * @return ranking rules settings of a given uid as String
+	 * @throws MeiliSearchRuntimeException if something goes wrong
+	 */
+	public Settings getSynonymsSettings(String uid) throws MeiliSearchRuntimeException {
+		String requestQuery = "/indexes/" + uid + "/settings/synonyms";
+		return serviceTemplate.execute(
+			requestFactory.create(HttpMethod.GET, requestQuery, Collections.emptyMap(), null),
+			Settings.class);
+	}
+
+	/**
+	 * Updates the ranking rules settings of a given index Refer
+	 * https://docs.meilisearch.com/reference/api/synonyms.html#update-synonyms
+	 *
+	 * @param uid Index identifier
+	 * @param synonyms the data that contains the new ranking rules settings
+	 * @return updateId is the id of the update
+	 * @throws MeiliSearchRuntimeException if something goes wrong
+	 */
+	public Update updateSynonymsSettings(String uid, Map<String, String[]> synonyms)
+		throws MeiliSearchRuntimeException {
+		String requestQuery = "/indexes/" + uid + "/settings/synonyms";
+		return serviceTemplate.execute(
+			requestFactory.create(
+				HttpMethod.POST, requestQuery, Collections.emptyMap(), synonyms),
+			Update.class);
+	}
+
+	/**
+	 * Resets the ranking rules settings of a given index Refer
+	 * https://docs.meilisearch.com/reference/api/synonyms.html#reset-synonyms
+	 *
+	 * @param uid Index identifier
+	 * @return updateId is the id of the update
+	 * @throws MeiliSearchRuntimeException if something goes wrong
+	 */
+	public Update resetSynonymsSettings(String uid) throws MeiliSearchRuntimeException {
+		String requestQuery = "/indexes/" + uid + "/settings/synonyms";
+		return serviceTemplate.execute(
+			requestFactory.create(
+				HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
+			Update.class);
+	}
 }

@@ -5,6 +5,7 @@ import com.meilisearch.sdk.model.SearchResult;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -277,6 +278,40 @@ public class Index implements Serializable {
     public UpdateStatus resetRankingRuleSettings() throws Exception {
         return this.settingsHandler.resetRankingRulesSettings(this.uid);
     }
+
+	/**
+	 * Gets the synonyms settings of the index Refer
+	 * https://docs.meilisearch.com/reference/api/settings.html#get-settings
+	 *
+	 * @return synonyms of a given uid as String
+	 * @throws Exception if something goes wrong
+	 */
+	public Map<String, String[]> getSynonymsSettings() throws Exception {
+		return this.settingsHandler.getSynonymsSettings(this.uid);
+	}
+
+	/**
+	 * Updates the synonyms settings of the index Refer
+	 * https://docs.meilisearch.com/reference/api/settings.html#update-settings
+	 *
+	 * @param synonyms key (String) value (array) pair of synonyms
+	 * @return UpdateStatus
+	 * @throws Exception if something goes wrong
+	 */
+	public UpdateStatus updateSynonymsSettings(Map<String, String[]> synonyms) throws Exception {
+		return this.settingsHandler.updateSynonymsSettings(this.uid, synonyms);
+	}
+
+	/**
+	 * Resets the synonyms settings of the index Refer
+	 * https://docs.meilisearch.com/reference/api/settings.html#reset-settings
+	 *
+	 * @return UpdateStatus
+	 * @throws Exception if something goes wrong
+	 */
+	public UpdateStatus resetSynonymsSettings() throws Exception {
+		return this.settingsHandler.resetSynonymsSettings(this.uid);
+	}
 
     /**
      * Gets an index update by its id

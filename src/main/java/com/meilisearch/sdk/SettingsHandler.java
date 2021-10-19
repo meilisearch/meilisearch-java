@@ -1,6 +1,7 @@
 package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
+import java.util.Map;
 
 /**
  * Settings Handler for manipulation of an Index {@link Settings}
@@ -107,4 +108,49 @@ public class SettingsHandler {
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/ranking-rules"),
                 UpdateStatus.class);
     }
+
+	/**
+	 * Gets the synonyms settings of a given index Refer
+	 * https://docs.meilisearch.com/reference/api/synonyms.html#get-synonyms
+	 *
+	 * @param uid Index identifier
+	 * @return ranking rules settings of a given uid as String
+	 * @throws Exception if something goes wrong
+	 */
+	public Map<String, String[]> getSynonymsSettings(String uid) throws Exception {
+		return this.gson.<Map<String, String[]>>fromJson(
+			meilisearchHttpRequest.get("/indexes/" + uid + "/settings/synonyms"), Map.class);
+	}
+
+	/**
+	 * Updates the synonyms settings of a given index Refer
+	 * https://docs.meilisearch.com/reference/api/synonyms.html#update-synonyms
+	 *
+	 * @param uid Index identifier
+	 * @param synonyms the data that contains the new settings
+	 * @return updateId is the id of the update
+	 * @throws Exception if something goes wrong
+	 */
+	public UpdateStatus updateSynonymsSettings(String uid, Map<String, String[]> synonyms)
+		throws Exception {
+		String synonymsAsJson = gson.toJson(synonyms);
+		return this.gson.fromJson(
+			meilisearchHttpRequest.post(
+				"/indexes/" + uid + "/settings/synonyms", synonymsAsJson),
+			UpdateStatus.class);
+	}
+
+	/**
+	 * Resets the synonyms settings of a given index Refer
+	 * https://docs.meilisearch.com/reference/api/synonyms.html#reset-synonyms
+	 *
+	 * @param uid Index identifier
+	 * @return updateId is the id of the update
+	 * @throws Exception if something goes wrong
+	 */
+	public UpdateStatus resetSynonymsSettings(String uid) throws Exception {
+		return this.gson.fromJson(
+			meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/synonyms"),
+			UpdateStatus.class);
+	}
 }
