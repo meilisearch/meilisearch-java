@@ -329,7 +329,42 @@ search_guide_2: |-
     new SearchRequest("Avengers").setFilter(new String[] {"release_date > \"795484800\""});
   client.index("movies").search(searchRequest);
 getting_started_add_documents_md: |-
+  **Maven**
+  Add the following code to the `<dependencies>` section of your project:
+  ```xml
+  <dependency>
+    <groupId>com.meilisearch.sdk</groupId>
+    <artifactId>meilisearch-java</artifactId>
+    <version>0.5.0</version>
+    <type>pom</type>
+  </dependency>
+  ```
+
+  **Gradle**
+  Add the following line to the `dependencies` section of your `build.gradle`:
+  ```groovy
+  implementation 'com.meilisearch.sdk:meilisearch-java:0.5.0'
+  ```
+
+  ```java
+  import com.meilisearch.sdk;
+  import java.nio.file.Files;
+  import java.nio.file.Path;
+
+  Path fileName = Path.of("movies.json");
+  String moviesJson = Files.readString(fileName);
+  Client client = new Client(new Config("http://localhost:7700", "masterKey"));
+  Index index = client.index("movies");
+  index.addDocuments(moviesJson);
+  ```
+
+  [About this SDK](https://github.com/meilisearch/meilisearch-java)
 getting_started_search_md: |-
+  ```java
+  client.index("movies").search("botman");
+  ```
+
+  [About this SDK](https://github.com/meilisearch/meilisearch-java)
 faceted_search_update_settings_1: |-
   Settings settings = new Settings();
   settings.setFilterableAttributes(new String[] {"director", "genres"});
@@ -359,6 +394,16 @@ faceted_search_walkthrough_facets_distribution_1: |-
     new SearchRequest("Batman").setFacetsDistribution(new String[] {"genres"});
   client.index("movies").search(searchRequest);
 add_movies_json_1: |-
+  import com.meilisearch.sdk;
+  import org.json.JSONArray;
+  import java.nio.file.Files;
+  import java.nio.file.Path;
+
+  Path fileName = Path.of("movies.json");
+  String moviesJson = Files.readString(fileName);
+  Client client = new Client(new Config("http://localhost:7700", "masterKey"));
+  Index index = client.index("movies");
+  index.addDocuments(moviesJson);
 post_dump_1: |-
   client.createDump();
 get_dump_status_1: |-
