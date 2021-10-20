@@ -245,6 +245,40 @@ public class Index implements Serializable {
     }
 
     /**
+     * Gets the ranking rule settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/settings.html#get-settings
+     *
+     * @return ranking rules of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String[] getRankingRuleSettings() throws Exception {
+        return this.settingsHandler.getRankingRuleSettings(this.uid);
+    }
+
+    /**
+     * Updates the ranking rule settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/settings.html#update-settings
+     *
+     * @param rankingRules array that contain the data with the new ranking rules
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateRankingRuleSettings(String[] rankingRules) throws Exception {
+        return this.settingsHandler.updateRankingRuleSettings(this.uid, rankingRules);
+    }
+
+    /**
+     * Resets the ranking rule settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/settings.html#reset-settings
+     *
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetRankingRuleSettings() throws Exception {
+        return this.settingsHandler.resetRankingRulesSettings(this.uid);
+    }
+
+    /**
      * Gets an index update by its id
      *
      * @param updateId ID of the index update
