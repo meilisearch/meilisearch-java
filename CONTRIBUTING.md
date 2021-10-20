@@ -126,6 +126,12 @@ version = 'X.X.X'
 implementation 'com.meilisearch.sdk:meilisearch-java:X.X.X'
 ```
 
+- [.code-samples.meilisearch.yaml](/.code-samples.meilisearch.yaml) in the `getting_started_add_documents_md` field
+
+```groovy
+implementation 'com.meilisearch.sdk:meilisearch-java:X.X.X'
+```
+
 Once the changes are merged on `main`, you can publish the current draft release via the [GitHub interface](https://github.com/meilisearch/meilisearch-java/releases).
 
 A GitHub Action will be triggered and publish a new release to Maven repository.
