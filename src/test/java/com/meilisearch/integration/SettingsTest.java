@@ -289,6 +289,58 @@ public class SettingsTest extends AbstractIT {
         assertArrayEquals(initialStopWords, stopWordsAfterReset);
     }
 
+    @Test
+    @DisplayName("Test get searchable attributes settings by uid")
+    public void testGetSearchableAttributesSettings() throws Exception {
+        Index index = createIndex("testGetSearchableAttributesSettings");
+        Settings initialSettings = index.getSettings();
+        String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
+
+        assertEquals(
+                initialSettings.getSearchableAttributes().length,
+                initialSearchableAttributes.length);
+        assertArrayEquals(initialSettings.getSearchableAttributes(), initialSearchableAttributes);
+    }
+
+    @Test
+    @DisplayName("Test update searchable attributes settings")
+    public void testUpdateSearchableAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateSearchableAttributesSettings");
+        String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
+        String[] newSearchableAttributes = {"title", "description", "genre"};
+
+        index.waitForPendingUpdate(
+                index.updateSearchableAttributesSettings(newSearchableAttributes).getUpdateId());
+        String[] updatedSearchableAttributes = index.getSearchableAttributesSettings();
+
+        assertEquals(newSearchableAttributes.length, updatedSearchableAttributes.length);
+        assertArrayEquals(newSearchableAttributes, updatedSearchableAttributes);
+        assertNotEquals(initialSearchableAttributes.length, updatedSearchableAttributes.length);
+    }
+
+    @Test
+    @DisplayName("Test reset searchable attributes settings")
+    public void testResetSearchableAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateSearchableAttributesSettings");
+        String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
+        String[] newSearchableAttributes = {"title", "description", "genre"};
+
+        index.waitForPendingUpdate(
+                index.updateSearchableAttributesSettings(newSearchableAttributes).getUpdateId());
+        String[] updatedSearchableAttributes = index.getSearchableAttributesSettings();
+
+        assertEquals(newSearchableAttributes.length, updatedSearchableAttributes.length);
+        assertArrayEquals(newSearchableAttributes, updatedSearchableAttributes);
+        assertNotEquals(initialSearchableAttributes.length, updatedSearchableAttributes.length);
+
+        index.waitForPendingUpdate(index.resetSearchableAttributesSettings().getUpdateId());
+        String[] searchableAttributesAfterReset = index.getSearchableAttributesSettings();
+
+        assertNotEquals(updatedSearchableAttributes.length, searchableAttributesAfterReset.length);
+        assertEquals(initialSearchableAttributes.length, searchableAttributesAfterReset.length);
+        assertArrayEquals(initialSearchableAttributes, searchableAttributesAfterReset);
+    }
+
     private Index createIndex(String indexUid) throws Exception {
         Index index = client.index(indexUid);
         UpdateStatus updateInfo =

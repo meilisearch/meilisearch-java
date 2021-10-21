@@ -68,7 +68,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/ranking_rules.html#get-ranking-rules
      *
      * @param uid Index identifier
-     * @return ranking rules settings of a given uid as String
+     * @return A Map that contains all synonyms and their associated words
      * @throws Exception if something goes wrong
      */
     public String[] getRankingRuleSettings(String uid) throws Exception {
@@ -172,7 +172,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/stop_words.html#get-stop-words
      *
      * @param uid Index identifier
-     * @return ranking rules settings of a given uid as String
+     * @return An array of strings that contains the stop-words.
      * @throws Exception if something goes wrong
      */
     public String[] getStopWordsSettings(String uid) throws Exception {
@@ -186,7 +186,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/stop_words.html#update-stop-words
      *
      * @param uid Index identifier
-     * @param stopWords the data that contains the new settings
+     * @param stopWords An array of strings that contains the stop-words
      * @return updateId is the id of the update
      * @throws Exception if something goes wrong
      */
@@ -209,6 +209,54 @@ public class SettingsHandler {
     public UpdateStatus resetStopWordsSettings(String uid) throws Exception {
         return this.gson.fromJson(
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/stop-words"),
+                UpdateStatus.class);
+    }
+
+    /**
+     * Get the searchable attributes of an index.
+     * https://docs.meilisearch.com/reference/api/searchable_attributes.html#get-searchable-attributes
+     *
+     * @param uid Index identifier
+     * @return searchable attributes settings of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String[] getSearchableAttributesSettings(String uid) throws Exception {
+        return this.gson.fromJson(
+                meilisearchHttpRequest.get("/indexes/" + uid + "/settings/searchable-attributes"),
+                String[].class);
+    }
+
+    /**
+     * Updates the searchable attributes an index Refer
+     * https://docs.meilisearch.com/reference/api/searchable_attributes.html#update-searchable-attributes
+     *
+     * @param uid Index identifier
+     * @param searchableAttributes An array of strings that contains the stop-words.
+     * @return updateId is the id of the update
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateSearchableAttributesSettings(
+            String uid, String[] searchableAttributes) throws Exception {
+        String searchableAttributesAsJson = gson.toJson(searchableAttributes);
+        return this.gson.fromJson(
+                meilisearchHttpRequest.post(
+                        "/indexes/" + uid + "/settings/searchable-attributes",
+                        searchableAttributesAsJson),
+                UpdateStatus.class);
+    }
+
+    /**
+     * Reset the searchable attributes of the index to the default value.
+     * https://docs.meilisearch.com/reference/api/searchable_attributes.html#reset-searchable-attributes
+     *
+     * @param uid Index identifier
+     * @return updateId is the id of the update
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetSearchableAttributesSettings(String uid) throws Exception {
+        return this.gson.fromJson(
+                meilisearchHttpRequest.delete(
+                        "/indexes/" + uid + "/settings/searchable-attributes"),
                 UpdateStatus.class);
     }
 }

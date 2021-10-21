@@ -290,28 +290,28 @@ public class Index implements Serializable {
 		return this.settingsHandler.getSynonymsSettings(this.uid);
 	}
 
-	/**
-	 * Updates the synonyms settings of the index Refer
-	 * https://docs.meilisearch.com/reference/api/settings.html#update-settings
-	 *
-	 * @param synonyms key (String) value (array) pair of synonyms
-	 * @return UpdateStatus
-	 * @throws Exception if something goes wrong
-	 */
-	public UpdateStatus updateSynonymsSettings(Map<String, String[]> synonyms) throws Exception {
-		return this.settingsHandler.updateSynonymsSettings(this.uid, synonyms);
-	}
+    /**
+     * Updates the synonyms settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/synonyms.html#update-synonyms
+     *
+     * @param synonyms key (String) value (array) pair of synonyms
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateSynonymsSettings(Map<String, String[]> synonyms) throws Exception {
+        return this.settingsHandler.updateSynonymsSettings(this.uid, synonyms);
+    }
 
-	/**
-	 * Resets the synonyms settings of the index Refer
-	 * https://docs.meilisearch.com/reference/api/settings.html#reset-settings
-	 *
-	 * @return UpdateStatus
-	 * @throws Exception if something goes wrong
-	 */
-	public UpdateStatus resetSynonymsSettings() throws Exception {
-		return this.settingsHandler.resetSynonymsSettings(this.uid);
-	}
+    /**
+     * Resets the synonyms settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/synonyms.html#reset-synonyms
+     *
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetSynonymsSettings() throws Exception {
+        return this.settingsHandler.resetSynonymsSettings(this.uid);
+    }
 
     /**
      * Gets the stop-words settings of the index Refer
@@ -348,6 +348,42 @@ public class Index implements Serializable {
     }
 
     /**
+     * Get the searchable attributes of an index.
+     * https://docs.meilisearch.com/reference/api/searchable_attributes.html#get-searchable-attributes
+     *
+     * @return searchable attributes of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String[] getSearchableAttributesSettings() throws Exception {
+        return this.settingsHandler.getSearchableAttributesSettings(this.uid);
+    }
+
+    /**
+     * Updates the searchable attributes an index Refer
+     * https://docs.meilisearch.com/reference/api/searchable_attributes.html#update-searchable-attributes
+     *
+     * @param searchableAttributes key (String) value (array) pair of synonyms
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateSearchableAttributesSettings(String[] searchableAttributes)
+            throws Exception {
+        return this.settingsHandler.updateSearchableAttributesSettings(
+                this.uid, searchableAttributes);
+    }
+
+    /**
+     * Reset the searchable attributes of the index to the default value.
+     * https://docs.meilisearch.com/reference/api/searchable_attributes.html#reset-searchable-attributes
+     *
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetSearchableAttributesSettings() throws Exception {
+        return this.settingsHandler.resetSearchableAttributesSettings(this.uid);
+    }
+
+	/**
      * Gets an index update by its id
      *
      * @param updateId ID of the index update
