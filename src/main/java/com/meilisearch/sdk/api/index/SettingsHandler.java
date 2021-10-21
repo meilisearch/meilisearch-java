@@ -315,4 +315,57 @@ public class SettingsHandler {
                         HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
                 Update.class);
     }
+
+    /**
+     * Get an index's filterableAttributes.
+     * https://docs.meilisearch.com/reference/api/filterable_attributes.html#get-filterable-attributes
+     *
+     * @param uid Index identifier
+     * @return filterable attributes settings of a given uid as String
+     * @throws MeiliSearchRuntimeException if something goes wrong
+     */
+    public Settings getFilterableAttributesSettings(String uid) throws MeiliSearchRuntimeException {
+        String requestQuery = "/indexes/" + uid + "/settings/filterable-attributes";
+        return serviceTemplate.execute(
+                requestFactory.create(HttpMethod.GET, requestQuery, Collections.emptyMap(), null),
+                Settings.class);
+    }
+
+    /**
+     * Update an index's filterable attributes list. This will re-index all documents in the index.
+     * https://docs.meilisearch.com/reference/api/filterable_attributes.html#update-filterable-attributes
+     *
+     * @param uid Index identifier
+     * @param filterableAttributes An array of strings containing the attributes that can be used as
+     *     filters at query time.
+     * @return updateId is the id of the update
+     * @throws MeiliSearchRuntimeException if something goes wrong
+     */
+    public Update updateFilterableAttributesSettings(String uid, String[] filterableAttributes)
+            throws MeiliSearchRuntimeException {
+        String requestQuery = "/indexes/" + uid + "/settings/filterable-attributes";
+        return serviceTemplate.execute(
+                requestFactory.create(
+                        HttpMethod.POST,
+                        requestQuery,
+                        Collections.emptyMap(),
+                        filterableAttributes),
+                Update.class);
+    }
+
+    /**
+     * Reset an index's filterable attributes list back to its default value.
+     * https://docs.meilisearch.com/reference/api/filterable_attributes.html#reset-filterable-attributes
+     *
+     * @param uid Index identifier
+     * @return updateId is the id of the update
+     * @throws MeiliSearchRuntimeException if something goes wrong
+     */
+    public Update resetFilterableAttributesSettings(String uid) throws MeiliSearchRuntimeException {
+        String requestQuery = "/indexes/" + uid + "/settings/filterable-attributes";
+        return serviceTemplate.execute(
+                requestFactory.create(
+                        HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
+                Update.class);
+    }
 }

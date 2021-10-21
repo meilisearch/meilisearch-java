@@ -1,5 +1,7 @@
 package com.meilisearch.integration;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -11,6 +13,7 @@ import com.meilisearch.sdk.Settings;
 import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.utils.Movie;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.AfterAll;
@@ -389,6 +392,63 @@ public class SettingsTest extends AbstractIT {
         String[] displayedAttributesAfterReset = index.getDisplayedAttributesSettings();
 
         assertNotEquals(updatedDisplayedAttributes.length, displayedAttributesAfterReset.length);
+    }
+
+    @Test
+    @DisplayName("Test get filterable attributes settings by uid")
+    public void testGetFilterableAttributesSettings() throws Exception {
+        Index index = createIndex("testGetDisplayedAttributesSettings");
+        Settings initialSettings = index.getSettings();
+        String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
+
+        assertEquals(
+                initialSettings.getFilterableAttributes().length,
+                initialFilterableAttributes.length);
+        assertArrayEquals(initialSettings.getFilterableAttributes(), initialFilterableAttributes);
+    }
+
+    @Test
+    @DisplayName("Test update filterable attributes settings")
+    public void testUpdateFilterableAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateDisplayedAttributesSettings");
+        String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
+        String[] newFilterableAttributes = {"title", "description", "genre", "release_date"};
+
+        index.waitForPendingUpdate(
+                index.updateFilterableAttributesSettings(newFilterableAttributes).getUpdateId());
+        String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
+
+        assertEquals(newFilterableAttributes.length, updatedFilterableAttributes.length);
+        assertThat(
+                Arrays.asList(newFilterableAttributes),
+                containsInAnyOrder(updatedFilterableAttributes));
+        assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
+    }
+
+    @Test
+    @DisplayName("Test reset filterable attributes settings")
+    public void testResetFilterableAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateDisplayedAttributesSettings");
+        String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
+        String[] newFilterableAttributes = {
+            "title", "description", "genres", "director", "release_date"
+        };
+
+        index.waitForPendingUpdate(
+                index.updateFilterableAttributesSettings(newFilterableAttributes).getUpdateId());
+        String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
+
+        assertEquals(newFilterableAttributes.length, updatedFilterableAttributes.length);
+        assertThat(
+                Arrays.asList(newFilterableAttributes),
+                containsInAnyOrder(updatedFilterableAttributes));
+        assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
+
+        index.waitForPendingUpdate(index.resetFilterableAttributesSettings().getUpdateId());
+        String[] filterableAttributesAfterReset = index.getFilterableAttributesSettings();
+
+        assertNotEquals(updatedFilterableAttributes.length, filterableAttributesAfterReset.length);
+        assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
     }
 
     private Index createIndex(String indexUid) throws Exception {

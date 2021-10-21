@@ -306,4 +306,53 @@ public class SettingsHandler {
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/displayed-attributes"),
                 UpdateStatus.class);
     }
+
+    /**
+     * Get an index's filterableAttributes.
+     * https://docs.meilisearch.com/reference/api/filterable_attributes.html#get-filterable-attributes
+     *
+     * @param uid Index identifier
+     * @return filterable attributes settings of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String[] getFilterableAttributesSettings(String uid) throws Exception {
+        return this.gson.fromJson(
+                meilisearchHttpRequest.get("/indexes/" + uid + "/settings/filterable-attributes"),
+                String[].class);
+    }
+
+    /**
+     * Update an index's filterable attributes list. This will re-index all documents in the index.
+     * https://docs.meilisearch.com/reference/api/filterable_attributes.html#update-filterable-attributes
+     *
+     * @param uid Index identifier
+     * @param filterableAttributes An array of strings containing the attributes that can be used as
+     *     filters at query time.
+     * @return updateId is the id of the update
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateFilterableAttributesSettings(
+            String uid, String[] filterableAttributes) throws Exception {
+        String filterableAttributesAsJson = gson.toJson(filterableAttributes);
+        return this.gson.fromJson(
+                meilisearchHttpRequest.post(
+                        "/indexes/" + uid + "/settings/filterable-attributes",
+                        filterableAttributesAsJson),
+                UpdateStatus.class);
+    }
+
+    /**
+     * Reset an index's filterable attributes list back to its default value.
+     * https://docs.meilisearch.com/reference/api/filterable_attributes.html#reset-filterable-attributes
+     *
+     * @param uid Index identifier
+     * @return updateId is the id of the update
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetFilterableAttributesSettings(String uid) throws Exception {
+        return this.gson.fromJson(
+                meilisearchHttpRequest.delete(
+                        "/indexes/" + uid + "/settings/filterable-attributes"),
+                UpdateStatus.class);
+    }
 }

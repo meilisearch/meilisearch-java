@@ -419,6 +419,43 @@ public class Index implements Serializable {
     }
 
     /**
+     * Get an index's filterableAttributes.
+     * https://docs.meilisearch.com/reference/api/filterable_attributes.html#get-filterable-attributes
+     *
+     * @return display attributes of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String[] getFilterableAttributesSettings() throws Exception {
+        return this.settingsHandler.getFilterableAttributesSettings(this.uid);
+    }
+
+    /**
+     * Update an index's filterable attributes list. This will re-index all documents in the index.
+     * https://docs.meilisearch.com/reference/api/filterable_attributes.html#update-filterable-attributes
+     *
+     * @param filterableAttributes An array of strings containing the attributes that can be used as
+     *     filters at query time.
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateFilterableAttributesSettings(String[] filterableAttributes)
+            throws Exception {
+        return this.settingsHandler.updateFilterableAttributesSettings(
+                this.uid, filterableAttributes);
+    }
+
+    /**
+     * Reset an index's filterable attributes list back to its default value.
+     * https://docs.meilisearch.com/reference/api/filterable_attributes.html#reset-filterable-attributes
+     *
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetFilterableAttributesSettings() throws Exception {
+        return this.settingsHandler.resetFilterableAttributesSettings(this.uid);
+    }
+
+    /**
      * Gets an index update by its id
      *
      * @param updateId ID of the index update
