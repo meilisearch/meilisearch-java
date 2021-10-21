@@ -341,6 +341,56 @@ public class SettingsTest extends AbstractIT {
         assertArrayEquals(initialSearchableAttributes, searchableAttributesAfterReset);
     }
 
+    @Test
+    @DisplayName("Test get display attributes settings by uid")
+    public void testGetDisplayedAttributesSettings() throws Exception {
+        Index index = createIndex("testGetDisplayedAttributesSettings");
+        Settings initialSettings = index.getSettings();
+        String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
+
+        assertEquals(
+                initialSettings.getSearchableAttributes().length,
+                initialDisplayedAttributes.length);
+        assertArrayEquals(initialSettings.getDisplayedAttributes(), initialDisplayedAttributes);
+    }
+
+    @Test
+    @DisplayName("Test update display attributes settings")
+    public void testUpdateDisplayedAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateDisplayedAttributesSettings");
+        String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
+        String[] newDisplayedAttributes = {"title", "description", "genre", "release_date"};
+
+        index.waitForPendingUpdate(
+                index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUpdateId());
+        String[] updatedDisplayedAttributes = index.getDisplayedAttributesSettings();
+
+        assertEquals(newDisplayedAttributes.length, updatedDisplayedAttributes.length);
+        assertArrayEquals(newDisplayedAttributes, updatedDisplayedAttributes);
+        assertNotEquals(initialDisplayedAttributes.length, updatedDisplayedAttributes.length);
+    }
+
+    @Test
+    @DisplayName("Test reset display attributes settings")
+    public void testResetDisplayedAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateDisplayedAttributesSettings");
+        String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
+        String[] newDisplayedAttributes = {"title", "description", "genre", "release_date", "cast"};
+
+        index.waitForPendingUpdate(
+                index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUpdateId());
+        String[] updatedDisplayedAttributes = index.getDisplayedAttributesSettings();
+
+        assertEquals(newDisplayedAttributes.length, updatedDisplayedAttributes.length);
+        assertArrayEquals(newDisplayedAttributes, updatedDisplayedAttributes);
+        assertNotEquals(initialDisplayedAttributes.length, updatedDisplayedAttributes.length);
+
+        index.waitForPendingUpdate(index.resetDisplayedAttributesSettings().getUpdateId());
+        String[] displayedAttributesAfterReset = index.getDisplayedAttributesSettings();
+
+        assertNotEquals(updatedDisplayedAttributes.length, displayedAttributesAfterReset.length);
+    }
+
     private Index createIndex(String indexUid) throws Exception {
         Index index = client.index(indexUid);
         UpdateStatus updateInfo =

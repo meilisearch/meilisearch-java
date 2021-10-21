@@ -266,4 +266,53 @@ public class SettingsHandler {
                         HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
                 Update.class);
     }
+
+    /**
+     * Get the display attributes of an index.
+     * https://docs.meilisearch.com/reference/api/displayed_attributes.html#get-displayed-attributes
+     *
+     * @param uid Index identifier
+     * @return display attributes settings of a given uid as String
+     * @throws MeiliSearchRuntimeException if something goes wrong
+     */
+    public Settings getDisplayedAttributesSettings(String uid) throws MeiliSearchRuntimeException {
+        String requestQuery = "/indexes/" + uid + "/settings/displayed-attributes";
+        return serviceTemplate.execute(
+                requestFactory.create(HttpMethod.GET, requestQuery, Collections.emptyMap(), null),
+                Settings.class);
+    }
+
+    /**
+     * Updates the display attributes of an index Refer
+     * https://docs.meilisearch.com/reference/api/displayed_attributes.html#update-displayed-attributes
+     *
+     * @param uid Index identifier
+     * @param displayAttributes An array of strings that contains attributes of an index to display
+     * @return updateId is the id of the update
+     * @throws MeiliSearchRuntimeException if something goes wrong
+     */
+    public Update updateDisplayedAttributesSettings(String uid, String[] displayAttributes)
+            throws MeiliSearchRuntimeException {
+        String requestQuery = "/indexes/" + uid + "/settings/displayed-attributes";
+        return serviceTemplate.execute(
+                requestFactory.create(
+                        HttpMethod.POST, requestQuery, Collections.emptyMap(), displayAttributes),
+                Update.class);
+    }
+
+    /**
+     * Reset the displayed attributes of the index to the default value.
+     * https://docs.meilisearch.com/reference/api/displayed_attributes.html#reset-displayed-attributes
+     *
+     * @param uid Index identifier
+     * @return updateId is the id of the update
+     * @throws MeiliSearchRuntimeException if something goes wrong
+     */
+    public Update resetDisplayedAttributesSettings(String uid) throws MeiliSearchRuntimeException {
+        String requestQuery = "/indexes/" + uid + "/settings/displayed-attributes";
+        return serviceTemplate.execute(
+                requestFactory.create(
+                        HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
+                Update.class);
+    }
 }

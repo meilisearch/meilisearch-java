@@ -259,4 +259,51 @@ public class SettingsHandler {
                         "/indexes/" + uid + "/settings/searchable-attributes"),
                 UpdateStatus.class);
     }
+
+    /**
+     * Get the display attributes of an index.
+     * https://docs.meilisearch.com/reference/api/displayed_attributes.html#get-displayed-attributes
+     *
+     * @param uid Index identifier
+     * @return display attributes of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String[] getDisplayedAttributesSettings(String uid) throws Exception {
+        return this.gson.fromJson(
+                meilisearchHttpRequest.get("/indexes/" + uid + "/settings/displayed-attributes"),
+                String[].class);
+    }
+
+    /**
+     * Updates the display attributes of an index Refer
+     * https://docs.meilisearch.com/reference/api/displayed_attributes.html#update-displayed-attributes
+     *
+     * @param uid Index identifier
+     * @param displayAttributes An array of strings that contains attributes of an index to display
+     * @return updateId is the id of the update
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateDisplayedAttributesSettings(String uid, String[] displayAttributes)
+            throws Exception {
+        String displayAttributesAsJson = gson.toJson(displayAttributes);
+        return this.gson.fromJson(
+                meilisearchHttpRequest.post(
+                        "/indexes/" + uid + "/settings/displayed-attributes",
+                        displayAttributesAsJson),
+                UpdateStatus.class);
+    }
+
+    /**
+     * Reset the displayed attributes of the index to the default value.
+     * https://docs.meilisearch.com/reference/api/displayed_attributes.html#reset-displayed-attributes
+     *
+     * @param uid Index identifier
+     * @return updateId is the id of the update
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetDisplayedAttributesSettings(String uid) throws Exception {
+        return this.gson.fromJson(
+                meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/displayed-attributes"),
+                UpdateStatus.class);
+    }
 }

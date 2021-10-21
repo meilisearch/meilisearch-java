@@ -383,7 +383,42 @@ public class Index implements Serializable {
         return this.settingsHandler.resetSearchableAttributesSettings(this.uid);
     }
 
-	/**
+    /**
+     * Get the display attributes of an index.
+     * https://docs.meilisearch.com/reference/api/displayed_attributes.html#get-displayed-attributes
+     *
+     * @return display attributes of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String[] getDisplayedAttributesSettings() throws Exception {
+        return this.settingsHandler.getDisplayedAttributesSettings(this.uid);
+    }
+
+    /**
+     * Updates the display attributes of an index Refer
+     * https://docs.meilisearch.com/reference/api/displayed_attributes.html#update-displayed-attributes
+     *
+     * @param displayAttributes An array of strings that contains attributes of an index to display
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateDisplayedAttributesSettings(String[] displayAttributes)
+            throws Exception {
+        return this.settingsHandler.updateDisplayedAttributesSettings(this.uid, displayAttributes);
+    }
+
+    /**
+     * Reset the displayed attributes of the index to the default value.
+     * https://docs.meilisearch.com/reference/api/displayed_attributes.html#reset-displayed-attributes
+     *
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetDisplayedAttributesSettings() throws Exception {
+        return this.settingsHandler.resetDisplayedAttributesSettings(this.uid);
+    }
+
+    /**
      * Gets an index update by its id
      *
      * @param updateId ID of the index update
