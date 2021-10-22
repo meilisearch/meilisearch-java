@@ -279,16 +279,16 @@ public class Index implements Serializable {
         return this.settingsHandler.resetRankingRulesSettings(this.uid);
     }
 
-	/**
-	 * Gets the synonyms settings of the index Refer
-	 * https://docs.meilisearch.com/reference/api/settings.html#get-settings
-	 *
-	 * @return synonyms of a given uid as String
-	 * @throws Exception if something goes wrong
-	 */
-	public Map<String, String[]> getSynonymsSettings() throws Exception {
-		return this.settingsHandler.getSynonymsSettings(this.uid);
-	}
+    /**
+     * Gets the synonyms settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/settings.html#get-settings
+     *
+     * @return synonyms of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public Map<String, String[]> getSynonymsSettings() throws Exception {
+        return this.settingsHandler.getSynonymsSettings(this.uid);
+    }
 
     /**
      * Updates the synonyms settings of the index Refer
@@ -453,6 +453,40 @@ public class Index implements Serializable {
      */
     public UpdateStatus resetFilterableAttributesSettings() throws Exception {
         return this.settingsHandler.resetFilterableAttributesSettings(this.uid);
+    }
+
+    /**
+     * Get the distinct attribute field of an index.
+     * https://docs.meilisearch.com/reference/api/distinct_attribute.html#get-distinct-attribute
+     *
+     * @return distinct attribute field of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String getDistinctAttributeSettings() throws Exception {
+        return this.settingsHandler.getDistinctAttributeSettings(this.uid);
+    }
+
+    /**
+     * Update the distinct attribute field of an index.
+     * https://docs.meilisearch.com/reference/api/distinct_attribute.html#update-distinct-attribute
+     *
+     * @param distinctAttribute A String: the field name.
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateDistinctAttributeSettings(String distinctAttribute) throws Exception {
+        return this.settingsHandler.updateDistinctAttributeSettings(this.uid, distinctAttribute);
+    }
+
+    /**
+     * Reset the distinct attribute field of an index to its default value.
+     * https://docs.meilisearch.com/reference/api/distinct_attribute.html#reset-distinct-attribute
+     *
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetDistinctAttributeSettings() throws Exception {
+        return this.settingsHandler.resetDistinctAttributeSettings(this.uid);
     }
 
     /**

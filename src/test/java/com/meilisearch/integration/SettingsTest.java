@@ -188,61 +188,61 @@ public class SettingsTest extends AbstractIT {
         assertArrayEquals(initialRuleSettings, rankingRulesAfterReset);
     }
 
-	@Test
-	@DisplayName("Test get synonyms settings by uid")
-	public void testGetSynonymsSettings() throws Exception {
-		Index index = createIndex("testGetSynonymsSettings");
-		Settings initialSettings = index.getSettings();
-		Map<String, String[]> synonymsSettings = index.getSynonymsSettings();
+    @Test
+    @DisplayName("Test get synonyms settings by uid")
+    public void testGetSynonymsSettings() throws Exception {
+        Index index = createIndex("testGetSynonymsSettings");
+        Settings initialSettings = index.getSettings();
+        Map<String, String[]> synonymsSettings = index.getSynonymsSettings();
 
-		assertEquals(initialSettings.getSynonyms().size(), synonymsSettings.size());
-		assertEquals(initialSettings.getSynonyms(), synonymsSettings);
-	}
+        assertEquals(initialSettings.getSynonyms().size(), synonymsSettings.size());
+        assertEquals(initialSettings.getSynonyms(), synonymsSettings);
+    }
 
-	@Test
-	@DisplayName("Test update synonyms settings")
-	public void testUpdateSynonymsSettings() throws Exception {
-		Index index = createIndex("testUpdateSynonymsSettings");
-		Map<String, String[]> synonymsSettings = index.getSynonymsSettings();
-		HashMap<String, String[]> newSynonymsSettings = new HashMap<>();
-		newSynonymsSettings.put("wolverine", new String[] {"xmen", "logan"});
-		newSynonymsSettings.put("logan", new String[] {"wolverine", "xmen"});
-		newSynonymsSettings.put("wow", new String[] {"world of warcraft"});
+    @Test
+    @DisplayName("Test update synonyms settings")
+    public void testUpdateSynonymsSettings() throws Exception {
+        Index index = createIndex("testUpdateSynonymsSettings");
+        Map<String, String[]> synonymsSettings = index.getSynonymsSettings();
+        HashMap<String, String[]> newSynonymsSettings = new HashMap<>();
+        newSynonymsSettings.put("wolverine", new String[] {"xmen", "logan"});
+        newSynonymsSettings.put("logan", new String[] {"wolverine", "xmen"});
+        newSynonymsSettings.put("wow", new String[] {"world of warcraft"});
 
-		index.waitForPendingUpdate(index.updateSynonymsSettings(newSynonymsSettings).getUpdateId());
-		Map<String, String[]> updatedRankingRuleSettings = index.getSynonymsSettings();
+        index.waitForPendingUpdate(index.updateSynonymsSettings(newSynonymsSettings).getUpdateId());
+        Map<String, String[]> updatedRankingRuleSettings = index.getSynonymsSettings();
 
-		assertEquals(newSynonymsSettings.size(), updatedRankingRuleSettings.size());
-		assertEquals(newSynonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
-		assertNotEquals(synonymsSettings.size(), updatedRankingRuleSettings.size());
-		assertNotEquals(synonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
-	}
+        assertEquals(newSynonymsSettings.size(), updatedRankingRuleSettings.size());
+        assertEquals(newSynonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
+        assertNotEquals(synonymsSettings.size(), updatedRankingRuleSettings.size());
+        assertNotEquals(synonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
+    }
 
-	@Test
-	@DisplayName("Test reset synonyms settings")
-	public void testResetSynonymsSettings() throws Exception {
-		Index index = createIndex("testResetSynonymsSettings");
-		Map<String, String[]> synonymsSettings = index.getSynonymsSettings();
-		HashMap<String, String[]> newSynonymsSettings = new HashMap<>();
-		newSynonymsSettings.put("wolverine", new String[] {"xmen", "logan"});
-		newSynonymsSettings.put("logan", new String[] {"wolverine", "xmen"});
-		newSynonymsSettings.put("wow", new String[] {"world of warcraft"});
+    @Test
+    @DisplayName("Test reset synonyms settings")
+    public void testResetSynonymsSettings() throws Exception {
+        Index index = createIndex("testResetSynonymsSettings");
+        Map<String, String[]> synonymsSettings = index.getSynonymsSettings();
+        HashMap<String, String[]> newSynonymsSettings = new HashMap<>();
+        newSynonymsSettings.put("wolverine", new String[] {"xmen", "logan"});
+        newSynonymsSettings.put("logan", new String[] {"wolverine", "xmen"});
+        newSynonymsSettings.put("wow", new String[] {"world of warcraft"});
 
-		index.waitForPendingUpdate(index.updateSynonymsSettings(newSynonymsSettings).getUpdateId());
-		Map<String, String[]> updatedRankingRuleSettings = index.getSynonymsSettings();
+        index.waitForPendingUpdate(index.updateSynonymsSettings(newSynonymsSettings).getUpdateId());
+        Map<String, String[]> updatedRankingRuleSettings = index.getSynonymsSettings();
 
-		assertEquals(newSynonymsSettings.size(), updatedRankingRuleSettings.size());
-		assertEquals(newSynonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
-		assertNotEquals(synonymsSettings.size(), updatedRankingRuleSettings.size());
-		assertNotEquals(synonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
+        assertEquals(newSynonymsSettings.size(), updatedRankingRuleSettings.size());
+        assertEquals(newSynonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
+        assertNotEquals(synonymsSettings.size(), updatedRankingRuleSettings.size());
+        assertNotEquals(synonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
 
-		index.waitForPendingUpdate(index.resetSynonymsSettings().getUpdateId());
-		Map<String, String[]> synonymsSettingsAfterReset = index.getSynonymsSettings();
+        index.waitForPendingUpdate(index.resetSynonymsSettings().getUpdateId());
+        Map<String, String[]> synonymsSettingsAfterReset = index.getSynonymsSettings();
 
-		assertNotEquals(updatedRankingRuleSettings.size(), synonymsSettingsAfterReset.size());
-		assertEquals(synonymsSettings.size(), synonymsSettingsAfterReset.size());
-		assertEquals(synonymsSettings.keySet(), synonymsSettingsAfterReset.keySet());
-	}
+        assertNotEquals(updatedRankingRuleSettings.size(), synonymsSettingsAfterReset.size());
+        assertEquals(synonymsSettings.size(), synonymsSettingsAfterReset.size());
+        assertEquals(synonymsSettings.keySet(), synonymsSettingsAfterReset.keySet());
+    }
 
     @Test
     @DisplayName("Test get stop-words settings by uid")
@@ -449,6 +449,52 @@ public class SettingsTest extends AbstractIT {
 
         assertNotEquals(updatedFilterableAttributes.length, filterableAttributesAfterReset.length);
         assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
+    }
+
+    @Test
+    @DisplayName("Test get distinct attribute settings by uid")
+    public void testGetDistinctAttributeSettings() throws Exception {
+        Index index = createIndex("testGetDistinctAttributeSettings");
+        Settings initialSettings = index.getSettings();
+        String initialDistinctAttribute = index.getDistinctAttributeSettings();
+
+        assertEquals(initialSettings.getDistinctAttribute(), initialDistinctAttribute);
+    }
+
+    @Test
+    @DisplayName("Test update distinct attribute settings")
+    public void testUpdateDistinctAttributeSettings() throws Exception {
+        Index index = createIndex("testUpdateDistinctAttributeSettings");
+        String initialDistinctAttribute = index.getDistinctAttributeSettings();
+        String newDistinctAttribute = "title";
+
+        index.waitForPendingUpdate(
+                index.updateDistinctAttributeSettings(newDistinctAttribute).getUpdateId());
+        String updatedDistinctAttribute = index.getDistinctAttributeSettings();
+
+        assertEquals(newDistinctAttribute, updatedDistinctAttribute);
+        assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
+    }
+
+    @Test
+    @DisplayName("Test reset distinct attribute settings")
+    public void testResetDistinctAttributeSettings() throws Exception {
+        Index index = createIndex("testUpdateDistinctAttributeSettings");
+        String initialDistinctAttribute = index.getDistinctAttributeSettings();
+        String newDistinctAttribute = "title";
+
+        index.waitForPendingUpdate(
+                index.updateDistinctAttributeSettings(newDistinctAttribute).getUpdateId());
+        String updatedDistinctAttribute = index.getDistinctAttributeSettings();
+
+        assertEquals(newDistinctAttribute, updatedDistinctAttribute);
+        assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
+
+        index.waitForPendingUpdate(index.resetDistinctAttributeSettings().getUpdateId());
+        String distinctAttributeAfterReset = index.getDistinctAttributeSettings();
+
+        assertNotEquals(updatedDistinctAttribute, distinctAttributeAfterReset);
+        assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
     }
 
     private Index createIndex(String indexUid) throws Exception {

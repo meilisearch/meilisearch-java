@@ -109,50 +109,37 @@ public class SettingsHandler {
                 UpdateStatus.class);
     }
 
-	/**
-	 * Gets the synonyms settings of a given index Refer
-	 * https://docs.meilisearch.com/reference/api/synonyms.html#get-synonyms
-	 *
-	 * @param uid Index identifier
-	 * @return ranking rules settings of a given uid as String
-	 * @throws Exception if something goes wrong
-	 */
-	public Map<String, String[]> getSynonymsSettings(String uid) throws Exception {
-		return this.gson.<Map<String, String[]>>fromJson(
-			meilisearchHttpRequest.get("/indexes/" + uid + "/settings/synonyms"), Map.class);
-	}
+    /**
+     * Gets the synonyms settings of a given index Refer
+     * https://docs.meilisearch.com/reference/api/synonyms.html#get-synonyms
+     *
+     * @param uid Index identifier
+     * @return ranking rules settings of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public Map<String, String[]> getSynonymsSettings(String uid) throws Exception {
+        return this.gson.<Map<String, String[]>>fromJson(
+                meilisearchHttpRequest.get("/indexes/" + uid + "/settings/synonyms"), Map.class);
+    }
 
-	/**
-	 * Updates the synonyms settings of a given index Refer
-	 * https://docs.meilisearch.com/reference/api/synonyms.html#update-synonyms
-	 *
-	 * @param uid Index identifier
-	 * @param synonyms the data that contains the new settings
-	 * @return updateId is the id of the update
-	 * @throws Exception if something goes wrong
-	 */
-	public UpdateStatus updateSynonymsSettings(String uid, Map<String, String[]> synonyms)
-		throws Exception {
-		String synonymsAsJson = gson.toJson(synonyms);
-		return this.gson.fromJson(
-			meilisearchHttpRequest.post(
-				"/indexes/" + uid + "/settings/synonyms", synonymsAsJson),
-			UpdateStatus.class);
-	}
+    /**
+     * Updates the synonyms settings of a given index Refer
+     * https://docs.meilisearch.com/reference/api/synonyms.html#update-synonyms
+     *
+     * @param uid Index identifier
+     * @param synonyms the data that contains the new settings
+     * @return updateId is the id of the update
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateSynonymsSettings(String uid, Map<String, String[]> synonyms)
+            throws Exception {
+        String synonymsAsJson = gson.toJson(synonyms);
+        return this.gson.fromJson(
+                meilisearchHttpRequest.post(
+                        "/indexes/" + uid + "/settings/synonyms", synonymsAsJson),
+                UpdateStatus.class);
+    }
 
-	/**
-	 * Resets the synonyms settings of a given index Refer
-	 * https://docs.meilisearch.com/reference/api/synonyms.html#reset-synonyms
-	 *
-	 * @param uid Index identifier
-	 * @return updateId is the id of the update
-	 * @throws Exception if something goes wrong
-	 */
-	public UpdateStatus resetSynonymsSettings(String uid) throws Exception {
-		return this.gson.fromJson(
-			meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/synonyms"),
-			UpdateStatus.class);
-	}
     /**
      * Resets the synonyms settings of a given index Refer
      * https://docs.meilisearch.com/reference/api/synonyms.html#reset-synonyms
@@ -353,6 +340,53 @@ public class SettingsHandler {
         return this.gson.fromJson(
                 meilisearchHttpRequest.delete(
                         "/indexes/" + uid + "/settings/filterable-attributes"),
+                UpdateStatus.class);
+    }
+
+    /**
+     * Get the distinct attribute field of an index.
+     * https://docs.meilisearch.com/reference/api/distinct_attribute.html#get-distinct-attribute
+     *
+     * @param uid Index identifier
+     * @return distinct attribute field of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String getDistinctAttributeSettings(String uid) throws Exception {
+        return this.gson.fromJson(
+                meilisearchHttpRequest.get("/indexes/" + uid + "/settings/distinct-attribute"),
+                String.class);
+    }
+
+    /**
+     * Update the distinct attribute field of an index.
+     * https://docs.meilisearch.com/reference/api/distinct_attribute.html#update-distinct-attribute
+     *
+     * @param uid Index identifier
+     * @param distinctAttribute A String: the field name.
+     * @return updateId is the id of the update
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateDistinctAttributeSettings(String uid, String distinctAttribute)
+            throws Exception {
+        String distinctAttributeAsJson = gson.toJson(distinctAttribute);
+        return this.gson.fromJson(
+                meilisearchHttpRequest.post(
+                        "/indexes/" + uid + "/settings/distinct-attribute",
+                        distinctAttributeAsJson),
+                UpdateStatus.class);
+    }
+
+    /**
+     * Reset the distinct attribute field of an index to its default value.
+     * https://docs.meilisearch.com/reference/api/distinct_attribute.html#reset-distinct-attribute
+     *
+     * @param uid Index identifier
+     * @return updateId is the id of the update
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetDistinctAttributeSettings(String uid) throws Exception {
+        return this.gson.fromJson(
+                meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/distinct-attribute"),
                 UpdateStatus.class);
     }
 }
