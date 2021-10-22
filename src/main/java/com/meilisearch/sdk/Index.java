@@ -195,20 +195,20 @@ public class Index implements Serializable {
     /**
      * Searches documents in index
      *
-     * @param sr SearchRequest SearchRequest
+     * @param searchRequest SearchRequest SearchRequest
      * @return MeiliSearch API response
      * @throws Exception if something goes wrong
      */
-    public SearchResult search(SearchRequest sr) throws Exception {
-        return this.search.search(this.uid, sr);
+    public SearchResult search(SearchRequest searchRequest) throws Exception {
+        return this.search.search(this.uid, searchRequest);
     }
 
-    public String rawSearch(String q) throws Exception {
-        return this.search.rawSearch(this.uid, q);
+    public String rawSearch(String query) throws Exception {
+        return this.search.rawSearch(this.uid, query);
     }
 
-    public String rawSearch(SearchRequest sr) throws Exception {
-        return this.search.rawSearch(this.uid, sr);
+    public String rawSearch(SearchRequest searchRequest) throws Exception {
+        return this.search.rawSearch(this.uid, searchRequest);
     }
 
     /**
@@ -328,7 +328,7 @@ public class Index implements Serializable {
      * Updates the stop-words settings of the index Refer
      * https://docs.meilisearch.com/reference/api/stop_words.html#update-stop-words
      *
-     * @param stopWords key (String) value (array) pair of synonyms
+     * @param stopWords An array of strings that contains the stop-words.
      * @return UpdateStatus
      * @throws Exception if something goes wrong
      */
@@ -362,7 +362,7 @@ public class Index implements Serializable {
      * Updates the searchable attributes an index Refer
      * https://docs.meilisearch.com/reference/api/searchable_attributes.html#update-searchable-attributes
      *
-     * @param searchableAttributes key (String) value (array) pair of synonyms
+     * @param searchableAttributes An array of strings that contains the searchable attributes.
      * @return UpdateStatus
      * @throws Exception if something goes wrong
      */
@@ -419,10 +419,10 @@ public class Index implements Serializable {
     }
 
     /**
-     * Get an index's filterableAttributes.
+     * Get an index's filterable attributes.
      * https://docs.meilisearch.com/reference/api/filterable_attributes.html#get-filterable-attributes
      *
-     * @return display attributes of a given uid as String
+     * @return filterable attributes of a given uid as String
      * @throws Exception if something goes wrong
      */
     public String[] getFilterableAttributesSettings() throws Exception {

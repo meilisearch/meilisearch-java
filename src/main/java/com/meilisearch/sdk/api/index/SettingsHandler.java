@@ -119,7 +119,7 @@ public class SettingsHandler {
     }
 
     /**
-     * Gets the ranking rules settings of a given index Refer
+     * Gets the synonyms settings of a given index Refer
      * https://docs.meilisearch.com/reference/api/synonyms.html#get-synonyms
      *
      * @param uid Index identifier
@@ -134,7 +134,7 @@ public class SettingsHandler {
     }
 
     /**
-     * Updates the ranking rules settings of a given index Refer
+     * Updates the synonyms settings of a given index Refer
      * https://docs.meilisearch.com/reference/api/synonyms.html#update-synonyms
      *
      * @param uid Index identifier
@@ -152,7 +152,7 @@ public class SettingsHandler {
     }
 
     /**
-     * Resets the ranking rules settings of a given index Refer
+     * Resets the synonyms settings of a given index Refer
      * https://docs.meilisearch.com/reference/api/synonyms.html#reset-synonyms
      *
      * @param uid Index identifier
@@ -187,16 +187,16 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/stop_words.html#update-stop-words
      *
      * @param uid Index identifier
-     * @param synonyms the data that contains the new ranking rules settings
+     * @param stopWords the data that contains the new ranking rules settings
      * @return updateId is the id of the update
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update updateStopWordsSettings(String uid, String[] synonyms)
+    public Update updateStopWordsSettings(String uid, String[] stopWords)
             throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings/stop-words";
         return serviceTemplate.execute(
                 requestFactory.create(
-                        HttpMethod.POST, requestQuery, Collections.emptyMap(), synonyms),
+                        HttpMethod.POST, requestQuery, Collections.emptyMap(), stopWords),
                 Update.class);
     }
 
@@ -221,7 +221,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/searchable_attributes.html#get-searchable-attributes
      *
      * @param uid Index identifier
-     * @return ranking rules settings of a given uid as String
+     * @return searchable attributes of a given uid as String
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
     public Settings getSearchableAttributesSettings(String uid) throws MeiliSearchRuntimeException {
