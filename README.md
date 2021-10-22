@@ -66,6 +66,22 @@ Add the following line to the `dependencies` section of your `build.gradle`:
 implementation 'com.meilisearch.sdk:meilisearch-java:0.5.0'
 ```
 
+### Run MeiliSearch
+
+There are many easy ways to [download and run a MeiliSearch instance](https://docs.meilisearch.com/reference/features/installation.html#download-and-launch).
+
+For example, using the `curl` command in [your Terminal](https://itconnect.uw.edu/learn/workshops/online-tutorials/web-publishing/what-is-a-terminal/):
+
+```bash
+ # Install MeiliSearch
+ curl -L https://install.meilisearch.com | sh
+
+ # Launch MeiliSearch
+ ./meilisearch --master-key=masterKey
+ ```
+
+NB: you can also download MeiliSearch from **Homebrew** or **APT** or even run it using **Docker**.
+
 ## 🚀 Getting Started
 
 #### Add documents <!-- omit in toc -->
