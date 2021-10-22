@@ -141,11 +141,11 @@ update_ranking_rules_1: |-
 reset_ranking_rules_1: |-
   //Not yet implemented
 get_distinct_attribute_1: |-
-  client.index("movies").getDistinctAttribute();
+  client.index("shoes").getDistinctAttribute();
 update_distinct_attribute_1: |-
   Settings settings = new Settings();
-  settings.setDistinctAttribute("movie_id");
-  client.index("movies").updateSettings(settings);
+  settings.setDistinctAttribute("skuid");
+  client.index("shoes").updateSettings(settings);
 reset_distinct_attribute_1: |-
   //Not yet implemented
 get_searchable_attributes_1: |-
