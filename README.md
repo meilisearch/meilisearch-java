@@ -66,7 +66,7 @@ Add the following line to the `dependencies` section of your `build.gradle`:
 implementation 'com.meilisearch.sdk:meilisearch-java:0.5.0'
 ```
 
-### Run MeiliSearch
+### Run MeiliSearch <!-- omit in toc -->
 
 There are many easy ways to [download and run a MeiliSearch instance](https://docs.meilisearch.com/reference/features/installation.html#download-and-launch).
 
