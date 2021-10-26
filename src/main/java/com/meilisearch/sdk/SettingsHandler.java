@@ -218,7 +218,8 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/searchable_attributes.html#update-searchable-attributes
      *
      * @param uid Index identifier
-     * @param searchableAttributes an array of strings that contains the new searchable attributes settings
+     * @param searchableAttributes an array of strings that contains the new searchable attributes
+     *     settings
      * @return updateId is the id of the update
      * @throws Exception if something goes wrong
      */
@@ -266,7 +267,8 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/displayed_attributes.html#update-displayed-attributes
      *
      * @param uid Index identifier
-     * @param displayAttributes an array of strings that contains the new displayed attributes settings
+     * @param displayAttributes an array of strings that contains the new displayed attributes
+     *     settings
      * @return updateId is the id of the update
      * @throws Exception if something goes wrong
      */
@@ -313,7 +315,8 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/filterable_attributes.html#update-filterable-attributes
      *
      * @param uid Index identifier
-     * @param filterableAttributes an array of strings that contains the new filterable attributes settings
+     * @param filterableAttributes an array of strings that contains the new filterable attributes
+     *     settings
      * @return updateId is the id of the update
      * @throws Exception if something goes wrong
      */
