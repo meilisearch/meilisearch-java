@@ -68,7 +68,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/ranking_rules.html#get-ranking-rules
      *
      * @param uid Index identifier
-     * @return A Map that contains all synonyms and their associated words
+     * @return an array of strings that contains the ranking rules settings
      * @throws Exception if something goes wrong
      */
     public String[] getRankingRuleSettings(String uid) throws Exception {
@@ -114,7 +114,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/synonyms.html#get-synonyms
      *
      * @param uid Index identifier
-     * @return ranking rules settings of a given uid as String
+     * @return a Map that contains all synonyms and their associated words
      * @throws Exception if something goes wrong
      */
     public Map<String, String[]> getSynonymsSettings(String uid) throws Exception {
@@ -127,7 +127,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/synonyms.html#update-synonyms
      *
      * @param uid Index identifier
-     * @param synonyms the data that contains the new settings
+     * @param synonyms a Map that contains the new synonyms settings
      * @return updateId is the id of the update
      * @throws Exception if something goes wrong
      */
@@ -159,7 +159,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/stop_words.html#get-stop-words
      *
      * @param uid Index identifier
-     * @return An array of strings that contains the stop-words.
+     * @return an array of strings that contains the stop-words
      * @throws Exception if something goes wrong
      */
     public String[] getStopWordsSettings(String uid) throws Exception {
@@ -173,7 +173,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/stop_words.html#update-stop-words
      *
      * @param uid Index identifier
-     * @param stopWords An array of strings that contains the stop-words
+     * @param stopWords an array of strings that contains the new stop-words settings
      * @return updateId is the id of the update
      * @throws Exception if something goes wrong
      */
@@ -204,7 +204,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/searchable_attributes.html#get-searchable-attributes
      *
      * @param uid Index identifier
-     * @return searchable attributes settings of a given uid as String
+     * @return an array of strings that contains the searchable attributes
      * @throws Exception if something goes wrong
      */
     public String[] getSearchableAttributesSettings(String uid) throws Exception {
@@ -218,7 +218,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/searchable_attributes.html#update-searchable-attributes
      *
      * @param uid Index identifier
-     * @param searchableAttributes An array of strings that contains the stop-words.
+     * @param searchableAttributes an array of strings that contains the new searchable attributes settings
      * @return updateId is the id of the update
      * @throws Exception if something goes wrong
      */
@@ -252,7 +252,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/displayed_attributes.html#get-displayed-attributes
      *
      * @param uid Index identifier
-     * @return display attributes of a given uid as String
+     * @return an array of strings that contains attributes of an index to display
      * @throws Exception if something goes wrong
      */
     public String[] getDisplayedAttributesSettings(String uid) throws Exception {
@@ -266,7 +266,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/displayed_attributes.html#update-displayed-attributes
      *
      * @param uid Index identifier
-     * @param displayAttributes An array of strings that contains attributes of an index to display
+     * @param displayAttributes an array of strings that contains the new displayed attributes settings
      * @return updateId is the id of the update
      * @throws Exception if something goes wrong
      */
@@ -299,7 +299,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/filterable_attributes.html#get-filterable-attributes
      *
      * @param uid Index identifier
-     * @return filterable attributes settings of a given uid as String
+     * @return an array of strings that contains the filterable attributes settings
      * @throws Exception if something goes wrong
      */
     public String[] getFilterableAttributesSettings(String uid) throws Exception {
@@ -313,8 +313,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/filterable_attributes.html#update-filterable-attributes
      *
      * @param uid Index identifier
-     * @param filterableAttributes An array of strings containing the attributes that can be used as
-     *     filters at query time.
+     * @param filterableAttributes an array of strings that contains the new filterable attributes settings
      * @return updateId is the id of the update
      * @throws Exception if something goes wrong
      */
@@ -348,7 +347,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/distinct_attribute.html#get-distinct-attribute
      *
      * @param uid Index identifier
-     * @return distinct attribute field of a given uid as String
+     * @return a string of the distinct attribute field
      * @throws Exception if something goes wrong
      */
     public String getDistinctAttributeSettings(String uid) throws Exception {
@@ -362,7 +361,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/distinct_attribute.html#update-distinct-attribute
      *
      * @param uid Index identifier
-     * @param distinctAttribute A String: the field name.
+     * @param distinctAttribute a String that contains the new distinct attributes settings
      * @return updateId is the id of the update
      * @throws Exception if something goes wrong
      */

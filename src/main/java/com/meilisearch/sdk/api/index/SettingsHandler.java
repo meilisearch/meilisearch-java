@@ -123,7 +123,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/synonyms.html#get-synonyms
      *
      * @param uid Index identifier
-     * @return ranking rules settings of a given uid as String
+     * @return a Map that contains all synonyms and their associated words
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
     public Settings getSynonymsSettings(String uid) throws MeiliSearchRuntimeException {
@@ -138,7 +138,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/synonyms.html#update-synonyms
      *
      * @param uid Index identifier
-     * @param synonyms the data that contains the new ranking rules settings
+     * @param synonyms a Map that contains the new synonyms settings
      * @return updateId is the id of the update
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
