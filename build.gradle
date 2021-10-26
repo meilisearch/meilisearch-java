@@ -39,7 +39,7 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.8.8'
 	implementation 'org.json:json:20210307'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
-	compileOnly group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.1'
+	compileOnly group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.1.1'
 	compileOnly 'com.squareup.okhttp3:okhttp:4.9.2'
 
 	// Use JUnit test framework
