@@ -50,8 +50,8 @@ To run the unit tests in your local environment, use:
 You can also launch the integration tests, which run against a local MeiliSearch instance. To make it run in your local environment, use:
 
 ```bash
-docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearch image from Docker Hub
-docker run -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
+curl -L https://install.meilisearch.com | sh # download MeiliSearch
+./meilisearch --master-key=masterKey --no-analytics=true # run MeiliSearch
 ./gradlew test IntegrationTest
 ```
 
