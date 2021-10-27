@@ -5,6 +5,7 @@ import com.meilisearch.sdk.model.SearchResult;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -194,20 +195,20 @@ public class Index implements Serializable {
     /**
      * Searches documents in index
      *
-     * @param sr SearchRequest SearchRequest
+     * @param searchRequest SearchRequest SearchRequest
      * @return MeiliSearch API response
      * @throws Exception if something goes wrong
      */
-    public SearchResult search(SearchRequest sr) throws Exception {
-        return this.search.search(this.uid, sr);
+    public SearchResult search(SearchRequest searchRequest) throws Exception {
+        return this.search.search(this.uid, searchRequest);
     }
 
-    public String rawSearch(String q) throws Exception {
-        return this.search.rawSearch(this.uid, q);
+    public String rawSearch(String query) throws Exception {
+        return this.search.rawSearch(this.uid, query);
     }
 
-    public String rawSearch(SearchRequest sr) throws Exception {
-        return this.search.rawSearch(this.uid, sr);
+    public String rawSearch(SearchRequest searchRequest) throws Exception {
+        return this.search.rawSearch(this.uid, searchRequest);
     }
 
     /**
@@ -276,6 +277,216 @@ public class Index implements Serializable {
      */
     public UpdateStatus resetRankingRuleSettings() throws Exception {
         return this.settingsHandler.resetRankingRulesSettings(this.uid);
+    }
+
+    /**
+     * Gets the synonyms settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/settings.html#get-settings
+     *
+     * @return synonyms of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public Map<String, String[]> getSynonymsSettings() throws Exception {
+        return this.settingsHandler.getSynonymsSettings(this.uid);
+    }
+
+    /**
+     * Updates the synonyms settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/synonyms.html#update-synonyms
+     *
+     * @param synonyms key (String) value (array) pair of synonyms
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateSynonymsSettings(Map<String, String[]> synonyms) throws Exception {
+        return this.settingsHandler.updateSynonymsSettings(this.uid, synonyms);
+    }
+
+    /**
+     * Resets the synonyms settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/synonyms.html#reset-synonyms
+     *
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetSynonymsSettings() throws Exception {
+        return this.settingsHandler.resetSynonymsSettings(this.uid);
+    }
+
+    /**
+     * Gets the stop-words settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/stop_words.html#get-stop-words
+     *
+     * @return stop-words of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String[] getStopWordsSettings() throws Exception {
+        return this.settingsHandler.getStopWordsSettings(this.uid);
+    }
+
+    /**
+     * Updates the stop-words settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/stop_words.html#update-stop-words
+     *
+     * @param stopWords An array of strings that contains the stop-words.
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateStopWordsSettings(String[] stopWords) throws Exception {
+        return this.settingsHandler.updateStopWordsSettings(this.uid, stopWords);
+    }
+
+    /**
+     * Resets the stop-words settings of the index Refer
+     * https://docs.meilisearch.com/reference/api/stop_words.html#reset-stop-words
+     *
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetStopWordsSettings() throws Exception {
+        return this.settingsHandler.resetStopWordsSettings(this.uid);
+    }
+
+    /**
+     * Get the searchable attributes of an index.
+     * https://docs.meilisearch.com/reference/api/searchable_attributes.html#get-searchable-attributes
+     *
+     * @return searchable attributes of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String[] getSearchableAttributesSettings() throws Exception {
+        return this.settingsHandler.getSearchableAttributesSettings(this.uid);
+    }
+
+    /**
+     * Updates the searchable attributes an index Refer
+     * https://docs.meilisearch.com/reference/api/searchable_attributes.html#update-searchable-attributes
+     *
+     * @param searchableAttributes An array of strings that contains the searchable attributes.
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateSearchableAttributesSettings(String[] searchableAttributes)
+            throws Exception {
+        return this.settingsHandler.updateSearchableAttributesSettings(
+                this.uid, searchableAttributes);
+    }
+
+    /**
+     * Reset the searchable attributes of the index to the default value.
+     * https://docs.meilisearch.com/reference/api/searchable_attributes.html#reset-searchable-attributes
+     *
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetSearchableAttributesSettings() throws Exception {
+        return this.settingsHandler.resetSearchableAttributesSettings(this.uid);
+    }
+
+    /**
+     * Get the display attributes of an index.
+     * https://docs.meilisearch.com/reference/api/displayed_attributes.html#get-displayed-attributes
+     *
+     * @return display attributes of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String[] getDisplayedAttributesSettings() throws Exception {
+        return this.settingsHandler.getDisplayedAttributesSettings(this.uid);
+    }
+
+    /**
+     * Updates the display attributes of an index Refer
+     * https://docs.meilisearch.com/reference/api/displayed_attributes.html#update-displayed-attributes
+     *
+     * @param displayAttributes An array of strings that contains attributes of an index to display
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateDisplayedAttributesSettings(String[] displayAttributes)
+            throws Exception {
+        return this.settingsHandler.updateDisplayedAttributesSettings(this.uid, displayAttributes);
+    }
+
+    /**
+     * Reset the displayed attributes of the index to the default value.
+     * https://docs.meilisearch.com/reference/api/displayed_attributes.html#reset-displayed-attributes
+     *
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetDisplayedAttributesSettings() throws Exception {
+        return this.settingsHandler.resetDisplayedAttributesSettings(this.uid);
+    }
+
+    /**
+     * Get an index's filterable attributes.
+     * https://docs.meilisearch.com/reference/api/filterable_attributes.html#get-filterable-attributes
+     *
+     * @return filterable attributes of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String[] getFilterableAttributesSettings() throws Exception {
+        return this.settingsHandler.getFilterableAttributesSettings(this.uid);
+    }
+
+    /**
+     * Update an index's filterable attributes list. This will re-index all documents in the index.
+     * https://docs.meilisearch.com/reference/api/filterable_attributes.html#update-filterable-attributes
+     *
+     * @param filterableAttributes An array of strings containing the attributes that can be used as
+     *     filters at query time.
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateFilterableAttributesSettings(String[] filterableAttributes)
+            throws Exception {
+        return this.settingsHandler.updateFilterableAttributesSettings(
+                this.uid, filterableAttributes);
+    }
+
+    /**
+     * Reset an index's filterable attributes list back to its default value.
+     * https://docs.meilisearch.com/reference/api/filterable_attributes.html#reset-filterable-attributes
+     *
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetFilterableAttributesSettings() throws Exception {
+        return this.settingsHandler.resetFilterableAttributesSettings(this.uid);
+    }
+
+    /**
+     * Get the distinct attribute field of an index.
+     * https://docs.meilisearch.com/reference/api/distinct_attribute.html#get-distinct-attribute
+     *
+     * @return distinct attribute field of a given uid as String
+     * @throws Exception if something goes wrong
+     */
+    public String getDistinctAttributeSettings() throws Exception {
+        return this.settingsHandler.getDistinctAttributeSettings(this.uid);
+    }
+
+    /**
+     * Update the distinct attribute field of an index.
+     * https://docs.meilisearch.com/reference/api/distinct_attribute.html#update-distinct-attribute
+     *
+     * @param distinctAttribute A String: the field name.
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus updateDistinctAttributeSettings(String distinctAttribute) throws Exception {
+        return this.settingsHandler.updateDistinctAttributeSettings(this.uid, distinctAttribute);
+    }
+
+    /**
+     * Reset the distinct attribute field of an index to its default value.
+     * https://docs.meilisearch.com/reference/api/distinct_attribute.html#reset-distinct-attribute
+     *
+     * @return UpdateStatus
+     * @throws Exception if something goes wrong
+     */
+    public UpdateStatus resetDistinctAttributeSettings() throws Exception {
+        return this.settingsHandler.resetDistinctAttributeSettings(this.uid);
     }
 
     /**

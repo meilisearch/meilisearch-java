@@ -1,5 +1,7 @@
 package com.meilisearch.integration;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -11,7 +13,9 @@ import com.meilisearch.sdk.Settings;
 import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.utils.Movie;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -182,6 +186,315 @@ public class SettingsTest extends AbstractIT {
         assertNotEquals(updatedRankingRuleSettings.length, rankingRulesAfterReset.length);
         assertEquals(initialRuleSettings.length, rankingRulesAfterReset.length);
         assertArrayEquals(initialRuleSettings, rankingRulesAfterReset);
+    }
+
+    @Test
+    @DisplayName("Test get synonyms settings by uid")
+    public void testGetSynonymsSettings() throws Exception {
+        Index index = createIndex("testGetSynonymsSettings");
+        Settings initialSettings = index.getSettings();
+        Map<String, String[]> synonymsSettings = index.getSynonymsSettings();
+
+        assertEquals(initialSettings.getSynonyms().size(), synonymsSettings.size());
+        assertEquals(initialSettings.getSynonyms(), synonymsSettings);
+    }
+
+    @Test
+    @DisplayName("Test update synonyms settings")
+    public void testUpdateSynonymsSettings() throws Exception {
+        Index index = createIndex("testUpdateSynonymsSettings");
+        Map<String, String[]> synonymsSettings = index.getSynonymsSettings();
+        HashMap<String, String[]> newSynonymsSettings = new HashMap<>();
+        newSynonymsSettings.put("wolverine", new String[] {"xmen", "logan"});
+        newSynonymsSettings.put("logan", new String[] {"wolverine", "xmen"});
+        newSynonymsSettings.put("wow", new String[] {"world of warcraft"});
+
+        index.waitForPendingUpdate(index.updateSynonymsSettings(newSynonymsSettings).getUpdateId());
+        Map<String, String[]> updatedRankingRuleSettings = index.getSynonymsSettings();
+
+        assertEquals(newSynonymsSettings.size(), updatedRankingRuleSettings.size());
+        assertEquals(newSynonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
+        assertNotEquals(synonymsSettings.size(), updatedRankingRuleSettings.size());
+        assertNotEquals(synonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
+    }
+
+    @Test
+    @DisplayName("Test reset synonyms settings")
+    public void testResetSynonymsSettings() throws Exception {
+        Index index = createIndex("testResetSynonymsSettings");
+        Map<String, String[]> synonymsSettings = index.getSynonymsSettings();
+        HashMap<String, String[]> newSynonymsSettings = new HashMap<>();
+        newSynonymsSettings.put("wolverine", new String[] {"xmen", "logan"});
+        newSynonymsSettings.put("logan", new String[] {"wolverine", "xmen"});
+        newSynonymsSettings.put("wow", new String[] {"world of warcraft"});
+
+        index.waitForPendingUpdate(index.updateSynonymsSettings(newSynonymsSettings).getUpdateId());
+        Map<String, String[]> updatedRankingRuleSettings = index.getSynonymsSettings();
+
+        assertEquals(newSynonymsSettings.size(), updatedRankingRuleSettings.size());
+        assertEquals(newSynonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
+        assertNotEquals(synonymsSettings.size(), updatedRankingRuleSettings.size());
+        assertNotEquals(synonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
+
+        index.waitForPendingUpdate(index.resetSynonymsSettings().getUpdateId());
+        Map<String, String[]> synonymsSettingsAfterReset = index.getSynonymsSettings();
+
+        assertNotEquals(updatedRankingRuleSettings.size(), synonymsSettingsAfterReset.size());
+        assertEquals(synonymsSettings.size(), synonymsSettingsAfterReset.size());
+        assertEquals(synonymsSettings.keySet(), synonymsSettingsAfterReset.keySet());
+    }
+
+    @Test
+    @DisplayName("Test get stop-words settings by uid")
+    public void testGetStopWordsSettings() throws Exception {
+        Index index = createIndex("testGetStopWordsSettings");
+        Settings initialSettings = index.getSettings();
+        String[] initialStopWords = index.getStopWordsSettings();
+
+        assertEquals(initialSettings.getStopWords().length, initialStopWords.length);
+        assertArrayEquals(initialSettings.getStopWords(), initialStopWords);
+    }
+
+    @Test
+    @DisplayName("Test update stop-words settings")
+    public void testUpdateStopWordsSettings() throws Exception {
+        Index index = createIndex("testUpdateStopWordsSettings");
+        String[] initialStopWords = index.getStopWordsSettings();
+        String[] newStopWords = {"of", "the", "to"};
+
+        index.waitForPendingUpdate(index.updateStopWordsSettings(newStopWords).getUpdateId());
+        String[] updatedStopWordsSettings = index.getStopWordsSettings();
+
+        assertEquals(newStopWords.length, updatedStopWordsSettings.length);
+        assertArrayEquals(newStopWords, updatedStopWordsSettings);
+        assertNotEquals(initialStopWords.length, updatedStopWordsSettings.length);
+    }
+
+    @Test
+    @DisplayName("Test reset stop-words settings")
+    public void testResetStopWordsSettings() throws Exception {
+        Index index = createIndex("testResetStopWordsSettings");
+        String[] initialStopWords = index.getStopWordsSettings();
+        String[] newStopWords = {"of", "the", "to"};
+
+        index.waitForPendingUpdate(index.updateStopWordsSettings(newStopWords).getUpdateId());
+        String[] updatedStopWordsSettings = index.getStopWordsSettings();
+
+        assertEquals(newStopWords.length, updatedStopWordsSettings.length);
+        assertArrayEquals(newStopWords, updatedStopWordsSettings);
+        assertNotEquals(initialStopWords.length, updatedStopWordsSettings.length);
+
+        index.waitForPendingUpdate(index.resetStopWordsSettings().getUpdateId());
+        String[] stopWordsAfterReset = index.getStopWordsSettings();
+
+        assertNotEquals(updatedStopWordsSettings.length, stopWordsAfterReset.length);
+        assertEquals(initialStopWords.length, stopWordsAfterReset.length);
+        assertArrayEquals(initialStopWords, stopWordsAfterReset);
+    }
+
+    @Test
+    @DisplayName("Test get searchable attributes settings by uid")
+    public void testGetSearchableAttributesSettings() throws Exception {
+        Index index = createIndex("testGetSearchableAttributesSettings");
+        Settings initialSettings = index.getSettings();
+        String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
+
+        assertEquals(
+                initialSettings.getSearchableAttributes().length,
+                initialSearchableAttributes.length);
+        assertArrayEquals(initialSettings.getSearchableAttributes(), initialSearchableAttributes);
+    }
+
+    @Test
+    @DisplayName("Test update searchable attributes settings")
+    public void testUpdateSearchableAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateSearchableAttributesSettings");
+        String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
+        String[] newSearchableAttributes = {"title", "description", "genre"};
+
+        index.waitForPendingUpdate(
+                index.updateSearchableAttributesSettings(newSearchableAttributes).getUpdateId());
+        String[] updatedSearchableAttributes = index.getSearchableAttributesSettings();
+
+        assertEquals(newSearchableAttributes.length, updatedSearchableAttributes.length);
+        assertArrayEquals(newSearchableAttributes, updatedSearchableAttributes);
+        assertNotEquals(initialSearchableAttributes.length, updatedSearchableAttributes.length);
+    }
+
+    @Test
+    @DisplayName("Test reset searchable attributes settings")
+    public void testResetSearchableAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateSearchableAttributesSettings");
+        String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
+        String[] newSearchableAttributes = {"title", "description", "genre"};
+
+        index.waitForPendingUpdate(
+                index.updateSearchableAttributesSettings(newSearchableAttributes).getUpdateId());
+        String[] updatedSearchableAttributes = index.getSearchableAttributesSettings();
+
+        assertEquals(newSearchableAttributes.length, updatedSearchableAttributes.length);
+        assertArrayEquals(newSearchableAttributes, updatedSearchableAttributes);
+        assertNotEquals(initialSearchableAttributes.length, updatedSearchableAttributes.length);
+
+        index.waitForPendingUpdate(index.resetSearchableAttributesSettings().getUpdateId());
+        String[] searchableAttributesAfterReset = index.getSearchableAttributesSettings();
+
+        assertNotEquals(updatedSearchableAttributes.length, searchableAttributesAfterReset.length);
+        assertEquals(initialSearchableAttributes.length, searchableAttributesAfterReset.length);
+        assertArrayEquals(initialSearchableAttributes, searchableAttributesAfterReset);
+    }
+
+    @Test
+    @DisplayName("Test get display attributes settings by uid")
+    public void testGetDisplayedAttributesSettings() throws Exception {
+        Index index = createIndex("testGetDisplayedAttributesSettings");
+        Settings initialSettings = index.getSettings();
+        String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
+
+        assertEquals(
+                initialSettings.getSearchableAttributes().length,
+                initialDisplayedAttributes.length);
+        assertArrayEquals(initialSettings.getDisplayedAttributes(), initialDisplayedAttributes);
+    }
+
+    @Test
+    @DisplayName("Test update display attributes settings")
+    public void testUpdateDisplayedAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateDisplayedAttributesSettings");
+        String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
+        String[] newDisplayedAttributes = {"title", "description", "genre", "release_date"};
+
+        index.waitForPendingUpdate(
+                index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUpdateId());
+        String[] updatedDisplayedAttributes = index.getDisplayedAttributesSettings();
+
+        assertEquals(newDisplayedAttributes.length, updatedDisplayedAttributes.length);
+        assertArrayEquals(newDisplayedAttributes, updatedDisplayedAttributes);
+        assertNotEquals(initialDisplayedAttributes.length, updatedDisplayedAttributes.length);
+    }
+
+    @Test
+    @DisplayName("Test reset display attributes settings")
+    public void testResetDisplayedAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateDisplayedAttributesSettings");
+        String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
+        String[] newDisplayedAttributes = {"title", "description", "genre", "release_date", "cast"};
+
+        index.waitForPendingUpdate(
+                index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUpdateId());
+        String[] updatedDisplayedAttributes = index.getDisplayedAttributesSettings();
+
+        assertEquals(newDisplayedAttributes.length, updatedDisplayedAttributes.length);
+        assertArrayEquals(newDisplayedAttributes, updatedDisplayedAttributes);
+        assertNotEquals(initialDisplayedAttributes.length, updatedDisplayedAttributes.length);
+
+        index.waitForPendingUpdate(index.resetDisplayedAttributesSettings().getUpdateId());
+        String[] displayedAttributesAfterReset = index.getDisplayedAttributesSettings();
+
+        assertNotEquals(updatedDisplayedAttributes.length, displayedAttributesAfterReset.length);
+    }
+
+    @Test
+    @DisplayName("Test get filterable attributes settings by uid")
+    public void testGetFilterableAttributesSettings() throws Exception {
+        Index index = createIndex("testGetDisplayedAttributesSettings");
+        Settings initialSettings = index.getSettings();
+        String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
+
+        assertEquals(
+                initialSettings.getFilterableAttributes().length,
+                initialFilterableAttributes.length);
+        assertArrayEquals(initialSettings.getFilterableAttributes(), initialFilterableAttributes);
+    }
+
+    @Test
+    @DisplayName("Test update filterable attributes settings")
+    public void testUpdateFilterableAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateDisplayedAttributesSettings");
+        String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
+        String[] newFilterableAttributes = {"title", "description", "genre", "release_date"};
+
+        index.waitForPendingUpdate(
+                index.updateFilterableAttributesSettings(newFilterableAttributes).getUpdateId());
+        String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
+
+        assertEquals(newFilterableAttributes.length, updatedFilterableAttributes.length);
+        assertThat(
+                Arrays.asList(newFilterableAttributes),
+                containsInAnyOrder(updatedFilterableAttributes));
+        assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
+    }
+
+    @Test
+    @DisplayName("Test reset filterable attributes settings")
+    public void testResetFilterableAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateDisplayedAttributesSettings");
+        String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
+        String[] newFilterableAttributes = {
+            "title", "description", "genres", "director", "release_date"
+        };
+
+        index.waitForPendingUpdate(
+                index.updateFilterableAttributesSettings(newFilterableAttributes).getUpdateId());
+        String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
+
+        assertEquals(newFilterableAttributes.length, updatedFilterableAttributes.length);
+        assertThat(
+                Arrays.asList(newFilterableAttributes),
+                containsInAnyOrder(updatedFilterableAttributes));
+        assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
+
+        index.waitForPendingUpdate(index.resetFilterableAttributesSettings().getUpdateId());
+        String[] filterableAttributesAfterReset = index.getFilterableAttributesSettings();
+
+        assertNotEquals(updatedFilterableAttributes.length, filterableAttributesAfterReset.length);
+        assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
+    }
+
+    @Test
+    @DisplayName("Test get distinct attribute settings by uid")
+    public void testGetDistinctAttributeSettings() throws Exception {
+        Index index = createIndex("testGetDistinctAttributeSettings");
+        Settings initialSettings = index.getSettings();
+        String initialDistinctAttribute = index.getDistinctAttributeSettings();
+
+        assertEquals(initialSettings.getDistinctAttribute(), initialDistinctAttribute);
+    }
+
+    @Test
+    @DisplayName("Test update distinct attribute settings")
+    public void testUpdateDistinctAttributeSettings() throws Exception {
+        Index index = createIndex("testUpdateDistinctAttributeSettings");
+        String initialDistinctAttribute = index.getDistinctAttributeSettings();
+        String newDistinctAttribute = "title";
+
+        index.waitForPendingUpdate(
+                index.updateDistinctAttributeSettings(newDistinctAttribute).getUpdateId());
+        String updatedDistinctAttribute = index.getDistinctAttributeSettings();
+
+        assertEquals(newDistinctAttribute, updatedDistinctAttribute);
+        assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
+    }
+
+    @Test
+    @DisplayName("Test reset distinct attribute settings")
+    public void testResetDistinctAttributeSettings() throws Exception {
+        Index index = createIndex("testUpdateDistinctAttributeSettings");
+        String initialDistinctAttribute = index.getDistinctAttributeSettings();
+        String newDistinctAttribute = "title";
+
+        index.waitForPendingUpdate(
+                index.updateDistinctAttributeSettings(newDistinctAttribute).getUpdateId());
+        String updatedDistinctAttribute = index.getDistinctAttributeSettings();
+
+        assertEquals(newDistinctAttribute, updatedDistinctAttribute);
+        assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
+
+        index.waitForPendingUpdate(index.resetDistinctAttributeSettings().getUpdateId());
+        String distinctAttributeAfterReset = index.getDistinctAttributeSettings();
+
+        assertNotEquals(updatedDistinctAttribute, distinctAttributeAfterReset);
+        assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
     }
 
     private Index createIndex(String indexUid) throws Exception {
