@@ -497,161 +497,151 @@ public class SettingsTest extends AbstractIT {
         assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
     }
 
+    @Test
+    @DisplayName("Test reset ranking rules when null value is passed")
+    public void testUpdateRankingRuleSettingsUsingNull() throws Exception {
+        Index index = createIndex("testUpdateRankingRuleSettingsUsingNull");
+        String[] initialRankingRule = index.getRankingRuleSettings();
+        String[] newRankingRules = {
+            "typo",
+            "words",
+            "sort",
+            "proximity",
+            "attribute",
+            "exactness",
+            "release_date:desc",
+            "rank:desc"
+        };
 
-	@Test
-	@DisplayName("Test reset ranking rules when null value is passed")
-	public void testUpdateRankingRuleSettingsUsingNull() throws Exception {
-		Index index = createIndex("testUpdateRankingRuleSettingsUsingNull");
-		String[] initialRankingRule = index.getRankingRuleSettings();
-		String[] newRankingRules = {
-			"typo",
-			"words",
-			"sort",
-			"proximity",
-			"attribute",
-			"exactness",
-			"release_date:desc",
-			"rank:desc"
-		};
+        index.waitForPendingUpdate(index.updateRankingRuleSettings(newRankingRules).getUpdateId());
+        String[] newRankingRule = index.getRankingRuleSettings();
 
-		index.waitForPendingUpdate(index.updateRankingRuleSettings(newRankingRules).getUpdateId());
-		String[] newRankingRule = index.getRankingRuleSettings();
+        index.waitForPendingUpdate(index.updateRankingRuleSettings(null).getUpdateId());
+        String[] resetRankingRule = index.getRankingRuleSettings();
 
-		index.waitForPendingUpdate(index.updateRankingRuleSettings(null).getUpdateId());
-		String[] resetRankingRule = index.getRankingRuleSettings();
+        assertNotEquals(newRankingRule.length, resetRankingRule.length);
+        assertEquals(initialRankingRule.length, resetRankingRule.length);
+        assertArrayEquals(initialRankingRule, resetRankingRule);
+    }
 
-		assertNotEquals(newRankingRule.length, resetRankingRule.length);
-		assertEquals(initialRankingRule.length, resetRankingRule.length);
-		assertArrayEquals(initialRankingRule, resetRankingRule);
-	}
+    @Test
+    @DisplayName("Test update synonyms settings when null is passed")
+    public void testUpdateSynonymsSettingsUsingNull() throws Exception {
+        Index index = createIndex("testUpdateSynonymsSettingsUsingNull");
+        Map<String, String[]> initialSynonymsSettings = index.getSynonymsSettings();
+        HashMap<String, String[]> newSynonymsSettings = new HashMap<>();
+        newSynonymsSettings.put("007", new String[] {"james bond", "bond"});
+        newSynonymsSettings.put("ironman", new String[] {"tony stark", "iron man"});
 
+        index.waitForPendingUpdate(index.updateSynonymsSettings(newSynonymsSettings).getUpdateId());
+        Map<String, String[]> updatedSynonymsSettings = index.getSynonymsSettings();
 
-	@Test
-	@DisplayName("Test update synonyms settings when null is passed")
-	public void testUpdateSynonymsSettingsUsingNull() throws Exception {
-		Index index = createIndex("testUpdateSynonymsSettingsUsingNull");
-		Map<String, String[]> initialSynonymsSettings = index.getSynonymsSettings();
-		HashMap<String, String[]> newSynonymsSettings = new HashMap<>();
-		newSynonymsSettings.put("007", new String[] {"james bond", "bond"});
-		newSynonymsSettings.put("ironman", new String[] {"tony stark", "iron man"});
+        index.waitForPendingUpdate(index.updateSynonymsSettings(null).getUpdateId());
+        Map<String, String[]> resetSynonymsSettings = index.getSynonymsSettings();
 
-		index.waitForPendingUpdate(index.updateSynonymsSettings(newSynonymsSettings).getUpdateId());
-		Map<String, String[]> updatedSynonymsSettings = index.getSynonymsSettings();
+        assertNotEquals(initialSynonymsSettings.size(), updatedSynonymsSettings.size());
+        assertNotEquals(updatedSynonymsSettings.size(), resetSynonymsSettings.size());
+        assertEquals(initialSynonymsSettings.size(), resetSynonymsSettings.size());
+        assertEquals(initialSynonymsSettings.keySet(), resetSynonymsSettings.keySet());
+    }
 
-		index.waitForPendingUpdate(index.updateSynonymsSettings(null).getUpdateId());
-		Map<String, String[]> resetSynonymsSettings = index.getSynonymsSettings();
+    @Test
+    @DisplayName("Test update stop-words settings when null is passed")
+    public void testUpdateStopWordsSettingsUsingNull() throws Exception {
+        Index index = createIndex("testUpdateStopWordsSettingsUsingNull");
+        String[] initialStopWords = index.getStopWordsSettings();
+        String[] newStopWords = {"the", "to", "in", "on"};
 
-		assertNotEquals(initialSynonymsSettings.size(),updatedSynonymsSettings.size());
-		assertNotEquals(updatedSynonymsSettings.size(), resetSynonymsSettings.size());
-		assertEquals(initialSynonymsSettings.size(), resetSynonymsSettings.size());
-		assertEquals(initialSynonymsSettings.keySet(), resetSynonymsSettings.keySet());
-	}
+        index.waitForPendingUpdate(index.updateStopWordsSettings(newStopWords).getUpdateId());
+        String[] updatedStopWords = index.getStopWordsSettings();
 
+        index.waitForPendingUpdate(index.updateStopWordsSettings(null).getUpdateId());
+        String[] resetStopWords = index.getStopWordsSettings();
 
-	@Test
-	@DisplayName("Test update stop-words settings when null is passed")
-	public void testUpdateStopWordsSettingsUsingNull() throws Exception {
-		Index index = createIndex("testUpdateStopWordsSettingsUsingNull");
-		String[] initialStopWords = index.getStopWordsSettings();
-		String[] newStopWords = {"the", "to", "in", "on"};
+        assertNotEquals(initialStopWords.length, updatedStopWords.length);
+        assertNotEquals(updatedStopWords.length, resetStopWords.length);
+        assertEquals(initialStopWords.length, resetStopWords.length);
+        assertArrayEquals(initialStopWords, resetStopWords);
+    }
 
-		index.waitForPendingUpdate(index.updateStopWordsSettings(newStopWords).getUpdateId());
-		String[] updatedStopWords = index.getStopWordsSettings();
+    @Test
+    @DisplayName("Test update searchable attributes settings when null is passed")
+    public void testUpdateSearchableAttributesSettingssUsingNull() throws Exception {
+        Index index = createIndex("testUpdateSearchableAttributesSettingssUsingNull");
+        String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
+        String[] newSearchableAttributes = {"title", "release_date", "cast"};
 
-		index.waitForPendingUpdate(index.updateStopWordsSettings(null).getUpdateId());
-		String[] resetStopWords = index.getStopWordsSettings();
+        index.waitForPendingUpdate(
+                index.updateSearchableAttributesSettings(newSearchableAttributes).getUpdateId());
 
-		assertNotEquals(initialStopWords.length,updatedStopWords.length);
-		assertNotEquals(updatedStopWords.length, resetStopWords.length);
-		assertEquals(initialStopWords.length, resetStopWords.length);
-		assertArrayEquals(initialStopWords, resetStopWords);
-	}
+        String[] updatedSearchableAttributes = index.getSearchableAttributesSettings();
+        index.waitForPendingUpdate(index.updateSearchableAttributesSettings(null).getUpdateId());
+        String[] resetSearchableAttributes = index.getSearchableAttributesSettings();
 
+        assertNotEquals(initialSearchableAttributes.length, updatedSearchableAttributes.length);
+        assertNotEquals(updatedSearchableAttributes.length, resetSearchableAttributes.length);
+        assertEquals(initialSearchableAttributes.length, resetSearchableAttributes.length);
+        assertArrayEquals(initialSearchableAttributes, resetSearchableAttributes);
+    }
 
-	@Test
-	@DisplayName("Test update searchable attributes settings when null is passed")
-	public void testUpdateSearchableAttributesSettingssUsingNull() throws Exception {
-		Index index = createIndex("testUpdateSearchableAttributesSettingssUsingNull");
-		String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
-		String[] newSearchableAttributes = {"title", "release_date", "cast"};
+    @Test
+    @DisplayName("Test update display attributes settings when null is passed")
+    public void testUpdateDisplayedAttributesSettingsUsingNull() throws Exception {
+        Index index = createIndex("testUpdateDisplayedAttributesSettingsUsingNull");
+        String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
+        String[] newDisplayedAttributes = {"title", "genre", "release_date"};
 
-		index.waitForPendingUpdate(
-			index.updateSearchableAttributesSettings(newSearchableAttributes).getUpdateId());
+        index.waitForPendingUpdate(
+                index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUpdateId());
+        String[] updatedDisplayedAttributes = index.getDisplayedAttributesSettings();
 
-		String[] updatedSearchableAttributes = index.getSearchableAttributesSettings();
-		index.waitForPendingUpdate(index.updateSearchableAttributesSettings(null).getUpdateId());
-		String[] resetSearchableAttributes = index.getSearchableAttributesSettings();
+        index.waitForPendingUpdate(index.updateDisplayedAttributesSettings(null).getUpdateId());
+        String[] resetDisplayedAttributes = index.getDisplayedAttributesSettings();
 
-		assertNotEquals(initialSearchableAttributes.length,updatedSearchableAttributes.length);
-		assertNotEquals(updatedSearchableAttributes.length, resetSearchableAttributes.length);
-		assertEquals(initialSearchableAttributes.length, resetSearchableAttributes.length);
-		assertArrayEquals(initialSearchableAttributes, resetSearchableAttributes);
-	}
+        assertNotEquals(initialDisplayedAttributes.length, updatedDisplayedAttributes.length);
+        assertNotEquals(updatedDisplayedAttributes.length, resetDisplayedAttributes.length);
+        assertEquals(initialDisplayedAttributes.length, resetDisplayedAttributes.length);
+        assertArrayEquals(initialDisplayedAttributes, resetDisplayedAttributes);
+    }
 
+    @Test
+    @DisplayName("Test update filterable attributes settings when null is passed")
+    public void testUpdateFilterableAttributesSettingsUsingNull() throws Exception {
+        Index index = createIndex("testUpdateFilterableAttributesSettingsUsingNull");
+        String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
+        String[] newFilterableAttributes = {"title", "genres", "cast", "release_date"};
 
-	@Test
-	@DisplayName("Test update display attributes settings when null is passed")
-	public void testUpdateDisplayedAttributesSettingsUsingNull() throws Exception {
-		Index index = createIndex("testUpdateDisplayedAttributesSettingsUsingNull");
-		String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
-		String[] newDisplayedAttributes = {"title", "genre", "release_date"};
+        index.waitForPendingUpdate(
+                index.updateFilterableAttributesSettings(newFilterableAttributes).getUpdateId());
+        String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
 
-		index.waitForPendingUpdate(
-			index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUpdateId());
-		String[] updatedDisplayedAttributes = index.getDisplayedAttributesSettings();
+        index.waitForPendingUpdate(index.updateFilterableAttributesSettings(null).getUpdateId());
+        String[] resetFilterableAttributes = index.getFilterableAttributesSettings();
 
-		index.waitForPendingUpdate(index.updateDisplayedAttributesSettings(null).getUpdateId());
-		String[] resetDisplayedAttributes = index.getDisplayedAttributesSettings();
+        assertNotEquals(updatedFilterableAttributes.length, resetFilterableAttributes.length);
+        assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
+        assertEquals(initialFilterableAttributes.length, resetFilterableAttributes.length);
+        assertArrayEquals(initialFilterableAttributes, resetFilterableAttributes);
+    }
 
-		assertNotEquals(initialDisplayedAttributes.length,updatedDisplayedAttributes.length);
-		assertNotEquals(updatedDisplayedAttributes.length, resetDisplayedAttributes.length);
-		assertEquals(initialDisplayedAttributes.length,resetDisplayedAttributes.length);
-		assertArrayEquals(initialDisplayedAttributes,resetDisplayedAttributes);
-	}
+    @Test
+    @DisplayName("Test update distinct attribute settings when null is passed")
+    public void testUpdateDistinctAttributeSettingsUsingNull() throws Exception {
+        Index index = createIndex("testUpdateDistinctAttributeSettingsUsingNull");
+        String initialDistinctAttribute = index.getDistinctAttributeSettings();
+        String newDistinctAttribute = "genres";
 
-	
-	@Test
-	@DisplayName("Test update filterable attributes settings when null is passed")
-	public void testUpdateFilterableAttributesSettingsUsingNull() throws Exception {
-		Index index = createIndex("testUpdateFilterableAttributesSettingsUsingNull");
-		String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
-		String[] newFilterableAttributes = {
-			"title", "genres", "cast", "release_date"
-		};
+        index.waitForPendingUpdate(
+                index.updateDistinctAttributeSettings(newDistinctAttribute).getUpdateId());
+        String updatedDistinctAttribute = index.getDistinctAttributeSettings();
 
-		index.waitForPendingUpdate(
-			index.updateFilterableAttributesSettings(newFilterableAttributes).getUpdateId());
-		String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
+        index.waitForPendingUpdate(index.updateDistinctAttributeSettings(null).getUpdateId());
+        String resetDistinctAttribute = index.getDistinctAttributeSettings();
 
-		index.waitForPendingUpdate(index.updateFilterableAttributesSettings(null).getUpdateId());
-		String[] resetFilterableAttributes = index.getFilterableAttributesSettings();
-
-		assertNotEquals(updatedFilterableAttributes.length, resetFilterableAttributes.length);
-		assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
-		assertEquals(initialFilterableAttributes.length,resetFilterableAttributes.length);
-		assertArrayEquals(initialFilterableAttributes,resetFilterableAttributes);
-	}
-
-
-	@Test
-	@DisplayName("Test update distinct attribute settings when null is passed")
-	public void testUpdateDistinctAttributeSettingsUsingNull() throws Exception {
-		Index index = createIndex("testUpdateDistinctAttributeSettingsUsingNull");
-		String initialDistinctAttribute = index.getDistinctAttributeSettings();
-		String newDistinctAttribute = "genres";
-
-		index.waitForPendingUpdate(
-			index.updateDistinctAttributeSettings(newDistinctAttribute).getUpdateId());
-		String updatedDistinctAttribute = index.getDistinctAttributeSettings();
-
-		index.waitForPendingUpdate(index.updateDistinctAttributeSettings(null).getUpdateId());
-		String resetDistinctAttribute = index.getDistinctAttributeSettings();
-
-		assertNotEquals(updatedDistinctAttribute, resetDistinctAttribute);
-		assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
-		assertEquals(initialDistinctAttribute,resetDistinctAttribute);
-	}
-
+        assertNotEquals(updatedDistinctAttribute, resetDistinctAttribute);
+        assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
+        assertEquals(initialDistinctAttribute, resetDistinctAttribute);
+    }
 
     private Index createIndex(String indexUid) throws Exception {
         Index index = client.index(indexUid);
