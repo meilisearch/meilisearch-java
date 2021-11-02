@@ -113,7 +113,7 @@ update_synonyms_1: |-
   settings.setSynonyms(synonyms);
   client.index("movies").updateSettings(settings);
 reset_synonyms_1: |-
-  //Not yet implemented
+  clinet.index("movies").resetSynonymsSettings();
 get_stop_words_1: |-
   client.index("movies").getStopWords();
 update_stop_words_1: |-
@@ -121,7 +121,7 @@ update_stop_words_1: |-
   settings.setStopWords(new String[] {"of", "the", "to"});
   client.index("movies").updateSettings(settings);
 reset_stop_words_1: |-
-  //Not yet implemented
+  client.index("movies").resetStopWordsSettings();
 get_ranking_rules_1: |-
   client.index("movies").getRankingRules();
 update_ranking_rules_1: |-
@@ -139,7 +139,7 @@ update_ranking_rules_1: |-
   });
   client.index("movies").updateSettings(settings);
 reset_ranking_rules_1: |-
-  //Not yet implemented
+  client.index("movies").resetRankingRuleSettings();
 get_distinct_attribute_1: |-
   client.index("shoes").getDistinctAttribute();
 update_distinct_attribute_1: |-
@@ -147,7 +147,7 @@ update_distinct_attribute_1: |-
   settings.setDistinctAttribute("skuid");
   client.index("shoes").updateSettings(settings);
 reset_distinct_attribute_1: |-
-  //Not yet implemented
+  client.index("movies").resetDistinctAttributeSettings();
 get_searchable_attributes_1: |-
   client.index("movies").getSearchableAttributes();
 update_searchable_attributes_1: |-
@@ -160,7 +160,7 @@ update_searchable_attributes_1: |-
   });
   client.index("movies").updateSettings(settings);
 reset_searchable_attributes_1: |-
-  //Not yet implemented
+  clinet.index("movies).resetSearchableAttributesSettings();
 get_filterable_attributes_1: |-
   client.index("movies").getFilterableAttributes();
 update_filterable_attributes_1: |-
@@ -182,7 +182,7 @@ update_displayed_attributes_1: |-
   });
   client.index("movies").updateSettings(settings);
 reset_displayed_attributes_1: |-
-  //Not yet implemented
+  client.index("movies").resetDisplayedAttributesSettings();
 get_index_stats_1: |-
   client.index("movies").getStats();
 get_indexes_stats_1: |-
