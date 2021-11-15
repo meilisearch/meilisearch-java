@@ -180,28 +180,27 @@ System.out.println(results.getHits());
 ```
 #### Custom Search With Filters <!-- omit in toc -->
 
-If you want to enable filtering, you must add your attributes to the filterableAttributes index setting.
+If you want to enable filtering, you must add your attributes to the `filterableAttributes` index setting.
 
-```json
-await index.updateAttributesForFaceting([
-    'id',
-    'genres'
-  ])
+```java
+index.updateFilterableAttributesSettings(new String[]
+{
+  "id",
+  "genres"
+});
 ```
 
 You only need to perform this operation once.
 
-Note that MeiliSearch will rebuild your index whenever you update filterableAttributes. Depending on the size of your dataset, this might take time. You can track the process using the update status.
+Note that MeiliSearch will rebuild your index whenever you update `filterableAttributes`. Depending on the size of your dataset, this might take time. You can track the process using the [update status](https://docs.meilisearch.com/reference/api/updates.html#get-an-update-status).
 
 Then, you can perform the search:
 
-```json
-await index.search(
-  'wonder',
-  {
-    filter: ['id > 1 AND genres = Action']
-  }
-)
+```java
+index.search(
+  new SearchRequest("wonder")
+  .setFilter(new String[] {"id > 1 AND genres = Action"})
+);
 ```
 
 ```json
