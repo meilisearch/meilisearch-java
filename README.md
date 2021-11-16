@@ -178,7 +178,47 @@ System.out.println(results.getHits());
   }
 }]
 ```
+#### Custom Search With Filters <!-- omit in toc -->
 
+If you want to enable filtering, you must add your attributes to the `filterableAttributes` index setting.
+
+```java
+index.updateFilterableAttributesSettings(new String[]
+{
+  "id",
+  "genres"
+});
+```
+
+You only need to perform this operation once.
+
+Note that MeiliSearch will rebuild your index whenever you update `filterableAttributes`. Depending on the size of your dataset, this might take time. You can track the process using the [update status](https://docs.meilisearch.com/reference/api/updates.html#get-an-update-status).
+
+Then, you can perform the search:
+
+```java
+index.search(
+  new SearchRequest("wonder")
+  .setFilter(new String[] {"id > 1 AND genres = Action"})
+);
+```
+
+```json
+{
+  "hits": [
+    {
+      "id": 2,
+      "title": "Wonder Woman",
+      "genres": ["Action","Adventure"]
+    }
+  ],
+  "offset": 0,
+  "limit": 20,
+  "nbHits": 1,
+  "processingTimeMs": 0,
+  "query": "wonder"
+}
+```
 ## 🛠 Customization
 
 ### JSON <!-- omit in toc -->
