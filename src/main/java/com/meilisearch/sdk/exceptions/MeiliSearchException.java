@@ -3,50 +3,50 @@ package com.meilisearch.sdk.exceptions;
 public class MeiliSearchException extends Exception {
 
     /** This is a generic class for MeiliSearch Exception handling */
-    String errorMessage;
+    String message;
 
-    String errorType;
-    String errorCode;
-    String errorLink;
+    String type;
+    String code;
+    String link;
 
-    public MeiliSearchException(String errorMessage) {
-        super(errorMessage);
-        this.setErrorMessage(errorMessage);
+    public MeiliSearchException(String message) {
+        super(message);
+        this.setErrorMessage(message);
     }
 
     public String getMessage() {
-        return this.errorMessage;
+        return this.message;
     }
 
     public String getErrorType() {
-        return this.errorType;
+        return this.type;
     }
 
     public String getErrorCode() {
-        return this.errorCode;
+        return this.code;
     }
 
     public String getErrorLink() {
-        return this.errorLink;
+        return this.link;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setErrorMessage(String message) {
+        this.message = message;
     }
 
-    public void setErrorType(String errorType) {
-        this.errorType = errorType;
+    public void setErrorType(String type) {
+        this.type = type;
     }
 
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
+    public void setErrorCode(String code) {
+        this.code = code;
     }
 
-    public void setErrorLink(String errorLink) {
-        this.errorLink = errorLink;
+    public void setErrorLink(String link) {
+        this.link = link;
     }
 
     public String toString() {
-        return this.getClass().getName() + ". Error message: " + this.errorMessage + ".";
+        return this.getClass().getName() + ". Error message: " + this.message + ".";
     }
 }
