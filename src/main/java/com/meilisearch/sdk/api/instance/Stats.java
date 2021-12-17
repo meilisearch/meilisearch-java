@@ -4,23 +4,23 @@ import java.util.Date;
 import java.util.Map;
 
 public class Stats {
-    private int databaseSize;
+    private long databaseSize;
     private Date lastUpdate;
     private Map<String, IndexStats> indexes;
 
     public Stats() {}
 
-    public Stats(int databaseSize, Date lastUpdate, Map<String, IndexStats> indexes) {
+    public Stats(long databaseSize, Date lastUpdate, Map<String, IndexStats> indexes) {
         this.databaseSize = databaseSize;
         this.lastUpdate = lastUpdate;
         this.indexes = indexes;
     }
 
-    public int getDatabaseSize() {
+    public long getDatabaseSize() {
         return databaseSize;
     }
 
-    public void setDatabaseSize(int databaseSize) {
+    public void setDatabaseSize(long databaseSize) {
         this.databaseSize = databaseSize;
     }
 
