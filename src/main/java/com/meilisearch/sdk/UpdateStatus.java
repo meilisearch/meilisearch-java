@@ -8,23 +8,6 @@ class StatusType {
     int number = 0;
 }
 
-/** The code, type and error of the update status error */
-public class Error {
-    protected String code = "";
-    protected String type = "";
-    protected String link = "";
-
-    public String getCode() {
-        return this.code;
-    }
-    public String getType() {
-        return this.type;
-    }
-    public String getLink() {
-        return this.link;
-    }
-}
-
 /** MeiliSearch response for an Update Status */
 public class UpdateStatus {
     protected String status = "";
@@ -33,7 +16,7 @@ public class UpdateStatus {
     protected float duration = 0.0f;
     protected String enqueuedAt = "";
     protected String processedAt = "";
-    protected Error error = null;
+    protected UpdateStatusError error = null;
 
     private static Gson gsonUpdate = new Gson();
 
@@ -106,7 +89,7 @@ public class UpdateStatus {
      *
      * @return error Object with the code, type and link of the Update Status Error
      */
-    public Error getError() {
+    public UpdateStatusError getError() {
         return this.error;
     }
 }
