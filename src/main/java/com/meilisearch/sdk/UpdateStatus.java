@@ -9,10 +9,20 @@ class StatusType {
 }
 
 /** The code, type and error of the update status error */
-class Error {
-    String code = "";
-    String type = "";
-    String link = "";
+public class Error {
+    protected String code = "";
+    protected String type = "";
+    protected String link = "";
+
+    public String getCode() {
+        return this.code;
+    }
+    public String getType() {
+        return this.type;
+    }
+    public String getLink() {
+        return this.link;
+    }
 }
 
 /** MeiliSearch response for an Update Status */
