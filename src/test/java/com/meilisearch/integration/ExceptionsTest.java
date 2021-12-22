@@ -38,13 +38,13 @@ public class ExceptionsTest extends AbstractIT {
         }
     }
 
-	/** Test UpdateStatus Error Getters */
-	@Test
-	public void testUpdateStatusErrorGetters() {
-		UpdateStatusError error = new UpdateStatusError();
-		error.setUpdateStatusErrorCode("wrong field");
-		assertEquals("wrong field", error.getUpdateStatusErrorCode());
-	}
+    /** Test UpdateStatus Error Getters */
+    @Test
+    public void testUpdateStatusErrorGetters() {
+        UpdateStatusError error = new UpdateStatusError();
+        error.setUpdateStatusErrorCode("wrong field");
+        assertEquals("wrong field", error.getUpdateStatusErrorCode());
+    }
 
     /** Test MeiliSearchApiException is thrown on MeiliSearch bad request */
     @Test
