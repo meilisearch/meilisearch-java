@@ -2,12 +2,15 @@ package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
 import com.meilisearch.sdk.model.SearchResult;
+import lombok.Getter;
+import lombok.ToString;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import lombok.Getter;
-import lombok.ToString;
 
 /** MeiliSearch index */
 @ToString
@@ -125,7 +128,30 @@ public class Index implements Serializable {
     public String addDocuments(String document, String primaryKey) throws Exception {
         return this.documents.addDocuments(this.uid, document, primaryKey);
     }
+	/**
+	 * Adds a document in the index in batches
+	 */
+	public String addDocumentsInBatches(String document, Integer batchSize) throws Exception {
 
+		JSONArray jsonDocumentsArray = new JSONArray(document);
+		JSONArray jsonSubArray = new JSONArray();
+		JSONArray arrayResponses = new JSONArray();
+
+		batchSize = jsonDocumentsArray.length() < batchSize ? jsonDocumentsArray.length()/3 : batchSize;
+
+		for (int i=0; i < jsonDocumentsArray.length(); i+=batchSize) {
+			for (int j=0; j < batchSize; j++) {
+				jsonSubArray.put(j,jsonDocumentsArray.get(i+j));
+			}
+				arrayResponses.put(new JSONObject(
+					this.documents.addDocuments(this.uid, jsonSubArray.toString(), null)));
+		}
+		return arrayResponses.toString();
+	}
+
+	public String addDocumentsInBatches(String document) throws Exception{
+		return this.addDocumentsInBatches(document, 1000);
+	}
     /**
      * Updates a document in the index
      *
