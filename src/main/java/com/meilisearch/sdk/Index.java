@@ -2,15 +2,14 @@ package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
 import com.meilisearch.sdk.model.SearchResult;
-import lombok.Getter;
-import lombok.ToString;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
+import lombok.ToString;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /** MeiliSearch index */
 @ToString
