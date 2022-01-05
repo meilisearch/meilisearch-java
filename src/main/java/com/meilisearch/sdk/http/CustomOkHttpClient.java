@@ -37,7 +37,7 @@ public class CustomOkHttpClient extends AbstractHttpClient {
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         if (this.config.getApiKey() != null)
-            builder.addHeader("X-Meili-API-Key", this.config.getApiKey());
+            builder.addHeader("Authorization", "Bearer " + this.config.getApiKey());
         switch (request.getMethod()) {
             case GET:
                 builder.get();

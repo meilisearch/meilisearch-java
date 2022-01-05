@@ -38,7 +38,7 @@ public class DefaultHttpClient extends AbstractHttpClient {
 
         // Use API key header only if one is provided
         if (!"".equals(apiKey)) {
-            connection.setRequestProperty("X-Meili-API-Key", apiKey);
+            connection.setRequestProperty("Authorization", "Bearer " + apiKey);
         }
 
         return connection;
