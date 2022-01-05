@@ -179,27 +179,6 @@ public class ClientTest extends AbstractIT {
         assertThrows(MeiliSearchApiException.class, () -> client.getIndex(indexUid));
     }
 
-    /** Test deleteIndexIfExists */
-    @Test
-    public void testDeleteIndexIfExistsDeleteIndex() throws Exception {
-        String indexUid = "DeleteIndex";
-        Index index = client.createIndex(indexUid);
-        client.deleteIndexIfExists(index.getUid());
-        assertThrows(MeiliSearchApiException.class, () -> client.getIndex(indexUid));
-    }
-
-    /** Test deleteIndexIfExists */
-    @Test
-    public void testDeleteIndexIfExistsDoesNotThrowException() throws Exception {
-        String indexUid = "DeleteIndex";
-        Index index = client.createIndex(indexUid);
-        client.deleteIndexIfExists(index.getUid());
-        assertDoesNotThrow(() -> client.deleteIndexIfExists(indexUid));
-
-        boolean response = client.deleteIndexIfExists(indexUid);
-        assertFalse(response);
-    }
-
     /** Test call to index method with an inexistent index */
     @Test
     public void testIndexMethodCallInexistentIndex() throws Exception {
