@@ -157,47 +157,6 @@ public class Client {
     }
 
     /**
-     * Gets single index by uid or if it does not exists, Create index
-     *
-     * @param uid Unique identifier for the index to create
-     * @param primaryKey The primary key of the documents in that index
-     * @return Index instance
-     * @throws Exception if an error occurs
-     */
-    public Index getOrCreateIndex(String uid, String primaryKey) throws Exception {
-        try {
-            return this.getIndex(uid);
-        } catch (MeiliSearchApiException e) {
-            if (e.getErrorCode().equals("index_not_found")) {
-                return this.createIndex(uid, primaryKey);
-            }
-            throw e;
-        }
-    }
-
-    /**
-     * Gets single index by uid or if it does not exists, Create index
-     *
-     * @param uid Unique identifier for the index to create
-     * @return Index instance
-     * @throws Exception if an error occurs
-     */
-    public Index getOrCreateIndex(String uid) throws Exception {
-        return getOrCreateIndex(uid, null);
-    }
-
-    /**
-     * Triggers the creation of a MeiliSearch dump. Refer
-     * https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
-     *
-     * @return Dump instance
-     * @throws Exception if an error occurs
-     */
-    public Dump createDump() throws Exception {
-        return this.dumpHandler.createDump();
-    }
-
-    /**
      * Gets the status of a MeiliSearch dump.
      * https://docs.meilisearch.com/reference/api/dump.html#get-dump-status
      *
