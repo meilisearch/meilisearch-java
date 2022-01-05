@@ -3,24 +3,24 @@ package com.meilisearch.sdk.api.instance;
 import java.util.Map;
 
 public class IndexStats {
-    private int numberOfDocuments;
+    private long numberOfDocuments;
     private boolean isIndexing;
     private Map<String, Integer> fieldDistribution;
 
     public IndexStats() {}
 
     public IndexStats(
-            int numberOfDocuments, boolean isIndexing, Map<String, Integer> fieldDistribution) {
+            long numberOfDocuments, boolean isIndexing, Map<String, Integer> fieldDistribution) {
         this.numberOfDocuments = numberOfDocuments;
         this.isIndexing = isIndexing;
         this.fieldDistribution = fieldDistribution;
     }
 
-    public int getNumberOfDocuments() {
+    public long getNumberOfDocuments() {
         return numberOfDocuments;
     }
 
-    public void setNumberOfDocuments(int numberOfDocuments) {
+    public void setNumberOfDocuments(long numberOfDocuments) {
         this.numberOfDocuments = numberOfDocuments;
     }
 
