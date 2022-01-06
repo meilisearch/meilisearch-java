@@ -10,6 +10,9 @@ import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import com.meilisearch.sdk.utils.Movie;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -554,5 +557,54 @@ public class DocumentsTest extends AbstractIT {
 
         movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         assertEquals(0, movies.length);
+    }
+
+    /** Test add ndjson documents */
+    @Test
+    public void addDocumentsNDJSON() throws Exception {
+        String indexUid = "AddDocumentsNDJSON";
+        Index index = client.index(indexUid);
+
+        FileReader ndjsonReader = new FileReader(new File("src/test/resources/movies.ndjson"));
+        BufferedReader ndjsonReader2 = new BufferedReader(ndjsonReader);
+        StringBuffer stringBuffer = new StringBuffer();
+        String line;
+
+        while ((line = ndjsonReader2.readLine()) != null) {
+            stringBuffer.append(line);
+            stringBuffer.append("\n");
+        }
+
+        ndjsonReader.close();
+
+        String updateStatus = index.addDocumentsNDJSON(stringBuffer.toString(), null);
+        UpdateStatus updateInfo = gson.fromJson(updateStatus, UpdateStatus.class);
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        assertEquals("{\"updateId\":0}", updateStatus);
+    }
+
+    /** Test add CSV documents */
+    @Test
+    public void addDocumentsCSV() throws Exception {
+
+        String indexUid = "AddDocumentsCSV";
+        Index index = client.index(indexUid);
+
+        FileReader csvReader = new FileReader(new File("src/test/resources/movies.csv"));
+        BufferedReader csvReader2 = new BufferedReader(csvReader);
+        StringBuffer stringBuffer = new StringBuffer();
+        String line;
+
+        while ((line = csvReader2.readLine()) != null) {
+            stringBuffer.append(line);
+            stringBuffer.append("\n");
+        }
+
+        csvReader.close();
+
+        String updateStatus = index.addDocumentsCSV(stringBuffer.toString(), null);
+        UpdateStatus updateInfo = gson.fromJson(updateStatus, UpdateStatus.class);
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        assertEquals("{\"updateId\":0}", updateStatus);
     }
 }

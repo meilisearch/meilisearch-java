@@ -1,8 +1,10 @@
 package com.meilisearch.sdk;
 
+import com.google.common.net.HttpHeaders;
 import com.google.gson.Gson;
 import com.meilisearch.sdk.model.SearchResult;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -643,5 +645,37 @@ public class Index implements Serializable {
         Index retrievedIndex =
                 new Gson().fromJson(meilisearchHttpRequest.get(requestQuery), Index.class);
         this.primaryKey = retrievedIndex.getPrimaryKey();
+    }
+
+    /**
+     * Add Documents from NDJSON file
+     *
+     * @param document Document to add in NDJSON string format
+     * @param primaryKey PrimaryKey of the Document to Add
+     * @return MeiliSearch API response
+     * @throws Exception if something goes wrong
+     */
+    public String addDocumentsNDJSON(String document, String primaryKey) throws Exception {
+        return this.documents.addDocuments(
+                this.uid,
+                document,
+                primaryKey,
+                Collections.singletonMap(HttpHeaders.CONTENT_TYPE, "application/x-ndjson"));
+    }
+
+    /**
+     * Add Documents from CSV File
+     *
+     * @param document Document to add in CSV string format
+     * @param primaryKey PrimaryKey of the Document to Add
+     * @return MeiliSearch API response
+     * @throws Exception if something goes wrong
+     */
+    public String addDocumentsCSV(String document, String primaryKey) throws Exception {
+        return this.documents.addDocuments(
+                this.uid,
+                document,
+                primaryKey,
+                Collections.singletonMap(HttpHeaders.CONTENT_TYPE, "text/csv"));
     }
 }
