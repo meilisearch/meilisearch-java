@@ -583,6 +583,33 @@ public class DocumentsTest extends AbstractIT {
         assertEquals("{\"updateId\":0}", updateStatus);
     }
 
+    /** Test add ndjson documents in batches */
+    @Test
+    public void addDocumentsNDJSONinBatches() throws Exception {
+        String indexUid = "AddDocumentsNDJSONinBatches";
+        Index index = client.index(indexUid);
+
+        FileReader ndjsonReader = new FileReader(new File("src/test/resources/movies.ndjson"));
+        BufferedReader ndjsonReader2 = new BufferedReader(ndjsonReader);
+        StringBuffer stringBuffer = new StringBuffer();
+        String line;
+
+        while ((line = ndjsonReader2.readLine()) != null) {
+            stringBuffer.append(line);
+            stringBuffer.append("\n");
+        }
+
+        ndjsonReader.close();
+
+        String updateStatusArr = index.addDocumentsNDJSONinBatches(stringBuffer.toString());
+
+        UpdateStatus[] updateStatuses = gson.fromJson(updateStatusArr, UpdateStatus[].class);
+        for (UpdateStatus updateStatus : updateStatuses) {
+            index.waitForPendingUpdate(updateStatus.getUpdateId());
+        }
+        assertEquals("[{\"updateId\":0}]", updateStatusArr);
+    }
+
     /** Test add CSV documents */
     @Test
     public void addDocumentsCSV() throws Exception {
@@ -606,5 +633,33 @@ public class DocumentsTest extends AbstractIT {
         UpdateStatus updateInfo = gson.fromJson(updateStatus, UpdateStatus.class);
         index.waitForPendingUpdate(updateInfo.getUpdateId());
         assertEquals("{\"updateId\":0}", updateStatus);
+    }
+
+    /** Test add CSV documents */
+    @Test
+    public void addDocumentsCSVinBatches() throws Exception {
+
+        String indexUid = "AddDocumentsCSVinBatches";
+        Index index = client.index(indexUid);
+
+        FileReader csvReader = new FileReader(new File("src/test/resources/movies.csv"));
+        BufferedReader csvReader2 = new BufferedReader(csvReader);
+        StringBuffer stringBuffer = new StringBuffer();
+        String line;
+
+        while ((line = csvReader2.readLine()) != null) {
+            stringBuffer.append(line);
+            stringBuffer.append("\n");
+        }
+
+        csvReader.close();
+
+        String updateStatusArr = index.addDocumentsCSVinBatches(stringBuffer.toString());
+
+        UpdateStatus[] updateStatuses = gson.fromJson(updateStatusArr, UpdateStatus[].class);
+        for (UpdateStatus updateStatus : updateStatuses) {
+            index.waitForPendingUpdate(updateStatus.getUpdateId());
+        }
+        assertEquals("[{\"updateId\":0}]", updateStatusArr);
     }
 }
