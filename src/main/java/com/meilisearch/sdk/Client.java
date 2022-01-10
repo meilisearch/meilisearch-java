@@ -4,12 +4,12 @@
 package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
-import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 
 /** MeiliSearch client */
 public class Client {
     public Config config;
     public IndexesHandler indexesHandler;
+    public TasksHandler tasksHandler;
     public Gson gson;
     public DumpHandler dumpHandler;
 
@@ -22,6 +22,7 @@ public class Client {
         this.config = config;
         this.gson = new Gson();
         this.indexesHandler = new IndexesHandler(config);
+        this.tasksHandler = new TasksHandler(config);
         this.dumpHandler = new DumpHandler(config);
     }
 
@@ -29,10 +30,10 @@ public class Client {
      * Creates index Refer https://docs.meilisearch.com/reference/api/indexes.html#create-an-index
      *
      * @param uid Unique identifier for the index to create
-     * @return MeiliSearch API response
+     * @return MeiliSearch API response as Task
      * @throws Exception if an error occurs
      */
-    public Index createIndex(String uid) throws Exception {
+    public Task createIndex(String uid) throws Exception {
         return this.createIndex(uid, null);
     }
 
@@ -41,20 +42,19 @@ public class Client {
      *
      * @param uid Unique identifier for the index to create
      * @param primaryKey The primary key of the documents in that index
-     * @return MeiliSearch API response
+     * @return MeiliSearch API response as Task
      * @throws Exception if an error occurs
      */
-    public Index createIndex(String uid, String primaryKey) throws Exception {
-        Index index = gson.fromJson(this.indexesHandler.create(uid, primaryKey), Index.class);
-        index.setConfig(this.config);
-        return index;
+    public Task createIndex(String uid, String primaryKey) throws Exception {
+        Task task = gson.fromJson(this.indexesHandler.create(uid, primaryKey), Task.class);
+        return task;
     }
 
     /**
      * Gets all indexes Refer
      * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
-     * @return list of indexes in the MeiliSearch client
+     * @return List of indexes in the MeiliSearch client
      * @throws Exception if an error occurs
      */
     public Index[] getIndexList() throws Exception {
@@ -123,26 +123,26 @@ public class Client {
      *
      * @param uid Unique identifier of the index to update
      * @param primaryKey Primary key of the documents in the index
-     * @return MeiliSearch API response
+     * @return MeiliSearch API response as Task
      * @throws Exception if an error occurs
      */
-    public Index updateIndex(String uid, String primaryKey) throws Exception {
-        Index index =
-                gson.fromJson(this.indexesHandler.updatePrimaryKey(uid, primaryKey), Index.class);
-        index.setConfig(this.config);
-        return index;
+    public Task updateIndex(String uid, String primaryKey) throws Exception {
+        Task task =
+                gson.fromJson(this.indexesHandler.updatePrimaryKey(uid, primaryKey), Task.class);
+        return task;
     }
 
     /**
      * Deletes single index by uid Refer
-     * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
+     * https://docs.meilisearch.com/reference/api/indexes.html#delete-one-index
      *
      * @param uid Unique identifier of the index to delete
-     * @return MeiliSearch API response
+     * @return MeiliSearch API response as Task
      * @throws Exception if an error occurs
      */
-    public String deleteIndex(String uid) throws Exception {
-        return this.indexesHandler.delete(uid);
+    public Task deleteIndex(String uid) throws Exception {
+        Task task = gson.fromJson(this.indexesHandler.delete(uid), Task.class);
+        return task;
     }
 
     /**
@@ -166,5 +166,36 @@ public class Client {
      */
     public String getDumpStatus(String uid) throws Exception {
         return this.dumpHandler.getDumpStatus(uid);
+    }
+
+    /**
+     * Retrieves a task with the specified uid
+     *
+     * @param uid Identifier of the requested Task
+     * @return Task Instance
+     * @throws Exception if an error occurs
+     */
+    public Task getTask(int uid) throws Exception {
+        return this.tasksHandler.getTask(uid);
+    }
+
+    /**
+     * Retrieves list of tasks
+     *
+     * @return List of tasks in the MeiliSearch client
+     * @throws Exception if an error occurs
+     */
+    public Task[] getTasks() throws Exception {
+        return this.tasksHandler.getTasks();
+    }
+
+    /**
+     * Waits for a task to be processed
+     *
+     * @param uid Identifier of the requested Task
+     * @throws Exception if an error occurs or if timeout is reached
+     */
+    public void waitForTask(int uid) throws Exception {
+        this.tasksHandler.waitForTask(uid);
     }
 }

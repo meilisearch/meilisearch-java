@@ -2,12 +2,15 @@ package com.meilisearch.sdk;
 
 import static java.util.Collections.singletonList;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import java.util.List;
 
 /** Wrapper around MeilisearchHttpRequest class to use for MeiliSearch documents */
 class Documents {
     private final MeiliSearchHttpRequest meilisearchHttpRequest;
+
+    Gson gson = new Gson();
 
     protected Documents(Config config) {
         meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
@@ -101,15 +104,16 @@ class Documents {
      * @param uid Partial index identifier for the document
      * @param document String containing the document to add
      * @param primaryKey PrimaryKey of the document
-     * @return String containing the added document
+     * @return Task MeiliSearch API response
      * @throws Exception if the client request causes an error
      */
-    String addDocuments(String uid, String document, String primaryKey) throws Exception {
+    Task addDocuments(String uid, String document, String primaryKey) throws Exception {
         String requestQuery = "/indexes/" + uid + "/documents";
         if (primaryKey != null) {
             requestQuery += "?primaryKey=" + primaryKey;
         }
-        return meilisearchHttpRequest.post(requestQuery, document);
+        Task task = gson.fromJson(meilisearchHttpRequest.post(requestQuery, document), Task.class);
+        return task;
     }
 
     /**
@@ -118,15 +122,16 @@ class Documents {
      * @param uid Partial index identifier for the document
      * @param document String containing the document to replace the existing document
      * @param primaryKey PrimaryKey of the document
-     * @return String containing the added document
+     * @return Task MeiliSearch API response
      * @throws Exception if the client request causes an error
      */
-    String updateDocuments(String uid, String document, String primaryKey) throws Exception {
+    Task updateDocuments(String uid, String document, String primaryKey) throws Exception {
         String requestQuery = "/indexes/" + uid + "/documents";
         if (primaryKey != null) {
             requestQuery += "?primaryKey=" + primaryKey;
         }
-        return meilisearchHttpRequest.put(requestQuery, document);
+        Task task = gson.fromJson(meilisearchHttpRequest.put(requestQuery, document), Task.class);
+        return task;
     }
 
     /**
@@ -137,9 +142,10 @@ class Documents {
      * @return the corresponding updateId JSON
      * @throws Exception if the client request causes an error
      */
-    String deleteDocument(String uid, String identifier) throws Exception {
+    Task deleteDocument(String uid, String identifier) throws Exception {
         String requestQuery = "/indexes/" + uid + "/documents/" + identifier;
-        return meilisearchHttpRequest.delete(requestQuery);
+        Task task = gson.fromJson(meilisearchHttpRequest.delete(requestQuery), Task.class);
+        return task;
     }
 
     /**
@@ -150,12 +156,15 @@ class Documents {
      * @return the corresponding updateId JSON
      * @throws Exception if the client request causes an error
      */
-    String deleteDocuments(String uid, List<String> identifiers) throws Exception {
+    Task deleteDocuments(String uid, List<String> identifiers) throws Exception {
         String requestQuery = "/indexes/" + uid + "/documents/" + "delete-batch";
         JsonArray requestData = new JsonArray(identifiers.size());
         identifiers.forEach(requestData::add);
-
-        return meilisearchHttpRequest.post(requestQuery, requestData.toString());
+        Task task =
+                gson.fromJson(
+                        meilisearchHttpRequest.post(requestQuery, requestData.toString()),
+                        Task.class);
+        return task;
     }
 
     /**
@@ -165,8 +174,9 @@ class Documents {
      * @return the corresponding updateId JSON
      * @throws Exception if the client request causes an error
      */
-    String deleteAllDocuments(String uid) throws Exception {
+    Task deleteAllDocuments(String uid) throws Exception {
         String requestQuery = "/indexes/" + uid + "/documents";
-        return meilisearchHttpRequest.delete(requestQuery);
+        Task task = gson.fromJson(meilisearchHttpRequest.delete(requestQuery), Task.class);
+        return task;
     }
 }

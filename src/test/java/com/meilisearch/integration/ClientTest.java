@@ -9,6 +9,7 @@ import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Dump;
 import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.Task;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Arrays;
@@ -38,7 +39,7 @@ public class ClientTest extends AbstractIT {
     @Test
     public void testCreateIndexWithoutPrimaryKey() throws Exception {
         String indexUid = "CreateIndexWithoutPrimaryKey";
-        Index index = client.createIndex(indexUid);
+        Index index = createEmptyIndex(indexUid);
         assertEquals(index.getUid(), indexUid);
         assertNull(index.getPrimaryKey());
         client.deleteIndex(index.getUid());
@@ -48,21 +49,22 @@ public class ClientTest extends AbstractIT {
     @Test
     public void testCreateIndexWithPrimaryKey() throws Exception {
         String indexUid = "CreateIndexWithPrimaryKey";
-        Index index = client.createIndex(indexUid, this.primaryKey);
+        Index index = createEmptyIndex(indexUid, this.primaryKey);
         assertEquals(index.getUid(), indexUid);
         assertEquals(index.getPrimaryKey(), this.primaryKey);
         client.deleteIndex(index.getUid());
     }
 
-    /** Test Index creation error: already exists */
+    /** Test Index creation twice doesn't throw an error: already exists */
     @Test
     public void testCreateIndexAlreadyExists() throws Exception {
         String indexUid = "CreateIndexAlreadyExists";
-        Index index = client.createIndex(indexUid, this.primaryKey);
+        Index index = createEmptyIndex(indexUid, this.primaryKey);
         assertEquals(index.getUid(), indexUid);
         assertEquals(index.getPrimaryKey(), this.primaryKey);
-        assertThrows(
-                MeiliSearchApiException.class, () -> client.createIndex(indexUid, this.primaryKey));
+        Index indexDuplicate = createEmptyIndex(indexUid, this.primaryKey);
+        assertEquals(index.getUid(), indexUid);
+        assertEquals(index.getPrimaryKey(), this.primaryKey);
         client.deleteIndex(index.getUid());
     }
 
@@ -70,10 +72,12 @@ public class ClientTest extends AbstractIT {
     @Test
     public void testUpdateIndexPrimaryKey() throws Exception {
         String indexUid = "UpdateIndexPrimaryKey";
-        Index index = client.createIndex(indexUid);
+        Index index = createEmptyIndex(indexUid);
         assertEquals(index.getUid(), indexUid);
         assertNull(index.getPrimaryKey());
-        index = client.updateIndex(indexUid, this.primaryKey);
+        Task task = client.updateIndex(indexUid, this.primaryKey);
+        client.waitForTask(task.getUid());
+        index = client.getIndex(indexUid);
         assertTrue(index instanceof Index);
         assertEquals(index.getUid(), indexUid);
         assertEquals(index.getPrimaryKey(), this.primaryKey);
@@ -84,7 +88,7 @@ public class ClientTest extends AbstractIT {
     @Test
     public void testGetIndex() throws Exception {
         String indexUid = "GetIndex";
-        Index index = client.createIndex(indexUid);
+        Index index = createEmptyIndex(indexUid);
         Index getIndex = client.getIndex(indexUid);
         assertEquals(index.getUid(), getIndex.getUid());
         assertEquals(index.getPrimaryKey(), getIndex.getPrimaryKey());
@@ -95,7 +99,7 @@ public class ClientTest extends AbstractIT {
     @Test
     public void testGetRawIndex() throws Exception {
         String indexUid = "GetRawIndex";
-        Index index = client.createIndex(indexUid, this.primaryKey);
+        Index index = createEmptyIndex(indexUid, this.primaryKey);
         String getIndex = client.getRawIndex(indexUid);
         JsonObject indexJson = JsonParser.parseString(getIndex).getAsJsonObject();
         assertEquals(index.getUid(), indexJson.get("uid").getAsString());
@@ -107,8 +111,8 @@ public class ClientTest extends AbstractIT {
     @Test
     public void testGetIndexList() throws Exception {
         String[] indexUids = {"GetIndexList", "GetIndexList2"};
-        Index index1 = client.createIndex(indexUids[0]);
-        Index index2 = client.createIndex(indexUids[1], this.primaryKey);
+        Index index1 = createEmptyIndex(indexUids[0]);
+        Index index2 = createEmptyIndex(indexUids[1], this.primaryKey);
         Index[] indexes = client.getIndexList();
         assertEquals(2, indexes.length);
         assert (Arrays.asList(indexUids).contains(indexUids[0]));
@@ -121,8 +125,8 @@ public class ClientTest extends AbstractIT {
     @Test
     public void testGetRawIndexList() throws Exception {
         String[] indexUids = {"GetRawIndexList", "GetRawIndexList2"};
-        Index index1 = client.createIndex(indexUids[0]);
-        Index index2 = client.createIndex(indexUids[1], this.primaryKey);
+        Index index1 = createEmptyIndex(indexUids[0]);
+        Index index2 = createEmptyIndex(indexUids[1], this.primaryKey);
         String indexes = client.getRawIndexList();
         JsonArray jsonIndexArray = JsonParser.parseString(indexes).getAsJsonArray();
         assertEquals(jsonIndexArray.size(), 2);
@@ -138,8 +142,9 @@ public class ClientTest extends AbstractIT {
     @Test
     public void testDeleteIndex() throws Exception {
         String indexUid = "DeleteIndex";
-        Index index = client.createIndex(indexUid);
-        client.deleteIndex(index.getUid());
+        Index index = createEmptyIndex(indexUid);
+        Task task = client.deleteIndex(index.getUid());
+        client.waitForTask(task.getUid());
         assertThrows(MeiliSearchApiException.class, () -> client.getIndex(indexUid));
     }
 
@@ -156,7 +161,7 @@ public class ClientTest extends AbstractIT {
     @Test
     public void testIndexMethodCallExistingIndex() throws Exception {
         String indexUid = "IndexMethodCallExistingIndex";
-        Index createdIndex = client.createIndex(indexUid);
+        Index createdIndex = createEmptyIndex(indexUid);
         Index index = client.index(indexUid);
         assertEquals(createdIndex.getUid(), index.getUid());
         assertNull(index.getPrimaryKey());
@@ -167,7 +172,7 @@ public class ClientTest extends AbstractIT {
     public void testIndexMethodCallExistingIndexWithPrimaryKey() throws Exception {
         String indexUid = "IndexMethodCallExistingIndexWithPrimaryKey";
         String primaryKey = "PrimaryKey";
-        Index createdIndex = client.createIndex(indexUid, primaryKey);
+        Index createdIndex = createEmptyIndex(indexUid, primaryKey);
         Index index = client.index(indexUid);
         assertEquals(createdIndex.getUid(), index.getUid());
         assertNull(index.getPrimaryKey());

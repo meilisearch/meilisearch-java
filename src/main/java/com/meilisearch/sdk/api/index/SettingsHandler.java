@@ -1,7 +1,7 @@
 package com.meilisearch.sdk.api.index;
 
 import com.meilisearch.sdk.ServiceTemplate;
-import com.meilisearch.sdk.UpdateStatus;
+import com.meilisearch.sdk.Task;
 import com.meilisearch.sdk.api.documents.Update;
 import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
 import com.meilisearch.sdk.http.factory.RequestFactory;
@@ -394,7 +394,7 @@ public class SettingsHandler {
      * @return updateId is the id of the update
      * @throws Exception if something goes wrong
      */
-    public UpdateStatus updateDistinctAttributeSettings(String uid, String distinctAttribute)
+    public Task updateDistinctAttributeSettings(String uid, String distinctAttribute)
             throws Exception {
         String requestQuery = "/indexes/" + uid + "/settings/distinct-attribute";
         return serviceTemplate.execute(
@@ -411,7 +411,7 @@ public class SettingsHandler {
      * @return updateId is the id of the update
      * @throws Exception if something goes wrong
      */
-    public UpdateStatus resetDistinctAttributeSettings(String uid) throws Exception {
+    public Task resetDistinctAttributeSettings(String uid) throws Exception {
         String requestQuery = "/indexes/" + uid + "/settings/distinct-attribute";
         return serviceTemplate.execute(
                 requestFactory.create(
