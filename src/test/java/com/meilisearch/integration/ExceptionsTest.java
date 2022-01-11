@@ -3,6 +3,7 @@ package com.meilisearch.integration;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.meilisearch.integration.classes.AbstractIT;
+import com.meilisearch.sdk.UpdateStatusError;
 import com.meilisearch.sdk.exceptions.APIError;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import org.junit.jupiter.api.*;
@@ -35,6 +36,14 @@ public class ExceptionsTest extends AbstractIT {
             assertEquals(type, e.getErrorType());
             assertEquals(link, e.getErrorLink());
         }
+    }
+
+    /** Test UpdateStatus Error Getters */
+    @Test
+    public void testUpdateStatusErrorGetters() {
+        UpdateStatusError error = new UpdateStatusError();
+        error.setUpdateStatusErrorCode("wrong field");
+        assertEquals("wrong field", error.getUpdateStatusErrorCode());
     }
 
     /** Test MeiliSearchApiException is thrown on MeiliSearch bad request */

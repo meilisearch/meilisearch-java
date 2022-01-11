@@ -76,25 +76,25 @@ update_settings_1: |-
     new String[] {
       "title",
       "description",
-      "genre",
+      "genre"
     });
   settings.setDisplayedAttributes(
     new String[] {
       "title",
       "description",
       "genre",
-      "release_date",
+      "release_date"
     });
   settings.setStopWords(
     new String[] {
       "the",
       "a",
-      "an",
+      "an"
     });
   settings.setSortableAttributes(
     new String[] {
       "title",
-      "release_date",
+      "release_date"
     });
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("wolverine", new String[] {"xmen", "logan"});
@@ -264,11 +264,12 @@ search_parameter_guide_matches_1: |-
   SearchRequest searchRequest = new SearchRequest("winter feast").setMatches(true);
   SearchResult searchResult = index.search(searchRequest);
 settings_guide_synonyms_1: |-
+  Settings settings = new Settings();
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("sweater", new String[] {"jumper"});
   synonyms.put("jumper", new String[] {"sweater"});
   settings.setSynonyms(synonyms);
-  client.index("movies").updateSynonyms(synonyms);
+  client.index("tops").updateSettings(settings);
 settings_guide_stop_words_1: |-
   Settings settings = new Settings();
   settings.setStopWords(new String[]
@@ -315,6 +316,14 @@ settings_guide_displayed_1: |-
     "release_date"
   });
   client.index("movies").updateSettings(settings);
+settings_guide_sortable_1: |-
+  Settings settings = new Settings();
+  settings.setSortableAttributes(new String[]
+  {
+    "author",
+    "price",
+  });
+  client.index("books").updateSettings(settings);
 documents_guide_add_movie_1: |-
   client.index("movies").addDocuments("[{
     + "\"movie_id\": 123sq178,"
