@@ -55,9 +55,6 @@ public class TasksHandlerTest extends AbstractIT {
             client.waitForTask(task.getUid());
             assertNotNull(task.getStatus());
             assertNotEquals("", task.getStatus());
-            assertNotNull(task.getStartedAt());
-            assertNotNull(task.getEnqueuedAt());
-            assertNotNull(task.getFinishedAt());
             assertTrue(task.getUid() >= 0);
         }
     }
