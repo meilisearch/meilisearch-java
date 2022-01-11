@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 public class Result {
     protected Task[] results = null;
 
-    private static Gson gsonUpdate = new Gson();
+    private static Gson gsonTask = new Gson();
 
     /**
      * Method to return the JSON String of the Result
@@ -15,7 +15,7 @@ public class Result {
      */
     @Override
     public String toString() {
-        return gsonUpdate.toJson(this);
+        return gsonTask.toJson(this);
     }
 
     /**

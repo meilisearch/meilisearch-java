@@ -2,7 +2,7 @@ package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
 
-/** MeiliSearch response for an Task */
+/** MeiliSearch response for a Task */
 public class Task {
     protected String status = "";
     protected int uid = 0;
@@ -14,7 +14,7 @@ public class Task {
     protected String finishedAt = "";
     protected TaskError error = null;
 
-    private static Gson gsonUpdate = new Gson();
+    private static Gson gsonTask = new Gson();
 
     /**
      * Method to return the JSON String of the Task
@@ -23,7 +23,7 @@ public class Task {
      */
     @Override
     public String toString() {
-        return gsonUpdate.toJson(this);
+        return gsonTask.toJson(this);
     }
 
     /**

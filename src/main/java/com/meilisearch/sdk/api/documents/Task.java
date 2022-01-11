@@ -1,9 +1,9 @@
 package com.meilisearch.sdk.api.documents;
 
-public class Update {
+public class Task {
     private String status;
 
-    private int updateId;
+    private int uid;
 
     private Type type;
 
@@ -21,12 +21,12 @@ public class Update {
         return this.status;
     }
 
-    public void setUpdateId(int updateId) {
-        this.updateId = updateId;
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
-    public int getUpdateId() {
-        return this.updateId;
+    public int getUid() {
+        return this.uid;
     }
 
     public void setType(Type type) {

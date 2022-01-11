@@ -4,9 +4,14 @@ import com.google.gson.Gson;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import java.util.Date;
 
-/** Wrapper around MeilisearchHttpRequest class to use for MeiliSearch updates */
+/**
+ * Wrapper around MeilisearchHttpRequest class to use for MeiliSearch tasks
+ *
+ * <p>Refer https://docs.meilisearch.com/reference/api/tasks.html
+ */
 public class TasksHandler {
     private final MeiliSearchHttpRequest meilisearchHttpRequest;
+    private final Gson gson = new Gson();
 
     /**
      * Creates and sets up an instance of Task to simplify MeiliSearch API calls to manage tasks
@@ -16,6 +21,7 @@ public class TasksHandler {
     public TasksHandler(Config config) {
         this.meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
     }
+
     /**
      * Retrieves the Task at the specified indexUid with the specified taskUid
      *
@@ -26,7 +32,7 @@ public class TasksHandler {
      */
     Task getTask(String indexUid, int taskUid) throws Exception {
         String requestQuery = "/indexes/" + indexUid + "/tasks/" + taskUid;
-        return new Gson().fromJson(this.meilisearchHttpRequest.get(requestQuery), Task.class);
+        return this.gson.fromJson(this.meilisearchHttpRequest.get(requestQuery), Task.class);
     }
 
     /**
@@ -38,7 +44,7 @@ public class TasksHandler {
      */
     Task[] getTasks(String indexUid) throws Exception {
         String requestQuery = "/indexes/" + indexUid + "/tasks";
-        return new Gson().fromJson(this.meilisearchHttpRequest.get(requestQuery), Task[].class);
+        return this.gson.fromJson(this.meilisearchHttpRequest.get(requestQuery), Task[].class);
     }
 
     /**
@@ -50,7 +56,7 @@ public class TasksHandler {
      */
     Task getTask(int taskUid) throws Exception, MeiliSearchApiException {
         String requestQuery = "/tasks/" + taskUid;
-        return new Gson().fromJson(this.meilisearchHttpRequest.get(requestQuery), Task.class);
+        return this.gson.fromJson(this.meilisearchHttpRequest.get(requestQuery), Task.class);
     }
 
     /**
@@ -62,7 +68,7 @@ public class TasksHandler {
     Task[] getTasks() throws Exception {
         String requestQuery = "/tasks";
         Result result = new Result();
-        result = new Gson().fromJson(this.meilisearchHttpRequest.get(requestQuery), Result.class);
+        result = this.gson.fromJson(this.meilisearchHttpRequest.get(requestQuery), Result.class);
         return result.getResults();
     }
 

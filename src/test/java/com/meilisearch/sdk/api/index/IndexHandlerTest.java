@@ -9,7 +9,7 @@ import static org.mockito.Mockito.mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.meilisearch.sdk.GenericServiceTemplate;
-import com.meilisearch.sdk.api.documents.Update;
+import com.meilisearch.sdk.api.documents.Task;
 import com.meilisearch.sdk.http.AbstractHttpClient;
 import com.meilisearch.sdk.http.factory.BasicRequestFactory;
 import com.meilisearch.sdk.http.factory.RequestFactory;
@@ -125,13 +125,13 @@ class IndexHandlerTest {
     void settings() {
         Settings dummySettings = new Settings();
         dummySettings.setDistinctAttribute("test");
-        Update dummyUpdate = new Update();
+        Task dummyTask = new Task();
         Mockito.when(settingsService.getSettings(any())).thenReturn(dummySettings);
-        Mockito.when(settingsService.resetSettings(any())).thenReturn(dummyUpdate);
-        Mockito.when(settingsService.updateSettings(any(), any())).thenReturn(dummyUpdate);
+        Mockito.when(settingsService.resetSettings(any())).thenReturn(dummyTask);
+        Mockito.when(settingsService.updateSettings(any(), any())).thenReturn(dummyTask);
 
         assertThat(classToTest.getSettings("test"), is(equalTo(dummySettings)));
-        assertThat(classToTest.resetSettings("test"), is(equalTo(dummyUpdate)));
-        assertThat(classToTest.updateSettings("test", dummySettings), is(equalTo(dummyUpdate)));
+        assertThat(classToTest.resetSettings("test"), is(equalTo(dummyTask)));
+        assertThat(classToTest.updateSettings("test", dummySettings), is(equalTo(dummyTask)));
     }
 }
