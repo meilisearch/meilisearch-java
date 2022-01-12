@@ -159,7 +159,9 @@ class Documents {
      * @return String containing the added document
      * @throws Exception if the client request causes an error
      */
-    String updateDocuments(String uid, String document, String primaryKey, Map<String, String> headers) throws Exception {
+    String updateDocuments(
+            String uid, String document, String primaryKey, Map<String, String> headers)
+            throws Exception {
         String requestQuery = "/indexes/" + uid + "/documents";
         if (primaryKey != null) {
             requestQuery += "?primaryKey=" + primaryKey;

@@ -697,7 +697,7 @@ public class DocumentsTest extends AbstractIT {
             toUpdate.add(movies[i]);
         }
         StringBuffer updateNDJSONData = new StringBuffer();
-        for (int i=0; i<toUpdate.size(); i++) {
+        for (int i = 0; i < toUpdate.size(); i++) {
             updateNDJSONData.append(gson.toJson(toUpdate.get(i)));
             updateNDJSONData.append("\n");
         }
@@ -754,7 +754,8 @@ public class DocumentsTest extends AbstractIT {
         CsvSchema csvSchema = csvSchemaBuilder.build().withHeader();
 
         CsvMapper csvMapper = new CsvMapper();
-        String updatedCSVData = csvMapper.writerFor(JsonNode.class).with(csvSchema).writeValueAsString(jsonTree);
+        String updatedCSVData =
+                csvMapper.writerFor(JsonNode.class).with(csvSchema).writeValueAsString(jsonTree);
 
         updateStatus = index.updateDocumentsCSV(updatedCSVData, null);
         updateInfo = this.gson.fromJson(updateStatus, UpdateStatus.class);
