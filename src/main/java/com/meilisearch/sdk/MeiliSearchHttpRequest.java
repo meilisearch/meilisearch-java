@@ -140,6 +140,26 @@ class MeiliSearchHttpRequest {
     }
 
     /**
+     * Replaces the requested resource with new data
+     *
+     * @param api Path to the requested resource
+     * @param body Replacement data for the requested resource
+     * @param headers Define Content Type
+     * @return updated resource
+     * @throws Exception if the client has an error
+     * @throws MeiliSearchApiException if the response is an error
+     */
+    String put(String api, String body, Map<String,String> headers) throws Exception {
+        HttpResponse<?> httpResponse =
+                this.client.put(factory.create(HttpMethod.PUT, api, headers, body));
+        if (httpResponse.getStatusCode() >= 400) {
+            throw new MeiliSearchApiException(
+                    jsonHandler.decode(httpResponse.getContent(), APIError.class));
+        }
+        return new String(httpResponse.getContentAsBytes());
+    }
+
+    /**
      * Deletes the specified resource
      *
      * @param api Path to the requested resource

@@ -150,6 +150,24 @@ class Documents {
     }
 
     /**
+     * Replaces a document at the specified uid
+     *
+     * @param uid Partial index identifier for the document
+     * @param document String containing the document to replace the existing document
+     * @param primaryKey PrimaryKey of the document
+     * @param headers Define Content Type
+     * @return String containing the added document
+     * @throws Exception if the client request causes an error
+     */
+    String updateDocuments(String uid, String document, String primaryKey, Map<String, String> headers) throws Exception {
+        String requestQuery = "/indexes/" + uid + "/documents";
+        if (primaryKey != null) {
+            requestQuery += "?primaryKey=" + primaryKey;
+        }
+        return meilisearchHttpRequest.put(requestQuery, document, headers);
+    }
+
+    /**
      * Deletes the document at the specified uid with the specified identifier
      *
      * @param uid Partial index identifier for the requested document

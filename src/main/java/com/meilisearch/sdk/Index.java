@@ -768,4 +768,12 @@ public class Index implements Serializable {
     public String addDocumentsCSVinBatches(String document) throws Exception {
         return addDocumentsCSVinBatches(document, 1000, null);
     }
+
+    public String updateDocumentsNDJSON(String document, String primaryKey) throws Exception {
+        return this.documents.updateDocuments(this.uid, document, primaryKey, Collections.singletonMap(HttpHeaders.CONTENT_TYPE, "application/x-ndjson"));
+    }
+
+    public String updateDocumentsCSV(String document, String primaryKey) throws Exception {
+        return this.documents.updateDocuments(this.uid, document, primaryKey, Collections.singletonMap(HttpHeaders.CONTENT_TYPE, "text/csv"));
+    }
 }
