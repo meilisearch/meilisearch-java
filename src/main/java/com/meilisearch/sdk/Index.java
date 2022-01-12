@@ -824,7 +824,7 @@ public class Index implements Serializable {
 
             arrayResponses.put(
                     new JSONObject(
-                            this.documents.addDocuments(
+                            this.documents.updateDocuments(
                                     this.uid,
                                     subDocuments.toString(),
                                     primaryKey,
@@ -874,7 +874,7 @@ public class Index implements Serializable {
 
             arrayResponses.put(
                     new JSONObject(
-                            this.documents.addDocuments(
+                            this.documents.updateDocuments(
                                     this.uid,
                                     subDocuments.toString(),
                                     primaryKey,
