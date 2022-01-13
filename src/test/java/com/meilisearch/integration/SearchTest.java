@@ -70,9 +70,8 @@ public class SearchTest extends AbstractIT {
 
         } catch (Exception e) {
             System.out.println("exception info :" + e.getStackTrace());
-            System.out.println( "exception info :" + e.getMessage());
+            System.out.println("exception info :" + e.getMessage());
         }
-
     }
 
     /** Test search offset */
