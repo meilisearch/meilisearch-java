@@ -54,18 +54,25 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        try {
+            UpdateStatus updateInfo =
+                    jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+            index.waitForPendingUpdate(updateInfo.getUpdateId());
 
-        SearchResult searchResult = index.search("batman");
+            SearchResult searchResult = index.search("batman");
 
-        assertNull(searchResult.getFacetsDistribution());
-        assertEquals(1, searchResult.getHits().size());
-        assertEquals(0, searchResult.getOffset());
-        assertEquals(20, searchResult.getLimit());
-        assertEquals(1, searchResult.getNbHits());
+            assertNull(searchResult.getFacetsDistribution());
+            assertEquals(1, searchResult.getHits().size());
+            assertEquals(0, searchResult.getOffset());
+            assertEquals(20, searchResult.getLimit());
+            assertEquals(1, searchResult.getNbHits());
+
+        } catch (Exception e) {
+            System.out.println("exception info :" + e.getStackTrace());
+            System.out.println( "exception info :" + e.getMessage());
+        }
+
     }
 
     /** Test search offset */
