@@ -59,19 +59,16 @@ public class SearchTest extends AbstractIT {
             UpdateStatus updateInfo =
                     jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
             index.waitForPendingUpdate(updateInfo.getUpdateId());
-
-            SearchResult searchResult = index.search("batman");
-
-            assertNull(searchResult.getFacetsDistribution());
-            assertEquals(1, searchResult.getHits().size());
-            assertEquals(0, searchResult.getOffset());
-            assertEquals(20, searchResult.getLimit());
-            assertEquals(1, searchResult.getNbHits());
-
         } catch (Exception e) {
             System.out.println("exception info :" + e.getStackTrace());
             System.out.println("exception info :" + e.getMessage());
         }
+        SearchResult searchResult = index.search("batman");
+        assertNull(searchResult.getFacetsDistribution());
+        assertEquals(1, searchResult.getHits().size());
+        assertEquals(0, searchResult.getOffset());
+        assertEquals(20, searchResult.getLimit());
+        assertEquals(1, searchResult.getNbHits());
     }
 
     /** Test search offset */
