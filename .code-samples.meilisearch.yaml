@@ -152,7 +152,7 @@ update_searchable_attributes_1: |-
     "genre"
   });
 reset_searchable_attributes_1: |-
-  clinet.index("movies).resetSearchableAttributesSettings();
+  client.index("movies").resetSearchableAttributesSettings();
 get_filterable_attributes_1: |-
   client.index("movies").getFilterableAttributes();
 update_filterable_attributes_1: |-
