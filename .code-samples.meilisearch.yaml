@@ -368,7 +368,13 @@ faceted_search_facets_distribution_1: |-
     new SearchRequest("Batman").setFacetsDistribution(new String[] {"genres"});
   client.index("movies").search(searchRequest);
 faceted_search_walkthrough_filterable_attributes_1: |-
-  client.index("movies").updateFilterableAttributesSettings(new String[] {"director", "producer", "genres", "production_companies"});
+  client.index("movies").updateFilterableAttributesSettings(new String[]
+  {
+    "director",
+    "producer",
+    "genres",
+    "production_companies"
+  });
 faceted_search_walkthrough_filter_1: |-
   SearchRequest searchRequest =
     new SearchRequest("thriller").setFilterArray(new String[][] {
