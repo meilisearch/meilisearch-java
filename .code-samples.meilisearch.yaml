@@ -111,7 +111,7 @@ update_synonyms_1: |-
   synonyms.put("logan", new String[] {"wolverine"});
   client.index("movies").updateSynonymsSettings(settings);
 reset_synonyms_1: |-
-  clinet.index("movies").resetSynonymsSettings();
+  client.index("movies").resetSynonymsSettings();
 get_stop_words_1: |-
   client.index("movies").getStopWords();
 update_stop_words_1: |-
