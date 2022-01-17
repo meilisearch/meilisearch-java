@@ -4,31 +4,31 @@ public class TaskError {
 
     public TaskError() {}
 
-    protected String updateStatusErrorCode = "";
-    protected String updateStatusErrorType = "";
-    protected String updateStatusErrorLink = "";
+    protected String taskErrorCode = "";
+    protected String taskErrorType = "";
+    protected String taskErrorLink = "";
 
     public String getTaskErrorCode() {
-        return updateStatusErrorCode;
+        return taskErrorCode;
     }
 
-    public void setTaskErrorCode(String updateStatusErrorCode) {
-        this.updateStatusErrorCode = updateStatusErrorCode;
+    public void setTaskErrorCode(String taskErrorCode) {
+        this.taskErrorCode = taskErrorCode;
     }
 
     public String getTaskErrorType() {
-        return updateStatusErrorType;
+        return taskErrorType;
     }
 
-    public void setTaskErrorType(String updateStatusErrorType) {
-        this.updateStatusErrorType = updateStatusErrorType;
+    public void setTaskErrorType(String taskErrorType) {
+        this.taskErrorType = taskErrorType;
     }
 
     public String getTaskErrorLink() {
-        return updateStatusErrorLink;
+        return taskErrorLink;
     }
 
-    public void setTaskErrorLink(String updateStatusErrorLink) {
-        this.updateStatusErrorLink = updateStatusErrorLink;
+    public void setTaskErrorLink(String taskErrorLink) {
+        this.taskErrorLink = taskErrorLink;
     }
 }

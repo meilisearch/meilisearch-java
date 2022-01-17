@@ -19,7 +19,7 @@ public class Result {
     }
 
     /**
-     * Method to return the uid of the T
+     * Method to return the list of Task of the Result
      *
      * @return String containing the identifier of the Task
      */

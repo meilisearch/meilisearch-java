@@ -5,13 +5,19 @@ public class Task {
 
     private int uid;
 
-    private Type type;
+    private String indexUid;
 
-    private double duration;
+    // private Details details;
+
+    private String type;
+
+    private String duration;
 
     private String enqueuedAt;
 
-    private String processedAt;
+    private String startedAt;
+
+    private String finishedAt;
 
     public void setStatus(String status) {
         this.status = status;
@@ -29,19 +35,27 @@ public class Task {
         return this.uid;
     }
 
-    public void setType(Type type) {
+    public void setIndexUid(String indexUid) {
+        this.indexUid = indexUid;
+    }
+
+    public String getIndexUid() {
+        return this.indexUid;
+    }
+
+    public void setType(String type) {
         this.type = type;
     }
 
-    public Type getType() {
+    public String getType() {
         return this.type;
     }
 
-    public void setDuration(double duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
-    public double getDuration() {
+    public String getDuration() {
         return this.duration;
     }
 
@@ -53,11 +67,19 @@ public class Task {
         return this.enqueuedAt;
     }
 
-    public void setProcessedAt(String processedAt) {
-        this.processedAt = processedAt;
+    public void setStartedAt(String startedAt) {
+        this.startedAt = startedAt;
     }
 
-    public String getProcessedAt() {
-        return this.processedAt;
+    public String getStartedAt() {
+        return this.startedAt;
+    }
+
+    public void setFinishedAt(String finishedAt) {
+        this.finishedAt = finishedAt;
+    }
+
+    public String getFinishedAt() {
+        return this.finishedAt;
     }
 }

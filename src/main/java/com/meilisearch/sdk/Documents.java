@@ -25,8 +25,8 @@ class Documents {
      * @throws Exception if client request causes an error
      */
     String getDocument(String uid, String identifier) throws Exception {
-        String requestQuery = "/indexes/" + uid + "/documents/" + identifier;
-        return meilisearchHttpRequest.get(requestQuery);
+        String urlPath = "/indexes/" + uid + "/documents/" + identifier;
+        return meilisearchHttpRequest.get(urlPath);
     }
 
     /**
@@ -37,8 +37,8 @@ class Documents {
      * @throws Exception if the client request causes an error
      */
     String getDocuments(String uid) throws Exception {
-        String requestQuery = "/indexes/" + uid + "/documents";
-        return meilisearchHttpRequest.get(requestQuery);
+        String urlPath = "/indexes/" + uid + "/documents";
+        return meilisearchHttpRequest.get(urlPath);
     }
 
     /**
@@ -50,8 +50,8 @@ class Documents {
      * @throws Exception if the client request causes an error
      */
     String getDocuments(String uid, int limit) throws Exception {
-        String requestQuery = "/indexes/" + uid + "/documents?limit=" + limit;
-        return meilisearchHttpRequest.get(requestQuery);
+        String urlQuery = "/indexes/" + uid + "/documents?limit=" + limit;
+        return meilisearchHttpRequest.get(urlQuery);
     }
 
     /**
@@ -64,8 +64,8 @@ class Documents {
      * @throws Exception if the client request causes an error
      */
     String getDocuments(String uid, int limit, int offset) throws Exception {
-        String requestQuery = "/indexes/" + uid + "/documents?limit=" + limit + "&offset=" + offset;
-        return meilisearchHttpRequest.get(requestQuery);
+        String urlQuery = "/indexes/" + uid + "/documents?limit=" + limit + "&offset=" + offset;
+        return meilisearchHttpRequest.get(urlQuery);
     }
 
     /**
@@ -85,7 +85,7 @@ class Documents {
         }
 
         String attributesToRetrieveCommaSeparated = String.join(",", attributesToRetrieve);
-        String requestQuery =
+        String urlQuery =
                 "/indexes/"
                         + uid
                         + "/documents?limit="
@@ -95,7 +95,7 @@ class Documents {
                         + "&attributesToRetrieve="
                         + attributesToRetrieveCommaSeparated;
 
-        return meilisearchHttpRequest.get(requestQuery);
+        return meilisearchHttpRequest.get(urlQuery);
     }
 
     /**
@@ -108,11 +108,12 @@ class Documents {
      * @throws Exception if the client request causes an error
      */
     Task addDocuments(String uid, String document, String primaryKey) throws Exception {
-        String requestQuery = "/indexes/" + uid + "/documents";
+        String urlQuery = "/indexes/" + uid + "/documents";
         if (primaryKey != null) {
-            requestQuery += "?primaryKey=" + primaryKey;
+            urlQuery += "?primaryKey=" + primaryKey;
         }
-        Task task = gson.fromJson(meilisearchHttpRequest.post(requestQuery, document), Task.class);
+
+        Task task = gson.fromJson(meilisearchHttpRequest.post(urlQuery, document), Task.class);
         return task;
     }
 
@@ -126,11 +127,12 @@ class Documents {
      * @throws Exception if the client request causes an error
      */
     Task updateDocuments(String uid, String document, String primaryKey) throws Exception {
-        String requestQuery = "/indexes/" + uid + "/documents";
+        String urlPath = "/indexes/" + uid + "/documents";
         if (primaryKey != null) {
-            requestQuery += "?primaryKey=" + primaryKey;
+            urlPath += "?primaryKey=" + primaryKey;
         }
-        Task task = gson.fromJson(meilisearchHttpRequest.put(requestQuery, document), Task.class);
+
+        Task task = gson.fromJson(meilisearchHttpRequest.put(urlPath, document), Task.class);
         return task;
     }
 
@@ -143,8 +145,9 @@ class Documents {
      * @throws Exception if the client request causes an error
      */
     Task deleteDocument(String uid, String identifier) throws Exception {
-        String requestQuery = "/indexes/" + uid + "/documents/" + identifier;
-        Task task = gson.fromJson(meilisearchHttpRequest.delete(requestQuery), Task.class);
+        String urlPath = "/indexes/" + uid + "/documents/" + identifier;
+
+        Task task = gson.fromJson(meilisearchHttpRequest.delete(urlPath), Task.class);
         return task;
     }
 
@@ -157,13 +160,13 @@ class Documents {
      * @throws Exception if the client request causes an error
      */
     Task deleteDocuments(String uid, List<String> identifiers) throws Exception {
-        String requestQuery = "/indexes/" + uid + "/documents/" + "delete-batch";
+        String urlPath = "/indexes/" + uid + "/documents/" + "delete-batch";
         JsonArray requestData = new JsonArray(identifiers.size());
         identifiers.forEach(requestData::add);
+
         Task task =
                 gson.fromJson(
-                        meilisearchHttpRequest.post(requestQuery, requestData.toString()),
-                        Task.class);
+                        meilisearchHttpRequest.post(urlPath, requestData.toString()), Task.class);
         return task;
     }
 
@@ -175,8 +178,9 @@ class Documents {
      * @throws Exception if the client request causes an error
      */
     Task deleteAllDocuments(String uid) throws Exception {
-        String requestQuery = "/indexes/" + uid + "/documents";
-        Task task = gson.fromJson(meilisearchHttpRequest.delete(requestQuery), Task.class);
+        String urlPath = "/indexes/" + uid + "/documents";
+
+        Task task = gson.fromJson(meilisearchHttpRequest.delete(urlPath), Task.class);
         return task;
     }
 }

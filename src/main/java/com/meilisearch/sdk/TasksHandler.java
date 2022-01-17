@@ -12,6 +12,8 @@ import java.util.Date;
 public class TasksHandler {
     private final MeiliSearchHttpRequest meilisearchHttpRequest;
     private final Gson gson = new Gson();
+    public static final String SUCCEEDED = "succeeded";
+    public static final String FAILED = "failed";
 
     /**
      * Creates and sets up an instance of Task to simplify MeiliSearch API calls to manage tasks
@@ -31,8 +33,8 @@ public class TasksHandler {
      * @throws Exception if client request causes an error
      */
     Task getTask(String indexUid, int taskUid) throws Exception {
-        String requestQuery = "/indexes/" + indexUid + "/tasks/" + taskUid;
-        return this.gson.fromJson(this.meilisearchHttpRequest.get(requestQuery), Task.class);
+        String urlPath = "/indexes/" + indexUid + "/tasks/" + taskUid;
+        return this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Task.class);
     }
 
     /**
@@ -43,8 +45,8 @@ public class TasksHandler {
      * @throws Exception if client request causes an error
      */
     Task[] getTasks(String indexUid) throws Exception {
-        String requestQuery = "/indexes/" + indexUid + "/tasks";
-        return this.gson.fromJson(this.meilisearchHttpRequest.get(requestQuery), Task[].class);
+        String urlPath = "/indexes/" + indexUid + "/tasks";
+        return this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Task[].class);
     }
 
     /**
@@ -55,8 +57,8 @@ public class TasksHandler {
      * @throws Exception if client request causes an error
      */
     Task getTask(int taskUid) throws Exception, MeiliSearchApiException {
-        String requestQuery = "/tasks/" + taskUid;
-        return this.gson.fromJson(this.meilisearchHttpRequest.get(requestQuery), Task.class);
+        String urlPath = "/tasks/" + taskUid;
+        return this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Task.class);
     }
 
     /**
@@ -66,9 +68,10 @@ public class TasksHandler {
      * @throws Exception if client request causes an error
      */
     Task[] getTasks() throws Exception {
-        String requestQuery = "/tasks";
+        String urlPath = "/tasks";
         Result result = new Result();
-        result = this.gson.fromJson(this.meilisearchHttpRequest.get(requestQuery), Result.class);
+
+        result = this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Result.class);
         return result.getResults();
     }
 
@@ -96,7 +99,7 @@ public class TasksHandler {
         long startTime = new Date().getTime();
         long elapsedTime = 0;
 
-        while (!status.equals("succeeded") && !status.equals("failed")) {
+        while (!status.equals(SUCCEEDED) && !status.equals(FAILED)) {
             if (elapsedTime >= timeoutInMs) {
                 throw new Exception();
             }
