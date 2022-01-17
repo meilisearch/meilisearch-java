@@ -356,7 +356,11 @@ getting_started_search_md: |-
 
   [About this SDK](https://github.com/meilisearch/meilisearch-java)
 faceted_search_update_settings_1: |-
-  client.index("movies").updateFilterableAttributesSettings(new String[] {"director", "genres"});
+  client.index("movies").updateFilterableAttributesSettings(new String[]
+  {
+    "director",
+    "genres"
+  });
 faceted_search_filter_1: |-
   SearchRequest searchRequest =
     new SearchRequest("thriller").setFilterArray(new String[][] {
