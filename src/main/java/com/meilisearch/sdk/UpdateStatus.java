@@ -16,9 +16,7 @@ public class UpdateStatus {
     protected float duration = 0.0f;
     protected String enqueuedAt = "";
     protected String processedAt = "";
-    protected String errorCode = "";
-    protected String errorType = "";
-    protected String errorLink = "";
+    protected UpdateStatusError error = null;
 
     private static Gson gsonUpdate = new Gson();
 
@@ -87,29 +85,11 @@ public class UpdateStatus {
     }
 
     /**
-     * Method to return the error code of the Update Status
+     * Method to return the error of the Update Status
      *
-     * @return String value of the error code of the Update Status
+     * @return error Object with the code, type and link of the Update Status Error
      */
-    public String getErrorCode() {
-        return this.errorCode;
-    }
-
-    /**
-     * Method to return the error type of the Update Status
-     *
-     * @return String value of the error type of the Update Status
-     */
-    public String getErrorType() {
-        return this.errorType;
-    }
-
-    /**
-     * Method to return the link of the error of the Update
-     *
-     * @return String value of the errorLink of the Update
-     */
-    public String getErrorLink() {
-        return this.errorLink;
+    public UpdateStatusError getError() {
+        return this.error;
     }
 }

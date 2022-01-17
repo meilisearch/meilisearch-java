@@ -7,15 +7,15 @@ public class APIError implements Serializable {
     private static final long serialVersionUID = 900737636809105793L;
 
     private final String message;
-    private final String errorCode;
-    private final String errorType;
-    private final String errorLink;
+    private final String code;
+    private final String type;
+    private final String link;
 
-    public APIError(String message, String errorCode, String errorType, String errorLink) {
+    public APIError(String message, String code, String type, String link) {
         this.message = message;
-        this.errorCode = errorCode;
-        this.errorType = errorType;
-        this.errorLink = errorLink;
+        this.code = code;
+        this.type = type;
+        this.link = link;
     }
 
     public String getMessage() {
@@ -23,15 +23,15 @@ public class APIError implements Serializable {
     }
 
     public String getErrorCode() {
-        return errorCode;
+        return code;
     }
 
     public String getErrorType() {
-        return errorType;
+        return type;
     }
 
     public String getErrorLink() {
-        return errorLink;
+        return link;
     }
 
     @Override
@@ -40,14 +40,14 @@ public class APIError implements Serializable {
                 + "message='"
                 + message
                 + '\''
-                + ", errorCode='"
-                + errorCode
+                + ", code='"
+                + code
                 + '\''
-                + ", errorType='"
-                + errorType
+                + ", type='"
+                + type
                 + '\''
-                + ", errorLink='"
-                + errorLink
+                + ", link='"
+                + link
                 + '\''
                 + '}';
     }

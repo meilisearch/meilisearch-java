@@ -12,12 +12,12 @@ plugins {
 	id 'maven-publish'
 	id 'signing'
 	id 'io.codearte.nexus-staging' version '0.30.0'
-	id "com.diffplug.spotless" version "5.16.0"
+	id "com.diffplug.spotless" version "6.0.0"
 }
 
 group = 'com.meilisearch.sdk'
 archivesBaseName = 'meilisearch-java'
-version = '0.5.0'
+version = '0.6.0'
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_1_8
@@ -36,10 +36,10 @@ configurations {
 dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
 	implementation 'com.google.guava:guava:31.0.1-jre'
-	implementation 'com.google.code.gson:gson:2.8.8'
+	implementation 'com.google.code.gson:gson:2.8.9'
 	implementation 'org.json:json:20210307'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
-	compileOnly group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.1'
+	compileOnly group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.1.2'
 	compileOnly 'com.squareup.okhttp3:okhttp:4.9.2'
 
 	// Use JUnit test framework
