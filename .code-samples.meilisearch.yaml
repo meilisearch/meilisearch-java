@@ -141,7 +141,7 @@ get_distinct_attribute_1: |-
 update_distinct_attribute_1: |-
   client.index("shoes").updateDistinctAttributeSettings("skuid");
 reset_distinct_attribute_1: |-
-  client.index("movies").resetDistinctAttributeSettings();
+  client.index("shoes").resetDistinctAttributeSettings();
 get_searchable_attributes_1: |-
   client.index("movies").getSearchableAttributes();
 update_searchable_attributes_1: |-
