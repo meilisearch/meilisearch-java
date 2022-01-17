@@ -109,7 +109,7 @@ update_synonyms_1: |-
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("wolverine", new String[] {"xmen", "logan"});
   synonyms.put("logan", new String[] {"wolverine"});
-  client.index("movies").updateSynonymsSettings(settings);
+  client.index("movies").updateSynonymsSettings(synonyms);
 reset_synonyms_1: |-
   client.index("movies").resetSynonymsSettings();
 get_stop_words_1: |-
