@@ -2,11 +2,11 @@ package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
 
-/** MeiliSearch response for an Task */
-public class Result {
-    protected Task[] results = null;
+/** MeiliSearch response for a Result */
+public class Result<T> {
+    protected T[] results = null;
 
-    private static Gson gsonTask = new Gson();
+    private static Gson gsonUpdate = new Gson();
 
     /**
      * Method to return the JSON String of the Result
@@ -15,15 +15,15 @@ public class Result {
      */
     @Override
     public String toString() {
-        return gsonTask.toJson(this);
+        return gsonUpdate.toJson(this);
     }
 
     /**
-     * Method to return the list of Task of the Result
+     * Method to return the list contained in Result
      *
      * @return String containing the identifier of the Task
      */
-    public Task[] getResults() {
+    public T[] getResults() {
         return this.results;
     }
 }

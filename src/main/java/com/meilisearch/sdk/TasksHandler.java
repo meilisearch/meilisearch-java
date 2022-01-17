@@ -1,6 +1,7 @@
 package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import java.util.Date;
 
@@ -69,9 +70,12 @@ public class TasksHandler {
      */
     Task[] getTasks() throws Exception {
         String urlPath = "/tasks";
-        Result result = new Result();
 
-        result = this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Result.class);
+        Result<Task> result =
+                this.gson.fromJson(
+                        this.meilisearchHttpRequest.get(urlPath),
+                        new TypeToken<Result<Task>>() {}.getType());
+
         return result.getResults();
     }
 
