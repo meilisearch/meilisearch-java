@@ -7,8 +7,6 @@ public class Task {
 
     private String indexUid;
 
-    // private Details details;
-
     private String type;
 
     private String duration;
