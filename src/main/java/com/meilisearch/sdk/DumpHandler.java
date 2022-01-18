@@ -21,7 +21,7 @@ public class DumpHandler {
      * Creates a dump Refer https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
      *
      * @return Dump object with MeiliSearch API response
-     * @throws Exception if something goes wrong
+     * @throws Exception if an error occurs
      */
     public Dump createDump() throws Exception, MeiliSearchApiException {
         return new Gson().fromJson(this.meiliSearchHttpRequest.post("/dumps", ""), Dump.class);
@@ -32,7 +32,7 @@ public class DumpHandler {
      *
      * @param uid Unique identifier for correspondent dump
      * @return MeiliSearch API response with dump status and dump uid
-     * @throws Exception if something goes wrong
+     * @throws Exception if an error occurs
      */
     public String getDumpStatus(String uid) throws Exception, MeiliSearchApiException {
         return this.meiliSearchHttpRequest.get("/dumps/" + uid + "/status");

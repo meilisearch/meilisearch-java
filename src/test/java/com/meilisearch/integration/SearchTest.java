@@ -9,7 +9,7 @@ import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.SearchRequest;
 import com.meilisearch.sdk.Settings;
-import com.meilisearch.sdk.UpdateStatus;
+import com.meilisearch.sdk.Task;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.utils.Movie;
@@ -54,10 +54,9 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         SearchResult searchResult = index.search("batman");
 
@@ -76,10 +75,9 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         SearchRequest searchRequest = new SearchRequest("a").setOffset(20);
         SearchResult searchResult = index.search(searchRequest);
@@ -96,10 +94,9 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         SearchRequest searchRequest = new SearchRequest("a").setLimit(2);
         SearchResult searchResult = index.search(searchRequest);
@@ -116,10 +113,9 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         SearchRequest searchRequest =
                 new SearchRequest("a").setAttributesToRetrieve(new String[] {"id", "title"});
@@ -144,10 +140,9 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         SearchRequest searchRequest =
                 new SearchRequest("and")
@@ -167,10 +162,9 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         SearchRequest searchRequest =
                 new SearchRequest("and").setAttributesToHighlight(new String[] {"overview"});
@@ -188,10 +182,9 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         Results res_gson = jsonGson.decode(index.rawSearch("coco \"harry\""), Results.class);
 
@@ -208,15 +201,14 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         Settings settings = index.getSettings();
 
         settings.setFilterableAttributes(new String[] {"title"});
-        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+        index.waitForTask(index.updateSettings(settings).getUid());
 
         SearchRequest searchRequest =
                 new SearchRequest("and").setFilter(new String[] {"title = \"The Dark Knight\""});
@@ -236,15 +228,14 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         Settings settings = index.getSettings();
 
         settings.setFilterableAttributes(new String[] {"title", "id"});
-        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+        index.waitForTask(index.updateSettings(settings).getUid());
 
         SearchRequest searchRequest =
                 new SearchRequest("and")
@@ -265,15 +256,14 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         Settings settings = index.getSettings();
 
         settings.setFilterableAttributes(new String[] {"title"});
-        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+        index.waitForTask(index.updateSettings(settings).getUid());
 
         SearchRequest searchRequest =
                 new SearchRequest("knight").setFacetsDistribution(new String[] {"*"});
@@ -292,15 +282,14 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         Settings settings = index.getSettings();
 
         settings.setSortableAttributes(new String[] {"title"});
-        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+        index.waitForTask(index.updateSettings(settings).getUid());
 
         SearchRequest searchRequest = new SearchRequest("and").setSort(new String[] {"title:asc"});
 
@@ -323,15 +312,14 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         Settings settings = index.getSettings();
 
         settings.setSortableAttributes(new String[] {"id"});
-        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+        index.waitForTask(index.updateSettings(settings).getUid());
 
         SearchRequest searchRequest = new SearchRequest("and").setSort(new String[] {"id:asc"});
 
@@ -354,15 +342,14 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         Settings settings = index.getSettings();
 
         settings.setSortableAttributes(new String[] {"id", "title"});
-        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+        index.waitForTask(index.updateSettings(settings).getUid());
 
         SearchRequest searchRequest =
                 new SearchRequest("dark").setSort(new String[] {"id:asc", "title:asc"});
@@ -384,15 +371,14 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         Settings settings = index.getSettings();
 
         settings.setSortableAttributes(new String[] {"id", "title"});
-        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+        index.waitForTask(index.updateSettings(settings).getUid());
 
         SearchRequest searchRequest =
                 new SearchRequest("").setSort(new String[] {"id:asc", "title:asc"});
@@ -414,10 +400,9 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
 
         SearchRequest searchRequest = new SearchRequest("and").setMatches(true);
         SearchResult searchResult = index.search(searchRequest);
@@ -432,10 +417,9 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
         SearchResult result = index.search("");
 
         assertEquals(20, result.getLimit());
@@ -449,10 +433,9 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
         SearchResult searchResult = index.search(new SearchRequest(null).setLimit(10));
 
         assertEquals(10, searchResult.getHits().size());
