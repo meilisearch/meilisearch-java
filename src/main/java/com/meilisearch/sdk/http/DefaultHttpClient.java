@@ -7,9 +7,14 @@ import com.meilisearch.sdk.http.response.HttpResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DefaultHttpClient extends AbstractHttpClient {
@@ -33,6 +38,14 @@ public class DefaultHttpClient extends AbstractHttpClient {
             throw new IOException("Unable to open an HttpURLConnection with no URL or method");
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        // This condition is link to the workaround for the Won't Fix bug in OpenJDK:
+        // https://bugs.openjdk.java.net/browse/JDK-7016595
+        // See allowMethods() method and issue
+        // https://github.com/meilisearch/meilisearch-java/issues/318
+        if (method == "PATCH") {
+            allowMethods("PATCH");
+        }
         connection.setRequestMethod(method);
         connection.setRequestProperty("Content-Type", "application/json");
 
@@ -87,7 +100,37 @@ public class DefaultHttpClient extends AbstractHttpClient {
     }
 
     @Override
+    public HttpResponse<?> patch(HttpRequest<?> request) throws Exception {
+        return execute(request);
+    }
+
+    @Override
     public HttpResponse<?> delete(HttpRequest<?> request) throws Exception {
         return execute(request);
+    }
+
+    // This function is a workaround for the Won't Fix bug in OpenJDK:
+    // https://bugs.openjdk.java.net/browse/JDK-7016595
+    // A better solution should be found if possible see
+    // https://github.com/meilisearch/meilisearch-java/issues/318
+    private static void allowMethods(String... methods) {
+        try {
+            Field methodsField = HttpURLConnection.class.getDeclaredField("methods");
+
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(methodsField, methodsField.getModifiers() & ~Modifier.FINAL);
+
+            methodsField.setAccessible(true);
+
+            String[] oldMethods = (String[]) methodsField.get(null);
+            Set<String> methodsSet = new LinkedHashSet<>(Arrays.asList(oldMethods));
+            methodsSet.addAll(Arrays.asList(methods));
+            String[] newMethods = methodsSet.toArray(new String[0]);
+
+            methodsField.set(null /*static field*/, newMethods);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

@@ -62,6 +62,19 @@ public class KeysHandler {
     }
 
     /**
+     * Updates a key
+     *
+     * @param key String containing the key
+     * @param options String containing the options of the key
+     * @return Key Instance
+     * @throws Exception if client request causes an error
+     */
+    Key updateKey(String key, String options) throws Exception {
+        String urlPath = "/keys/" + key;
+        return this.gson.fromJson(this.meilisearchHttpRequest.patch(urlPath, options), Key.class);
+    }
+
+    /**
      * Deletes a key
      *
      * @param key String containing the key

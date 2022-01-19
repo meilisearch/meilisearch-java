@@ -74,7 +74,7 @@ public class KeysTest extends AbstractIT {
         assertNotNull(key.getUpdatedAt());
     }
 
-    /** Test Create a simple API Key with description */
+    /** Test Create an API Key with description */
     @Test
     public void testClientCreateKeyWithDescription() throws Exception {
         String keyInfo =
@@ -91,7 +91,7 @@ public class KeysTest extends AbstractIT {
         assertNotNull(key.getUpdatedAt());
     }
 
-    /** Test Create a simple API Key with description */
+    /** Test Create an API Key with expiresAt */
     @Test
     public void testClientCreateKeyWithExpirationDate() throws Exception {
         String keyInfo =
@@ -106,5 +106,37 @@ public class KeysTest extends AbstractIT {
         assertEquals("2042-01-30T00:00:00Z", key.getExpiresAt());
         assertNotNull(key.getCreatedAt());
         assertNotNull(key.getUpdatedAt());
+    }
+
+    /** Test Update an API Key */
+    @Test
+    public void testClientUpdateKey() throws Exception {
+        String keyInfo = "{\"actions\": [\"*\"], \"indexes\": [\"*\"], \"expiresAt\": null }";
+        String keyChanges =
+                "{\"actions\": [\"search\"], \"indexes\": [\"testUpdateKey\"], \"expiresAt\": \"2042-01-30\" }";
+        Key createKey = client.createKey(keyInfo);
+        Key updateKey = client.updateKey(createKey.getKey(), keyChanges);
+
+        assertTrue(createKey instanceof Key);
+        assertTrue(updateKey instanceof Key);
+        assertNotNull(updateKey.getKey());
+        assertEquals("*", createKey.getActions()[0]);
+        assertEquals("search", updateKey.getActions()[0]);
+        assertEquals("*", createKey.getIndexes()[0]);
+        assertEquals("testUpdateKey", updateKey.getIndexes()[0]);
+        assertNull(createKey.getExpiresAt());
+        assertEquals("2042-01-30T00:00:00Z", updateKey.getExpiresAt());
+        assertNotNull(updateKey.getCreatedAt());
+        assertNotNull(updateKey.getUpdatedAt());
+    }
+
+    /** Test Delete an API Key */
+    @Test
+    public void testClientDeleteKey() throws Exception {
+        String keyInfo = "{\"actions\": [\"*\"], \"indexes\": [\"*\"], \"expiresAt\": null }";
+        Key createKey = client.createKey(keyInfo);
+        String response = client.deleteKey(createKey.getKey());
+
+        assertThrows(Exception.class, () -> client.getKey(createKey.getKey()));
     }
 }
