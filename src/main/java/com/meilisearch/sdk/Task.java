@@ -8,6 +8,7 @@ public class Task {
     protected int uid = 0;
     protected String indexUid = "";
     protected String type = null;
+    // protected HashMap<String, int> details = null;
     protected String duration = "";
     protected String enqueuedAt = "";
     protected String startedAt = "";

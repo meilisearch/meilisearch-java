@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 @Tag("integration")
-public class TasksHandlerTest extends AbstractIT {
+public class TasksTest extends AbstractIT {
 
     private TestData<Movie> testData;
 
