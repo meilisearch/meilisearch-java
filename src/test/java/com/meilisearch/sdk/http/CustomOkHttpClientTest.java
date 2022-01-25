@@ -153,6 +153,25 @@ class CustomOkHttpClientTest {
     }
 
     @Test
+    void patch() throws Exception {
+        BasicHttpRequest request =
+                new BasicHttpRequest(
+                        HttpMethod.PATCH, "/test", Collections.emptyMap(), "some body");
+        BasicHttpResponse response = (BasicHttpResponse) classToTest.patch(request);
+
+        assertThat(response.getStatusCode(), equalTo(200));
+        assertThat(response.getContent(), equalTo(request.getContent()));
+
+        Request expectedRequest = requestQueue.poll();
+        assertThat(expectedRequest, notNullValue());
+        assertThat(request.getContent(), equalTo(readBody(expectedRequest.body())));
+        assertThat(expectedRequest.method(), equalTo(request.getMethod().name()));
+        assertThat(
+                expectedRequest.url().toString(),
+                equalTo(this.config.getHostUrl() + request.getPath()));
+    }
+
+    @Test
     void delete() throws Exception {
         BasicHttpRequest request =
                 new BasicHttpRequest(

@@ -123,6 +123,26 @@ class ApacheHttpClientTest {
     }
 
     @Test
+    void patch() throws Exception {
+        SimpleHttpResponse expectedResponse =
+                SimpleHttpResponse.create(200, "some body", ContentType.APPLICATION_JSON);
+        responseQueue.push(expectedResponse);
+        BasicHttpRequest request =
+                new BasicHttpRequest(
+                        HttpMethod.PUT, "/test", Collections.emptyMap(), "thisisabody");
+        BasicHttpResponse response = (BasicHttpResponse) classToTest.patch(request);
+
+        assertThat(response.getStatusCode(), equalTo(expectedResponse.getCode()));
+        assertThat(response.getContentAsBytes(), equalTo(expectedResponse.getBodyBytes()));
+
+        SimpleHttpRequest expectedRequest = requestQueue.poll();
+        assertThat(expectedRequest, notNullValue());
+        assertThat(expectedRequest.getBodyText(), equalTo(request.getContent()));
+        assertThat(expectedRequest.getMethod(), equalTo(request.getMethod().name()));
+        assertThat(expectedRequest.getPath(), equalTo(request.getPath()));
+    }
+
+    @Test
     void delete() throws Exception {
         SimpleHttpResponse expectedResponse = SimpleHttpResponse.create(204);
         responseQueue.push(expectedResponse);

@@ -10,6 +10,7 @@ public class Client {
     public Config config;
     public IndexesHandler indexesHandler;
     public TasksHandler tasksHandler;
+    public KeysHandler keysHandler;
     public Gson gson;
     public DumpHandler dumpHandler;
 
@@ -23,6 +24,7 @@ public class Client {
         this.gson = new Gson();
         this.indexesHandler = new IndexesHandler(config);
         this.tasksHandler = new TasksHandler(config);
+        this.keysHandler = new KeysHandler(config);
         this.dumpHandler = new DumpHandler(config);
     }
 
@@ -197,5 +199,60 @@ public class Client {
      */
     public void waitForTask(int uid) throws Exception {
         this.tasksHandler.waitForTask(uid);
+    }
+
+    /**
+     * Retrieves the key with the specified uid
+     *
+     * @param uid Identifier of the requested Key
+     * @return Key Instance
+     * @throws Exception if an error occurs
+     */
+    public Key getKey(String uid) throws Exception {
+        return this.keysHandler.getKey(uid);
+    }
+
+    /**
+     * Retrieves list of keys
+     *
+     * @return List of keys in the MeiliSearch client
+     * @throws Exception if an error occurs
+     */
+    public Key[] getKeys() throws Exception {
+        return this.keysHandler.getKeys();
+    }
+
+    /**
+     * Creates a key
+     *
+     * @param options String containing the options of the key
+     * @return Key Instance
+     * @throws Exception if an error occurs
+     */
+    public Key createKey(String options) throws Exception {
+        return this.keysHandler.createKey(options);
+    }
+
+    /**
+     * Updates a key
+     *
+     * @param key String containing the key
+     * @param options String containing the options to update
+     * @return Key Instance
+     * @throws Exception if client request causes an error
+     */
+    public Key updateKey(String key, String options) throws Exception {
+        return this.keysHandler.updateKey(key, options);
+    }
+
+    /**
+     * Deletes a key
+     *
+     * @param key String containing the key
+     * @return MeiliSearch API response
+     * @throws Exception if an error occurs
+     */
+    public String deleteKey(String key) throws Exception {
+        return this.keysHandler.deleteKey(key);
     }
 }
