@@ -492,7 +492,7 @@ geosearch_guide_sort_usage_2: |-
     });
   client.index("restaurants").search(searchRequest);
 security_guide_search_key_1: |-
-  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+  Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
   client.index("patient_medical_records").search();
 security_guide_update_key_1: |-
   Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
