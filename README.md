@@ -115,7 +115,7 @@ class TestMeiliSearch {
     Index index = client.index("movies");
 
     // If the index 'movies' does not exist, MeiliSearch creates it when you first add the documents.
-    index.addDocuments(documents); // => { "taskUid": 0 }
+    index.addDocuments(documents); // => { "uid": 0 }
   }
 }
 ```
