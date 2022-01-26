@@ -132,7 +132,7 @@ public class DocumentsTest extends AbstractIT {
             index.waitForTask(task.getUid());
             assertTrue(task instanceof Task);
             assertEquals(task.getType(), "documentAddition");
-            assertNotNull(task.getStartedAt());
+            assertNotNull(task.getEnqueuedAt());
         }
     }
 
@@ -149,7 +149,7 @@ public class DocumentsTest extends AbstractIT {
             index.waitForTask(task.getUid());
             assertTrue(task instanceof Task);
             assertEquals(task.getType(), "documentAddition");
-            assertNotNull(task.getStartedAt());
+            assertNotNull(task.getEnqueuedAt());
         }
     }
 
@@ -265,9 +265,8 @@ public class DocumentsTest extends AbstractIT {
 
         for (Task task : taskArr) {
             index.waitForTask(task.getUid());
-            assertTrue(task instanceof Task);
             assertEquals(task.getType(), "documentPartial");
-            assertNotNull(task.getStartedAt());
+            assertNotNull(task.getEnqueuedAt());
         }
     }
 
@@ -293,9 +292,8 @@ public class DocumentsTest extends AbstractIT {
 
         for (Task task : taskArr) {
             index.waitForTask(task.getUid());
-            assertTrue(task instanceof Task);
             assertEquals(task.getType(), "documentPartial");
-            assertNotNull(task.getStartedAt());
+            assertNotNull(task.getEnqueuedAt());
         }
     }
 

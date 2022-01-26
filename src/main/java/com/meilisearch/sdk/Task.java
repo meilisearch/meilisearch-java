@@ -1,6 +1,7 @@
 package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
+import java.util.Date;
 
 /** MeiliSearch response for a Task */
 public class Task {
@@ -8,11 +9,10 @@ public class Task {
     protected int uid = 0;
     protected String indexUid = "";
     protected String type = null;
-    // protected HashMap<String, int> details = null;
     protected String duration = "";
-    protected String enqueuedAt = "";
-    protected String startedAt = "";
-    protected String finishedAt = "";
+    protected Date enqueuedAt = null;
+    protected Date startedAt = null;
+    protected Date finishedAt = null;
     protected TaskError error = null;
 
     private static Gson gsonTask = new Gson();
@@ -75,27 +75,27 @@ public class Task {
     /**
      * Method to return the time that the Task was enqueued at
      *
-     * @return String value of the date and time of the Task when it was enqueued
+     * @return Date and time of the Task when it was enqueued
      */
-    public String getEnqueuedAt() {
+    public Date getEnqueuedAt() {
         return this.enqueuedAt;
     }
 
     /**
      * Method to return the time that the Task was started at
      *
-     * @return String value of the date and time of the Task when it was started
+     * @return Date and time of the Task when it was started
      */
-    public String getStartedAt() {
+    public Date getStartedAt() {
         return this.startedAt;
     }
 
     /**
      * Method to return the time that the Update was finished at
      *
-     * @return String value of the date and time of the Update when it was finished
+     * @return Date and time of the Update when it was finished
      */
-    public String getFinishedAt() {
+    public Date getFinishedAt() {
         return this.finishedAt;
     }
 

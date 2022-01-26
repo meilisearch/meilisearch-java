@@ -225,7 +225,7 @@ public class Client {
     /**
      * Creates a key
      *
-     * @param options String containing the options of the key
+     * @param options Key containing the options of the key
      * @return Key Instance
      * @throws Exception if an error occurs
      */

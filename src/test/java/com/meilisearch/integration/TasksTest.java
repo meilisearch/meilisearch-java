@@ -52,7 +52,6 @@ public class TasksTest extends AbstractIT {
         Task[] tasks = client.getTasks();
 
         for (Task task : tasks) {
-            assertTrue(task instanceof Task);
             client.waitForTask(task.getUid());
             assertNotNull(task.getStatus());
             assertNotEquals("", task.getStatus());

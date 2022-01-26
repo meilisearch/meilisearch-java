@@ -129,7 +129,7 @@ class ApacheHttpClientTest {
         responseQueue.push(expectedResponse);
         BasicHttpRequest request =
                 new BasicHttpRequest(
-                        HttpMethod.PUT, "/test", Collections.emptyMap(), "thisisabody");
+                        HttpMethod.PATCH, "/test", Collections.emptyMap(), "thisisabody");
         BasicHttpResponse response = (BasicHttpResponse) classToTest.patch(request);
 
         assertThat(response.getStatusCode(), equalTo(expectedResponse.getCode()));

@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.sdk.Key;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -30,7 +32,6 @@ public class KeysTest extends AbstractIT {
         assertEquals(2, keys.length);
 
         for (Key key : keys) {
-            assertTrue(key instanceof Key);
             assertNotNull(key.getKey());
             assertNotNull(key.getActions());
             assertNotNull(key.getIndexes());
@@ -94,8 +95,9 @@ public class KeysTest extends AbstractIT {
     /** Test Create an API Key with expiresAt */
     @Test
     public void testClientCreateKeyWithExpirationDate() throws Exception {
-        String keyInfo =
-                "{\"actions\": [\"*\"], \"indexes\": [\"*\"], \"expiresAt\": \"2042-01-30\" }";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateParsed = format.parse("2042-01-30");
+
         Key key = client.createKey(keyInfo);
 
         assertTrue(key instanceof Key);
@@ -103,7 +105,7 @@ public class KeysTest extends AbstractIT {
         assertEquals("*", key.getActions()[0]);
         assertEquals("*", key.getIndexes()[0]);
         assertNull(key.getDescription());
-        assertEquals("2042-01-30T00:00:00Z", key.getExpiresAt());
+        assertEquals("2042-01-30", format.format(key.getExpiresAt()));
         assertNotNull(key.getCreatedAt());
         assertNotNull(key.getUpdatedAt());
     }
@@ -111,7 +113,9 @@ public class KeysTest extends AbstractIT {
     /** Test Update an API Key */
     @Test
     public void testClientUpdateKey() throws Exception {
-        String keyInfo = "{\"actions\": [\"*\"], \"indexes\": [\"*\"], \"expiresAt\": null }";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date dateParsed = format.parse("2042-01-30T00:00:00Z");
+
         String keyChanges =
                 "{\"actions\": [\"search\"], \"indexes\": [\"testUpdateKey\"], \"expiresAt\": \"2042-01-30\" }";
         Key createKey = client.createKey(keyInfo);
@@ -125,7 +129,7 @@ public class KeysTest extends AbstractIT {
         assertEquals("*", createKey.getIndexes()[0]);
         assertEquals("testUpdateKey", updateKey.getIndexes()[0]);
         assertNull(createKey.getExpiresAt());
-        assertEquals("2042-01-30T00:00:00Z", updateKey.getExpiresAt());
+        assertEquals(dateParsed, updateKey.getExpiresAt());
         assertNotNull(updateKey.getCreatedAt());
         assertNotNull(updateKey.getUpdatedAt());
     }

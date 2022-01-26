@@ -1,6 +1,6 @@
 package com.meilisearch.sdk;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 
@@ -11,7 +11,8 @@ import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
  */
 public class KeysHandler {
     private final MeiliSearchHttpRequest meilisearchHttpRequest;
-    private final Gson gson = new Gson();
+    private final Gson gson =
+            new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
 
     /**
      * Creates and sets up an instance of Key to simplify MeiliSearch API calls to manage keys
