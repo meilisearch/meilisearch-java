@@ -106,7 +106,7 @@ publishing {
 				name = 'com.meilisearch.sdk:meilisearch-java'
 				packaging = 'jar'
 				artifactId = 'meilisearch-java'
-				description = 'MeiliSearch is a powerful, fast, open-source, easy to use and deploy search engine.'
+				description = 'Meilisearch is a powerful, fast, open-source, easy to use and deploy search engine.'
 				url = 'https://github.com/meilisearch/meilisearch-java'
 				scm {
 					connection = 'scm:git:git://github.com/meilisearch/meilisearch-java.git'

@@ -3,15 +3,15 @@ package com.meilisearch.sdk;
 import com.google.gson.JsonObject;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 
-/** Wrapper around the MeilisearchHttpRequest class to ease usage for MeiliSearch indexes */
+/** Wrapper around the MeilisearchHttpRequest class to ease usage for Meilisearch indexes */
 class IndexesHandler {
     MeiliSearchHttpRequest meilisearchHttpRequest;
 
     /**
-     * Creates and sets up an instance of IndexesHandler to simplify MeiliSearch API calls to manage
+     * Creates and sets up an instance of IndexesHandler to simplify Meilisearch API calls to manage
      * indexes
      *
-     * @param config MeiliSearch configuration
+     * @param config Meilisearch configuration
      */
     IndexesHandler(Config config) {
         this.meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
@@ -21,7 +21,7 @@ class IndexesHandler {
      * Creates an index with a unique identifier
      *
      * @param uid Unique identifier to create the index with
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if something goes wrong
      */
     String create(String uid) throws Exception, MeiliSearchApiException {
@@ -33,7 +33,7 @@ class IndexesHandler {
      *
      * @param uid Unique identifier to create the index with
      * @param primaryKey Field to use as the primary key for documents in that index
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if something goes wrong
      */
     String create(String uid, String primaryKey) throws Exception, MeiliSearchApiException {
@@ -49,7 +49,7 @@ class IndexesHandler {
      * Gets an index from its unique identifier
      *
      * @param uid Unique identifier of the index to get
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if something goes wrong
      */
     String get(String uid) throws Exception {
@@ -58,9 +58,9 @@ class IndexesHandler {
     }
 
     /**
-     * Gets all indexes in the current MeiliSearch instance
+     * Gets all indexes in the current Meilisearch instance
      *
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if something goes wrong
      */
     String getAll() throws Exception {
@@ -68,11 +68,11 @@ class IndexesHandler {
     }
 
     /**
-     * Updates the primary key of an index in the MeiliSearch instance
+     * Updates the primary key of an index in the Meilisearch instance
      *
      * @param uid Unique identifier of the index to update
      * @param primaryKey New primary key field to use for documents in that index
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if something goes wrong
      */
     String updatePrimaryKey(String uid, String primaryKey) throws Exception {
@@ -84,10 +84,10 @@ class IndexesHandler {
     }
 
     /**
-     * Deletes an index in the MeiliSearch instance
+     * Deletes an index in the Meilisearch instance
      *
      * @param uid Unique identifier of the index to delete
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if something goes wrong
      */
     String delete(String uid) throws Exception {
@@ -96,7 +96,7 @@ class IndexesHandler {
     }
 
     /**
-     * Deletes an index if exists in the MeiliSearch instance
+     * Deletes an index if exists in the Meilisearch instance
      *
      * @param uid Unique identifier of the index to delete
      * @return true if the index could be deleted otherwise false

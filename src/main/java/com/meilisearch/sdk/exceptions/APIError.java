@@ -2,7 +2,7 @@ package com.meilisearch.sdk.exceptions;
 
 import java.io.Serializable;
 
-/** This is class wraps errors sent by MeiliSearch API */
+/** This is class wraps errors sent by Meilisearch API */
 public class APIError implements Serializable {
     private static final long serialVersionUID = 900737636809105793L;
 

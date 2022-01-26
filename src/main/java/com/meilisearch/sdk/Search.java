@@ -9,9 +9,9 @@ public class Search {
     private GsonJsonHandler jsonGson = new GsonJsonHandler();
 
     /**
-     * Constructor for the MeiliSearch Search object
+     * Constructor for the Meilisearch Search object
      *
-     * @param config MeiliSearch configuration
+     * @param config Meilisearch configuration
      */
     protected Search(Config config) {
         meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
