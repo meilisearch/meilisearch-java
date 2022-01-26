@@ -1,5 +1,5 @@
 /*
- * Unofficial Java client for Meilisearch
+ * Official Java client for Meilisearch
  */
 package com.meilisearch.sdk;
 
