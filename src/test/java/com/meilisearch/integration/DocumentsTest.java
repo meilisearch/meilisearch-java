@@ -3,6 +3,10 @@ package com.meilisearch.integration;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.google.gson.JsonObject;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
@@ -10,6 +14,9 @@ import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.UpdateStatus;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import com.meilisearch.sdk.utils.Movie;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -554,5 +561,308 @@ public class DocumentsTest extends AbstractIT {
 
         movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         assertEquals(0, movies.length);
+    }
+
+    /** Test add ndjson documents */
+    @Test
+    public void testAddDocumentsNDJSON() throws Exception {
+        String indexUid = "testAddDocumentsNDJSON";
+        Index index = client.index(indexUid);
+
+        FileReader ndjsonReader = new FileReader(new File("src/test/resources/movies.ndjson"));
+        BufferedReader ndjsonReader2 = new BufferedReader(ndjsonReader);
+        StringBuffer stringBuffer = new StringBuffer();
+        String line;
+
+        while ((line = ndjsonReader2.readLine()) != null) {
+            stringBuffer.append(line);
+            stringBuffer.append("\n");
+        }
+
+        ndjsonReader.close();
+
+        String updateStatus = index.addDocumentsNDJSON(stringBuffer.toString(), null);
+        UpdateStatus updateInfo = gson.fromJson(updateStatus, UpdateStatus.class);
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        assertEquals("{\"updateId\":0}", updateStatus);
+    }
+
+    /** Test add ndjson documents in batches */
+    @Test
+    public void testAddDocumentsNDJSONinBatches() throws Exception {
+        String indexUid = "testAddDocumentsNDJSONinBatches";
+        Index index = client.index(indexUid);
+
+        FileReader ndjsonReader = new FileReader(new File("src/test/resources/movies.ndjson"));
+        BufferedReader ndjsonReader2 = new BufferedReader(ndjsonReader);
+        StringBuffer stringBuffer = new StringBuffer();
+        String line;
+
+        while ((line = ndjsonReader2.readLine()) != null) {
+            stringBuffer.append(line);
+            stringBuffer.append("\n");
+        }
+
+        ndjsonReader.close();
+
+        String updateStatusArr = index.addDocumentsNDJSONinBatches(stringBuffer.toString());
+
+        UpdateStatus[] updateStatuses = gson.fromJson(updateStatusArr, UpdateStatus[].class);
+        for (UpdateStatus updateStatus : updateStatuses) {
+            index.waitForPendingUpdate(updateStatus.getUpdateId());
+        }
+        assertEquals("[{\"updateId\":0}]", updateStatusArr);
+    }
+
+    /** Test add CSV documents */
+    @Test
+    public void testAddDocumentsCSV() throws Exception {
+
+        String indexUid = "testAddDocumentsCSV";
+        Index index = client.index(indexUid);
+
+        FileReader csvReader = new FileReader(new File("src/test/resources/movies.csv"));
+        BufferedReader csvReader2 = new BufferedReader(csvReader);
+        StringBuffer stringBuffer = new StringBuffer();
+        String line;
+
+        while ((line = csvReader2.readLine()) != null) {
+            stringBuffer.append(line);
+            stringBuffer.append("\n");
+        }
+
+        csvReader.close();
+
+        String updateStatus = index.addDocumentsCSV(stringBuffer.toString(), null);
+        UpdateStatus updateInfo = gson.fromJson(updateStatus, UpdateStatus.class);
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        assertEquals("{\"updateId\":0}", updateStatus);
+    }
+
+    /** Test add CSV documents */
+    @Test
+    public void testAddDocumentsCSVinBatches() throws Exception {
+
+        String indexUid = "testAddDocumentsCSVinBatches";
+        Index index = client.index(indexUid);
+
+        FileReader csvReader = new FileReader(new File("src/test/resources/movies.csv"));
+        BufferedReader csvReader2 = new BufferedReader(csvReader);
+        StringBuffer stringBuffer = new StringBuffer();
+        String line;
+
+        while ((line = csvReader2.readLine()) != null) {
+            stringBuffer.append(line);
+            stringBuffer.append("\n");
+        }
+
+        csvReader.close();
+
+        String updateStatusArr = index.addDocumentsCSVinBatches(stringBuffer.toString());
+
+        UpdateStatus[] updateStatuses = gson.fromJson(updateStatusArr, UpdateStatus[].class);
+        for (UpdateStatus updateStatus : updateStatuses) {
+            index.waitForPendingUpdate(updateStatus.getUpdateId());
+        }
+        assertEquals("[{\"updateId\":0}]", updateStatusArr);
+    }
+
+    /** Update Documents from NDJSON file */
+    @Test
+    public void testUpdateDocumentsNDJSON() throws Exception {
+        String indexUid = "testUpdateDocumentsNDJSON";
+        Index index = client.index(indexUid);
+
+        FileReader ndjsonReader = new FileReader(new File("src/test/resources/movies.ndjson"));
+        BufferedReader ndjsonReader2 = new BufferedReader(ndjsonReader);
+        StringBuffer stringBuffer = new StringBuffer();
+        String line;
+
+        while ((line = ndjsonReader2.readLine()) != null) {
+            stringBuffer.append(line);
+            stringBuffer.append("\n");
+        }
+
+        ndjsonReader.close();
+
+        String updateStatus = index.addDocumentsNDJSON(stringBuffer.toString(), null);
+        UpdateStatus updateInfo = gson.fromJson(updateStatus, UpdateStatus.class);
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+        Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        List<Movie> toUpdate = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            movies[i].setTitle("Star wars episode: " + i);
+            movies[i].setOverview("This star wars movie is for the episode: " + i);
+            toUpdate.add(movies[i]);
+        }
+        StringBuffer updateNDJSONData = new StringBuffer();
+        for (int i = 0; i < toUpdate.size(); i++) {
+            updateNDJSONData.append(gson.toJson(toUpdate.get(i)));
+            updateNDJSONData.append("\n");
+        }
+
+        updateStatus = index.updateDocumentsNDJSON(updateNDJSONData.toString(), null);
+        updateInfo = this.gson.fromJson(updateStatus, UpdateStatus.class);
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+        assertEquals("{\"updateId\":1}", updateStatus);
+
+        for (int j = 0; j < 5; j++) {
+            Movie responseUpdate =
+                    this.gson.fromJson(index.getDocument(toUpdate.get(j).getId()), Movie.class);
+            assertEquals(toUpdate.get(j).getTitle(), responseUpdate.getTitle());
+            assertEquals(toUpdate.get(j).getOverview(), responseUpdate.getOverview());
+        }
+    }
+
+    /** Update Documents from CSV file */
+    @Test
+    public void testUpdateDocumentsCSV() throws Exception {
+        String indexUid = "testUpdateDocumentsCSV";
+        Index index = client.index(indexUid);
+
+        FileReader csvReader = new FileReader(new File("src/test/resources/movies.csv"));
+        BufferedReader csvReader2 = new BufferedReader(csvReader);
+        StringBuffer stringBuffer = new StringBuffer();
+        String line;
+
+        while ((line = csvReader2.readLine()) != null) {
+            stringBuffer.append(line);
+            stringBuffer.append("\n");
+        }
+
+        csvReader.close();
+
+        String updateStatus = index.addDocumentsCSV(stringBuffer.toString(), null);
+        UpdateStatus updateInfo = gson.fromJson(updateStatus, UpdateStatus.class);
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+        Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        List<Movie> toUpdate = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            movies[i].setTitle("Star wars episode: " + i);
+            movies[i].setOverview("This star wars movie is for the episode: " + i);
+            toUpdate.add(movies[i]);
+        }
+
+        JsonNode jsonTree = new ObjectMapper().readTree(this.gson.toJson(toUpdate));
+
+        CsvSchema.Builder csvSchemaBuilder = CsvSchema.builder();
+        JsonNode firstObject = jsonTree.elements().next();
+        firstObject.fieldNames().forEachRemaining(csvSchemaBuilder::addColumn);
+        CsvSchema csvSchema = csvSchemaBuilder.build().withHeader();
+
+        CsvMapper csvMapper = new CsvMapper();
+        String updatedCSVData =
+                csvMapper.writerFor(JsonNode.class).with(csvSchema).writeValueAsString(jsonTree);
+
+        updateStatus = index.updateDocumentsCSV(updatedCSVData, null);
+        updateInfo = this.gson.fromJson(updateStatus, UpdateStatus.class);
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+        assertEquals("{\"updateId\":1}", updateStatus);
+
+        for (int j = 0; j < 5; j++) {
+            Movie responseUpdate =
+                    this.gson.fromJson(index.getDocument(toUpdate.get(j).getId()), Movie.class);
+            assertEquals(toUpdate.get(j).getTitle(), responseUpdate.getTitle());
+            assertEquals(toUpdate.get(j).getOverview(), responseUpdate.getOverview());
+        }
+    }
+
+    /** Update Documents in Batches from NDJSON files */
+    @Test
+    public void updateDocumentsNDJSONinBatches() throws Exception {
+        String indexUid = "testUpdateDocumentsNDJSONinBatches";
+        Index index = client.index(indexUid);
+
+        FileReader ndjsonReader = new FileReader(new File("src/test/resources/movies.ndjson"));
+        BufferedReader ndjsonReader2 = new BufferedReader(ndjsonReader);
+        StringBuffer stringBuffer = new StringBuffer();
+        String line;
+
+        while ((line = ndjsonReader2.readLine()) != null) {
+            stringBuffer.append(line);
+            stringBuffer.append("\n");
+        }
+
+        ndjsonReader.close();
+
+        String updateStatus = index.addDocumentsNDJSON(stringBuffer.toString(), null);
+        UpdateStatus updateInfo = gson.fromJson(updateStatus, UpdateStatus.class);
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+        Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        List<Movie> toUpdate = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            movies[i].setTitle("Star wars episode: " + i);
+            movies[i].setOverview("This star wars movie is for the episode: " + i);
+            toUpdate.add(movies[i]);
+        }
+        StringBuffer updateNDJSONData = new StringBuffer();
+        for (int i = 0; i < toUpdate.size(); i++) {
+            updateNDJSONData.append(gson.toJson(toUpdate.get(i)));
+            updateNDJSONData.append("\n");
+        }
+
+        String updateStatusArr =
+                index.updateDocumentsNDJSONinBatches(updateNDJSONData.toString(), null);
+
+        UpdateStatus[] updateStatuses = gson.fromJson(updateStatusArr, UpdateStatus[].class);
+        for (UpdateStatus updateStatus1 : updateStatuses) {
+            index.waitForPendingUpdate(updateStatus1.getUpdateId());
+        }
+        assertEquals("[{\"updateId\":1}]", updateStatusArr);
+    }
+
+    /** Update Documents in Batches from CSV files */
+    @Test
+    public void updateDocumentsCSVinBatches() throws Exception {
+        String indexUid = "testUpdateDocumentsCSVinBatches";
+        Index index = client.index(indexUid);
+
+        FileReader csvReader = new FileReader(new File("src/test/resources/movies.csv"));
+        BufferedReader csvReader2 = new BufferedReader(csvReader);
+        StringBuffer stringBuffer = new StringBuffer();
+        String line;
+
+        while ((line = csvReader2.readLine()) != null) {
+            stringBuffer.append(line);
+            stringBuffer.append("\n");
+        }
+
+        csvReader.close();
+
+        String updateStatus = index.addDocumentsCSV(stringBuffer.toString(), null);
+        UpdateStatus updateInfo = gson.fromJson(updateStatus, UpdateStatus.class);
+        index.waitForPendingUpdate(updateInfo.getUpdateId());
+
+        Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        List<Movie> toUpdate = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            movies[i].setTitle("Star wars episode: " + i);
+            movies[i].setOverview("This star wars movie is for the episode: " + i);
+            toUpdate.add(movies[i]);
+        }
+
+        JsonNode jsonTree = new ObjectMapper().readTree(this.gson.toJson(toUpdate));
+
+        CsvSchema.Builder csvSchemaBuilder = CsvSchema.builder();
+        JsonNode firstObject = jsonTree.elements().next();
+        firstObject.fieldNames().forEachRemaining(csvSchemaBuilder::addColumn);
+        CsvSchema csvSchema = csvSchemaBuilder.build().withHeader();
+
+        CsvMapper csvMapper = new CsvMapper();
+        String updatedCSVData =
+                csvMapper.writerFor(JsonNode.class).with(csvSchema).writeValueAsString(jsonTree);
+
+        String updateStatusArr = index.updateDocumentsCSVinBatches(updatedCSVData, null);
+
+        UpdateStatus[] updateStatuses = gson.fromJson(updateStatusArr, UpdateStatus[].class);
+        for (UpdateStatus updateStatus1 : updateStatuses) {
+            index.waitForPendingUpdate(updateStatus1.getUpdateId());
+        }
+        assertEquals("[{\"updateId\":1}]", updateStatusArr);
     }
 }

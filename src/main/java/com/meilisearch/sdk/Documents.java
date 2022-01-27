@@ -4,6 +4,7 @@ import static java.util.Collections.singletonList;
 
 import com.google.gson.JsonArray;
 import java.util.List;
+import java.util.Map;
 
 /** Wrapper around MeiliSearchHttpRequest class to use for Meilisearch documents */
 class Documents {
@@ -113,6 +114,25 @@ class Documents {
     }
 
     /**
+     * Adds/Replaces a document at the specified uid
+     *
+     * @param uid Partial index identifier for the document
+     * @param document String containing the document to add
+     * @param primaryKey PrimaryKey of the document
+     * @param headers Define Content Type
+     * @return String containing the added document
+     * @throws Exception if the client request causes an error
+     */
+    String addDocuments(String uid, String document, String primaryKey, Map<String, String> headers)
+            throws Exception {
+        String requestQuery = "/indexes/" + uid + "/documents";
+        if (primaryKey != null) {
+            requestQuery += "?primaryKey=" + primaryKey;
+        }
+        return meilisearchHttpRequest.post(requestQuery, document, headers);
+    }
+
+    /**
      * Replaces a document at the specified uid
      *
      * @param uid Partial index identifier for the document
@@ -127,6 +147,26 @@ class Documents {
             requestQuery += "?primaryKey=" + primaryKey;
         }
         return meilisearchHttpRequest.put(requestQuery, document);
+    }
+
+    /**
+     * Replaces a document at the specified uid
+     *
+     * @param uid Partial index identifier for the document
+     * @param document String containing the document to replace the existing document
+     * @param primaryKey PrimaryKey of the document
+     * @param headers Define Content Type
+     * @return String containing the added document
+     * @throws Exception if the client request causes an error
+     */
+    String updateDocuments(
+            String uid, String document, String primaryKey, Map<String, String> headers)
+            throws Exception {
+        String requestQuery = "/indexes/" + uid + "/documents";
+        if (primaryKey != null) {
+            requestQuery += "?primaryKey=" + primaryKey;
+        }
+        return meilisearchHttpRequest.put(requestQuery, document, headers);
     }
 
     /**
