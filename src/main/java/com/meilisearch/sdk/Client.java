@@ -229,7 +229,7 @@ public class Client {
      * @return Key Instance
      * @throws Exception if an error occurs
      */
-    public Key createKey(String options) throws Exception {
+    public Key createKey(Key options) throws Exception {
         return this.keysHandler.createKey(options);
     }
 

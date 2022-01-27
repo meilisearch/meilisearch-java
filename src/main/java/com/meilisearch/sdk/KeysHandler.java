@@ -53,13 +53,14 @@ public class KeysHandler {
     /**
      * Creates a key
      *
-     * @param options String containing the options of the key
+     * @param options Key containing the options
      * @return Key Instance
      * @throws Exception if client request causes an error
      */
-    Key createKey(String options) throws Exception {
+    Key createKey(Key options) throws Exception {
         String urlPath = "/keys";
-        return this.gson.fromJson(this.meilisearchHttpRequest.post(urlPath, options), Key.class);
+        return this.gson.fromJson(
+                this.meilisearchHttpRequest.post(urlPath, options.toString()), Key.class);
     }
 
     /**
