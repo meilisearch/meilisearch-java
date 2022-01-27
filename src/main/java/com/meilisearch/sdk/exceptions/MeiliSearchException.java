@@ -2,7 +2,7 @@ package com.meilisearch.sdk.exceptions;
 
 public class MeiliSearchException extends Exception {
 
-    /** This is a generic class for MeiliSearch Exception handling */
+    /** This is a generic class for Meilisearch Exception handling */
     String message;
 
     String type;

@@ -46,7 +46,7 @@ public class ExceptionsTest extends AbstractIT {
         assertEquals("wrong field", error.getUpdateStatusErrorCode());
     }
 
-    /** Test MeiliSearchApiException is thrown on MeiliSearch bad request */
+    /** Test MeiliSearchApiException is thrown on Meilisearch bad request */
     @Test
     public void testMeiliSearchApiExceptionBadRequest() throws Exception {
         String indexUid = "MeiliSearchApiExceptionBadRequest";

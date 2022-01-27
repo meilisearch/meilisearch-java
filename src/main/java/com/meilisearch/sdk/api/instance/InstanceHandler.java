@@ -17,7 +17,7 @@ public class InstanceHandler {
         this.requestFactory = requestFactory;
     }
 
-    /** @return a map with health status of MeiliSearch */
+    /** @return a map with health status of Meilisearch */
     public Map<String, String> health() {
         return serviceTemplate.execute(
                 requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), null),
