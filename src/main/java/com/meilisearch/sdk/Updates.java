@@ -1,6 +1,6 @@
 package com.meilisearch.sdk;
 
-/** Wrapper around MeilisearchHttpRequest class to use for Meilisearch updates */
+/** Wrapper around MeiliSearchHttpRequest class to use for Meilisearch updates */
 public class Updates {
     private final MeiliSearchHttpRequest meilisearchHttpRequest;
 
