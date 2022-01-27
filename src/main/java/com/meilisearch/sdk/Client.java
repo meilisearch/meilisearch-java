@@ -1,11 +1,11 @@
 /*
- * Unofficial Java client for MeiliSearch
+ * Official Java client for Meilisearch
  */
 package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
 
-/** MeiliSearch client */
+/** Meilisearch client */
 public class Client {
     public Config config;
     public IndexesHandler indexesHandler;
@@ -15,9 +15,9 @@ public class Client {
     public DumpHandler dumpHandler;
 
     /**
-     * Calls instance for MeiliSearch client
+     * Calls instance for Meilisearch client
      *
-     * @param config Configuration to connect to MeiliSearch instance
+     * @param config Configuration to connect to Meilisearch instance
      */
     public Client(Config config) {
         this.config = config;
@@ -32,7 +32,7 @@ public class Client {
      * Creates index Refer https://docs.meilisearch.com/reference/api/indexes.html#create-an-index
      *
      * @param uid Unique identifier for the index to create
-     * @return MeiliSearch API response as Task
+     * @return Meilisearch API response as Task
      * @throws Exception if an error occurs
      */
     public Task createIndex(String uid) throws Exception {
@@ -44,7 +44,7 @@ public class Client {
      *
      * @param uid Unique identifier for the index to create
      * @param primaryKey The primary key of the documents in that index
-     * @return MeiliSearch API response as Task
+     * @return Meilisearch API response as Task
      * @throws Exception if an error occurs
      */
     public Task createIndex(String uid, String primaryKey) throws Exception {
@@ -56,7 +56,7 @@ public class Client {
      * Gets all indexes Refer
      * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
-     * @return List of indexes in the MeiliSearch client
+     * @return List of indexes in the Meilisearch client
      * @throws Exception if an error occurs
      */
     public Index[] getIndexList() throws Exception {
@@ -70,7 +70,7 @@ public class Client {
     /**
      * Gets all indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
-     * @return MeiliSearch API response as String
+     * @return Meilisearch API response as String
      * @throws Exception if an error occurs
      */
     public String getRawIndexList() throws Exception {
@@ -98,7 +98,7 @@ public class Client {
      * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
      *
      * @param uid Unique identifier of the index to get
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if an error occurs
      */
     public Index getIndex(String uid) throws Exception {
@@ -112,7 +112,7 @@ public class Client {
      * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
      *
      * @param uid Unique identifier of the index to get
-     * @return MeiliSearch API response as String
+     * @return Meilisearch API response as String
      * @throws Exception if an error occurs
      */
     public String getRawIndex(String uid) throws Exception {
@@ -125,7 +125,7 @@ public class Client {
      *
      * @param uid Unique identifier of the index to update
      * @param primaryKey Primary key of the documents in the index
-     * @return MeiliSearch API response as Task
+     * @return Meilisearch API response as Task
      * @throws Exception if an error occurs
      */
     public Task updateIndex(String uid, String primaryKey) throws Exception {
@@ -139,7 +139,7 @@ public class Client {
      * https://docs.meilisearch.com/reference/api/indexes.html#delete-one-index
      *
      * @param uid Unique identifier of the index to delete
-     * @return MeiliSearch API response as Task
+     * @return Meilisearch API response as Task
      * @throws Exception if an error occurs
      */
     public Task deleteIndex(String uid) throws Exception {
@@ -148,7 +148,7 @@ public class Client {
     }
 
     /**
-     * Triggers the creation of a MeiliSearch dump. Refer
+     * Triggers the creation of a Meilisearch dump. Refer
      * https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
      *
      * @return Dump instance
@@ -159,7 +159,7 @@ public class Client {
     }
 
     /**
-     * Gets the status of a MeiliSearch dump.
+     * Gets the status of a Meilisearch dump.
      * https://docs.meilisearch.com/reference/api/dump.html#get-dump-status
      *
      * @param uid Unique identifier for correspondent dump
@@ -184,7 +184,7 @@ public class Client {
     /**
      * Retrieves list of tasks
      *
-     * @return List of tasks in the MeiliSearch client
+     * @return List of tasks in the Meilisearch client
      * @throws Exception if an error occurs
      */
     public Task[] getTasks() throws Exception {
@@ -215,7 +215,7 @@ public class Client {
     /**
      * Retrieves list of keys
      *
-     * @return List of keys in the MeiliSearch client
+     * @return List of keys in the Meilisearch client
      * @throws Exception if an error occurs
      */
     public Key[] getKeys() throws Exception {
@@ -249,7 +249,7 @@ public class Client {
      * Deletes a key
      *
      * @param key String containing the key
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if an error occurs
      */
     public String deleteKey(String key) throws Exception {

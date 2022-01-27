@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.json.JSONArray;
 
-/** MeiliSearch index */
+/** Meilisearch index */
 @ToString
 public class Index implements Serializable {
     @Getter String uid;
@@ -34,9 +34,9 @@ public class Index implements Serializable {
     Gson gson = new Gson();
 
     /**
-     * Sets the MeiliSearch configuration for the index
+     * Sets the Meilisearch configuration for the index
      *
-     * @param config MeiliSearch configuration to use
+     * @param config Meilisearch configuration to use
      */
     void setConfig(Config config) {
         this.config = config;
@@ -50,7 +50,7 @@ public class Index implements Serializable {
      * Gets a document in the index
      *
      * @param identifier Identifier of the document to get
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if an error occurs
      */
     public String getDocument(String identifier) throws Exception {
@@ -60,7 +60,7 @@ public class Index implements Serializable {
     /**
      * Gets documents in the index
      *
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if an error occurs
      */
     public String getDocuments() throws Exception {
@@ -71,7 +71,7 @@ public class Index implements Serializable {
      * Gets documents in the index and limit the number of documents returned
      *
      * @param limits Maximum amount of documents to return
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if an error occurs
      */
     public String getDocuments(int limits) throws Exception {
@@ -83,7 +83,7 @@ public class Index implements Serializable {
      *
      * @param limits Maximum amount of documents to return
      * @param offset Number of documents to skip
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if an error occurs
      */
     public String getDocuments(int limits, int offset) throws Exception {
@@ -96,7 +96,7 @@ public class Index implements Serializable {
      * @param limits Maximum amount of documents to return
      * @param offset Number of documents to skip
      * @param attributesToRetrieve Document attributes to show
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if an error occurs
      */
     public String getDocuments(int limits, int offset, List<String> attributesToRetrieve)
@@ -108,7 +108,7 @@ public class Index implements Serializable {
      * Adds a document in the index
      *
      * @param document Document to add in JSON string format
-     * @return Task MeiliSearch API response
+     * @return Task Meilisearch API response
      * @throws Exception if an error occurs
      */
     public Task addDocuments(String document) throws Exception {
@@ -120,7 +120,7 @@ public class Index implements Serializable {
      *
      * @param document Document to add in JSON string format
      * @param primaryKey PrimaryKey of the document to add
-     * @return Task MeiliSearch API response
+     * @return Task Meilisearch API response
      * @throws Exception if an error occurs
      */
     public Task addDocuments(String document, String primaryKey) throws Exception {
@@ -133,7 +133,7 @@ public class Index implements Serializable {
      * @param batchSize size of the batch of documents
      * @param document Document to add in JSON string format
      * @param primaryKey PrimaryKey of the document to add
-     * @return Task MeiliSearch API response
+     * @return Task Meilisearch API response
      * @throws Exception if an error occurs
      */
     public Task[] addDocumentsInBatches(String document, Integer batchSize, String primaryKey)
@@ -160,7 +160,7 @@ public class Index implements Serializable {
      * Add Documents in Index in Batches
      *
      * @param document Document to add in JSON string format
-     * @return Task MeiliSearch API response
+     * @return Task Meilisearch API response
      * @throws Exception if an error occurs
      */
     public Task[] addDocumentsInBatches(String document) throws Exception {
@@ -171,7 +171,7 @@ public class Index implements Serializable {
      * Updates a document in the index
      *
      * @param document Document to update in JSON string format
-     * @return Task MeiliSearch API response
+     * @return Task Meilisearch API response
      * @throws Exception if an error occurs
      */
     public Task updateDocuments(String document) throws Exception {
@@ -183,7 +183,7 @@ public class Index implements Serializable {
      *
      * @param document Document to update in JSON string format
      * @param primaryKey PrimaryKey of the document
-     * @return Task MeiliSearch API response
+     * @return Task Meilisearch API response
      * @throws Exception if an error occurs
      */
     public Task updateDocuments(String document, String primaryKey) throws Exception {
@@ -196,7 +196,7 @@ public class Index implements Serializable {
      * @param document Document to add in JSON string format
      * @param batchSize size of the batch of documents
      * @param primaryKey PrimaryKey of the document to add
-     * @return Task MeiliSearch API response
+     * @return Task Meilisearch API response
      * @throws Exception if an error occurs
      */
     public Task[] updateDocumentsInBatches(String document, Integer batchSize, String primaryKey)
@@ -223,7 +223,7 @@ public class Index implements Serializable {
      * Update Documents in Index in Batches
      *
      * @param document Document to add in JSON string format
-     * @return Task MeiliSearch API response
+     * @return Task Meilisearch API response
      * @throws Exception if an error occurs
      */
     public Task[] updateDocumentsInBatches(String document) throws Exception {
@@ -234,7 +234,7 @@ public class Index implements Serializable {
      * Deletes a document from the index
      *
      * @param identifier Identifier of the document to delete
-     * @return Task MeiliSearch API response
+     * @return Task Meilisearch API response
      * @throws Exception if an error occurs
      */
     public Task deleteDocument(String identifier) throws Exception {
@@ -245,7 +245,7 @@ public class Index implements Serializable {
      * Deletes list of documents from the index
      *
      * @param documentsIdentifiers list of identifiers of documents to delete
-     * @return Task MeiliSearch API response
+     * @return Task Meilisearch API response
      * @throws Exception if an error occurs
      */
     public Task deleteDocuments(List<String> documentsIdentifiers) throws Exception {
@@ -255,7 +255,7 @@ public class Index implements Serializable {
     /**
      * Deletes all documents in the index
      *
-     * @return List of tasks MeiliSearch API response
+     * @return List of tasks Meilisearch API response
      * @throws Exception if an error occurs
      */
     public Task deleteAllDocuments() throws Exception {
@@ -266,7 +266,7 @@ public class Index implements Serializable {
      * Searches documents in index
      *
      * @param q Query string
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if an error occurs
      */
     public SearchResult search(String q) throws Exception {
@@ -277,7 +277,7 @@ public class Index implements Serializable {
      * Searches documents in index
      *
      * @param searchRequest SearchRequest SearchRequest
-     * @return MeiliSearch API response
+     * @return Meilisearch API response
      * @throws Exception if an error occurs
      */
     public SearchResult search(SearchRequest searchRequest) throws Exception {
@@ -611,7 +611,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Fetches the primary key of the index in the MeiliSearch instance
+     * Fetches the primary key of the index in the Meilisearch instance
      *
      * @throws Exception if an error occurs
      */

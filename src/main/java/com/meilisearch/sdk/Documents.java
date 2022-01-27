@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import java.util.List;
 
-/** Wrapper around MeilisearchHttpRequest class to use for MeiliSearch documents */
+/** Wrapper around MeiliSearchHttpRequest class to use for Meilisearch documents */
 class Documents {
     private final MeiliSearchHttpRequest meilisearchHttpRequest;
 
@@ -104,7 +104,7 @@ class Documents {
      * @param uid Partial index identifier for the document
      * @param document String containing the document to add
      * @param primaryKey PrimaryKey of the document
-     * @return MeiliSearch's Task API response
+     * @return Meilisearch's Task API response
      * @throws Exception if the client request causes an error
      */
     Task addDocuments(String uid, String document, String primaryKey) throws Exception {
@@ -123,7 +123,7 @@ class Documents {
      * @param uid Partial index identifier for the document
      * @param document String containing the document to replace the existing document
      * @param primaryKey PrimaryKey of the document
-     * @return MeiliSearch's Task API response
+     * @return Meilisearch's Task API response
      * @throws Exception if the client request causes an error
      */
     Task updateDocuments(String uid, String document, String primaryKey) throws Exception {
@@ -141,7 +141,7 @@ class Documents {
      *
      * @param uid Partial index identifier for the requested document
      * @param identifier ID of the document
-     * @return MeiliSearch's Task API response
+     * @return Meilisearch's Task API response
      * @throws Exception if the client request causes an error
      */
     Task deleteDocument(String uid, String identifier) throws Exception {
@@ -156,7 +156,7 @@ class Documents {
      *
      * @param uid Partial index identifier for the requested documents
      * @param identifiers ID of documents to delete
-     * @return MeiliSearch's Task API response
+     * @return Meilisearch's Task API response
      * @throws Exception if the client request causes an error
      */
     Task deleteDocuments(String uid, List<String> identifiers) throws Exception {
@@ -174,7 +174,7 @@ class Documents {
      * Deletes all documents at the specified uid
      *
      * @param uid Partial index identifier for the requested documents
-     * @return MeiliSearch's Task API response
+     * @return Meilisearch's Task API response
      * @throws Exception if the client request causes an error
      */
     Task deleteAllDocuments(String uid) throws Exception {
