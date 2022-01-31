@@ -37,7 +37,7 @@ public class CustomOkHttpClient extends AbstractHttpClient {
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         if (this.config.getApiKey() != null)
-            builder.addHeader("Authorization", "Bearer " + this.config.getApiKey());
+            builder.addHeader("Authorization", this.config.getBearerApiKey());
         switch (request.getMethod()) {
             case GET:
                 builder.get();

@@ -51,7 +51,7 @@ public class DefaultHttpClient extends AbstractHttpClient {
 
         // Use API key header only if one is provided
         if (!"".equals(apiKey)) {
-            connection.setRequestProperty("Authorization", "Bearer " + apiKey);
+            connection.setRequestProperty("Authorization", this.config.getBearerApiKey());
         }
 
         return connection;
