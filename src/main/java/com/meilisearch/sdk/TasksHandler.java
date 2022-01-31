@@ -33,7 +33,7 @@ public class TasksHandler {
      * @return Task instance
      * @throws Exception if client request causes an error
      */
-    Task getTask(String indexUid, int taskUid) throws Exception {
+    public Task getTask(String indexUid, int taskUid) throws Exception {
         String urlPath = "/indexes/" + indexUid + "/tasks/" + taskUid;
         return this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Task.class);
     }
@@ -45,7 +45,7 @@ public class TasksHandler {
      * @return List of task instance
      * @throws Exception if client request causes an error
      */
-    Task[] getTasks(String indexUid) throws Exception {
+    public Task[] getTasks(String indexUid) throws Exception {
         String urlPath = "/indexes/" + indexUid + "/tasks";
         return this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Task[].class);
     }
@@ -57,7 +57,7 @@ public class TasksHandler {
      * @return Task instance
      * @throws Exception if client request causes an error
      */
-    Task getTask(int taskUid) throws Exception, MeiliSearchApiException {
+    public Task getTask(int taskUid) throws Exception, MeiliSearchApiException {
         String urlPath = "/tasks/" + taskUid;
         return this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Task.class);
     }
@@ -68,7 +68,7 @@ public class TasksHandler {
      * @return List of task instance
      * @throws Exception if client request causes an error
      */
-    Task[] getTasks() throws Exception {
+    public Task[] getTasks() throws Exception {
         String urlPath = "/tasks";
 
         Result<Task> result =
@@ -85,7 +85,7 @@ public class TasksHandler {
      * @param taskUid Identifier of the Task
      * @throws Exception if timeout is reached
      */
-    void waitForTask(int taskUid) throws Exception {
+    public void waitForTask(int taskUid) throws Exception {
         this.waitForTask(taskUid, 5000, 50);
     }
 
@@ -97,7 +97,7 @@ public class TasksHandler {
      * @param intervalInMs number of milliseconds before requesting the status again
      * @throws Exception if timeout is reached
      */
-    void waitForTask(int taskUid, int timeoutInMs, int intervalInMs) throws Exception {
+    public void waitForTask(int taskUid, int timeoutInMs, int intervalInMs) throws Exception {
         Task task;
         String status = "";
         long startTime = new Date().getTime();

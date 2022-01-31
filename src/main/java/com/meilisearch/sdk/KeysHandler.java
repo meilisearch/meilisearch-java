@@ -30,7 +30,7 @@ public class KeysHandler {
      * @return Key instance
      * @throws Exception if client request causes an error
      */
-    Key getKey(String uid) throws Exception, MeiliSearchApiException {
+    public Key getKey(String uid) throws Exception, MeiliSearchApiException {
         String urlPath = "/keys/" + uid;
         return this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Key.class);
     }
@@ -41,7 +41,7 @@ public class KeysHandler {
      * @return List of key instance
      * @throws Exception if client request causes an error
      */
-    Key[] getKeys() throws Exception {
+    public Key[] getKeys() throws Exception {
         String urlPath = "/keys";
         Result<Key> result =
                 this.gson.fromJson(
@@ -57,7 +57,7 @@ public class KeysHandler {
      * @return Key Instance
      * @throws Exception if client request causes an error
      */
-    Key createKey(Key options) throws Exception {
+    public Key createKey(Key options) throws Exception {
         String urlPath = "/keys";
         return this.gson.fromJson(
                 this.meilisearchHttpRequest.post(urlPath, options.toString()), Key.class);
@@ -71,7 +71,7 @@ public class KeysHandler {
      * @return Key Instance
      * @throws Exception if client request causes an error
      */
-    Key updateKey(String key, String options) throws Exception {
+    public Key updateKey(String key, String options) throws Exception {
         String urlPath = "/keys/" + key;
         return this.gson.fromJson(this.meilisearchHttpRequest.patch(urlPath, options), Key.class);
     }
@@ -83,7 +83,7 @@ public class KeysHandler {
      * @return MeiliSearch API response
      * @throws Exception if client request causes an error
      */
-    String deleteKey(String key) throws Exception {
+    public String deleteKey(String key) throws Exception {
         String urlPath = "/keys/" + key;
         return this.meilisearchHttpRequest.delete(urlPath);
     }

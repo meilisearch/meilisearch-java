@@ -43,6 +43,8 @@ public class ClientTest extends AbstractIT {
 
         assertEquals(index.getUid(), indexUid);
         assertNull(index.getPrimaryKey());
+
+        client.deleteIndex(index.getUid());
     }
 
     /** Test Index creation with PrimaryKey */
@@ -53,6 +55,8 @@ public class ClientTest extends AbstractIT {
 
         assertEquals(index.getUid(), indexUid);
         assertEquals(index.getPrimaryKey(), this.primaryKey);
+
+        client.deleteIndex(index.getUid());
     }
 
     /** Test Index creation twice doesn't throw an error: already exists */
@@ -68,6 +72,8 @@ public class ClientTest extends AbstractIT {
 
         assertEquals(index.getUid(), indexUid);
         assertEquals(index.getPrimaryKey(), this.primaryKey);
+
+        client.deleteIndex(index.getUid());
     }
 
     /** Test update Index PrimaryKey */
@@ -86,6 +92,8 @@ public class ClientTest extends AbstractIT {
         assertTrue(index instanceof Index);
         assertEquals(index.getUid(), indexUid);
         assertEquals(index.getPrimaryKey(), this.primaryKey);
+
+        client.deleteIndex(index.getUid());
     }
 
     /** Test getIndex */
@@ -97,6 +105,8 @@ public class ClientTest extends AbstractIT {
 
         assertEquals(index.getUid(), getIndex.getUid());
         assertEquals(index.getPrimaryKey(), getIndex.getPrimaryKey());
+
+        client.deleteIndex(index.getUid());
     }
 
     /** Test getRawIndex */
@@ -109,6 +119,8 @@ public class ClientTest extends AbstractIT {
 
         assertEquals(index.getUid(), indexJson.get("uid").getAsString());
         assertEquals(index.getPrimaryKey(), indexJson.get("primaryKey").getAsString());
+
+        client.deleteIndex(index.getUid());
     }
 
     /** Test getIndexList */
@@ -122,6 +134,9 @@ public class ClientTest extends AbstractIT {
         assertEquals(2, indexes.length);
         assert (Arrays.asList(indexUids).contains(indexUids[0]));
         assert (Arrays.asList(indexUids).contains(indexUids[1]));
+
+        client.deleteIndex(indexUids[0]);
+        client.deleteIndex(indexUids[1]);
     }
 
     /** Test getRawIndexList */
@@ -130,6 +145,7 @@ public class ClientTest extends AbstractIT {
         String[] indexUids = {"GetRawIndexList", "GetRawIndexList2"};
         Index index1 = createEmptyIndex(indexUids[0]);
         Index index2 = createEmptyIndex(indexUids[1], this.primaryKey);
+
         String indexes = client.getRawIndexList();
         JsonArray jsonIndexArray = JsonParser.parseString(indexes).getAsJsonArray();
 
@@ -138,6 +154,9 @@ public class ClientTest extends AbstractIT {
                 .contains(jsonIndexArray.get(0).getAsJsonObject().get("uid").getAsString()));
         assert (Arrays.asList(indexUids)
                 .contains(jsonIndexArray.get(1).getAsJsonObject().get("uid").getAsString()));
+
+        client.deleteIndex(indexUids[0]);
+        client.deleteIndex(indexUids[1]);
     }
 
     /** Test deleteIndex */
