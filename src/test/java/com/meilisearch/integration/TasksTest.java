@@ -53,6 +53,7 @@ public class TasksTest extends AbstractIT {
 
         for (Task task : tasks) {
             client.waitForTask(task.getUid());
+
             assertNotNull(task.getStatus());
             assertNotEquals("", task.getStatus());
             assertTrue(task.getUid() >= 0);
@@ -67,6 +68,7 @@ public class TasksTest extends AbstractIT {
         client.waitForTask(response.getUid());
 
         Task task = client.getTask(response.getUid());
+
         assertTrue(task.getUid() >= 0);
         assertNotNull(task.getEnqueuedAt());
         assertNotNull(task.getStartedAt());
@@ -86,7 +88,5 @@ public class TasksTest extends AbstractIT {
         index.waitForTask(task.getUid());
 
         assertThrows(Exception.class, () -> index.waitForTask(task.getUid(), 0, 50));
-
-        client.deleteIndex(index.getUid());
     }
 }

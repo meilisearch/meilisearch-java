@@ -29,6 +29,7 @@ public class KeysTest extends AbstractIT {
     @Test
     public void testClientGetKeys() throws Exception {
         Key[] keys = client.getKeys();
+
         assertEquals(2, keys.length);
 
         for (Key key : keys) {
@@ -97,6 +98,7 @@ public class KeysTest extends AbstractIT {
         keyInfo.setIndexes(new String[] {"*"});
         keyInfo.setActions(new String[] {"*"});
         keyInfo.setExpiresAt(null);
+
         Key key = client.createKey(keyInfo);
 
         assertTrue(key instanceof Key);
@@ -169,6 +171,7 @@ public class KeysTest extends AbstractIT {
         keyInfo.setIndexes(new String[] {"*"});
         keyInfo.setActions(new String[] {"*"});
         keyInfo.setExpiresAt(null);
+
         Key createKey = client.createKey(keyInfo);
         String response = client.deleteKey(createKey.getKey());
 
