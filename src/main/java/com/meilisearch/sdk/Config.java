@@ -42,4 +42,13 @@ public class Config {
     public String getApiKey() {
         return apiKey;
     }
+
+    /**
+     * Method for returning the concatenated Bearer header with apiKey
+     *
+     * @return Bearer API key String
+     */
+    public String getBearerApiKey() {
+        return "Bearer " + apiKey;
+    }
 }

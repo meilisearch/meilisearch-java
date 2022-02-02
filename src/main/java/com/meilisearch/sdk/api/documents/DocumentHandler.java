@@ -73,26 +73,26 @@ public class DocumentHandler<T> {
      * Add or replace a document
      *
      * @param data an already serialized document
-     * @return an Update object with the updateId
+     * @return an Task object with the taskId
      * @throws MeiliSearchRuntimeException in case something went wrong (http error, json
      *     exceptions, etc)
      */
-    public Update addDocuments(String data) throws MeiliSearchRuntimeException {
+    public Task addDocuments(String data) throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + indexName + "/documents";
         return serviceTemplate.execute(
                 requestFactory.create(HttpMethod.POST, requestQuery, Collections.emptyMap(), data),
-                Update.class);
+                Task.class);
     }
 
     /**
      * Add or replace a batch of documents
      *
      * @param data a list of document objects
-     * @return an Update object with the updateId
+     * @return an Task object with the taskId
      * @throws MeiliSearchRuntimeException in case something went wrong (http error, json
      *     exceptions, etc)
      */
-    public Update addDocuments(List<T> data) throws MeiliSearchRuntimeException {
+    public Task addDocuments(List<T> data) throws MeiliSearchRuntimeException {
         try {
             String dataString = serviceTemplate.getProcessor().encode(data);
             return addDocuments(dataString);
@@ -105,11 +105,11 @@ public class DocumentHandler<T> {
      * Add or replace a document
      *
      * @param data the serialized document
-     * @return an Update object with the updateId
+     * @return an Task object with the taskId
      * @throws MeiliSearchRuntimeException in case something went wrong (http error, json
      *     exceptions, etc)
      */
-    public Update replaceDocuments(String data) throws MeiliSearchRuntimeException {
+    public Task replaceDocuments(String data) throws MeiliSearchRuntimeException {
         return addDocuments(data);
     }
 
@@ -117,11 +117,11 @@ public class DocumentHandler<T> {
      * Add or replace a batch of documents
      *
      * @param data a list of document objects
-     * @return an Update object with the updateId
+     * @return an Task object with the taskId
      * @throws MeiliSearchRuntimeException in case something went wrong (http error, json
      *     exceptions, etc)
      */
-    public Update replaceDocuments(List<T> data) throws MeiliSearchRuntimeException {
+    public Task replaceDocuments(List<T> data) throws MeiliSearchRuntimeException {
         try {
             String dataString = serviceTemplate.getProcessor().encode(data);
             return replaceDocuments(dataString);
@@ -134,26 +134,26 @@ public class DocumentHandler<T> {
      * Add or update a document
      *
      * @param data the serialized document
-     * @return an Update object with the updateId
+     * @return an Task object with the taskId
      * @throws MeiliSearchRuntimeException in case something went wrong (http error, json
      *     exceptions, etc)
      */
-    public Update updateDocuments(String data) throws MeiliSearchRuntimeException {
+    public Task updateDocuments(String data) throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + indexName + "/documents";
         return serviceTemplate.execute(
                 requestFactory.create(HttpMethod.PUT, requestQuery, Collections.emptyMap(), data),
-                Update.class);
+                Task.class);
     }
 
     /**
      * Add or update a document
      *
      * @param data a list of document objects
-     * @return an Update object with the updateId
+     * @return an Task object with the taskId
      * @throws MeiliSearchRuntimeException in case something went wrong (http error, json
      *     exceptions, etc)
      */
-    public Update updateDocuments(List<T> data) throws MeiliSearchRuntimeException {
+    public Task updateDocuments(List<T> data) throws MeiliSearchRuntimeException {
         try {
             String dataString = serviceTemplate.getProcessor().encode(data);
             return updateDocuments(dataString);
@@ -166,31 +166,31 @@ public class DocumentHandler<T> {
      * Delete a document with a specific identifier
      *
      * @param identifier the id of the document
-     * @return an Update object with the updateId
+     * @return an Task object with the taskId
      * @throws MeiliSearchRuntimeException in case something went wrong (http error, json
      *     exceptions, etc)
      */
-    public Update deleteDocument(String identifier) throws MeiliSearchRuntimeException {
+    public Task deleteDocument(String identifier) throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + indexName + "/documents/" + identifier;
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
-                Update.class);
+                Task.class);
     }
 
     /**
      * Delete a batch of documents
      *
-     * @return an Update object with the updateId
+     * @return an Task object with the taskId
      * @throws MeiliSearchRuntimeException in case something went wrong (http error, json
      *     exceptions, etc)
      */
-    public Update deleteDocuments() throws MeiliSearchRuntimeException {
+    public Task deleteDocuments() throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + indexName + "/documents";
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -239,32 +239,34 @@ public class DocumentHandler<T> {
     }
 
     /**
-     * Retrieve an update with a specific updated
+     * Retrieve an task with a specific taskUid
      *
-     * @param updateId the updateId
-     * @return the update belonging to the updateID
+     * @param taskUid the taskUid
+     * @return the task belonging to the taskUid
      * @throws MeiliSearchRuntimeException in case something went wrong (http error, json
      *     exceptions, etc)
      */
-    public Update getUpdate(int updateId) throws MeiliSearchRuntimeException {
-        String requestQuery = "/indexes/" + indexName + "/updates/" + updateId;
+    public Task getTask(int taskUid) throws MeiliSearchRuntimeException {
+        String requestQuery = "/indexes/" + indexName + "/tasks/" + taskUid;
         return serviceTemplate.execute(
                 requestFactory.create(HttpMethod.GET, requestQuery, Collections.emptyMap(), null),
-                Update.class);
+                Task.class);
     }
 
-    /**
-     * Retrieve a list containing all the updates
-     *
-     * @return a List of Updates
-     * @throws MeiliSearchRuntimeException in case something went wrong (http error, json
-     *     exceptions, etc)
-     */
-    public List<Update> getUpdates() throws MeiliSearchRuntimeException {
-        String requestQuery = "/indexes/" + indexName + "/updates";
-        return serviceTemplate.execute(
-                requestFactory.create(HttpMethod.GET, requestQuery, Collections.emptyMap(), null),
-                List.class,
-                Update.class);
-    }
+    // Must be reviewed when resolving the issue #315
+    // /**
+    //  * Retrieve a list containing all the tasks
+    //  *
+    //  * @return a List of Tasks
+    //  * @throws MeiliSearchRuntimeException in case something went wrong (http error, json
+    //  *     exceptions, etc)
+    //  */
+    // public List<Task> getTasks() throws MeiliSearchRuntimeException {
+    //     String requestQuery = "/indexes/" + indexName + "/tasks";
+    //     return serviceTemplate.execute(
+    //             requestFactory.create(HttpMethod.GET, requestQuery, Collections.emptyMap(),
+    // null),
+    //             List.class,
+    //             Task.class);
+    // }
 }

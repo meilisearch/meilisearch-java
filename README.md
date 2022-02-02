@@ -115,12 +115,12 @@ class TestMeilisearch {
     Index index = client.index("movies");
 
     // If the index 'movies' does not exist, Meilisearch creates it when you first add the documents.
-    index.addDocuments(documents); // => { "updateId": 0 }
+    index.addDocuments(documents); // => { "uid": 0 }
   }
 }
 ```
 
-With the `updateId`, you can check the status (`enqueued`, `processing`, `processed` or `failed`) of your documents addition using the [update endpoint](https://docs.meilisearch.com/reference/api/updates.html#get-an-update-status).
+With the `taskUid`, you can check the status (`enqueued`, `processing`, `succeeded` or `failed`) of your documents addition using the [task endpoint](https://docs.meilisearch.com/reference/api/tasks.html#get-task).
 
 #### Basic Search <!-- omit in toc -->
 
@@ -192,7 +192,7 @@ index.updateFilterableAttributesSettings(new String[]
 
 You only need to perform this operation once.
 
-Note that Meilisearch will rebuild your index whenever you update `filterableAttributes`. Depending on the size of your dataset, this might take time. You can track the process using the [update status](https://docs.meilisearch.com/reference/api/updates.html#get-an-update-status).
+Note that Meilisearch will rebuild your index whenever you update `filterableAttributes`. Depending on the size of your dataset, this might take time. You can track the process using the [task status](https://docs.meilisearch.com/reference/api/tasks.html#get-task).
 
 Then, you can perform the search:
 
@@ -330,7 +330,7 @@ requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), {"id":"
 
 ## 🤖 Compatibility with Meilisearch
 
-This package only guarantees the compatibility with the [version v0.24.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.24.0).
+This package only guarantees compatibility with the [version v0.25.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.25.0).
 
 ## 💡 Learn More
 
