@@ -1,7 +1,7 @@
 package com.meilisearch.sdk.api.index;
 
 import com.meilisearch.sdk.ServiceTemplate;
-import com.meilisearch.sdk.api.documents.Update;
+import com.meilisearch.sdk.api.documents.Task;
 import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
 import com.meilisearch.sdk.http.factory.RequestFactory;
 import com.meilisearch.sdk.http.request.HttpMethod;
@@ -132,8 +132,7 @@ public class IndexHandler {
      * @throws MeiliSearchRuntimeException in case something went wrong (http error, json
      *     exceptions, etc)
      */
-    public Update updateSettings(String index, Settings settings)
-            throws MeiliSearchRuntimeException {
+    public Task updateSettings(String index, Settings settings) throws MeiliSearchRuntimeException {
         return settingsHandler.updateSettings(index, settings);
     }
 
@@ -143,7 +142,7 @@ public class IndexHandler {
      * @throws MeiliSearchRuntimeException in case something went wrong (http error, json
      *     exceptions, etc)
      */
-    public Update resetSettings(String index) throws MeiliSearchRuntimeException {
+    public Task resetSettings(String index) throws MeiliSearchRuntimeException {
         return settingsHandler.resetSettings(index);
     }
 }
