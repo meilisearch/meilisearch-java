@@ -10,5 +10,7 @@ public interface HttpClient<T extends HttpRequest<?>, R extends HttpResponse<?>>
 
     R put(T request) throws Exception;
 
+    R patch(T request) throws Exception;
+
     R delete(T request) throws Exception;
 }

@@ -3,7 +3,7 @@ package com.meilisearch.integration;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.meilisearch.integration.classes.AbstractIT;
-import com.meilisearch.sdk.UpdateStatusError;
+import com.meilisearch.sdk.TaskError;
 import com.meilisearch.sdk.exceptions.APIError;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import org.junit.jupiter.api.*;
@@ -38,24 +38,23 @@ public class ExceptionsTest extends AbstractIT {
         }
     }
 
-    /** Test UpdateStatus Error Getters */
+    /** Test Task Error Getters */
     @Test
-    public void testUpdateStatusErrorGetters() {
-        UpdateStatusError error = new UpdateStatusError();
-        error.setUpdateStatusErrorCode("wrong field");
-        assertEquals("wrong field", error.getUpdateStatusErrorCode());
+    public void testTaskErrorGetters() {
+        TaskError error = new TaskError();
+        error.setTaskErrorCode("wrong field");
+        assertEquals("wrong field", error.getTaskErrorCode());
     }
 
     /** Test MeiliSearchApiException is thrown on Meilisearch bad request */
     @Test
     public void testMeiliSearchApiExceptionBadRequest() throws Exception {
         String indexUid = "MeiliSearchApiExceptionBadRequest";
-        client.createIndex(indexUid);
-        assertThrows(MeiliSearchApiException.class, () -> client.createIndex(indexUid));
+        assertThrows(MeiliSearchApiException.class, () -> client.getIndex(indexUid));
         try {
-            client.createIndex(indexUid);
+            client.getIndex(indexUid);
         } catch (MeiliSearchApiException e) {
-            assertEquals("index_already_exists", e.getErrorCode());
+            assertEquals("index_not_found", e.getErrorCode());
         }
     }
 }
