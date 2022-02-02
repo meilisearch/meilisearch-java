@@ -249,10 +249,9 @@ public class Client {
      * Deletes a key
      *
      * @param key String containing the key
-     * @return Meilisearch API response
      * @throws Exception if an error occurs
      */
-    public String deleteKey(String key) throws Exception {
-        return this.keysHandler.deleteKey(key);
+    public void deleteKey(String key) throws Exception {
+        this.keysHandler.deleteKey(key);
     }
 }

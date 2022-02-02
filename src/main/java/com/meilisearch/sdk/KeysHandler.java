@@ -81,11 +81,10 @@ public class KeysHandler {
      * Deletes a key
      *
      * @param key String containing the key
-     * @return MeiliSearch API response
      * @throws Exception if client request causes an error
      */
-    public String deleteKey(String key) throws Exception {
+    public void deleteKey(String key) throws Exception {
         String urlPath = "/keys/" + key;
-        return this.meilisearchHttpRequest.delete(urlPath);
+        this.meilisearchHttpRequest.delete(urlPath);
     }
 }
