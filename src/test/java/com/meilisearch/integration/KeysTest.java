@@ -173,7 +173,7 @@ public class KeysTest extends AbstractIT {
         keyInfo.setExpiresAt(null);
 
         Key createKey = client.createKey(keyInfo);
-        String response = client.deleteKey(createKey.getKey());
+        client.deleteKey(createKey.getKey());
 
         assertThrows(Exception.class, () -> client.getKey(createKey.getKey()));
     }
