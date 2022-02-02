@@ -66,8 +66,8 @@ create_a_key_1: |-
   Key keyInfo = new Key();
 
   keyInfo.setDescription("Add documents: Products API key");
-  keyInfo.setActions(new String[] {"products"});
-  keyInfo.setIndexes(new String[] {"documents.add"});
+  keyInfo.setActions(new String[] {"documents.add"});
+  keyInfo.setIndexes(new String[] {"products"});
   keyInfo.setExpiresAt(dateParsed);
 
   client.createKey(keyInfo);
@@ -525,8 +525,8 @@ security_guide_create_key_1: |-
   Key keyInfo = new Key();
 
   keyInfo.setDescription("Search patient records key");
-  keyInfo.setIndexes(new String[] {"search"});
-  keyInfo.setActions(new String[] {"patient_medical_records"});
+  keyInfo.setActions(new String[] {"search"});
+  keyInfo.setIndexes(new String[] {"patient_medical_records"});
   keyInfo.setExpiresAt(dateParsed);
 
   client.createKey(keyInfo);
