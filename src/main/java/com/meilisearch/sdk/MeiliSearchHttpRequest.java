@@ -11,7 +11,7 @@ import com.meilisearch.sdk.http.response.HttpResponse;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import java.util.Collections;
 
-/** The HTTP requests for the different functions to be done through MeiliSearch */
+/** The HTTP requests for the different functions to be done through Meilisearch */
 class MeiliSearchHttpRequest {
     private final AbstractHttpClient client;
     private final RequestFactory factory;
@@ -20,7 +20,7 @@ class MeiliSearchHttpRequest {
     /**
      * Constructor for the MeiliSearchHttpRequest
      *
-     * @param config MeiliSearch configuration
+     * @param config Meilisearch configuration
      */
     protected MeiliSearchHttpRequest(Config config) {
         this.client = new DefaultHttpClient(config);
@@ -104,6 +104,26 @@ class MeiliSearchHttpRequest {
     String put(String api, String body) throws Exception, MeiliSearchApiException {
         HttpResponse<?> httpResponse =
                 this.client.put(factory.create(HttpMethod.PUT, api, Collections.emptyMap(), body));
+        if (httpResponse.getStatusCode() >= 400) {
+            throw new MeiliSearchApiException(
+                    jsonHandler.decode(httpResponse.getContent(), APIError.class));
+        }
+        return new String(httpResponse.getContentAsBytes());
+    }
+
+    /**
+     * Replaces the requested resource with new data
+     *
+     * @param api Path to the requested resource
+     * @param body Replacement data for the requested resource
+     * @return updated resource
+     * @throws Exception if the client has an error
+     * @throws MeiliSearchApiException if the response is an error
+     */
+    String patch(String api, String body) throws Exception, MeiliSearchApiException {
+        HttpResponse<?> httpResponse =
+                this.client.patch(
+                        factory.create(HttpMethod.PATCH, api, Collections.emptyMap(), body));
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeiliSearchApiException(
                     jsonHandler.decode(httpResponse.getContent(), APIError.class));

@@ -87,6 +87,8 @@ public class GenericServiceTemplate implements ServiceTemplate {
                     return client.post(request);
                 case PUT:
                     return client.put(request);
+                case PATCH:
+                    return client.patch(request);
                 case DELETE:
                     return client.delete(request);
                 default:

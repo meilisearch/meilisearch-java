@@ -3,7 +3,7 @@ package com.meilisearch.sdk;
 import lombok.Getter;
 import lombok.ToString;
 
-/** MeiliSearch dump */
+/** Meilisearch dump */
 public class Dump {
     @Getter private String status;
     @Getter private String uid;

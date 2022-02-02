@@ -3,15 +3,15 @@ package com.meilisearch.sdk;
 import com.google.gson.JsonObject;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 
-/** Wrapper around the MeilisearchHttpRequest class to ease usage for MeiliSearch indexes */
+/** Wrapper around the MeiliSearchHttpRequest class to ease usage for Meilisearch indexes */
 class IndexesHandler {
     MeiliSearchHttpRequest meilisearchHttpRequest;
 
     /**
-     * Creates and sets up an instance of IndexesHandler to simplify MeiliSearch API calls to manage
+     * Creates and sets up an instance of IndexesHandler to simplify Meilisearch API calls to manage
      * indexes
      *
-     * @param config MeiliSearch configuration
+     * @param config Meilisearch configuration
      */
     IndexesHandler(Config config) {
         this.meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
@@ -21,8 +21,8 @@ class IndexesHandler {
      * Creates an index with a unique identifier
      *
      * @param uid Unique identifier to create the index with
-     * @return MeiliSearch API response
-     * @throws Exception if something goes wrong
+     * @return Meilisearch API response
+     * @throws Exception if an error occurs
      */
     String create(String uid) throws Exception, MeiliSearchApiException {
         return this.create(uid, null);
@@ -33,8 +33,8 @@ class IndexesHandler {
      *
      * @param uid Unique identifier to create the index with
      * @param primaryKey Field to use as the primary key for documents in that index
-     * @return MeiliSearch API response
-     * @throws Exception if something goes wrong
+     * @return Meilisearch API response
+     * @throws Exception if an error occurs
      */
     String create(String uid, String primaryKey) throws Exception, MeiliSearchApiException {
         JsonObject params = new JsonObject();
@@ -49,8 +49,8 @@ class IndexesHandler {
      * Gets an index from its unique identifier
      *
      * @param uid Unique identifier of the index to get
-     * @return MeiliSearch API response
-     * @throws Exception if something goes wrong
+     * @return Meilisearch API response
+     * @throws Exception if an error occurs
      */
     String get(String uid) throws Exception {
         String requestQuery = "/indexes/" + uid;
@@ -58,22 +58,22 @@ class IndexesHandler {
     }
 
     /**
-     * Gets all indexes in the current MeiliSearch instance
+     * Gets all indexes in the current Meilisearch instance
      *
-     * @return MeiliSearch API response
-     * @throws Exception if something goes wrong
+     * @return Meilisearch API response
+     * @throws Exception if an error occurs
      */
     String getAll() throws Exception {
         return meilisearchHttpRequest.get("/indexes");
     }
 
     /**
-     * Updates the primary key of an index in the MeiliSearch instance
+     * Updates the primary key of an index in the Meilisearch instance
      *
      * @param uid Unique identifier of the index to update
      * @param primaryKey New primary key field to use for documents in that index
-     * @return MeiliSearch API response
-     * @throws Exception if something goes wrong
+     * @return Meilisearch API response
+     * @throws Exception if an error occurs
      */
     String updatePrimaryKey(String uid, String primaryKey) throws Exception {
         JsonObject jsonObject = new JsonObject();
@@ -84,33 +84,14 @@ class IndexesHandler {
     }
 
     /**
-     * Deletes an index in the MeiliSearch instance
+     * Deletes an index in the Meilisearch instance
      *
      * @param uid Unique identifier of the index to delete
-     * @return MeiliSearch API response
-     * @throws Exception if something goes wrong
+     * @return Meilisearch API response
+     * @throws Exception if an error occurs
      */
     String delete(String uid) throws Exception {
         String requestQuery = "/indexes/" + uid;
         return meilisearchHttpRequest.delete(requestQuery);
-    }
-
-    /**
-     * Deletes an index if exists in the MeiliSearch instance
-     *
-     * @param uid Unique identifier of the index to delete
-     * @return true if the index could be deleted otherwise false
-     * @throws Exception if something goes wrong
-     */
-    boolean deleteIfExists(String uid) throws Exception {
-        try {
-            delete(uid);
-            return true;
-        } catch (MeiliSearchApiException exception) {
-            if (exception.getErrorCode().equals("index_not_found")) {
-                return false;
-            }
-            throw exception;
-        }
     }
 }
