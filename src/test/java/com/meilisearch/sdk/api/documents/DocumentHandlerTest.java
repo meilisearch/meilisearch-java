@@ -77,7 +77,7 @@ class DocumentHandlerTest {
     @Test
     void addAndReplaceDocument() throws Exception {
         when(client.post(any(HttpRequest.class)))
-                .thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"updateId\":1}"));
+                .thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"uid\":1}"));
         Movie movie =
                 new Movie(
                         "287947",
@@ -89,27 +89,27 @@ class DocumentHandlerTest {
                         "Action",
                         "Comedy",
                         "Fantasy");
-        Update update = classToTest.replaceDocuments(Collections.singletonList(movie));
-        assertNotNull(update);
-        assertEquals(1, update.getUpdateId());
+        Task task = classToTest.replaceDocuments(Collections.singletonList(movie));
+        assertNotNull(task);
+        assertEquals(1, task.getUid());
     }
 
     @Test
     void addAndUpdateDocument() throws Exception {
         when(client.put(any(HttpRequest.class)))
-                .thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"updateId\":1}"));
-        Update update =
+                .thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"uid\":1}"));
+        Task task =
                 classToTest.updateDocuments(
                         "[{\"id\":287947,\"title\":\"Shazam\",\"poster\":\"https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg\",\"overview\":\"A boy is given the ability to become an adult superhero in times of need with a single magic word.\",\"release_date\":\"2019-03-23\"}]");
-        assertNotNull(update);
-        assertEquals(1, update.getUpdateId());
+        assertNotNull(task);
+        assertEquals(1, task.getUid());
     }
 
     @Test
     void deleteDocument() throws Exception {
         when(client.delete(any(HttpRequest.class)))
-                .thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"updateId\": 1}"));
-        assertEquals(1, classToTest.deleteDocument("123").getUpdateId());
+                .thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"uid\": 1}"));
+        assertEquals(1, classToTest.deleteDocument("123").getUid());
         when(client.delete(any(HttpRequest.class)))
                 .thenAnswer(invocation -> new BasicHttpResponse(null, 200, null));
         assertThrows(MeiliSearchRuntimeException.class, () -> classToTest.deleteDocument("123"));
@@ -121,8 +121,8 @@ class DocumentHandlerTest {
     @Test
     void deleteDocuments() throws Exception {
         when(client.delete(any(HttpRequest.class)))
-                .thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"updateId\": 1}"));
-        assertEquals(1, classToTest.deleteDocuments().getUpdateId());
+                .thenAnswer(invocation -> new BasicHttpResponse(null, 200, "{\"uid\": 1}"));
+        assertEquals(1, classToTest.deleteDocuments().getUid());
     }
 
     @Test
@@ -169,44 +169,48 @@ class DocumentHandlerTest {
     }
 
     @Test
-    void getUpdate() throws Exception {
+    void getTask() throws Exception {
         when(client.get(any(HttpRequest.class)))
                 .thenAnswer(
                         invocation ->
                                 new BasicHttpResponse(
                                         null,
                                         200,
-                                        "{\"status\":\"processed\",\"updateId\":1,\"type\":{\"name\":\"DocumentsAddition\",\"number\":4},\"duration\":0.076980613,\"enqueuedAt\":\"2019-12-07T21:16:09.623944Z\",\"processedAt\":\"2019-12-07T21:16:09.703509Z\"}"));
-        Update update = classToTest.getUpdate(1);
-        assertNotNull(update);
-        assertEquals("processed", update.getStatus());
-        assertEquals(1, update.getUpdateId());
-        assertEquals("DocumentsAddition", update.getType().getName());
-        assertEquals(4, update.getType().getNumber());
-        assertEquals(0.076980613, update.getDuration());
-        assertEquals("2019-12-07T21:16:09.623944Z", update.getEnqueuedAt());
-        assertEquals("2019-12-07T21:16:09.703509Z", update.getProcessedAt());
+                                        "{\"status\":\"succeeded\",\"uid\": 1,\"indexUid\":\"AddDocuments\",\"type\":\"documentAddition\",\"duration\":\"PT0.021985708S\",\"enqueuedAt\":\"2022-01-11T13:54:18.408270424Z\",\"startedAt\":\"2022-01-11T13:54:18.411897715Z\",\"finishedAt\":\"2022-01-11T13:54:18.430256132Z\"}"));
+        Task task = classToTest.getTask(1);
+        assertNotNull(task);
+        assertEquals("succeeded", task.getStatus());
+        assertEquals(1, task.getUid());
+        assertEquals("documentAddition", task.getType());
+        assertEquals("PT0.021985708S", task.getDuration());
+        assertEquals("2022-01-11T13:54:18.408270424Z", task.getEnqueuedAt());
+        assertEquals("2022-01-11T13:54:18.411897715Z", task.getStartedAt());
+        assertEquals("2022-01-11T13:54:18.430256132Z", task.getFinishedAt());
     }
 
-    @Test
-    void getUpdates() throws Exception {
-        when(client.get(any(HttpRequest.class)))
-                .thenAnswer(
-                        invocation ->
-                                new BasicHttpResponse(
-                                        null,
-                                        200,
-                                        "[{\"status\":\"processed\",\"updateId\":1,\"type\":{\"name\":\"DocumentsAddition\",\"number\":4},\"duration\":0.076980613,\"enqueuedAt\":\"2019-12-07T21:16:09.623944Z\",\"processedAt\":\"2019-12-07T21:16:09.703509Z\"}]"));
-        List<Update> updates = classToTest.getUpdates();
-        assertNotNull(updates);
-        assertEquals(1, updates.size());
-        Update update = updates.get(0);
-        assertEquals("processed", update.getStatus());
-        assertEquals(1, update.getUpdateId());
-        assertEquals("DocumentsAddition", update.getType().getName());
-        assertEquals(4, update.getType().getNumber());
-        assertEquals(0.076980613, update.getDuration());
-        assertEquals("2019-12-07T21:16:09.623944Z", update.getEnqueuedAt());
-        assertEquals("2019-12-07T21:16:09.703509Z", update.getProcessedAt());
-    }
+    // Must be reviewed when resolving the issue #315
+    // @Test
+    // void getTasks() throws Exception {
+    //     when(client.get(any(HttpRequest.class)))
+    //             .thenAnswer(
+    //                     invocation ->
+    //                             new BasicHttpResponse(
+    //                                     null,
+    //                                     200,
+    //                                     "\"results\":[{\"status\":\"succeeded\",\"uid\":
+    // 1,\"indexUid\":\"AddDocuments\",\"type\":\"documentAddition\",\"duration\":\"PT0.021985708S\",\"enqueuedAt\":\"2022-01-11T13:54:18.408270424Z\",\"startedAt\":\"2022-01-11T13:54:18.411897715Z\",\"finishedAt\":\"2022-01-11T13:54:18.430256132Z\"}]"));
+    //     //
+    // "[{\"status\":\"processed\",\"uid\":1,\"type\":{\"name\":\"DocumentsAddition\",\"number\":4},\"duration\":0.076980613,\"enqueuedAt\":\"2019-12-07T21:16:09.623944Z\",\"processedAt\":\"2019-12-07T21:16:09.703509Z\"}]"));
+    //     List<Task> tasks = classToTest.getTasks();
+    //     assertNotNull(tasks);
+    //     assertEquals(1, tasks.size());
+    //     Task task = tasks.get(0);
+    //     assertEquals("succeeded", task.getStatus());
+    //     assertEquals(1, task.getUid());
+    //     assertEquals("DocumentsAddition", task.getType());
+    //     assertEquals(0.076980613, task.getDuration());
+    //     assertEquals("2019-12-07T21:16:09.623944Z", task.getEnqueuedAt());
+    //     assertEquals("2022-01-11T13:54:18.411897715Z", task.getStartedAt());
+    //     assertEquals("2022-01-11T13:54:18.430256132Z", task.getFinishedAt());
+    // }
 }

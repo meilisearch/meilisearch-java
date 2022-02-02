@@ -1,8 +1,7 @@
 package com.meilisearch.sdk.api.index;
 
 import com.meilisearch.sdk.ServiceTemplate;
-import com.meilisearch.sdk.UpdateStatus;
-import com.meilisearch.sdk.api.documents.Update;
+import com.meilisearch.sdk.api.documents.Task;
 import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
 import com.meilisearch.sdk.http.factory.RequestFactory;
 import com.meilisearch.sdk.http.request.HttpMethod;
@@ -39,15 +38,15 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param settings the data that contains the new settings
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update updateSettings(String uid, Settings settings) throws MeiliSearchRuntimeException {
+    public Task updateSettings(String uid, Settings settings) throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings";
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.POST, requestQuery, Collections.emptyMap(), settings),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -55,15 +54,15 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/references/settings.html#reset-settings
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update resetSettings(String uid) throws MeiliSearchRuntimeException {
+    public Task resetSettings(String uid) throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings";
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -87,10 +86,10 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param rankingRulesSettings the data that contains the new ranking rules settings
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update updateRankingRulesSettings(String uid, String[] rankingRulesSettings)
+    public Task updateRankingRulesSettings(String uid, String[] rankingRulesSettings)
             throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings/ranking-rules";
         return serviceTemplate.execute(
@@ -99,7 +98,7 @@ public class SettingsHandler {
                         requestQuery,
                         Collections.emptyMap(),
                         rankingRulesSettings),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -107,15 +106,15 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/references/settings.html#reset-settings
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update resetRankingRulesSettings(String uid) throws MeiliSearchRuntimeException {
+    public Task resetRankingRulesSettings(String uid) throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings/ranking-rules";
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -139,16 +138,16 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param synonyms a Map that contains the new synonyms settings
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update updateSynonymsSettings(String uid, Map<String, String[]> synonyms)
+    public Task updateSynonymsSettings(String uid, Map<String, String[]> synonyms)
             throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings/synonyms";
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.POST, requestQuery, Collections.emptyMap(), synonyms),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -156,15 +155,15 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/synonyms.html#reset-synonyms
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update resetSynonymsSettings(String uid) throws MeiliSearchRuntimeException {
+    public Task resetSynonymsSettings(String uid) throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings/synonyms";
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -188,16 +187,16 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param stopWords the data that contains the new ranking rules settings
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update updateStopWordsSettings(String uid, String[] stopWords)
+    public Task updateStopWordsSettings(String uid, String[] stopWords)
             throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings/stop-words";
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.POST, requestQuery, Collections.emptyMap(), stopWords),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -205,15 +204,15 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/stop_words.html#reset-stop-words
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update resetStopWordsSettings(String uid) throws MeiliSearchRuntimeException {
+    public Task resetStopWordsSettings(String uid) throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings/stop-words";
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -237,10 +236,10 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param searchableAttributes the data that contains the new ranking rules settings
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update updateSearchableAttributesSettings(String uid, String[] searchableAttributes)
+    public Task updateSearchableAttributesSettings(String uid, String[] searchableAttributes)
             throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings/searchable-attributes";
         return serviceTemplate.execute(
@@ -249,7 +248,7 @@ public class SettingsHandler {
                         requestQuery,
                         Collections.emptyMap(),
                         searchableAttributes),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -257,15 +256,15 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/searchable_attributes.html#reset-searchable-attributes
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update resetSearchableAttributesSettings(String uid) throws MeiliSearchRuntimeException {
+    public Task resetSearchableAttributesSettings(String uid) throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings/searchable-attributes";
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -289,16 +288,16 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param displayAttributes An array of strings that contains attributes of an index to display
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update updateDisplayedAttributesSettings(String uid, String[] displayAttributes)
+    public Task updateDisplayedAttributesSettings(String uid, String[] displayAttributes)
             throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings/displayed-attributes";
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.POST, requestQuery, Collections.emptyMap(), displayAttributes),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -306,15 +305,15 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/displayed_attributes.html#reset-displayed-attributes
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update resetDisplayedAttributesSettings(String uid) throws MeiliSearchRuntimeException {
+    public Task resetDisplayedAttributesSettings(String uid) throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings/displayed-attributes";
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -333,16 +332,16 @@ public class SettingsHandler {
     }
 
     /**
-     * Update an index's filterable attributes list. This will re-index all documents in the index.
+     * Updates an index's filterable attributes list. This will re-index all documents in the index.
      * https://docs.meilisearch.com/reference/api/filterable_attributes.html#update-filterable-attributes
      *
      * @param uid Index identifier
      * @param filterableAttributes An array of strings containing the attributes that can be used as
      *     filters at query time.
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update updateFilterableAttributesSettings(String uid, String[] filterableAttributes)
+    public Task updateFilterableAttributesSettings(String uid, String[] filterableAttributes)
             throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings/filterable-attributes";
         return serviceTemplate.execute(
@@ -351,7 +350,7 @@ public class SettingsHandler {
                         requestQuery,
                         Collections.emptyMap(),
                         filterableAttributes),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -359,15 +358,15 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/filterable_attributes.html#reset-filterable-attributes
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws MeiliSearchRuntimeException if something goes wrong
      */
-    public Update resetFilterableAttributesSettings(String uid) throws MeiliSearchRuntimeException {
+    public Task resetFilterableAttributesSettings(String uid) throws MeiliSearchRuntimeException {
         String requestQuery = "/indexes/" + uid + "/settings/filterable-attributes";
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -386,21 +385,21 @@ public class SettingsHandler {
     }
 
     /**
-     * Update the distinct attribute field of an index.
+     * Updates the distinct attribute field of an index.
      * https://docs.meilisearch.com/reference/api/distinct_attribute.html#update-distinct-attribute
      *
      * @param uid Index identifier
      * @param distinctAttribute A String: the field name.
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws Exception if something goes wrong
      */
-    public UpdateStatus updateDistinctAttributeSettings(String uid, String distinctAttribute)
+    public Task updateDistinctAttributeSettings(String uid, String distinctAttribute)
             throws Exception {
         String requestQuery = "/indexes/" + uid + "/settings/distinct-attribute";
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.POST, requestQuery, Collections.emptyMap(), distinctAttribute),
-                Update.class);
+                Task.class);
     }
 
     /**
@@ -408,14 +407,14 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/distinct_attribute.html#reset-distinct-attribute
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
+     * @return uid is the id of the task
      * @throws Exception if something goes wrong
      */
-    public UpdateStatus resetDistinctAttributeSettings(String uid) throws Exception {
+    public Task resetDistinctAttributeSettings(String uid) throws Exception {
         String requestQuery = "/indexes/" + uid + "/settings/distinct-attribute";
         return serviceTemplate.execute(
                 requestFactory.create(
                         HttpMethod.DELETE, requestQuery, Collections.emptyMap(), null),
-                Update.class);
+                Task.class);
     }
 }

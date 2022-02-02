@@ -10,7 +10,7 @@ import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.Settings;
-import com.meilisearch.sdk.UpdateStatus;
+import com.meilisearch.sdk.Task;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Arrays;
@@ -64,7 +64,7 @@ public class SettingsTest extends AbstractIT {
                     "release_date:desc",
                     "rank:desc"
                 });
-        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+        index.waitForTask(index.updateSettings(settings).getUid());
         Settings newSettings = index.getSettings();
         assertEquals(8, newSettings.getRankingRules().length);
     }
@@ -80,7 +80,7 @@ public class SettingsTest extends AbstractIT {
         synonyms.put("logan", new String[] {"wolverine"});
         settings.setSynonyms(synonyms);
 
-        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+        index.waitForTask(index.updateSettings(settings).getUid());
 
         Settings newSettings = index.getSettings();
 
@@ -94,7 +94,7 @@ public class SettingsTest extends AbstractIT {
         Settings settings = index.getSettings();
         settings.setSortableAttributes(new String[] {"title", "year"});
 
-        index.waitForPendingUpdate(index.updateSettings(settings).getUpdateId());
+        index.waitForTask(index.updateSettings(settings).getUid());
 
         Settings newSettings = index.getSettings();
 
@@ -113,11 +113,11 @@ public class SettingsTest extends AbstractIT {
         synonyms.put("logan", new String[] {"wolverine"});
         settingsWithSynonyms.setSynonyms(synonyms);
 
-        index.waitForPendingUpdate(index.updateSettings(settingsWithSynonyms).getUpdateId());
+        index.waitForTask(index.updateSettings(settingsWithSynonyms).getUid());
         settingsWithSynonyms = index.getSettings();
         assertEquals(2, settingsWithSynonyms.getSynonyms().size());
 
-        index.waitForPendingUpdate(index.resetSettings().getUpdateId());
+        index.waitForTask(index.resetSettings().getUid());
         Settings settingsAfterReset = index.getSettings();
         assertEquals(initialSettings.getSynonyms().size(), settingsAfterReset.getSynonyms().size());
     }
@@ -149,7 +149,7 @@ public class SettingsTest extends AbstractIT {
             "rank:desc"
         };
 
-        index.waitForPendingUpdate(index.updateRankingRuleSettings(newRankingRules).getUpdateId());
+        index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getUid());
         String[] updatedRankingRuleSettings = index.getRankingRuleSettings();
 
         assertEquals(newRankingRules.length, updatedRankingRuleSettings.length);
@@ -173,14 +173,14 @@ public class SettingsTest extends AbstractIT {
             "rank:desc"
         };
 
-        index.waitForPendingUpdate(index.updateRankingRuleSettings(newRankingRules).getUpdateId());
+        index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getUid());
         String[] updatedRankingRuleSettings = index.getRankingRuleSettings();
 
         assertEquals(newRankingRules.length, updatedRankingRuleSettings.length);
         assertArrayEquals(newRankingRules, updatedRankingRuleSettings);
         assertNotEquals(initialRuleSettings.length, updatedRankingRuleSettings.length);
 
-        index.waitForPendingUpdate(index.resetRankingRuleSettings().getUpdateId());
+        index.waitForTask(index.resetRankingRuleSettings().getUid());
         String[] rankingRulesAfterReset = index.getRankingRuleSettings();
 
         assertNotEquals(updatedRankingRuleSettings.length, rankingRulesAfterReset.length);
@@ -209,7 +209,7 @@ public class SettingsTest extends AbstractIT {
         newSynonymsSettings.put("logan", new String[] {"wolverine", "xmen"});
         newSynonymsSettings.put("wow", new String[] {"world of warcraft"});
 
-        index.waitForPendingUpdate(index.updateSynonymsSettings(newSynonymsSettings).getUpdateId());
+        index.waitForTask(index.updateSynonymsSettings(newSynonymsSettings).getUid());
         Map<String, String[]> updatedRankingRuleSettings = index.getSynonymsSettings();
 
         assertEquals(newSynonymsSettings.size(), updatedRankingRuleSettings.size());
@@ -228,7 +228,7 @@ public class SettingsTest extends AbstractIT {
         newSynonymsSettings.put("logan", new String[] {"wolverine", "xmen"});
         newSynonymsSettings.put("wow", new String[] {"world of warcraft"});
 
-        index.waitForPendingUpdate(index.updateSynonymsSettings(newSynonymsSettings).getUpdateId());
+        index.waitForTask(index.updateSynonymsSettings(newSynonymsSettings).getUid());
         Map<String, String[]> updatedRankingRuleSettings = index.getSynonymsSettings();
 
         assertEquals(newSynonymsSettings.size(), updatedRankingRuleSettings.size());
@@ -236,7 +236,7 @@ public class SettingsTest extends AbstractIT {
         assertNotEquals(synonymsSettings.size(), updatedRankingRuleSettings.size());
         assertNotEquals(synonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
 
-        index.waitForPendingUpdate(index.resetSynonymsSettings().getUpdateId());
+        index.waitForTask(index.resetSynonymsSettings().getUid());
         Map<String, String[]> synonymsSettingsAfterReset = index.getSynonymsSettings();
 
         assertNotEquals(updatedRankingRuleSettings.size(), synonymsSettingsAfterReset.size());
@@ -262,7 +262,7 @@ public class SettingsTest extends AbstractIT {
         String[] initialStopWords = index.getStopWordsSettings();
         String[] newStopWords = {"of", "the", "to"};
 
-        index.waitForPendingUpdate(index.updateStopWordsSettings(newStopWords).getUpdateId());
+        index.waitForTask(index.updateStopWordsSettings(newStopWords).getUid());
         String[] updatedStopWordsSettings = index.getStopWordsSettings();
 
         assertEquals(newStopWords.length, updatedStopWordsSettings.length);
@@ -277,14 +277,14 @@ public class SettingsTest extends AbstractIT {
         String[] initialStopWords = index.getStopWordsSettings();
         String[] newStopWords = {"of", "the", "to"};
 
-        index.waitForPendingUpdate(index.updateStopWordsSettings(newStopWords).getUpdateId());
+        index.waitForTask(index.updateStopWordsSettings(newStopWords).getUid());
         String[] updatedStopWordsSettings = index.getStopWordsSettings();
 
         assertEquals(newStopWords.length, updatedStopWordsSettings.length);
         assertArrayEquals(newStopWords, updatedStopWordsSettings);
         assertNotEquals(initialStopWords.length, updatedStopWordsSettings.length);
 
-        index.waitForPendingUpdate(index.resetStopWordsSettings().getUpdateId());
+        index.waitForTask(index.resetStopWordsSettings().getUid());
         String[] stopWordsAfterReset = index.getStopWordsSettings();
 
         assertNotEquals(updatedStopWordsSettings.length, stopWordsAfterReset.length);
@@ -312,8 +312,8 @@ public class SettingsTest extends AbstractIT {
         String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
         String[] newSearchableAttributes = {"title", "description", "genre"};
 
-        index.waitForPendingUpdate(
-                index.updateSearchableAttributesSettings(newSearchableAttributes).getUpdateId());
+        index.waitForTask(
+                index.updateSearchableAttributesSettings(newSearchableAttributes).getUid());
         String[] updatedSearchableAttributes = index.getSearchableAttributesSettings();
 
         assertEquals(newSearchableAttributes.length, updatedSearchableAttributes.length);
@@ -328,15 +328,15 @@ public class SettingsTest extends AbstractIT {
         String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
         String[] newSearchableAttributes = {"title", "description", "genre"};
 
-        index.waitForPendingUpdate(
-                index.updateSearchableAttributesSettings(newSearchableAttributes).getUpdateId());
+        index.waitForTask(
+                index.updateSearchableAttributesSettings(newSearchableAttributes).getUid());
         String[] updatedSearchableAttributes = index.getSearchableAttributesSettings();
 
         assertEquals(newSearchableAttributes.length, updatedSearchableAttributes.length);
         assertArrayEquals(newSearchableAttributes, updatedSearchableAttributes);
         assertNotEquals(initialSearchableAttributes.length, updatedSearchableAttributes.length);
 
-        index.waitForPendingUpdate(index.resetSearchableAttributesSettings().getUpdateId());
+        index.waitForTask(index.resetSearchableAttributesSettings().getUid());
         String[] searchableAttributesAfterReset = index.getSearchableAttributesSettings();
 
         assertNotEquals(updatedSearchableAttributes.length, searchableAttributesAfterReset.length);
@@ -364,8 +364,7 @@ public class SettingsTest extends AbstractIT {
         String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
         String[] newDisplayedAttributes = {"title", "description", "genre", "release_date"};
 
-        index.waitForPendingUpdate(
-                index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUpdateId());
+        index.waitForTask(index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUid());
         String[] updatedDisplayedAttributes = index.getDisplayedAttributesSettings();
 
         assertEquals(newDisplayedAttributes.length, updatedDisplayedAttributes.length);
@@ -380,15 +379,14 @@ public class SettingsTest extends AbstractIT {
         String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
         String[] newDisplayedAttributes = {"title", "description", "genre", "release_date", "cast"};
 
-        index.waitForPendingUpdate(
-                index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUpdateId());
+        index.waitForTask(index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUid());
         String[] updatedDisplayedAttributes = index.getDisplayedAttributesSettings();
 
         assertEquals(newDisplayedAttributes.length, updatedDisplayedAttributes.length);
         assertArrayEquals(newDisplayedAttributes, updatedDisplayedAttributes);
         assertNotEquals(initialDisplayedAttributes.length, updatedDisplayedAttributes.length);
 
-        index.waitForPendingUpdate(index.resetDisplayedAttributesSettings().getUpdateId());
+        index.waitForTask(index.resetDisplayedAttributesSettings().getUid());
         String[] displayedAttributesAfterReset = index.getDisplayedAttributesSettings();
 
         assertNotEquals(updatedDisplayedAttributes.length, displayedAttributesAfterReset.length);
@@ -414,8 +412,8 @@ public class SettingsTest extends AbstractIT {
         String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
         String[] newFilterableAttributes = {"title", "description", "genre", "release_date"};
 
-        index.waitForPendingUpdate(
-                index.updateFilterableAttributesSettings(newFilterableAttributes).getUpdateId());
+        index.waitForTask(
+                index.updateFilterableAttributesSettings(newFilterableAttributes).getUid());
         String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
 
         assertEquals(newFilterableAttributes.length, updatedFilterableAttributes.length);
@@ -434,8 +432,8 @@ public class SettingsTest extends AbstractIT {
             "title", "description", "genres", "director", "release_date"
         };
 
-        index.waitForPendingUpdate(
-                index.updateFilterableAttributesSettings(newFilterableAttributes).getUpdateId());
+        index.waitForTask(
+                index.updateFilterableAttributesSettings(newFilterableAttributes).getUid());
         String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
 
         assertEquals(newFilterableAttributes.length, updatedFilterableAttributes.length);
@@ -444,7 +442,7 @@ public class SettingsTest extends AbstractIT {
                 containsInAnyOrder(updatedFilterableAttributes));
         assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
 
-        index.waitForPendingUpdate(index.resetFilterableAttributesSettings().getUpdateId());
+        index.waitForTask(index.resetFilterableAttributesSettings().getUid());
         String[] filterableAttributesAfterReset = index.getFilterableAttributesSettings();
 
         assertNotEquals(updatedFilterableAttributes.length, filterableAttributesAfterReset.length);
@@ -468,8 +466,7 @@ public class SettingsTest extends AbstractIT {
         String initialDistinctAttribute = index.getDistinctAttributeSettings();
         String newDistinctAttribute = "title";
 
-        index.waitForPendingUpdate(
-                index.updateDistinctAttributeSettings(newDistinctAttribute).getUpdateId());
+        index.waitForTask(index.updateDistinctAttributeSettings(newDistinctAttribute).getUid());
         String updatedDistinctAttribute = index.getDistinctAttributeSettings();
 
         assertEquals(newDistinctAttribute, updatedDistinctAttribute);
@@ -483,14 +480,13 @@ public class SettingsTest extends AbstractIT {
         String initialDistinctAttribute = index.getDistinctAttributeSettings();
         String newDistinctAttribute = "title";
 
-        index.waitForPendingUpdate(
-                index.updateDistinctAttributeSettings(newDistinctAttribute).getUpdateId());
+        index.waitForTask(index.updateDistinctAttributeSettings(newDistinctAttribute).getUid());
         String updatedDistinctAttribute = index.getDistinctAttributeSettings();
 
         assertEquals(newDistinctAttribute, updatedDistinctAttribute);
         assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
 
-        index.waitForPendingUpdate(index.resetDistinctAttributeSettings().getUpdateId());
+        index.waitForTask(index.resetDistinctAttributeSettings().getUid());
         String distinctAttributeAfterReset = index.getDistinctAttributeSettings();
 
         assertNotEquals(updatedDistinctAttribute, distinctAttributeAfterReset);
@@ -513,10 +509,10 @@ public class SettingsTest extends AbstractIT {
             "rank:desc"
         };
 
-        index.waitForPendingUpdate(index.updateRankingRuleSettings(newRankingRules).getUpdateId());
+        index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getUid());
         String[] newRankingRule = index.getRankingRuleSettings();
 
-        index.waitForPendingUpdate(index.updateRankingRuleSettings(null).getUpdateId());
+        index.waitForTask(index.updateRankingRuleSettings(null).getUid());
         String[] resetRankingRule = index.getRankingRuleSettings();
 
         assertNotEquals(newRankingRule.length, resetRankingRule.length);
@@ -533,10 +529,10 @@ public class SettingsTest extends AbstractIT {
         newSynonymsSettings.put("007", new String[] {"james bond", "bond"});
         newSynonymsSettings.put("ironman", new String[] {"tony stark", "iron man"});
 
-        index.waitForPendingUpdate(index.updateSynonymsSettings(newSynonymsSettings).getUpdateId());
+        index.waitForTask(index.updateSynonymsSettings(newSynonymsSettings).getUid());
         Map<String, String[]> updatedSynonymsSettings = index.getSynonymsSettings();
 
-        index.waitForPendingUpdate(index.updateSynonymsSettings(null).getUpdateId());
+        index.waitForTask(index.updateSynonymsSettings(null).getUid());
         Map<String, String[]> resetSynonymsSettings = index.getSynonymsSettings();
 
         assertNotEquals(initialSynonymsSettings.size(), updatedSynonymsSettings.size());
@@ -552,10 +548,10 @@ public class SettingsTest extends AbstractIT {
         String[] initialStopWords = index.getStopWordsSettings();
         String[] newStopWords = {"the", "to", "in", "on"};
 
-        index.waitForPendingUpdate(index.updateStopWordsSettings(newStopWords).getUpdateId());
+        index.waitForTask(index.updateStopWordsSettings(newStopWords).getUid());
         String[] updatedStopWords = index.getStopWordsSettings();
 
-        index.waitForPendingUpdate(index.updateStopWordsSettings(null).getUpdateId());
+        index.waitForTask(index.updateStopWordsSettings(null).getUid());
         String[] resetStopWords = index.getStopWordsSettings();
 
         assertNotEquals(initialStopWords.length, updatedStopWords.length);
@@ -571,11 +567,11 @@ public class SettingsTest extends AbstractIT {
         String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
         String[] newSearchableAttributes = {"title", "release_date", "cast"};
 
-        index.waitForPendingUpdate(
-                index.updateSearchableAttributesSettings(newSearchableAttributes).getUpdateId());
+        index.waitForTask(
+                index.updateSearchableAttributesSettings(newSearchableAttributes).getUid());
 
         String[] updatedSearchableAttributes = index.getSearchableAttributesSettings();
-        index.waitForPendingUpdate(index.updateSearchableAttributesSettings(null).getUpdateId());
+        index.waitForTask(index.updateSearchableAttributesSettings(null).getUid());
         String[] resetSearchableAttributes = index.getSearchableAttributesSettings();
 
         assertNotEquals(initialSearchableAttributes.length, updatedSearchableAttributes.length);
@@ -591,11 +587,10 @@ public class SettingsTest extends AbstractIT {
         String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
         String[] newDisplayedAttributes = {"title", "genre", "release_date"};
 
-        index.waitForPendingUpdate(
-                index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUpdateId());
+        index.waitForTask(index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUid());
         String[] updatedDisplayedAttributes = index.getDisplayedAttributesSettings();
 
-        index.waitForPendingUpdate(index.updateDisplayedAttributesSettings(null).getUpdateId());
+        index.waitForTask(index.updateDisplayedAttributesSettings(null).getUid());
         String[] resetDisplayedAttributes = index.getDisplayedAttributesSettings();
 
         assertNotEquals(initialDisplayedAttributes.length, updatedDisplayedAttributes.length);
@@ -611,11 +606,11 @@ public class SettingsTest extends AbstractIT {
         String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
         String[] newFilterableAttributes = {"title", "genres", "cast", "release_date"};
 
-        index.waitForPendingUpdate(
-                index.updateFilterableAttributesSettings(newFilterableAttributes).getUpdateId());
+        index.waitForTask(
+                index.updateFilterableAttributesSettings(newFilterableAttributes).getUid());
         String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
 
-        index.waitForPendingUpdate(index.updateFilterableAttributesSettings(null).getUpdateId());
+        index.waitForTask(index.updateFilterableAttributesSettings(null).getUid());
         String[] resetFilterableAttributes = index.getFilterableAttributesSettings();
 
         assertNotEquals(updatedFilterableAttributes.length, resetFilterableAttributes.length);
@@ -631,11 +626,10 @@ public class SettingsTest extends AbstractIT {
         String initialDistinctAttribute = index.getDistinctAttributeSettings();
         String newDistinctAttribute = "genres";
 
-        index.waitForPendingUpdate(
-                index.updateDistinctAttributeSettings(newDistinctAttribute).getUpdateId());
+        index.waitForTask(index.updateDistinctAttributeSettings(newDistinctAttribute).getUid());
         String updatedDistinctAttribute = index.getDistinctAttributeSettings();
 
-        index.waitForPendingUpdate(index.updateDistinctAttributeSettings(null).getUpdateId());
+        index.waitForTask(index.updateDistinctAttributeSettings(null).getUid());
         String resetDistinctAttribute = index.getDistinctAttributeSettings();
 
         assertNotEquals(updatedDistinctAttribute, resetDistinctAttribute);
@@ -645,9 +639,8 @@ public class SettingsTest extends AbstractIT {
 
     private Index createIndex(String indexUid) throws Exception {
         Index index = client.index(indexUid);
-        UpdateStatus updateInfo =
-                jsonGson.decode(index.addDocuments(testData.getRaw()), UpdateStatus.class);
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        Task updateInfo = index.addDocuments(testData.getRaw());
+        index.waitForTask(updateInfo.getUid());
 
         return index;
     }
