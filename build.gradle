@@ -37,22 +37,22 @@ dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
 	implementation 'com.google.guava:guava:31.0.1-jre'
 	implementation 'com.google.code.gson:gson:2.8.9'
-	implementation 'org.json:json:20210307'
+	implementation 'org.json:json:20211205'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
 	compileOnly group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.1.2'
-	compileOnly 'com.squareup.okhttp3:okhttp:4.9.2'
+	compileOnly 'com.squareup.okhttp3:okhttp:4.9.3'
 
 	// Use JUnit test framework
-	testImplementation(platform('org.junit:junit-bom:5.8.1'))
-	testImplementation('org.junit.jupiter:junit-jupiter:5.8.1')
+	testImplementation(platform('org.junit:junit-bom:5.8.2'))
+	testImplementation('org.junit.jupiter:junit-jupiter:5.8.2')
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:4.3.1'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.0'
+	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.1'
 	compileOnly group: 'jakarta.json.bind', name: 'jakarta.json.bind-api', version: '2.0.0'
-	testImplementation group: 'org.eclipse', name: 'yasson', version: '2.0.2'
+	testImplementation group: 'org.eclipse', name: 'yasson', version: '2.0.4'
 
 	// Lombok
 	compileOnly 'org.projectlombok:lombok:1.18.22'
@@ -106,7 +106,7 @@ publishing {
 				name = 'com.meilisearch.sdk:meilisearch-java'
 				packaging = 'jar'
 				artifactId = 'meilisearch-java'
-				description = 'MeiliSearch is a powerful, fast, open-source, easy to use and deploy search engine.'
+				description = 'Meilisearch is a powerful, fast, open-source, easy to use and deploy search engine.'
 				url = 'https://github.com/meilisearch/meilisearch-java'
 				scm {
 					connection = 'scm:git:git://github.com/meilisearch/meilisearch-java.git'

@@ -13,9 +13,9 @@ public class SettingsHandler {
     private final Gson gson = new Gson();
 
     /**
-     * Constructor for the MeiliSearch Settings object
+     * Constructor for the Meilisearch Settings object
      *
-     * @param config MeiliSearch configuration
+     * @param config Meilisearch configuration
      */
     public SettingsHandler(Config config) {
         meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
@@ -27,7 +27,7 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return settings of a given uid as String
-     * @throws Exception if something goes wrong
+     * @throws Exception if an error occurs
      */
     public Settings getSettings(String uid) throws Exception {
         return this.gson.fromJson(
@@ -40,14 +40,14 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param settings the data that contains the new settings
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus updateSettings(String uid, Settings settings) throws Exception {
+    public Task updateSettings(String uid, Settings settings) throws Exception {
         return this.gson.fromJson(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings", settings.getUpdateQuery()),
-                UpdateStatus.class);
+                Task.class);
     }
 
     /**
@@ -55,12 +55,12 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/settings.html#reset-settings
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus resetSettings(String uid) throws Exception {
+    public Task resetSettings(String uid) throws Exception {
         return this.gson.fromJson(
-                meilisearchHttpRequest.delete("/indexes/" + uid + "/settings"), UpdateStatus.class);
+                meilisearchHttpRequest.delete("/indexes/" + uid + "/settings"), Task.class);
     }
 
     /**
@@ -69,7 +69,7 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return an array of strings that contains the ranking rules settings
-     * @throws Exception if something goes wrong
+     * @throws Exception if an error occurs
      */
     public String[] getRankingRuleSettings(String uid) throws Exception {
         return this.gson.fromJson(
@@ -83,16 +83,15 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param rankingRules the data that contains the new settings
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus updateRankingRuleSettings(String uid, String[] rankingRules)
-            throws Exception {
+    public Task updateRankingRuleSettings(String uid, String[] rankingRules) throws Exception {
         String rankingRulesAsJson = gson.toJson(rankingRules);
         return this.gson.fromJson(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/ranking-rules", rankingRulesAsJson),
-                UpdateStatus.class);
+                Task.class);
     }
 
     /**
@@ -100,13 +99,13 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/ranking_rules.html#reset-ranking-rules
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus resetRankingRulesSettings(String uid) throws Exception {
+    public Task resetRankingRulesSettings(String uid) throws Exception {
         return this.gson.fromJson(
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/ranking-rules"),
-                UpdateStatus.class);
+                Task.class);
     }
 
     /**
@@ -115,7 +114,7 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return a Map that contains all synonyms and their associated words
-     * @throws Exception if something goes wrong
+     * @throws Exception if an error occurs
      */
     public Map<String, String[]> getSynonymsSettings(String uid) throws Exception {
         return this.gson.<Map<String, String[]>>fromJson(
@@ -128,16 +127,16 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param synonyms a Map that contains the new synonyms settings
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus updateSynonymsSettings(String uid, Map<String, String[]> synonyms)
+    public Task updateSynonymsSettings(String uid, Map<String, String[]> synonyms)
             throws Exception {
         String synonymsAsJson = gson.toJson(synonyms);
         return this.gson.fromJson(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/synonyms", synonymsAsJson),
-                UpdateStatus.class);
+                Task.class);
     }
 
     /**
@@ -145,13 +144,13 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/synonyms.html#reset-synonyms
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus resetSynonymsSettings(String uid) throws Exception {
+    public Task resetSynonymsSettings(String uid) throws Exception {
         return this.gson.fromJson(
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/synonyms"),
-                UpdateStatus.class);
+                Task.class);
     }
 
     /**
@@ -160,7 +159,7 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return an array of strings that contains the stop-words
-     * @throws Exception if something goes wrong
+     * @throws Exception if an error occurs
      */
     public String[] getStopWordsSettings(String uid) throws Exception {
         return this.gson.fromJson(
@@ -174,15 +173,15 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param stopWords an array of strings that contains the new stop-words settings
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus updateStopWordsSettings(String uid, String[] stopWords) throws Exception {
+    public Task updateStopWordsSettings(String uid, String[] stopWords) throws Exception {
         String stopWordsAsJson = gson.toJson(stopWords);
         return this.gson.fromJson(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/stop-words", stopWordsAsJson),
-                UpdateStatus.class);
+                Task.class);
     }
 
     /**
@@ -190,13 +189,13 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/stop_words.html#reset-stop-words
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus resetStopWordsSettings(String uid) throws Exception {
+    public Task resetStopWordsSettings(String uid) throws Exception {
         return this.gson.fromJson(
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/stop-words"),
-                UpdateStatus.class);
+                Task.class);
     }
 
     /**
@@ -205,7 +204,7 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return an array of strings that contains the searchable attributes
-     * @throws Exception if something goes wrong
+     * @throws Exception if an error occurs
      */
     public String[] getSearchableAttributesSettings(String uid) throws Exception {
         return this.gson.fromJson(
@@ -220,17 +219,17 @@ public class SettingsHandler {
      * @param uid Index identifier
      * @param searchableAttributes an array of strings that contains the new searchable attributes
      *     settings
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus updateSearchableAttributesSettings(
-            String uid, String[] searchableAttributes) throws Exception {
+    public Task updateSearchableAttributesSettings(String uid, String[] searchableAttributes)
+            throws Exception {
         String searchableAttributesAsJson = gson.toJson(searchableAttributes);
         return this.gson.fromJson(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/searchable-attributes",
                         searchableAttributesAsJson),
-                UpdateStatus.class);
+                Task.class);
     }
 
     /**
@@ -238,14 +237,14 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/searchable_attributes.html#reset-searchable-attributes
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus resetSearchableAttributesSettings(String uid) throws Exception {
+    public Task resetSearchableAttributesSettings(String uid) throws Exception {
         return this.gson.fromJson(
                 meilisearchHttpRequest.delete(
                         "/indexes/" + uid + "/settings/searchable-attributes"),
-                UpdateStatus.class);
+                Task.class);
     }
 
     /**
@@ -254,7 +253,7 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return an array of strings that contains attributes of an index to display
-     * @throws Exception if something goes wrong
+     * @throws Exception if an error occurs
      */
     public String[] getDisplayedAttributesSettings(String uid) throws Exception {
         return this.gson.fromJson(
@@ -269,17 +268,17 @@ public class SettingsHandler {
      * @param uid Index identifier
      * @param displayAttributes an array of strings that contains the new displayed attributes
      *     settings
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus updateDisplayedAttributesSettings(String uid, String[] displayAttributes)
+    public Task updateDisplayedAttributesSettings(String uid, String[] displayAttributes)
             throws Exception {
         String displayAttributesAsJson = gson.toJson(displayAttributes);
         return this.gson.fromJson(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/displayed-attributes",
                         displayAttributesAsJson),
-                UpdateStatus.class);
+                Task.class);
     }
 
     /**
@@ -287,13 +286,13 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/displayed_attributes.html#reset-displayed-attributes
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus resetDisplayedAttributesSettings(String uid) throws Exception {
+    public Task resetDisplayedAttributesSettings(String uid) throws Exception {
         return this.gson.fromJson(
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/displayed-attributes"),
-                UpdateStatus.class);
+                Task.class);
     }
 
     /**
@@ -302,7 +301,7 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return an array of strings that contains the filterable attributes settings
-     * @throws Exception if something goes wrong
+     * @throws Exception if an error occurs
      */
     public String[] getFilterableAttributesSettings(String uid) throws Exception {
         return this.gson.fromJson(
@@ -317,17 +316,17 @@ public class SettingsHandler {
      * @param uid Index identifier
      * @param filterableAttributes an array of strings that contains the new filterable attributes
      *     settings
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus updateFilterableAttributesSettings(
-            String uid, String[] filterableAttributes) throws Exception {
+    public Task updateFilterableAttributesSettings(String uid, String[] filterableAttributes)
+            throws Exception {
         String filterableAttributesAsJson = gson.toJson(filterableAttributes);
         return this.gson.fromJson(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/filterable-attributes",
                         filterableAttributesAsJson),
-                UpdateStatus.class);
+                Task.class);
     }
 
     /**
@@ -335,14 +334,14 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/filterable_attributes.html#reset-filterable-attributes
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus resetFilterableAttributesSettings(String uid) throws Exception {
+    public Task resetFilterableAttributesSettings(String uid) throws Exception {
         return this.gson.fromJson(
                 meilisearchHttpRequest.delete(
                         "/indexes/" + uid + "/settings/filterable-attributes"),
-                UpdateStatus.class);
+                Task.class);
     }
 
     /**
@@ -351,7 +350,7 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return a string of the distinct attribute field
-     * @throws Exception if something goes wrong
+     * @throws Exception if an error occurs
      */
     public String getDistinctAttributeSettings(String uid) throws Exception {
         return this.gson.fromJson(
@@ -365,17 +364,17 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param distinctAttribute a String that contains the new distinct attributes settings
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus updateDistinctAttributeSettings(String uid, String distinctAttribute)
+    public Task updateDistinctAttributeSettings(String uid, String distinctAttribute)
             throws Exception {
         String distinctAttributeAsJson = gson.toJson(distinctAttribute);
         return this.gson.fromJson(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/distinct-attribute",
                         distinctAttributeAsJson),
-                UpdateStatus.class);
+                Task.class);
     }
 
     /**
@@ -383,12 +382,12 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/distinct_attribute.html#reset-distinct-attribute
      *
      * @param uid Index identifier
-     * @return updateId is the id of the update
-     * @throws Exception if something goes wrong
+     * @return Task instance
+     * @throws Exception if an error occurs
      */
-    public UpdateStatus resetDistinctAttributeSettings(String uid) throws Exception {
+    public Task resetDistinctAttributeSettings(String uid) throws Exception {
         return this.gson.fromJson(
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/distinct-attribute"),
-                UpdateStatus.class);
+                Task.class);
     }
 }
