@@ -40,7 +40,7 @@ dependencies {
 	implementation 'org.json:json:20210307'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
 	compileOnly group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.1.2'
-	compileOnly 'com.squareup.okhttp3:okhttp:4.9.2'
+	compileOnly 'com.squareup.okhttp3:okhttp:4.9.3'
 
 	// Use JUnit test framework
 	testImplementation(platform('org.junit:junit-bom:5.8.1'))
