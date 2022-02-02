@@ -66,15 +66,24 @@ create_a_key_1: |-
   Key keyInfo = new Key();
 
   keyInfo.setDescription("Add documents: Products API key");
-  keyInfo.setIndexes(new String[] {"documents.add"});
   keyInfo.setActions(new String[] {"products"});
+  keyInfo.setIndexes(new String[] {"documents.add"});
   keyInfo.setExpiresAt(dateParsed);
 
   client.createKey(keyInfo);
 update_a_key_1: |-
+  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+  Date dateParsed = format.parse("2042-04-02T00:42:42Z");
+
+  Key keyChanges = new Key();
+
+  keyChanges.setDescription("Manage documents: Products/Reviews API key");
+  keyChanges.setActions(new String[] {"documents.add", "document.delete"});
+  keyChanges.setIndexes(new String[] {"products", "reviews"});
+  keyChanges.setExpiresAt(dateParsed);
+
   client.updateKey(
-    "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4",
-    "{\"description\": \"Manage documents: Products/Reviews API key\", \"actions\": [\"documents.add\", \"documents.delete\"], \"indexes\": [\"products\", \"reviews\"], \"expiresAt\": \"2042-04-02T00:42:42Z\" }");
+    "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4", keyChanges);
 delete_a_key_1: |-
   client.deleteKey("d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4")
 get_settings_1: |-
@@ -505,8 +514,12 @@ security_guide_search_key_1: |-
   client.index("patient_medical_records").search();
 security_guide_update_key_1: |-
   Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
-  client.updateKey("d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4",
-    {\"indexes\": [\"doctors\"]});
+
+  Key keyChanges = new Key();
+  keyChanges.setIndexes(new String[] {"doctors"});
+
+  client.updateKey(
+    "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4", keyChanges);
 security_guide_create_key_1: |-
   Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
 

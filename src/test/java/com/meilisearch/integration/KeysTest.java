@@ -146,8 +146,11 @@ public class KeysTest extends AbstractIT {
         keyInfo.setIndexes(new String[] {"*"});
         keyInfo.setActions(new String[] {"*"});
 
-        String keyChanges =
-                "{\"actions\": [\"search\"], \"indexes\": [\"testUpdateKey\"], \"expiresAt\": \"2042-01-30\" }";
+        Key keyChanges = new Key();
+        keyChanges.setIndexes(new String[] {"testUpdateKey"});
+        keyChanges.setActions(new String[] {"search"});
+        keyChanges.setExpiresAt(dateParsed);
+
         Key createKey = client.createKey(keyInfo);
         Key updateKey = client.updateKey(createKey.getKey(), keyChanges);
 

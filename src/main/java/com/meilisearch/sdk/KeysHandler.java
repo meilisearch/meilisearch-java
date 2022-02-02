@@ -71,9 +71,10 @@ public class KeysHandler {
      * @return Key Instance
      * @throws Exception if client request causes an error
      */
-    public Key updateKey(String key, String options) throws Exception {
+    public Key updateKey(String key, Key options) throws Exception {
         String urlPath = "/keys/" + key;
-        return this.gson.fromJson(this.meilisearchHttpRequest.patch(urlPath, options), Key.class);
+        return this.gson.fromJson(
+                this.meilisearchHttpRequest.patch(urlPath, options.toString()), Key.class);
     }
 
     /**

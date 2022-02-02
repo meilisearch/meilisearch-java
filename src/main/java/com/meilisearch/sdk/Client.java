@@ -241,7 +241,7 @@ public class Client {
      * @return Key Instance
      * @throws Exception if client request causes an error
      */
-    public Key updateKey(String key, String options) throws Exception {
+    public Key updateKey(String key, Key options) throws Exception {
         return this.keysHandler.updateKey(key, options);
     }
 
