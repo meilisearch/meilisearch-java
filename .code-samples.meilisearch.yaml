@@ -136,22 +136,18 @@ reset_settings_1: |-
 get_synonyms_1: |-
   client.index("movies").getSynonyms();
 update_synonyms_1: |-
-  Settings settings = new Settings();
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("wolverine", new String[] {"xmen", "logan"});
   synonyms.put("logan", new String[] {"wolverine"});
-  settings.setSynonyms(synonyms);
-  client.index("movies").updateSettings(settings);
+  client.index("movies").updateSynonymsSettings(synonyms);
 reset_synonyms_1: |-
-  //Not yet implemented
+  client.index("movies").resetSynonymsSettings();
 get_stop_words_1: |-
   client.index("movies").getStopWords();
 update_stop_words_1: |-
-  Settings settings = new Settings();
-  settings.setStopWords(new String[] {"of", "the", "to"});
-  client.index("movies").updateSettings(settings);
+  client.index("movies").updateStopWordsSettings(new String[] {"of", "the", "to"});
 reset_stop_words_1: |-
-  //Not yet implemented
+  client.index("movies").resetStopWordsSettings();
 get_ranking_rules_1: |-
   client.index("movies").getRankingRules();
 update_ranking_rules_1: |-
@@ -169,28 +165,24 @@ update_ranking_rules_1: |-
   });
   client.index("movies").updateSettings(settings);
 reset_ranking_rules_1: |-
-  //Not yet implemented
+  client.index("movies").resetRankingRuleSettings();
 get_distinct_attribute_1: |-
   client.index("shoes").getDistinctAttribute();
 update_distinct_attribute_1: |-
-  Settings settings = new Settings();
-  settings.setDistinctAttribute("skuid");
-  client.index("shoes").updateSettings(settings);
+  client.index("shoes").updateDistinctAttributeSettings("skuid");
 reset_distinct_attribute_1: |-
-  //Not yet implemented
+  client.index("shoes").resetDistinctAttributeSettings();
 get_searchable_attributes_1: |-
   client.index("movies").getSearchableAttributes();
 update_searchable_attributes_1: |-
-  Settings settings = new Settings();
-  settings.setSearchableAttributes(new String[]
+  client.index("movies").updateSearchableAttributesSettings(new String[]
   {
     "title",
     "description",
     "genre"
   });
-  client.index("movies").updateSettings(settings);
 reset_searchable_attributes_1: |-
-  //Not yet implemented
+  client.index("movies").resetSearchableAttributesSettings();
 get_filterable_attributes_1: |-
   client.index("movies").getFilterableAttributes();
 update_filterable_attributes_1: |-
@@ -202,17 +194,15 @@ reset_filterable_attributes_1: |-
 get_displayed_attributes_1: |-
   client.index("movies").getDisplayedAttributes();
 update_displayed_attributes_1: |-
-  Settings settings = new Settings();
-  settings.setDisplayedAttributes(new String[]
+  client.index("movies").updateDisplayedAttributesSettings(new String[]
   {
     "title",
     "description",
     "genre",
     "release_date"
   });
-  client.index("movies").updateSettings(settings);
 reset_displayed_attributes_1: |-
-  //Not yet implemented
+  client.index("movies").resetDisplayedAttributesSettings();
 get_index_stats_1: |-
   client.index("movies").getStats();
 get_indexes_stats_1: |-
@@ -405,9 +395,11 @@ getting_started_search_md: |-
 
   [About this SDK](https://github.com/meilisearch/meilisearch-java)
 faceted_search_update_settings_1: |-
-  Settings settings = new Settings();
-  settings.setFilterableAttributes(new String[] {"director", "genres"});
-  client.index("movies").updateSettings(settings);
+  client.index("movies").updateFilterableAttributesSettings(new String[]
+  {
+    "director",
+    "genres"
+  });
 faceted_search_filter_1: |-
   SearchRequest searchRequest =
     new SearchRequest("thriller").setFilterArray(new String[][] {
@@ -419,9 +411,13 @@ faceted_search_facets_distribution_1: |-
     new SearchRequest("Batman").setFacetsDistribution(new String[] {"genres"});
   client.index("movies").search(searchRequest);
 faceted_search_walkthrough_filterable_attributes_1: |-
-  Settings settings = new Settings();
-  settings.setFilterableAttributes(new String[] {"director", "producer", "genres", "production_companies"});
-  client.index("movies").updateSettings(settings);
+  client.index("movies").updateFilterableAttributesSettings(new String[]
+  {
+    "director",
+    "producer",
+    "genres",
+    "production_companies"
+  });
 faceted_search_walkthrough_filter_1: |-
   SearchRequest searchRequest =
     new SearchRequest("thriller").setFilterArray(new String[][] {
