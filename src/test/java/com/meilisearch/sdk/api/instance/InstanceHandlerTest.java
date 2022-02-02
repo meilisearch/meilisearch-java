@@ -82,14 +82,14 @@ class InstanceHandlerTest {
                                 new BasicHttpResponse(
                                         null,
                                         200,
-                                        "{\"databaseSize\": 447819776,\"lastUpdate\": \"2019-11-15T11:15:22.092896Z\",\"indexes\": {\"movies\": {\"numberOfDocuments\": 19654,\"isIndexing\": false,\"fieldDistribution\": {\"poster\": 19654,\"overview\": 19654,\"title\": 19654,\"id\": 19654,\"release_date\": 19654}},\"rangemovies\": {\"numberOfDocuments\": 19654,\"isIndexing\": false,\"fieldDistribution\": {\"overview\": 19654,\"id\": 19654,\"title\": 19654}}}}"))
+                                        "{\"databaseSize\": 7701901318,\"lastUpdate\": \"2019-11-15T11:15:22.092896Z\",\"indexes\": {\"movies\": {\"numberOfDocuments\": 19654,\"isIndexing\": false,\"fieldDistribution\": {\"poster\": 19654,\"overview\": 19654,\"title\": 19654,\"id\": 19654,\"release_date\": 19654}},\"rangemovies\": {\"numberOfDocuments\": 19654,\"isIndexing\": false,\"fieldDistribution\": {\"overview\": 19654,\"id\": 19654,\"title\": 19654}}}}"))
                 .thenThrow(MeiliSearchRuntimeException.class);
         Stats stats = classToTest.getStats();
-        assertThat(stats.getDatabaseSize(), is(447819776));
+        assertThat(stats.getDatabaseSize(), is(7701901318L));
         assertThat(stats.getLastUpdate().toInstant().toEpochMilli(), is(1573816522092L));
         assertThat(stats.getIndexes().keySet(), hasItems("movies", "rangemovies"));
         IndexStats movies = stats.getIndexes().get("movies");
-        assertThat(movies.getNumberOfDocuments(), is(19654));
+        assertThat(movies.getNumberOfDocuments(), is(19654L));
         assertThat(movies.isIndexing(), is(false));
         assertThat(movies.getFieldDistribution().keySet(), hasItems("overview", "id", "title"));
         assertThat(movies.getFieldDistribution().get("overview"), is(19654));
@@ -108,7 +108,7 @@ class InstanceHandlerTest {
                                         "{\"numberOfDocuments\": 19654,\"isIndexing\": false,\"fieldDistribution\": {\"poster\": 19654,\"release_date\": 19654,\"title\": 19654,\"id\": 19654,\"overview\": 19654}}"))
                 .thenThrow(MeiliSearchRuntimeException.class);
         IndexStats stats = classToTest.getStats("index");
-        assertThat(stats.getNumberOfDocuments(), is(19654));
+        assertThat(stats.getNumberOfDocuments(), is(19654L));
         assertThat(stats.isIndexing(), is(false));
         assertThat(
                 stats.getFieldDistribution().keySet(),

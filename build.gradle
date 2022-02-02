@@ -40,10 +40,10 @@ dependencies {
 	implementation 'org.json:json:20211205'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
 	compileOnly group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.1.2'
-	compileOnly 'com.squareup.okhttp3:okhttp:4.9.2'
+	compileOnly 'com.squareup.okhttp3:okhttp:4.9.3'
 
 	// Use JUnit test framework
-	testImplementation(platform('org.junit:junit-bom:5.8.1'))
+	testImplementation(platform('org.junit:junit-bom:5.8.2'))
 	testImplementation('org.junit.jupiter:junit-jupiter:5.8.1')
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:4.0.0'
@@ -106,7 +106,7 @@ publishing {
 				name = 'com.meilisearch.sdk:meilisearch-java'
 				packaging = 'jar'
 				artifactId = 'meilisearch-java'
-				description = 'MeiliSearch is a powerful, fast, open-source, easy to use and deploy search engine.'
+				description = 'Meilisearch is a powerful, fast, open-source, easy to use and deploy search engine.'
 				url = 'https://github.com/meilisearch/meilisearch-java'
 				scm {
 					connection = 'scm:git:git://github.com/meilisearch/meilisearch-java.git'

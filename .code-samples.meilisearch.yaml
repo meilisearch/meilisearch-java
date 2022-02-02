@@ -1,4 +1,4 @@
-# This code-samples file is used by the MeiliSearch documentation
+# This code-samples file is used by the Meilisearch documentation
 # Every example written here will be automatically fetched by
 # the documentation on build
 # You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
@@ -47,15 +47,45 @@ delete_documents_1: |-
   }));
 search_post_1: |-
   client.index("movies").search("American ninja");
-get_update_1: |-
-  client.index("movies").getUpdate(1).getStatus();
-get_all_updates_1: |-
-  for (UpdateStatus update: client.index("movies").getUpdates())
-  {
-    update.getStatus();
-  }
-get_keys_1: |-
-  //Not yet implemented
+get_task_by_index_1: |-
+  client.index("movies").getTask(1);
+get_all_tasks_1: |-
+  client.getTasks();
+get_task_1: |-
+  client.getTask(1);
+get_all_tasks_by_index_1: |-
+  client.index("movies").getTasks();
+get_one_key_1: |-
+  client.getKey("d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4");
+get_all_keys_1: |-
+  client.getKeys();
+create_a_key_1: |-
+  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+  Date dateParsed = format.parse("2042-04-02T00:42:42Z");
+
+  Key keyInfo = new Key();
+
+  keyInfo.setDescription("Add documents: Products API key");
+  keyInfo.setActions(new String[] {"products"});
+  keyInfo.setIndexes(new String[] {"documents.add"});
+  keyInfo.setExpiresAt(dateParsed);
+
+  client.createKey(keyInfo);
+update_a_key_1: |-
+  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+  Date dateParsed = format.parse("2042-04-02T00:42:42Z");
+
+  Key keyChanges = new Key();
+
+  keyChanges.setDescription("Manage documents: Products/Reviews API key");
+  keyChanges.setActions(new String[] {"documents.add", "document.delete"});
+  keyChanges.setIndexes(new String[] {"products", "reviews"});
+  keyChanges.setExpiresAt(dateParsed);
+
+  client.updateKey(
+    "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4", keyChanges);
+delete_a_key_1: |-
+  client.deleteKey("d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4")
 get_settings_1: |-
   client.index("movies").getSettings();
 update_settings_1: |-
@@ -362,7 +392,7 @@ getting_started_add_documents_md: |-
 
   Path fileName = Path.of("movies.json");
   String moviesJson = Files.readString(fileName);
-  Client client = new Client(new Config("http://localhost:7700", "masterKey"));
+  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
   Index index = client.index("movies");
   index.addDocuments(moviesJson);
   ```
@@ -410,7 +440,7 @@ add_movies_json_1: |-
 
   Path fileName = Path.of("movies.json");
   String moviesJson = Files.readString(fileName);
-  Client client = new Client(new Config("http://localhost:7700", "masterKey"));
+  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
   Index index = client.index("movies");
   index.addDocuments(moviesJson);
 post_dump_1: |-
@@ -479,3 +509,37 @@ geosearch_guide_sort_usage_2: |-
       "rating:desc",
     });
   client.index("restaurants").search(searchRequest);
+security_guide_search_key_1: |-
+  Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
+  client.index("patient_medical_records").search();
+security_guide_update_key_1: |-
+  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+
+  Key keyChanges = new Key();
+  keyChanges.setIndexes(new String[] {"doctors"});
+
+  client.updateKey(
+    "d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4", keyChanges);
+security_guide_create_key_1: |-
+  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+
+  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+  Date dateParsed = format.parse("2023-01-01T00:00:00Z");
+
+  Key keyInfo = new Key();
+
+  keyInfo.setDescription("Search patient records key");
+  keyInfo.setIndexes(new String[] {"search"});
+  keyInfo.setActions(new String[] {"patient_medical_records"});
+  keyInfo.setExpiresAt(dateParsed);
+
+  client.createKey(keyInfo);
+security_guide_list_keys_1: |-
+  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+  client.getKeys();
+security_guide_delete_key_1: |-
+  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+  client.deleteKey("d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4");
+authorization_header_1: |-
+  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+  client.getKeys();
