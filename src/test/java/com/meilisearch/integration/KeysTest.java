@@ -136,37 +136,6 @@ public class KeysTest extends AbstractIT {
         assertNotNull(key.getUpdatedAt());
     }
 
-    /** Test Update an API Key */
-    @Test
-    public void testClientUpdateKey() throws Exception {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        Date dateParsed = format.parse("2042-01-30T00:00:00Z");
-
-        Key keyInfo = new Key();
-        keyInfo.setIndexes(new String[] {"*"});
-        keyInfo.setActions(new String[] {"*"});
-
-        Key keyChanges = new Key();
-        keyChanges.setIndexes(new String[] {"testUpdateKey"});
-        keyChanges.setActions(new String[] {"search"});
-        keyChanges.setExpiresAt(dateParsed);
-
-        Key createKey = client.createKey(keyInfo);
-        Key updateKey = client.updateKey(createKey.getKey(), keyChanges);
-
-        assertTrue(createKey instanceof Key);
-        assertTrue(updateKey instanceof Key);
-        assertNotNull(updateKey.getKey());
-        assertEquals("*", createKey.getActions()[0]);
-        assertEquals("search", updateKey.getActions()[0]);
-        assertEquals("*", createKey.getIndexes()[0]);
-        assertEquals("testUpdateKey", updateKey.getIndexes()[0]);
-        assertNull(createKey.getExpiresAt());
-        assertEquals(dateParsed, updateKey.getExpiresAt());
-        assertNotNull(updateKey.getCreatedAt());
-        assertNotNull(updateKey.getUpdatedAt());
-    }
-
     /** Test Delete an API Key */
     @Test
     public void testClientDeleteKey() throws Exception {
