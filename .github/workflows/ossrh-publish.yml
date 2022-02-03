@@ -24,7 +24,7 @@ jobs:
         with:
           arguments: build
       - uses: actions/upload-artifact@v2
-        # if: failure()
+        if: failure()
         with:
           name: my-artifact
           path: /home/runner/work/***-java/***-java/build/reports/tests/test/index.html
