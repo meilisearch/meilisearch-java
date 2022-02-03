@@ -29,7 +29,7 @@ jobs:
         if: failure()
         with:
           name: my-artifact
-          path: /home/runner/work/***-java/***-java/build/reports/tests/test/index.html
+          path: /home/runner/work/***-java/***-java/build/reports/tests/test/
           if-no-files-found: ignore
       - name: Archive test report
         uses: actions/upload-artifact@v2
