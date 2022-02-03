@@ -48,9 +48,6 @@ public class CustomOkHttpClient extends AbstractHttpClient {
             case PUT:
                 builder.put(getBodyFromRequest(request));
                 break;
-            case PATCH:
-                builder.patch(getBodyFromRequest(request));
-                break;
             case DELETE:
                 if (request.hasContent()) builder.delete(getBodyFromRequest(request));
                 else builder.delete();
@@ -95,13 +92,6 @@ public class CustomOkHttpClient extends AbstractHttpClient {
 
     @Override
     public HttpResponse<?> put(HttpRequest<?> request) throws Exception {
-        Request okRequest = buildRequest(request);
-        Response execute = client.newCall(okRequest).execute();
-        return buildResponse(execute);
-    }
-
-    @Override
-    public HttpResponse<?> patch(HttpRequest<?> request) throws Exception {
         Request okRequest = buildRequest(request);
         Response execute = client.newCall(okRequest).execute();
         return buildResponse(execute);

@@ -71,11 +71,6 @@ public class ApacheHttpClient extends AbstractHttpClient {
     }
 
     @Override
-    public HttpResponse<?> patch(HttpRequest<?> request) throws Exception {
-        return execute(request);
-    }
-
-    @Override
     public HttpResponse<?> delete(HttpRequest<?> request) throws Exception {
         return execute(request);
     }
