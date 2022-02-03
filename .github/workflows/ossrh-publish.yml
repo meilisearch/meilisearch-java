@@ -13,7 +13,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v2
         with:
-          java-version: 8
+          java-version: ''
           distribution: 'zulu'
       # - name: Check release validity
       #   run: bash .github/scripts/check-release.sh
