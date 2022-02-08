@@ -10,7 +10,7 @@ list_all_indexes_1: |-
 create_an_index_1: |-
   client.createIndex("movies", "movie_id");
 update_an_index_1: |-
-  client.updateIndex("movie_review", "movie_review_id");
+  client.updateIndex("movies", "movie_review_id");
 delete_an_index_1: |-
   client.deleteIndex("movies");
 get_one_document_1: |-
