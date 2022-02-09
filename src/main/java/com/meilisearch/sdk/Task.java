@@ -14,6 +14,7 @@ public class Task {
     protected Date startedAt = null;
     protected Date finishedAt = null;
     protected TaskError error = null;
+    protected Details details = null;
 
     private static Gson gsonTask = new Gson();
 
@@ -106,5 +107,14 @@ public class Task {
      */
     public TaskError getError() {
         return this.error;
+    }
+
+    /**
+     * Method to return the details of the task
+     *
+     * @return Details Object with fields
+     */
+    public Details getDetails() {
+        return this.details;
     }
 }
