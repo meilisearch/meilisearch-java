@@ -15,90 +15,78 @@ import org.junit.jupiter.api.Test;
 @Tag("integration")
 public class TasksTest extends AbstractIT {
 
-	private TestData<Movie> testData;
+    private TestData<Movie> testData;
 
-	@BeforeEach
-	public void initialize() {
-		this.setUp();
-		if (testData == null) testData = this.getTestData(MOVIES_INDEX, Movie.class);
-	}
+    @BeforeEach
+    public void initialize() {
+        this.setUp();
+        if (testData == null) testData = this.getTestData(MOVIES_INDEX, Movie.class);
+    }
 
-	@AfterAll
-	static void cleanMeiliSearch() {
-		cleanup();
-	}
+    @AfterAll
+    static void cleanMeiliSearch() {
+        cleanup();
+    }
 
-	/** Test Get Task */
-	@Test
-	public void testClientGetTask() throws Exception {
-		String indexUid = "GetClientTask";
-		Task response = client.createIndex(indexUid);
-		client.waitForTask(response.getUid());
+    /** Test Get Task */
+    @Test
+    public void testClientGetTask() throws Exception {
+        String indexUid = "GetClientTask";
+        Task response = client.createIndex(indexUid);
+        client.waitForTask(response.getUid());
 
-		Task task = client.getTask(response.getUid());
+        Task task = client.getTask(response.getUid());
 
-		assertTrue(task instanceof Task);
-		assertNotNull(task.getStatus());
-		assertNotEquals("", task.getStatus());
-		assertNotNull(task.getStartedAt());
-		assertNotNull(task.getEnqueuedAt());
-		assertNotNull(task.getFinishedAt());
-		assertTrue(task.getUid() >= 0);
-		assertNotNull(task.getDetails());
-		assertNull(task.getDetails().getPrimaryKey());
-	}
+        assertTrue(task instanceof Task);
+        assertNotNull(task.getStatus());
+        assertNotEquals("", task.getStatus());
+        assertNotNull(task.getStartedAt());
+        assertNotNull(task.getEnqueuedAt());
+        assertNotNull(task.getFinishedAt());
+        assertTrue(task.getUid() >= 0);
+    }
 
-	/** Test Get Tasks */
-	@Test
-	public void testClientGetTasks() throws Exception {
-		Task[] tasks = client.getTasks();
+    /** Test Get Tasks */
+    @Test
+    public void testClientGetTasks() throws Exception {
+        Task[] tasks = client.getTasks();
 
-		for (Task task : tasks) {
-			client.waitForTask(task.getUid());
+        for (Task task : tasks) {
+            client.waitForTask(task.getUid());
 
-			assertNotNull(task.getStatus());
-			assertNotEquals("", task.getStatus());
-			assertTrue(task.getUid() >= 0);
-			assertNotNull(task.getDetails());
-			if(task.getType().equals("indexCreation")) {
-				assertNull(task.getDetails().getPrimaryKey());
-			}
-			if(task.getType().equals("indexDeletion")) {
-				assertNotNull(task.getDetails().getDeletedDocuments());
-			}
-		}
-	}
+            assertNotNull(task.getStatus());
+            assertNotEquals("", task.getStatus());
+            assertTrue(task.getUid() >= 0);
+        }
+    }
 
-	/** Test waitForTask */
-	@Test
-	public void testWaitForTask() throws Exception {
-		String indexUid = "WaitForTask";
-		Task response = client.createIndex(indexUid);
-		client.waitForTask(response.getUid());
+    /** Test waitForTask */
+    @Test
+    public void testWaitForTask() throws Exception {
+        String indexUid = "WaitForTask";
+        Task response = client.createIndex(indexUid);
+        client.waitForTask(response.getUid());
 
-		Task task = client.getTask(response.getUid());
+        Task task = client.getTask(response.getUid());
 
-		assertTrue(task.getUid() >= 0);
-		assertNotNull(task.getEnqueuedAt());
-		assertNotNull(task.getStartedAt());
-		assertNotNull(task.getFinishedAt());
-		assertNotNull(task.getDetails());
-		assertNotNull(task.getDetails().getDeletedDocuments());
+        assertTrue(task.getUid() >= 0);
+        assertNotNull(task.getEnqueuedAt());
+        assertNotNull(task.getStartedAt());
+        assertNotNull(task.getFinishedAt());
+        assertEquals("succeeded", task.getStatus());
 
-		assertEquals("succeeded", task.getStatus());
+        client.deleteIndex(task.getIndexUid());
+    }
 
-		client.deleteIndex(task.getIndexUid());
-	}
+    /** Test waitForTask timeoutInMs */
+    @Test
+    public void testWaitForTaskTimoutInMs() throws Exception {
+        String indexUid = "WaitForTaskTimoutInMs";
+        Index index = client.index(indexUid);
 
-	/** Test waitForTask timeoutInMs */
-	@Test
-	public void testWaitForTaskTimoutInMs() throws Exception {
-		String indexUid = "WaitForTaskTimoutInMs";
-		Index index = client.index(indexUid);
+        Task task = index.addDocuments(this.testData.getRaw());
+        index.waitForTask(task.getUid());
 
-		Task task = index.addDocuments(this.testData.getRaw());
-		index.waitForTask(task.getUid());
-
-		assertThrows(Exception.class, () -> index.waitForTask(task.getUid(), 0, 50));
-	}
+        assertThrows(Exception.class, () -> index.waitForTask(task.getUid(), 0, 50));
+    }
 }
