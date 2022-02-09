@@ -44,6 +44,8 @@ public class TasksTest extends AbstractIT {
         assertNotNull(task.getEnqueuedAt());
         assertNotNull(task.getFinishedAt());
         assertTrue(task.getUid() >= 0);
+        assertNotNull(task.getDetails());
+        assertNull(task.getDetails().getPrimaryKey());
     }
 
     /** Test Get Tasks */
@@ -57,6 +59,13 @@ public class TasksTest extends AbstractIT {
             assertNotNull(task.getStatus());
             assertNotEquals("", task.getStatus());
             assertTrue(task.getUid() >= 0);
+            assertNotNull(task.getDetails());
+            if (task.getType().equals("indexCreation")) {
+                assertNull(task.getDetails().getPrimaryKey());
+            }
+            if (task.getType().equals("indexDeletion")) {
+                assertNotNull(task.getDetails().getDeletedDocuments());
+            }
         }
     }
 
@@ -74,6 +83,8 @@ public class TasksTest extends AbstractIT {
         assertNotNull(task.getStartedAt());
         assertNotNull(task.getFinishedAt());
         assertEquals("succeeded", task.getStatus());
+        assertNotNull(task.getDetails());
+        assertNull(task.getDetails().getPrimaryKey());
 
         client.deleteIndex(task.getIndexUid());
     }
