@@ -330,7 +330,7 @@ requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), {"id":"
 
 ## 🤖 Compatibility with Meilisearch
 
-This package only guarantees compatibility with the [version v0.25.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.25.0).
+This package only guarantees compatibility with the [version v0.26.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.26.0).
 
 ## 💡 Learn More
 
