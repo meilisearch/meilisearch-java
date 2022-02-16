@@ -40,7 +40,7 @@ You can also launch the integration tests, which run against a local Meilisearch
 
 ```bash
 curl -L https://install.meilisearch.com | sh # download Meilisearch
-./meilisearch --master-key=masterKey --no-analytics=true # run Meilisearch
+./meilisearch --master-key=masterKey --no-analytics # run Meilisearch
 ./gradlew test IntegrationTest
 ```
 
