@@ -80,7 +80,7 @@ public class ApacheHttpClient extends AbstractHttpClient {
                 new SimpleHttpRequest(request.getMethod().name(), request.getPath());
         if (request.hasContent())
             httpRequest.setBody(request.getContentAsBytes(), ContentType.APPLICATION_JSON);
-        httpRequest.addHeader("X-Meili-API-Key", this.config.getApiKey());
+        httpRequest.addHeader("Authorization", this.config.getBearerApiKey());
         return httpRequest;
     }
 

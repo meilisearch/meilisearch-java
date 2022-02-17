@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/meilisearch/integration-guides/main/assets/logos/logo.svg" alt="MeiliSearch Java" width="200" height="200" />
+  <img src="https://raw.githubusercontent.com/meilisearch/integration-guides/main/assets/logos/meilisearch_java.svg" alt="Meilisearch Java" width="200" height="200" />
 </p>
 
-<h1 align="center">MeiliSearch Java</h1>
+<h1 align="center">Meilisearch Java</h1>
 
 <h4 align="center">
-  <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> |
+  <a href="https://github.com/meilisearch/meilisearch">Meilisearch</a> |
   <a href="https://docs.meilisearch.com">Documentation</a> |
   <a href="https://slack.meilisearch.com">Slack</a> |
   <a href="https://roadmap.meilisearch.com/tabs/1-under-consideration">Roadmap</a> |
@@ -20,11 +20,11 @@
   <a href="https://app.bors.tech/repositories/29365"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </p>
 
-<p align="center">⚡ The MeiliSearch API client written for Java ☕️</p>
+<p align="center">⚡ The Meilisearch API client written for Java ☕️</p>
 
-**MeiliSearch Java** is the MeiliSearch API client for Java developers.
+**Meilisearch Java** is the Meilisearch API client for Java developers.
 
-**MeiliSearch** is an open-source search engine. [Discover what MeiliSearch is!](https://github.com/meilisearch/MeiliSearch)
+**Meilisearch** is an open-source search engine. [Discover what Meilisearch is!](https://github.com/meilisearch/meilisearch)
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -32,7 +32,7 @@
 - [🔧 Installation](#-installation)
 - [🚀 Getting Started](#-getting-started)
 - [🛠 Customization](#-customization)
-- [🤖 Compatibility with MeiliSearch](#-compatibility-with-meilisearch)
+- [🤖 Compatibility with Meilisearch](#-compatibility-with-meilisearch)
 - [💡 Learn More](#-learn-more)
 - [⚙️ Development Workflow and Contributing](#️-development-workflow-and-contributing)
 
@@ -53,7 +53,7 @@ Add the following code to the `<dependencies>` section of your project:
 <dependency>
   <groupId>com.meilisearch.sdk</groupId>
   <artifactId>meilisearch-java</artifactId>
-  <version>0.6.0</version>
+  <version>0.7.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -63,24 +63,24 @@ Add the following code to the `<dependencies>` section of your project:
 Add the following line to the `dependencies` section of your `build.gradle`:
 
 ```groovy
-implementation 'com.meilisearch.sdk:meilisearch-java:0.6.0'
+implementation 'com.meilisearch.sdk:meilisearch-java:0.7.0'
 ```
 
-### Run MeiliSearch <!-- omit in toc -->
+### Run Meilisearch <!-- omit in toc -->
 
-There are many easy ways to [download and run a MeiliSearch instance](https://docs.meilisearch.com/reference/features/installation.html#download-and-launch).
+There are many easy ways to [download and run a Meilisearch instance](https://docs.meilisearch.com/reference/features/installation.html#download-and-launch).
 
 For example, using the `curl` command in [your Terminal](https://itconnect.uw.edu/learn/workshops/online-tutorials/web-publishing/what-is-a-terminal/):
 
 ```bash
- # Install MeiliSearch
+ # Install Meilisearch
  curl -L https://install.meilisearch.com | sh
 
- # Launch MeiliSearch
+ # Launch Meilisearch
  ./meilisearch --master-key=masterKey
  ```
 
-NB: you can also download MeiliSearch from **Homebrew** or **APT** or even run it using **Docker**.
+NB: you can also download Meilisearch from **Homebrew** or **APT** or even run it using **Docker**.
 
 ## 🚀 Getting Started
 
@@ -94,7 +94,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-class TestMeiliSearch {
+class TestMeilisearch {
   public static void main(String[] args) throws Exception {
 
     JSONArray array = new JSONArray();
@@ -114,13 +114,13 @@ class TestMeiliSearch {
     // An index is where the documents are stored.
     Index index = client.index("movies");
 
-    // If the index 'movies' does not exist, MeiliSearch creates it when you first add the documents.
-    index.addDocuments(documents); // => { "updateId": 0 }
+    // If the index 'movies' does not exist, Meilisearch creates it when you first add the documents.
+    index.addDocuments(documents); // => { "uid": 0 }
   }
 }
 ```
 
-With the `updateId`, you can check the status (`enqueued`, `processing`, `processed` or `failed`) of your documents addition using the [update endpoint](https://docs.meilisearch.com/reference/api/updates.html#get-an-update-status).
+With the `taskUid`, you can check the status (`enqueued`, `processing`, `succeeded` or `failed`) of your documents addition using the [task endpoint](https://docs.meilisearch.com/reference/api/tasks.html#get-task).
 
 #### Basic Search <!-- omit in toc -->
 
@@ -129,7 +129,7 @@ A basic search can be performed by calling `index.search()` method, with a simpl
 ```java
 import com.meilisearch.sdk.model.SearchResult;
 
-// MeiliSearch is typo-tolerant:
+// Meilisearch is typo-tolerant:
 SearchResult results = index.search("carlo");
 System.out.println(results);
 ```
@@ -192,7 +192,7 @@ index.updateFilterableAttributesSettings(new String[]
 
 You only need to perform this operation once.
 
-Note that MeiliSearch will rebuild your index whenever you update `filterableAttributes`. Depending on the size of your dataset, this might take time. You can track the process using the [update status](https://docs.meilisearch.com/reference/api/updates.html#get-an-update-status).
+Note that Meilisearch will rebuild your index whenever you update `filterableAttributes`. Depending on the size of your dataset, this might take time. You can track the process using the [task status](https://docs.meilisearch.com/reference/api/tasks.html#get-task).
 
 Then, you can perform the search:
 
@@ -328,9 +328,9 @@ private final RequestFactory requestFactory;
 requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), {"id":"3"});
 ```
 
-## 🤖 Compatibility with MeiliSearch
+## 🤖 Compatibility with Meilisearch
 
-This package only guarantees the compatibility with the [version v0.24.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.24.0).
+This package only guarantees compatibility with the [version v0.25.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.25.0).
 
 ## 💡 Learn More
 
@@ -349,4 +349,4 @@ If you want to know more about the development workflow or want to contribute, p
 
 <hr>
 
-**MeiliSearch** provides and maintains many **SDKs and Integration tools** like this one. We want to provide everyone with an **amazing search experience for any kind of project**. If you want to contribute, make suggestions, or just know what's going on right now, visit us in the [integration-guides](https://github.com/meilisearch/integration-guides) repository.
+**Meilisearch** provides and maintains many **SDKs and Integration tools** like this one. We want to provide everyone with an **amazing search experience for any kind of project**. If you want to contribute, make suggestions, or just know what's going on right now, visit us in the [integration-guides](https://github.com/meilisearch/integration-guides) repository.

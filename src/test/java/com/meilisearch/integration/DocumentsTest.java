@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.UpdateStatus;
+import com.meilisearch.sdk.Task;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import com.meilisearch.sdk.utils.Movie;
 import java.io.BufferedReader;
@@ -46,11 +46,9 @@ public class DocumentsTest extends AbstractIT {
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         String singleDocument = this.gson.toJson(testData.getData().get(0));
-        UpdateStatus updateInfo =
-                this.gson.fromJson(
-                        index.addDocuments("[" + singleDocument + "]"), UpdateStatus.class);
+        Task task = index.addDocuments("[" + singleDocument + "]");
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
         Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
 
         assertEquals(1, movies.length);
@@ -87,22 +85,16 @@ public class DocumentsTest extends AbstractIT {
         String firstDocument = this.gson.toJson(firstMovie);
         String secondDocument = this.gson.toJson(secondMovie);
 
-        UpdateStatus firstUpdate =
-                this.gson.fromJson(
-                        index.addDocuments("[" + firstDocument + "]", "language"),
-                        UpdateStatus.class);
-        index.waitForPendingUpdate(firstUpdate.getUpdateId());
+        Task firstTask = index.addDocuments("[" + firstDocument + "]", "language");
+        index.waitForTask(firstTask.getUid());
 
         Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         assertEquals(1, movies.length);
         assertEquals("419704", movies[0].getId());
         assertEquals("Ad Astra", movies[0].getTitle());
 
-        UpdateStatus secondUpdate =
-                this.gson.fromJson(
-                        index.addDocuments("[" + secondDocument + "]", "language"),
-                        UpdateStatus.class);
-        index.waitForPendingUpdate(secondUpdate.getUpdateId());
+        Task secondTask = index.addDocuments("[" + secondDocument + "]", "language");
+        index.waitForTask(secondTask.getUid());
 
         movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         assertEquals(1, movies.length);
@@ -118,10 +110,9 @@ public class DocumentsTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
         Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         for (int i = 0; i < movies.length; i++) {
             Movie movie =
@@ -138,14 +129,15 @@ public class DocumentsTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        String updateStatusArr = index.addDocumentsInBatches(testData.getRaw());
+        Task[] taskArr = index.addDocumentsInBatches(testData.getRaw());
 
-        UpdateStatus[] updateStatuses = gson.fromJson(updateStatusArr, UpdateStatus[].class);
-        for (UpdateStatus updateStatus : updateStatuses) {
-            index.waitForPendingUpdate(updateStatus.getUpdateId());
+        for (Task task : taskArr) {
+            index.waitForTask(task.getUid());
+
+            assertTrue(task instanceof Task);
+            assertEquals(task.getType(), "documentAddition");
+            assertNotNull(task.getEnqueuedAt());
         }
-
-        assertEquals("[{\"updateId\":0}]", updateStatusArr);
     }
 
     /** Test Add Documents in Batches With BatchSize */
@@ -155,14 +147,15 @@ public class DocumentsTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        String updateStatusArr = index.addDocumentsInBatches(testData.getRaw(), 15, null);
+        Task[] taskArr = index.addDocumentsInBatches(testData.getRaw(), 15, null);
 
-        UpdateStatus[] updateStatuses = gson.fromJson(updateStatusArr, UpdateStatus[].class);
-        for (UpdateStatus updateStatus : updateStatuses) {
-            index.waitForPendingUpdate(updateStatus.getUpdateId());
+        for (Task task : taskArr) {
+            index.waitForTask(task.getUid());
+
+            assertTrue(task instanceof Task);
+            assertEquals(task.getType(), "documentAddition");
+            assertNotNull(task.getEnqueuedAt());
         }
-
-        assertEquals("[{\"updateId\":0},{\"updateId\":1}]", updateStatusArr);
     }
 
     /** Test Update a document */
@@ -170,24 +163,20 @@ public class DocumentsTest extends AbstractIT {
     public void testUpdateDocument() throws Exception {
 
         String indexUid = "UpdateDocument";
-        Index index = client.createIndex(indexUid);
+        Index index = createEmptyIndex(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
         Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         Movie toUpdate = movies[0];
         toUpdate.setTitle("The Perks of Being a Wallflower");
         toUpdate.setOverview("The best movie I've ever seen");
 
-        updateInfo =
-                this.gson.fromJson(
-                        index.updateDocuments("[" + this.gson.toJson(toUpdate) + "]"),
-                        UpdateStatus.class);
+        task = index.updateDocuments("[" + this.gson.toJson(toUpdate) + "]");
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
         Movie responseUpdate = this.gson.fromJson(index.getDocument(toUpdate.getId()), Movie.class);
 
         assertEquals(toUpdate.getTitle(), responseUpdate.getTitle());
@@ -213,22 +202,16 @@ public class DocumentsTest extends AbstractIT {
         secondJson.remove("title");
         String secondDocument = this.gson.toJson(secondJson);
 
-        UpdateStatus firstUpdate =
-                this.gson.fromJson(
-                        index.updateDocuments("[" + firstDocument + "]", "language"),
-                        UpdateStatus.class);
-        index.waitForPendingUpdate(firstUpdate.getUpdateId());
+        Task firstTask = index.updateDocuments("[" + firstDocument + "]", "language");
+        index.waitForTask(firstTask.getUid());
 
         Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         assertEquals(1, movies.length);
         assertEquals("419704", movies[0].getId());
         assertEquals("Ad Astra", movies[0].getTitle());
 
-        UpdateStatus secondUpdate =
-                this.gson.fromJson(
-                        index.updateDocuments("[" + secondDocument + "]", "language"),
-                        UpdateStatus.class);
-        index.waitForPendingUpdate(secondUpdate.getUpdateId());
+        Task secondTask = index.updateDocuments("[" + secondDocument + "]", "language");
+        index.waitForTask(secondTask.getUid());
 
         movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         assertEquals(1, movies.length);
@@ -240,13 +223,12 @@ public class DocumentsTest extends AbstractIT {
     @Test
     public void testUpdateDocuments() throws Exception {
         String indexUid = "UpdateDocuments";
-        Index index = client.createIndex(indexUid);
+        Index index = createEmptyIndex(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
         Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         List<Movie> toUpdate = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -255,11 +237,9 @@ public class DocumentsTest extends AbstractIT {
             toUpdate.add(movies[i]);
         }
 
-        updateInfo =
-                this.gson.fromJson(
-                        index.updateDocuments(this.gson.toJson(toUpdate)), UpdateStatus.class);
+        task = index.updateDocuments(this.gson.toJson(toUpdate));
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
         for (int j = 0; j < 5; j++) {
             Movie responseUpdate =
                     this.gson.fromJson(index.getDocument(toUpdate.get(j).getId()), Movie.class);
@@ -273,13 +253,12 @@ public class DocumentsTest extends AbstractIT {
     public void testUpdateDocumentsInBatchesWithBatchSize() throws Exception {
 
         String indexUid = "UpdateDocumentsInBatchesWithBatchSize";
-        Index index = client.createIndex(indexUid);
+        Index index = createEmptyIndex(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task taskIndex = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(taskIndex.getUid());
         Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         List<Movie> toUpdate = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -287,14 +266,13 @@ public class DocumentsTest extends AbstractIT {
             movies[i].setOverview("This star wars movie is for the episode: " + i);
             toUpdate.add(movies[i]);
         }
-        String updateStatusArr =
-                index.updateDocumentsInBatches(this.gson.toJson(toUpdate), 2, null);
+        Task[] taskArr = index.updateDocumentsInBatches(this.gson.toJson(toUpdate), 2, null);
 
-        UpdateStatus[] updateStatuses = gson.fromJson(updateStatusArr, UpdateStatus[].class);
-        for (UpdateStatus updateStatus : updateStatuses) {
-            index.waitForPendingUpdate(updateStatus.getUpdateId());
+        for (Task task : taskArr) {
+            index.waitForTask(task.getUid());
+            assertEquals(task.getType(), "documentPartial");
+            assertNotNull(task.getEnqueuedAt());
         }
-        assertEquals("[{\"updateId\":1},{\"updateId\":2},{\"updateId\":3}]", updateStatusArr);
     }
 
     /** Test Update Documents in Batches */
@@ -302,13 +280,12 @@ public class DocumentsTest extends AbstractIT {
     public void testUpdateDocumentsInBatches() throws Exception {
 
         String indexUid = "UpdateDocumentsInBatches";
-        Index index = client.createIndex(indexUid);
+        Index index = createEmptyIndex(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task taskIndex = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(taskIndex.getUid());
         Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         List<Movie> toUpdate = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -316,13 +293,13 @@ public class DocumentsTest extends AbstractIT {
             movies[i].setOverview("This star wars movie is for the episode: " + i);
             toUpdate.add(movies[i]);
         }
-        String updateStatusArr = index.updateDocumentsInBatches(this.gson.toJson(toUpdate));
+        Task[] taskArr = index.updateDocumentsInBatches(this.gson.toJson(toUpdate));
 
-        UpdateStatus[] updateStatuses = gson.fromJson(updateStatusArr, UpdateStatus[].class);
-        for (UpdateStatus updateStatus : updateStatuses) {
-            index.waitForPendingUpdate(updateStatus.getUpdateId());
+        for (Task task : taskArr) {
+            index.waitForTask(task.getUid());
+            assertEquals(task.getType(), "documentPartial");
+            assertNotNull(task.getEnqueuedAt());
         }
-        assertEquals("[{\"updateId\":1}]", updateStatusArr);
     }
 
     /** Test GetDocument */
@@ -333,10 +310,9 @@ public class DocumentsTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
         Movie movie =
                 this.gson.fromJson(
                         index.getDocument(testData.getData().get(0).getId()), Movie.class);
@@ -351,10 +327,9 @@ public class DocumentsTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
         Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         assertEquals(20, movies.length);
         for (int i = 0; i < movies.length; i++) {
@@ -379,10 +354,9 @@ public class DocumentsTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
         Movie[] movies = this.gson.fromJson(index.getDocuments(limit), Movie[].class);
         assertEquals(limit, movies.length);
         for (int i = 0; i < movies.length; i++) {
@@ -403,10 +377,9 @@ public class DocumentsTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
         Movie[] movies = this.gson.fromJson(index.getDocuments(limit, offset), Movie[].class);
         Movie[] secondMovies =
                 this.gson.fromJson(index.getDocuments(limit, secondOffset), Movie[].class);
@@ -428,10 +401,9 @@ public class DocumentsTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
         Movie[] movies =
                 this.gson.fromJson(
                         index.getDocuments(limit, offset, attributesToRetrieve), Movie[].class);
@@ -459,10 +431,9 @@ public class DocumentsTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
+        Task task = index.addDocuments(testData.getRaw());
 
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        index.waitForTask(task.getUid());
         Movie[] movies =
                 this.gson.fromJson(
                         index.getDocuments(limit, offset, attributesToRetrieve), Movie[].class);
@@ -490,14 +461,13 @@ public class DocumentsTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        Task task = index.addDocuments(testData.getRaw());
+        index.waitForTask(task.getUid());
 
         Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         Movie toDelete = movies[0];
-        updateInfo = this.gson.fromJson(index.deleteDocument(toDelete.getId()), UpdateStatus.class);
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        task = index.deleteDocument(toDelete.getId());
+        index.waitForTask(task.getUid());
 
         assertThrows(MeiliSearchApiException.class, () -> index.getDocument(toDelete.getId()));
     }
@@ -510,18 +480,16 @@ public class DocumentsTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        Task task = index.addDocuments(testData.getRaw());
+        index.waitForTask(task.getUid());
 
         Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         assertEquals(20, movies.length);
 
         List<String> identifiersToDelete = getIdentifiersToDelete(movies);
 
-        updateInfo =
-                this.gson.fromJson(index.deleteDocuments(identifiersToDelete), UpdateStatus.class);
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        task = index.deleteDocuments(identifiersToDelete);
+        index.waitForTask(task.getUid());
 
         movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
 
@@ -545,15 +513,18 @@ public class DocumentsTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        UpdateStatus updateInfo =
-                this.gson.fromJson(index.addDocuments(testData.getRaw()), UpdateStatus.class);
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        Task taskIndex = index.addDocuments(testData.getRaw());
+        index.waitForTask(taskIndex.getUid());
 
         Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         assertEquals(20, movies.length);
 
-        updateInfo = this.gson.fromJson(index.deleteAllDocuments(), UpdateStatus.class);
-        index.waitForPendingUpdate(updateInfo.getUpdateId());
+        Task task = index.deleteAllDocuments();
+        index.waitForTask(task.getUid());
+
+        assertTrue(task instanceof Task);
+        assertEquals(task.getType(), "clearAll");
+        assertNotNull(task.getEnqueuedAt());
 
         movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
         assertEquals(0, movies.length);

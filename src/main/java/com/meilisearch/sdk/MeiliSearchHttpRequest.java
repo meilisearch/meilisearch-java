@@ -13,7 +13,7 @@ import com.meilisearch.sdk.json.GsonJsonHandler;
 import java.util.Collections;
 import java.util.Map;
 
-/** The HTTP requests for the different functions to be done through MeiliSearch */
+/** The HTTP requests for the different functions to be done through Meilisearch */
 class MeiliSearchHttpRequest {
     private final AbstractHttpClient client;
     private final RequestFactory factory;
@@ -22,7 +22,7 @@ class MeiliSearchHttpRequest {
     /**
      * Constructor for the MeiliSearchHttpRequest
      *
-     * @param config MeiliSearch configuration
+     * @param config Meilisearch configuration
      */
     protected MeiliSearchHttpRequest(Config config) {
         this.client = new DefaultHttpClient(config);

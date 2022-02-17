@@ -34,12 +34,13 @@ public class DefaultHttpClient extends AbstractHttpClient {
             throw new IOException("Unable to open an HttpURLConnection with no URL or method");
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
         connection.setRequestMethod(method);
         connection.setRequestProperty("Content-Type", dataType);
 
         // Use API key header only if one is provided
         if (!"".equals(apiKey)) {
-            connection.setRequestProperty("X-Meili-API-Key", apiKey);
+            connection.setRequestProperty("Authorization", this.config.getBearerApiKey());
         }
 
         return connection;
