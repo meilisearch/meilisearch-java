@@ -36,9 +36,7 @@ public class KeysTest extends AbstractIT {
             assertNotNull(key.getKey());
             assertNotNull(key.getActions());
             assertNotNull(key.getIndexes());
-            // This test should be added to the resolution of this issue
-            // https://github.com/meilisearch/meilisearch/issues/2116
-            // assertNotNull(key.getDescription());
+            assertNotNull(key.getDescription());
             assertNull(key.getExpiresAt());
             assertNotNull(key.getCreatedAt());
             assertNotNull(key.getUpdatedAt());
@@ -60,9 +58,7 @@ public class KeysTest extends AbstractIT {
         assertNotNull(key.getKey());
         assertNotNull(key.getActions());
         assertNotNull(key.getIndexes());
-        // This test should be added to the resolution of this issue
-        // https://github.com/meilisearch/meilisearch/issues/2116
-        // assertNull(key.getDescription());
+        assertNull(key.getDescription());
         assertNull(key.getExpiresAt());
         assertNotNull(key.getCreatedAt());
         assertNotNull(key.getUpdatedAt());
@@ -82,9 +78,7 @@ public class KeysTest extends AbstractIT {
         assertNotNull(key.getKey());
         assertEquals("*", key.getActions()[0]);
         assertEquals("*", key.getIndexes()[0]);
-        // This test should be added to the resolution of this issue
-        // https://github.com/meilisearch/meilisearch/issues/2116
-        // assertNull(key.getDescription());
+        assertNull(key.getDescription());
         assertNull(key.getExpiresAt());
         assertNotNull(key.getCreatedAt());
         assertNotNull(key.getUpdatedAt());
@@ -128,9 +122,7 @@ public class KeysTest extends AbstractIT {
         assertNotNull(key.getKey());
         assertEquals("*", key.getActions()[0]);
         assertEquals("*", key.getIndexes()[0]);
-        // This test should be added to the resolution of this issue
-        // https://github.com/meilisearch/meilisearch/issues/2116
-        // assertNull(key.getDescription());
+        assertNull(key.getDescription());
         assertEquals("2042-01-30", format.format(key.getExpiresAt()));
         assertNotNull(key.getCreatedAt());
         assertNotNull(key.getUpdatedAt());
