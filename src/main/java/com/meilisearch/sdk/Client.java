@@ -3,7 +3,13 @@
  */
 package com.meilisearch.sdk;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.google.gson.Gson;
+import com.meilisearch.sdk.exceptions.MeiliSearchException;
+import java.time.Instant;
+import java.util.Date;
+import java.util.Map;
 
 /** Meilisearch client */
 public class Client {
@@ -241,5 +247,59 @@ public class Client {
      */
     public void deleteKey(String key) throws Exception {
         this.keysHandler.deleteKey(key);
+    }
+
+    public String generateTenantToken(Map<String, Object> searchRules) throws MeiliSearchException {
+        return this.generateTenantToken(searchRules, new TenantTokenOptions());
+    }
+
+    /**
+     * Generate a tenant token
+     *
+     * @param searchRules A Map of string, object which contains the rules to be enforced at search
+     *     time for all or specific accessible indexes for the signing API Key.
+     * @param options A TenantTokenOptions, the following fileds are accepted: - apiKey: String
+     *     containing the API key parent of the token. If you leave it empty the client API Key will
+     *     be used. - expiresAt: A DateTime when the key will expire. Note that if an expiresAt
+     *     value is included it should be in UTC time.
+     * @return String containing the tenant token
+     * @throws MeiliSearchException if an error occurs
+     */
+    public String generateTenantToken(Map<String, Object> searchRules, TenantTokenOptions options)
+            throws MeiliSearchException {
+        // Validate all fields
+        if ((options.getApiKey() == null || options.getApiKey() == "")
+                && this.config.apiKey == "") {
+            throw new MeiliSearchException(
+                    "An api key is required in the client or should be passed as an argument.");
+        }
+        if (options.getExpiresAt() != null
+                && Date.from(Instant.now()).after((Date) options.getExpiresAt())) {
+            throw new MeiliSearchException("The date expiresAt should be in the future.");
+        }
+        if (searchRules == null) {
+            throw new MeiliSearchException(
+                    "The search_rules field is mandatory and should be defined.");
+        }
+
+        String secret;
+        if (options.getApiKey() == null) {
+            secret = this.config.apiKey;
+        } else {
+            secret = (String) options.getApiKey();
+        }
+
+        // Encrypte the Key
+        Algorithm algorithm = Algorithm.HMAC256(secret);
+
+        // Create JWT
+        String jwtToken =
+                JWT.create()
+                        .withClaim("searchRules", searchRules)
+                        .withClaim("apiKeyPrefix", secret.substring(0, 8))
+                        .withExpiresAt(options.getExpiresAt())
+                        .sign(algorithm);
+
+        return jwtToken;
     }
 }

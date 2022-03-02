@@ -5,8 +5,6 @@ import java.util.Date;
 
 /** MeiliSearch response for a Key */
 public class Key {
-    // This field has been set to "" pending resolution of this issue
-    // https://github.com/meilisearch/meilisearch/issues/2116
     protected String description = null;
     protected String key = "";
     protected String[] actions = null;
