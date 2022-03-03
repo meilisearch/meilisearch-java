@@ -286,7 +286,7 @@ public class Client {
         if (options.getApiKey() == null || options.getApiKey() == "") {
             secret = this.config.apiKey;
         } else {
-            secret = (String) options.getApiKey();
+            secret = options.getApiKey();
         }
 
         // Encrypt the key
