@@ -269,7 +269,7 @@ public class Client {
             throws MeiliSearchException {
         // Validate all fields
         if ((options.getApiKey() == null || options.getApiKey() == "")
-                && this.config.apiKey == "") {
+                && (this.config.apiKey == "" || this.config.apiKey == "")) {
             throw new MeiliSearchException(
                     "An api key is required in the client or should be passed as an argument.");
         }
@@ -283,7 +283,7 @@ public class Client {
         }
 
         String secret;
-        if (options.getApiKey() == null) {
+        if (options.getApiKey() == null || options.getApiKey() == "") {
             secret = this.config.apiKey;
         } else {
             secret = (String) options.getApiKey();
