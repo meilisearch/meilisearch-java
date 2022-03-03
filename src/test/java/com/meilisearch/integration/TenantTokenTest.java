@@ -55,10 +55,7 @@ public class TenantTokenTest extends AbstractIT {
 
         Client tokenClient = new Client(new Config("http://localhost:7700", jwtToken));
 
-        SearchResult searchResult = tokenClient.index(indexUid).search("");
-
-        assertEquals(0, searchResult.getHits().size());
-        assertEquals(20, searchResult.getLimit());
+        assertDoesNotThrow(() -> tokenClient.index(indexUid).search(""));
     }
 
     /** Test Create Tenant Token with search rules on one index */
@@ -77,10 +74,7 @@ public class TenantTokenTest extends AbstractIT {
 
         Client tokenClient = new Client(new Config("http://localhost:7700", jwtToken));
 
-        SearchResult searchResult = tokenClient.index(indexUid).search("");
-
-        assertEquals(0, searchResult.getHits().size());
-        assertEquals(20, searchResult.getLimit());
+        assertDoesNotThrow(() -> tokenClient.index(indexUid).search(""));
     }
 
     /** Test Create Tenant Token with filter on search rules */
@@ -137,10 +131,7 @@ public class TenantTokenTest extends AbstractIT {
 
         Client tokenClient = new Client(new Config("http://localhost:7700", jwtToken));
 
-        SearchResult searchResult = tokenClient.index(indexUid).search("");
-
-        assertEquals(0, searchResult.getHits().size());
-        assertEquals(20, searchResult.getLimit());
+        assertDoesNotThrow(() -> tokenClient.index(indexUid).search(""));
     }
 
     /** Test Create Tenant Token with api key */
@@ -160,10 +151,7 @@ public class TenantTokenTest extends AbstractIT {
 
         Client tokenClient = new Client(new Config("http://localhost:7700", jwtToken));
 
-        SearchResult searchResult = tokenClient.index(indexUid).search("");
-
-        assertEquals(0, searchResult.getHits().size());
-        assertEquals(20, searchResult.getLimit());
+        assertDoesNotThrow(() -> tokenClient.index(indexUid).search(""));
     }
 
     /** Test Create Tenant Token with all options */
@@ -186,10 +174,7 @@ public class TenantTokenTest extends AbstractIT {
 
         Client tokenClient = new Client(new Config("http://localhost:7700", jwtToken));
 
-        SearchResult searchResult = tokenClient.index(indexUid).search("");
-
-        assertEquals(0, searchResult.getHits().size());
-        assertEquals(20, searchResult.getLimit());
+        assertDoesNotThrow(() -> tokenClient.index(indexUid).search(""));
     }
 
     /** Test Create Tenant Token with no search rules */
