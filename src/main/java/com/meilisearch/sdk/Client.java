@@ -289,7 +289,7 @@ public class Client {
             secret = (String) options.getApiKey();
         }
 
-        // Encrypte the Key
+        // Encrypt the key
         Algorithm algorithm = Algorithm.HMAC256(secret);
 
         // Create JWT
