@@ -7,9 +7,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.google.gson.Gson;
 import com.meilisearch.sdk.exceptions.MeiliSearchException;
-import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
+import java.util.TimeZone;
 
 /** Meilisearch client */
 public class Client {
@@ -268,14 +268,15 @@ public class Client {
     public String generateTenantToken(Map<String, Object> searchRules, TenantTokenOptions options)
             throws MeiliSearchException {
         // Validate all fields
+        Date now = new Date();
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        if (options.getExpiresAt() != null && now.after((Date) options.getExpiresAt())) {
+            throw new MeiliSearchException("The date expiresAt should be in the future.");
+        }
         if ((options.getApiKey() == null || options.getApiKey() == "")
                 && (this.config.apiKey == "" || this.config.apiKey == "")) {
             throw new MeiliSearchException(
                     "An api key is required in the client or should be passed as an argument.");
-        }
-        if (options.getExpiresAt() != null
-                && Date.from(Instant.now()).after((Date) options.getExpiresAt())) {
-            throw new MeiliSearchException("The date expiresAt should be in the future.");
         }
         if (searchRules == null) {
             throw new MeiliSearchException(

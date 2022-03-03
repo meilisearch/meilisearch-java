@@ -14,17 +14,16 @@ import com.meilisearch.sdk.TenantTokenOptions;
 import com.meilisearch.sdk.exceptions.MeiliSearchException;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.utils.Movie;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-@Tag("token")
+@Tag("integration")
 public class TenantTokenTest extends AbstractIT {
 
     private TestData<Movie> testData;
@@ -122,10 +121,11 @@ public class TenantTokenTest extends AbstractIT {
         Map<String, Object> rules = new HashMap<String, Object>();
         rules.put("*", new HashMap<String, Object>());
 
-        Instant instant = Instant.now();
-        Instant tomorrow = instant.plus(1, ChronoUnit.DAYS);
+        Date today = new Date();
+        Date tomorrow = new Date(today.getTime() + (1000 * 60 * 60 * 24));
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         TenantTokenOptions options = new TenantTokenOptions();
-        options.setExpiresAt(Date.from(tomorrow));
+        options.setExpiresAt(tomorrow);
 
         String jwtToken = privateClient.generateTenantToken(rules, options);
 
@@ -164,11 +164,12 @@ public class TenantTokenTest extends AbstractIT {
         Map<String, Object> rules = new HashMap<String, Object>();
         rules.put("*", new HashMap<String, Object>());
 
-        Instant instant = Instant.now();
-        Instant tomorrow = instant.plus(1, ChronoUnit.DAYS);
+        Date today = new Date();
+        Date tomorrow = new Date(today.getTime() + (1000 * 60 * 60 * 24));
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         TenantTokenOptions options = new TenantTokenOptions();
         options.setApiKey(key.getKey());
-        options.setExpiresAt(Date.from(tomorrow));
+        options.setExpiresAt(tomorrow);
 
         String jwtToken = client.generateTenantToken(rules, options);
 
@@ -199,11 +200,12 @@ public class TenantTokenTest extends AbstractIT {
         Map<String, Object> rules = new HashMap<String, Object>();
         rules.put("*", new HashMap<String, Object>());
 
-        Instant instant = Instant.now();
-        Instant yesterday = instant.minus(1, ChronoUnit.DAYS);
+        Date today = new Date();
+        Date yesterday = new Date(today.getTime() - (1000 * 60 * 60 * 24));
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 
         TenantTokenOptions options = new TenantTokenOptions();
-        options.setExpiresAt(Date.from(yesterday));
+        options.setExpiresAt(yesterday);
 
         assertThrows(
                 MeiliSearchException.class,
