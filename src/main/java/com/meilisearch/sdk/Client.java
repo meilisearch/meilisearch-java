@@ -279,7 +279,7 @@ public class Client {
         }
         if (searchRules == null) {
             throw new MeiliSearchException(
-                    "The search_rules field is mandatory and should be defined.");
+                    "The searchRules field is mandatory and should be defined.");
         }
 
         String secret;
