@@ -269,25 +269,24 @@ public class Client {
             throws MeiliSearchException {
         // Validate all fields
         Date now = new Date();
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-        if (options.getExpiresAt() != null && now.after((Date) options.getExpiresAt())) {
-            throw new MeiliSearchException("The date expiresAt should be in the future.");
-        }
-        if ((options.getApiKey() == null || options.getApiKey() == "")
-                && (this.config.apiKey == "" || this.config.apiKey == "")) {
-            throw new MeiliSearchException(
-                    "An api key is required in the client or should be passed as an argument.");
-        }
-        if (searchRules == null) {
-            throw new MeiliSearchException(
-                    "The searchRules field is mandatory and should be defined.");
-        }
-
         String secret;
+
         if (options.getApiKey() == null || options.getApiKey() == "") {
             secret = this.config.apiKey;
         } else {
             secret = options.getApiKey();
+        }
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        if (options.getExpiresAt() != null && now.after((Date) options.getExpiresAt())) {
+            throw new MeiliSearchException("The date expiresAt should be in the future.");
+        }
+        if (secret == null || secret == "" || secret.length() <= 8) {
+            throw new MeiliSearchException(
+                    "An api key is required in the client or should be passed as an argument and this key cannot be the master key.");
+        }
+        if (searchRules == null) {
+            throw new MeiliSearchException(
+                    "The searchRules field is mandatory and should be defined.");
         }
 
         // Encrypt the key
