@@ -12,7 +12,7 @@ plugins {
 	id 'maven-publish'
 	id 'signing'
 	id 'io.codearte.nexus-staging' version '0.30.0'
-	id "com.diffplug.spotless" version "6.2.1"
+	id "com.diffplug.spotless" version "6.3.0"
 }
 
 group = 'com.meilisearch.sdk'
@@ -35,8 +35,8 @@ configurations {
 
 dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
-	implementation 'com.google.guava:guava:31.0.1-jre'
-	implementation 'com.google.code.gson:gson:2.8.9'
+	implementation 'com.google.guava:guava:31.1-jre'
+	implementation 'com.google.code.gson:gson:2.9.0'
 	implementation 'org.json:json:20211205'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
 	compileOnly group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.1.3'
@@ -46,11 +46,11 @@ dependencies {
 	testImplementation(platform('org.junit:junit-bom:5.8.2'))
 	testImplementation('org.junit.jupiter:junit-jupiter:5.8.2')
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
-	testImplementation 'org.mockito:mockito-core:4.3.1'
+	testImplementation 'org.mockito:mockito-core:4.4.0'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.1'
+	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2'
 	compileOnly group: 'jakarta.json.bind', name: 'jakarta.json.bind-api', version: '2.0.0'
 	testImplementation group: 'org.eclipse', name: 'yasson', version: '2.0.4'
 
