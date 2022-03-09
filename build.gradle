@@ -36,7 +36,7 @@ configurations {
 dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
 	implementation 'com.google.guava:guava:31.0.1-jre'
-	implementation 'com.google.code.gson:gson:2.8.9'
+	implementation 'com.google.code.gson:gson:2.9.0'
 	implementation 'org.json:json:20211205'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
 	compileOnly group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.1.3'
