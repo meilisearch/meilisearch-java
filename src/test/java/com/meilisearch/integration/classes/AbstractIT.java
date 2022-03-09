@@ -69,6 +69,17 @@ public abstract class AbstractIT {
         testData.put(fileName, new TestData<>(rawData, movies));
     }
 
+    public Key getPrivateKey() throws Exception {
+        Key[] keys = client.getKeys();
+        for (Key key : keys) {
+            if ((key.getDescription() == null)
+                    || (key.getDescription().contains("Default Admin API"))) {
+                return key;
+            }
+        }
+        return null;
+    }
+
     public static void deleteAllIndexes() {
         try {
             Client ms = new Client(new Config("http://localhost:7700", "masterKey"));
