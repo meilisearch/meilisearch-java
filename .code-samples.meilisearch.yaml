@@ -522,3 +522,19 @@ security_guide_delete_key_1: |-
 authorization_header_1: |-
   Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
   client.getKeys();
+tenant_token_guide_generate_sdk_1: |-
+  Map<String, Object> filters = new HashMap<String, Object>();
+  filters.put("filter", "user_id = 1");
+  Map<String, Object> searchRules = new HashMap<String, Object>();
+  searchRules.put("patient_medical_records", filters);
+
+  Date expiresAt = new SimpleDateFormat("yyyy-MM-dd").parse("2025-12-20");
+  TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+  TenantTokenOptions options = new TenantTokenOptions();
+  options.setApiKey("B5KdX2MY2jV6EXfUs6scSfmC...");
+  options.setExpiresAt(expiresAt);
+
+  String token = client.generateTenantToken(searchRules, options);
+tenant_token_guide_search_sdk_1: |-
+  Client frontEndClient = new Client(new Config("http://localhost:7700", token));
+  frontEndClient.index("patient_medical_records").search("blood test");
