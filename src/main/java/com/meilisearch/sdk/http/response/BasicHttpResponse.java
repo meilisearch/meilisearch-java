@@ -1,6 +1,7 @@
 package com.meilisearch.sdk.http.response;
 
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 public class BasicHttpResponse implements HttpResponse<String> {
     private final Map<String, String> headers;
@@ -29,7 +30,7 @@ public class BasicHttpResponse implements HttpResponse<String> {
     }
 
     @Override
-    public String getContent() {
+    public String getContent() throws TimeoutException {
         return content;
     }
 

@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 import org.apache.hc.client5.http.async.HttpAsyncClient;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
@@ -75,7 +76,7 @@ public class ApacheHttpClient extends AbstractHttpClient {
         return execute(request);
     }
 
-    private SimpleHttpRequest mapRequest(HttpRequest<?> request) {
+    private SimpleHttpRequest mapRequest(HttpRequest<?> request) throws TimeoutException {
         SimpleHttpRequest httpRequest =
                 new SimpleHttpRequest(request.getMethod().name(), request.getPath());
         if (request.hasContent())

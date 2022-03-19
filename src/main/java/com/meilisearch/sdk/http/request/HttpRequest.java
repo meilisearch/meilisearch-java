@@ -1,9 +1,10 @@
 package com.meilisearch.sdk.http.request;
 
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 public interface HttpRequest<T> {
-    HttpMethod getMethod();
+    HttpMethod getMethod() throws TimeOutException, TimeoutException;
 
     void setMethod(HttpMethod method);
 
@@ -17,7 +18,7 @@ public interface HttpRequest<T> {
 
     boolean hasContent();
 
-    T getContent();
+    T getContent() throws TimeoutException;
 
     byte[] getContentAsBytes();
 }

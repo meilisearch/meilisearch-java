@@ -114,7 +114,6 @@ public class IndexHandler {
                         .getStatusCode()
                 == 204;
     }
-
     /**
      * @param index the indexname
      * @return the index settings

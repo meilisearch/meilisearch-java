@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Collections;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 public class DefaultHttpClient extends AbstractHttpClient {
@@ -45,7 +46,7 @@ public class DefaultHttpClient extends AbstractHttpClient {
         return connection;
     }
 
-    private HttpResponse<?> execute(HttpRequest<?> request) throws IOException {
+    private HttpResponse<?> execute(HttpRequest<?> request) throws IOException, TimeoutException {
         URL url = new URL(this.config.getHostUrl() + request.getPath());
         HttpURLConnection connection =
                 this.getConnection(url, request.getMethod().name(), this.config.getApiKey());

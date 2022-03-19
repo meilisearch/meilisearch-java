@@ -233,7 +233,8 @@ public class DocumentHandler<T> {
                             serviceTemplate.getProcessor().encode(sr)),
                     SearchResponse.class,
                     indexModel);
-        } catch (Exception e) {
+        }
+		catch (Exception e) {
             throw new MeiliSearchRuntimeException(e);
         }
     }

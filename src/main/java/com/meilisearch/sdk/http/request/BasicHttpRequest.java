@@ -2,6 +2,7 @@ package com.meilisearch.sdk.http.request;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 public class BasicHttpRequest implements HttpRequest<String> {
     private HttpMethod method;
@@ -20,7 +21,7 @@ public class BasicHttpRequest implements HttpRequest<String> {
     }
 
     @Override
-    public HttpMethod getMethod() {
+    public HttpMethod getMethod() throws TimeoutException {
         return this.method;
     }
 
@@ -55,7 +56,7 @@ public class BasicHttpRequest implements HttpRequest<String> {
     }
 
     @Override
-    public String getContent() {
+    public String getContent() throws TimeoutException  {
         return content;
     }
 

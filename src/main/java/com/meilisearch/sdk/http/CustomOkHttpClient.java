@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
+
 import okhttp3.*;
 
 public class CustomOkHttpClient extends AbstractHttpClient {
@@ -32,7 +34,7 @@ public class CustomOkHttpClient extends AbstractHttpClient {
         return EMPTY_REQUEST_BODY;
     }
 
-    private Request buildRequest(HttpRequest<?> request) throws MalformedURLException {
+    private Request buildRequest(HttpRequest<?> request) throws MalformedURLException, TimeoutException {
         URL url = new URL(this.config.getHostUrl() + request.getPath());
         Request.Builder builder = new Request.Builder();
         builder.url(url);
