@@ -94,14 +94,14 @@ update_settings_1: |-
   settings.setSearchableAttributes(
     new String[] {
       "title",
-      "description",
-      "genre"
+      "overview",
+      "genres"
     });
   settings.setDisplayedAttributes(
     new String[] {
       "title",
-      "description",
-      "genre",
+      "overview",
+      "genres",
       "release_date"
     });
   settings.setStopWords(
@@ -167,8 +167,8 @@ update_searchable_attributes_1: |-
   client.index("movies").updateSearchableAttributesSettings(new String[]
   {
     "title",
-    "description",
-    "genre"
+    "overview",
+    "genres"
   });
 reset_searchable_attributes_1: |-
   client.index("movies").resetSearchableAttributesSettings();
@@ -186,8 +186,8 @@ update_displayed_attributes_1: |-
   client.index("movies").updateDisplayedAttributesSettings(new String[]
   {
     "title",
-    "description",
-    "genre",
+    "overview",
+    "genres",
     "release_date"
   });
 reset_displayed_attributes_1: |-
@@ -209,8 +209,8 @@ field_properties_guide_searchable_1: |-
   settings.setSearchableAttributes(new String[]
   {
     "title",
-    "description",
-    "genre"
+    "overview",
+    "genres"
   });
   client.index("movies").updateSettings(settings);
 field_properties_guide_displayed_1: |-
@@ -218,8 +218,8 @@ field_properties_guide_displayed_1: |-
   settings.setDisplayedAttributes(new String[]
   {
     "title",
-    "description",
-    "genre",
+    "overview",
+    "genres",
     "release_date"
   });
   client.index("movies").updateSettings(settings);
@@ -311,8 +311,8 @@ settings_guide_searchable_1: |-
   settings.setSearchableAttributes(new String[]
   {
     "title",
-    "description",
-    "genre"
+    "overview",
+    "genres"
   });
   client.index("movies").updateSettings(settings);
 settings_guide_displayed_1: |-
@@ -320,8 +320,8 @@ settings_guide_displayed_1: |-
   settings.setDisplayedAttributes(new String[]
   {
     "title",
-    "description",
-    "genre",
+    "overview",
+    "genres",
     "release_date"
   });
   client.index("movies").updateSettings(settings);
