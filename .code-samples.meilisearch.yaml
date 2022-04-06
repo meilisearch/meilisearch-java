@@ -358,12 +358,90 @@ getting_started_add_documents_md: |-
   ```
 
   [About this SDK](https://github.com/meilisearch/meilisearch-java)
+getting_started_check_task_status_md: |-
+  ```java
+  client.index("movies").getTask(0);
+  ```  
 getting_started_search_md: |-
   ```java
   client.index("movies").search("botman");
   ```
 
   [About this SDK](https://github.com/meilisearch/meilisearch-java)
+getting_started_add_meteorites_md: |-
+  Path fileName = Path.of("meteorites.json");
+  String meteoritesJson = Files.readString(fileName);
+  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+
+  Index index = client.index("meteorites");
+  index.addDocuments(meteoritesJson);
+getting_started_update_rankingRules_md: |-
+  Settings settings = new Settings();
+  settings.setRankingRules(new String[]
+  {
+    "exactness",
+    "words",
+    "typo",
+    "proximity",
+    "attribute",
+    "sort",
+    "release_date:asc",
+    "rank:desc"
+  });
+  client.index("movies").updateSettings(settings);
+getting_started_update_displayedAttributes_md: |-
+  Settings settings = new Settings();
+  settings.setDisplayedAttributes(new String[]
+  {
+        "title",
+        "overview",
+        "poster"
+  });
+  client.index("movies").updateSettings(settings);
+getting_started_update_searchableAttributes_md: |-
+  Settings settings = new Settings();
+  settings.setSearchableAttributes(new String[]
+  {
+    "title"
+  });
+getting_started_update_stop_words_md: |-
+  Settings settings = new Settings();
+  settings.setStopWords(new String[]
+  {
+    "the"
+  });
+  client.index("movies").updateSettings(settings);
+getting_started_synonyms_md: |-
+  Settings settings = new Settings();
+  HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
+  synonyms.put("winnie", new String[] {"piglet"});
+  synonyms.put("piglet", new String[] {"winnie"});
+  settings.setSynonyms(synonyms);
+  client.index("movies").updateSettings(settings);
+getting_started_filtering_md: |-
+  SearchRequest searchRequest =
+    new SearchRequest("").setFilter(new String[] {"mass < 200"});
+  client.index("meteorites").search(searchRequest);
+getting_started_geoRadius_md: |-
+  SearchRequest searchRequest =
+    new SearchRequest("").setFilter(new String[] {"_geoRadius(46.9480, 7.4474, 210000)"});
+  client.index("meteorites").search(searchRequest); 
+getting_started_geoPoint_md: |-
+  SearchRequest searchRequest =
+    new SearchRequest("").setSort(new String[] {"_geoPoint(48.8583701,2.2922926):asc"});
+  client.index("meteorites").search(searchRequest);
+getting_started_sorting_md: |-
+  SearchRequest searchRequest =
+    new SearchRequest("").setFilter(new String[] {"mass < 200"});
+    new SearchRequest("").setSort(new String[] {"mass:asc"});
+getting_started_configure_settings: |-
+  Settings settings = new Settings();
+  settings.setFilterableAttributes(new String[] {"mass", "_geo"});
+  settings.setSortableAttributes(new String[] {"mass", "_geo"});
+  client.index("meteorites").updateSettings(settings);
+getting_started_communicating_with_a_protected_instance: |-
+  Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
+  client.index("movies").search(new SearchRequest(""));
 faceted_search_update_settings_1: |-
   client.index("movies").updateFilterableAttributesSettings(new String[]
   {
