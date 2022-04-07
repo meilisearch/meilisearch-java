@@ -371,8 +371,7 @@ getting_started_add_meteorites: |-
   String meteoritesJson = Files.readString(fileName);
   Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
 
-  Index index = client.index("meteorites");
-  index.addDocuments(meteoritesJson);
+  client.index("meteorites").addDocuments(meteoritesJson);
 getting_started_update_rankingRules: |-
   Settings settings = new Settings();
   settings.setRankingRules(new String[]
