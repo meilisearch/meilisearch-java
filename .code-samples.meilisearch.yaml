@@ -520,11 +520,11 @@ geosearch_guide_filter_settings_1: |-
   client.index("restaurants").updateSettings(settings);
 geosearch_guide_filter_usage_1: |-
   SearchRequest searchRequest =
-    new SearchRequest("").setFilter(new String[] {"_geoRadius(45.4628328, 9.1076931, 2000)"});
+    new SearchRequest("").setFilter(new String[] {"_geoRadius(45.472735, 9.184019, 2000)"});
   client.index("restaurants").search(searchRequest);
 geosearch_guide_filter_usage_2: |-
   SearchRequest searchRequest =
-    new SearchRequest("").setFilter(new String[] {"_geoRadius(45.4628328, 9.1076931, 2000) AND type = pizza"});
+    new SearchRequest("").setFilter(new String[] {"_geoRadius(45.472735, 9.184019, 2000) AND type = pizza"});
   client.index("restaurants").search(searchRequest);
 geosearch_guide_sort_settings_1: |-
   Settings settings = new Settings();
@@ -532,12 +532,12 @@ geosearch_guide_sort_settings_1: |-
   client.index("restaurants").updateSettings(settings);
 geosearch_guide_sort_usage_1: |-
   SearchRequest searchRequest =
-    new SearchRequest("").setSort(new String[] {"_geoPoint(48.8583701,2.2922926):asc"});
+    new SearchRequest("").setSort(new String[] {"_geoPoint(48.8561446,2.2978204):asc"});
   client.index("restaurants").search(searchRequest);
 geosearch_guide_sort_usage_2: |-
   SearchRequest searchRequest =
     new SearchRequest("").setSort(new String[] {
-      "_geoPoint(48.8583701,2.2922926):asc",
+      "_geoPoint(48.8561446,2.2978204):asc",
       "rating:desc",
     });
   client.index("restaurants").search(searchRequest);
