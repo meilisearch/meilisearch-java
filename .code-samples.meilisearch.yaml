@@ -8,9 +8,9 @@ get_one_index_1: |-
 list_all_indexes_1: |-
   client.getAllIndexes();
 create_an_index_1: |-
-  client.createIndex("movies", "movie_id");
+  client.createIndex("movies", "id");
 update_an_index_1: |-
-  client.updateIndex("movies", "movie_review_id");
+  client.updateIndex("movies", "id");
 delete_an_index_1: |-
   client.deleteIndex("movies");
 get_one_document_1: |-
@@ -94,14 +94,14 @@ update_settings_1: |-
   settings.setSearchableAttributes(
     new String[] {
       "title",
-      "description",
-      "genre"
+      "overview",
+      "genres"
     });
   settings.setDisplayedAttributes(
     new String[] {
       "title",
-      "description",
-      "genre",
+      "overview",
+      "genres",
       "release_date"
     });
   settings.setStopWords(
@@ -167,8 +167,8 @@ update_searchable_attributes_1: |-
   client.index("movies").updateSearchableAttributesSettings(new String[]
   {
     "title",
-    "description",
-    "genre"
+    "overview",
+    "genres"
   });
 reset_searchable_attributes_1: |-
   client.index("movies").resetSearchableAttributesSettings();
@@ -186,8 +186,8 @@ update_displayed_attributes_1: |-
   client.index("movies").updateDisplayedAttributesSettings(new String[]
   {
     "title",
-    "description",
-    "genre",
+    "overview",
+    "genres",
     "release_date"
   });
 reset_displayed_attributes_1: |-
@@ -209,8 +209,8 @@ field_properties_guide_searchable_1: |-
   settings.setSearchableAttributes(new String[]
   {
     "title",
-    "description",
-    "genre"
+    "overview",
+    "genres"
   });
   client.index("movies").updateSettings(settings);
 field_properties_guide_displayed_1: |-
@@ -218,8 +218,8 @@ field_properties_guide_displayed_1: |-
   settings.setDisplayedAttributes(new String[]
   {
     "title",
-    "description",
-    "genre",
+    "overview",
+    "genres",
     "release_date"
   });
   client.index("movies").updateSettings(settings);
@@ -232,10 +232,6 @@ filtering_guide_2: |-
     new SearchRequest("Batman").setFilter(new String[] {"release_date > 795484800 AND (director = \"Tim Burton\" OR director = \"Christopher Nolan\")"});
   client.index("movies").search(searchRequest);
 filtering_guide_3: |-
-  SearchRequest searchRequest =
-    new SearchRequest("horror").setFilter(new String[] {"director = \"Jordan Peele\""});
-  client.index("movies").search(searchRequest);
-filtering_guide_4: |-
   SearchRequest searchRequest =
     new SearchRequest("Planet of the Apes").setFilter(new String[] {"rating >= 3 AND (NOT director = \"Tim Burton\")"});
   client.index("movies").search(searchRequest);
@@ -260,14 +256,6 @@ search_parameter_guide_crop_1: |-
 search_parameter_guide_highlight_1: |-
   SearchRequest searchRequest =
     new SearchRequest("and").setAttributesToHighlight(new String[] {"overview"});
-  client.index("movies").search(searchRequest);
-search_parameter_guide_filter_1: |-
-  SearchRequest searchRequest =
-    new SearchRequest("n").setFilter(new String[] {"title = Nightshift"});
-  client.index("movies").search(searchRequest);
-search_parameter_guide_filter_2: |-
-  SearchRequest searchRequest =
-    new SearchRequest("n").setFilter(new String[] {"title = \"Kung Fu Panda\""});
   client.index("movies").search(searchRequest);
 search_parameter_guide_matches_1: |-
   SearchRequest searchRequest = new SearchRequest("winter feast").setMatches(true);
@@ -311,8 +299,8 @@ settings_guide_searchable_1: |-
   settings.setSearchableAttributes(new String[]
   {
     "title",
-    "description",
-    "genre"
+    "overview",
+    "genres"
   });
   client.index("movies").updateSettings(settings);
 settings_guide_displayed_1: |-
@@ -320,8 +308,8 @@ settings_guide_displayed_1: |-
   settings.setDisplayedAttributes(new String[]
   {
     "title",
-    "description",
-    "genre",
+    "overview",
+    "genres",
     "release_date"
   });
   client.index("movies").updateSettings(settings);
@@ -329,23 +317,16 @@ settings_guide_sortable_1: |-
   Settings settings = new Settings();
   settings.setSortableAttributes(new String[]
   {
-    "author",
     "price",
+    "author",
   });
   client.index("books").updateSettings(settings);
 documents_guide_add_movie_1: |-
-  client.index("movies").addDocuments("[{
+  client.index("movies").addDocuments("[{"
     + "\"movie_id\": 123sq178,"
     + "\"title\": \"Amelie Poulain\""
     + "}]"
   );
-search_guide_1: |-
-  SearchRequest searchRequest = new SearchRequest("shifu").setOffset(5).setLimit(10);
-  client.index("movies").search(searchRequest);
-search_guide_2: |-
-  SearchRequest searchRequest =
-    new SearchRequest("Avengers").setFilter(new String[] {"release_date > \"795484800\""});
-  client.index("movies").search(searchRequest);
 getting_started_add_documents_md: |-
   **Maven**
   Add the following code to the `<dependencies>` section of your project:
@@ -377,12 +358,94 @@ getting_started_add_documents_md: |-
   ```
 
   [About this SDK](https://github.com/meilisearch/meilisearch-java)
+getting_started_check_task_status: |-
+  client.index("movies").getTask(0);
 getting_started_search_md: |-
   ```java
   client.index("movies").search("botman");
   ```
 
   [About this SDK](https://github.com/meilisearch/meilisearch-java)
+getting_started_add_meteorites: |-
+  import com.meilisearch.sdk;
+  import org.json.JSONArray;
+  import java.nio.file.Files;
+  import java.nio.file.Path;
+  
+  Path fileName = Path.of("meteorites.json");
+  String meteoritesJson = Files.readString(fileName);
+  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+
+  client.index("meteorites").addDocuments(meteoritesJson);
+getting_started_update_rankingRules: |-
+  Settings settings = new Settings();
+  settings.setRankingRules(new String[]
+  {
+    "exactness",
+    "words",
+    "typo",
+    "proximity",
+    "attribute",
+    "sort",
+    "release_date:asc",
+    "rank:desc"
+  });
+  client.index("movies").updateSettings(settings);
+getting_started_update_displayedAttributes: |-
+  Settings settings = new Settings();
+  settings.setDisplayedAttributes(new String[]
+  {
+        "title",
+        "overview",
+        "poster"
+  });
+  client.index("movies").updateSettings(settings);
+getting_started_update_searchableAttributes: |-
+  Settings settings = new Settings();
+  settings.setSearchableAttributes(new String[]
+  {
+    "title"
+  });
+getting_started_update_stop_words: |-
+  Settings settings = new Settings();
+  settings.setStopWords(new String[]
+  {
+    "the"
+  });
+  client.index("movies").updateSettings(settings);
+getting_started_synonyms: |-
+  Settings settings = new Settings();
+  HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
+  synonyms.put("winnie", new String[] {"piglet"});
+  synonyms.put("piglet", new String[] {"winnie"});
+  settings.setSynonyms(synonyms);
+  client.index("movies").updateSettings(settings);
+getting_started_filtering: |-
+  SearchRequest searchRequest =
+    new SearchRequest("").setFilter(new String[] {"mass < 200"});
+  client.index("meteorites").search(searchRequest);
+getting_started_geoRadius: |-
+  SearchRequest searchRequest =
+    new SearchRequest("").setFilter(new String[] {"_geoRadius(46.9480, 7.4474, 210000)"});
+  client.index("meteorites").search(searchRequest); 
+getting_started_geoPoint: |-
+  SearchRequest searchRequest =
+    new SearchRequest("").setSort(new String[] {"_geoPoint(48.8583701,2.2922926):asc"});
+  client.index("meteorites").search(searchRequest);
+getting_started_sorting: |-
+  SearchRequest searchRequest = new SearchRequest("")
+    .setFilter(new String[] {"mass < 200"})
+    .setSort(new String[] {"mass:asc"});
+  client.index("meteorites").search(searchRequest);
+getting_started_configure_settings: |-
+  Settings settings = new Settings();
+  settings.setFilterableAttributes(new String[] {"mass", "_geo"});
+  settings.setSortableAttributes(new String[] {"mass", "_geo"});
+  client.index("meteorites").updateSettings(settings);
+getting_started_communicating_with_a_protected_instance: |-
+  Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
+  
+  client.index("movies").search(new SearchRequest(""));
 faceted_search_update_settings_1: |-
   client.index("movies").updateFilterableAttributesSettings(new String[]
   {
@@ -399,23 +462,11 @@ faceted_search_facets_distribution_1: |-
   SearchRequest searchRequest =
     new SearchRequest("Batman").setFacetsDistribution(new String[] {"genres"});
   client.index("movies").search(searchRequest);
-faceted_search_walkthrough_filterable_attributes_1: |-
-  client.index("movies").updateFilterableAttributesSettings(new String[]
-  {
-    "director",
-    "producer",
-    "genres",
-    "production_companies"
-  });
 faceted_search_walkthrough_filter_1: |-
   SearchRequest searchRequest =
     new SearchRequest("thriller").setFilterArray(new String[][] {
       new String[] {"genres = Horror", "genres = Mystery"},
       new String[] {"director = \"Jordan Peele\""}});
-  client.index("movies").search(searchRequest);
-faceted_search_walkthrough_facets_distribution_1: |-
-  SearchRequest searchRequest =
-    new SearchRequest("Batman").setFacetsDistribution(new String[] {"genres"});
   client.index("movies").search(searchRequest);
 add_movies_json_1: |-
   import com.meilisearch.sdk;
@@ -428,6 +479,18 @@ add_movies_json_1: |-
   Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
   Index index = client.index("movies");
   index.addDocuments(moviesJson);
+landing_getting_started_1: |-
+  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+
+  client.index("movies").addDocuments("["
+    + "{\"id\": 1, \"title\": \"Carol\"},"
+    + "{\"id\": 2, \"title\": \"Wonder Woman\"},"
+    + "{\"id\": 3, \"title\": \"Life of Pi\"},"
+    + "{\"id\": 4, \"title\": \"Mad Max: Fury Road\"},"
+    + "{\"id\": 5, \"title\": \"Moana\"},"
+    + "{\"id\": 6, \"title\": \"Philadelphia\"}"
+    + "]"
+  );
 post_dump_1: |-
   client.createDump();
 get_dump_status_1: |-
@@ -473,11 +536,11 @@ geosearch_guide_filter_settings_1: |-
   client.index("restaurants").updateSettings(settings);
 geosearch_guide_filter_usage_1: |-
   SearchRequest searchRequest =
-    new SearchRequest("").setFilter(new String[] {"_geoRadius(45.4628328, 9.1076931, 2000)"});
+    new SearchRequest("").setFilter(new String[] {"_geoRadius(45.472735, 9.184019, 2000)"});
   client.index("restaurants").search(searchRequest);
 geosearch_guide_filter_usage_2: |-
   SearchRequest searchRequest =
-    new SearchRequest("").setFilter(new String[] {"_geoRadius(45.4628328, 9.1076931, 2000) AND type = pizza"});
+    new SearchRequest("").setFilter(new String[] {"_geoRadius(45.472735, 9.184019, 2000) AND type = pizza"});
   client.index("restaurants").search(searchRequest);
 geosearch_guide_sort_settings_1: |-
   Settings settings = new Settings();
@@ -485,15 +548,26 @@ geosearch_guide_sort_settings_1: |-
   client.index("restaurants").updateSettings(settings);
 geosearch_guide_sort_usage_1: |-
   SearchRequest searchRequest =
-    new SearchRequest("").setSort(new String[] {"_geoPoint(48.8583701,2.2922926):asc"});
+    new SearchRequest("").setSort(new String[] {"_geoPoint(48.8561446,2.2978204):asc"});
   client.index("restaurants").search(searchRequest);
 geosearch_guide_sort_usage_2: |-
   SearchRequest searchRequest =
     new SearchRequest("").setSort(new String[] {
-      "_geoPoint(48.8583701,2.2922926):asc",
+      "_geoPoint(48.8561446,2.2978204):asc",
       "rating:desc",
     });
   client.index("restaurants").search(searchRequest);
+document_guide_create_index_primary_key: |-
+  client.createIndex("movies", "reference_number");
+document_guide_add_document_primary_key: |-
+  client.index("movies").addDocuments("[{"
+    + "\"reference_number\": 287947,"
+    + "\"title\": \"Shazam\","
+    + "\"poster\": \"https://image.tmdb.org/t/p/w1280/xnopI5Xtky18MPhK40cZAGAOVeV.jpg\","
+    + "\"overview\": \"A boy is given the ability to become an adult superhero in times of need with a single magic word.\","
+    + "\"release_date\": \"2019-03-23\""
+    + "}]"
+  , "reference_number");
 security_guide_search_key_1: |-
   Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
   client.index("patient_medical_records").search();
