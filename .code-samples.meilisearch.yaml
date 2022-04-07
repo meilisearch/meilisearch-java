@@ -367,6 +367,11 @@ getting_started_search_md: |-
 
   [About this SDK](https://github.com/meilisearch/meilisearch-java)
 getting_started_add_meteorites: |-
+  import com.meilisearch.sdk;
+  import org.json.JSONArray;
+  import java.nio.file.Files;
+  import java.nio.file.Path;
+  
   Path fileName = Path.of("meteorites.json");
   String meteoritesJson = Files.readString(fileName);
   Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
@@ -428,10 +433,10 @@ getting_started_geoPoint: |-
     new SearchRequest("").setSort(new String[] {"_geoPoint(48.8583701,2.2922926):asc"});
   client.index("meteorites").search(searchRequest);
 getting_started_sorting: |-
-  SearchRequest searchRequest =
-    new SearchRequest("").setFilter(new String[] {"mass < 200"});
-    new SearchRequest("").setSort(new String[] {"mass:asc"});
-    client.index("meteorites").search(searchRequest);
+  SearchRequest searchRequest = new SearchRequest("")
+    .setFilter(new String[] {"mass < 200"})
+    .setSort(new String[] {"mass:asc"});
+  client.index("meteorites").search(searchRequest);
 getting_started_configure_settings: |-
   Settings settings = new Settings();
   settings.setFilterableAttributes(new String[] {"mass", "_geo"});
@@ -439,6 +444,7 @@ getting_started_configure_settings: |-
   client.index("meteorites").updateSettings(settings);
 getting_started_communicating_with_a_protected_instance: |-
   Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
+  
   client.index("movies").search(new SearchRequest(""));
 faceted_search_update_settings_1: |-
   client.index("movies").updateFilterableAttributesSettings(new String[]
