@@ -317,8 +317,8 @@ settings_guide_sortable_1: |-
   Settings settings = new Settings();
   settings.setSortableAttributes(new String[]
   {
-    "author",
     "price",
+    "author",
   });
   client.index("books").updateSettings(settings);
 documents_guide_add_movie_1: |-
