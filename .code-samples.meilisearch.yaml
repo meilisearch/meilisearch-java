@@ -8,9 +8,9 @@ get_one_index_1: |-
 list_all_indexes_1: |-
   client.getAllIndexes();
 create_an_index_1: |-
-  client.createIndex("movies", "movie_id");
+  client.createIndex("movies", "id");
 update_an_index_1: |-
-  client.updateIndex("movies", "movie_review_id");
+  client.updateIndex("movies", "id");
 delete_an_index_1: |-
   client.deleteIndex("movies");
 get_one_document_1: |-
@@ -358,24 +358,22 @@ getting_started_add_documents_md: |-
   ```
 
   [About this SDK](https://github.com/meilisearch/meilisearch-java)
-getting_started_check_task_status_md: |-
-  ```java
+getting_started_check_task_status: |-
   client.index("movies").getTask(0);
-  ```  
 getting_started_search_md: |-
   ```java
   client.index("movies").search("botman");
   ```
 
   [About this SDK](https://github.com/meilisearch/meilisearch-java)
-getting_started_add_meteorites_md: |-
+getting_started_add_meteorites: |-
   Path fileName = Path.of("meteorites.json");
   String meteoritesJson = Files.readString(fileName);
   Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
 
   Index index = client.index("meteorites");
   index.addDocuments(meteoritesJson);
-getting_started_update_rankingRules_md: |-
+getting_started_update_rankingRules: |-
   Settings settings = new Settings();
   settings.setRankingRules(new String[]
   {
@@ -389,7 +387,7 @@ getting_started_update_rankingRules_md: |-
     "rank:desc"
   });
   client.index("movies").updateSettings(settings);
-getting_started_update_displayedAttributes_md: |-
+getting_started_update_displayedAttributes: |-
   Settings settings = new Settings();
   settings.setDisplayedAttributes(new String[]
   {
@@ -398,39 +396,39 @@ getting_started_update_displayedAttributes_md: |-
         "poster"
   });
   client.index("movies").updateSettings(settings);
-getting_started_update_searchableAttributes_md: |-
+getting_started_update_searchableAttributes: |-
   Settings settings = new Settings();
   settings.setSearchableAttributes(new String[]
   {
     "title"
   });
-getting_started_update_stop_words_md: |-
+getting_started_update_stop_words: |-
   Settings settings = new Settings();
   settings.setStopWords(new String[]
   {
     "the"
   });
   client.index("movies").updateSettings(settings);
-getting_started_synonyms_md: |-
+getting_started_synonyms: |-
   Settings settings = new Settings();
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("winnie", new String[] {"piglet"});
   synonyms.put("piglet", new String[] {"winnie"});
   settings.setSynonyms(synonyms);
   client.index("movies").updateSettings(settings);
-getting_started_filtering_md: |-
+getting_started_filtering: |-
   SearchRequest searchRequest =
     new SearchRequest("").setFilter(new String[] {"mass < 200"});
   client.index("meteorites").search(searchRequest);
-getting_started_geoRadius_md: |-
+getting_started_geoRadius: |-
   SearchRequest searchRequest =
     new SearchRequest("").setFilter(new String[] {"_geoRadius(46.9480, 7.4474, 210000)"});
   client.index("meteorites").search(searchRequest); 
-getting_started_geoPoint_md: |-
+getting_started_geoPoint: |-
   SearchRequest searchRequest =
     new SearchRequest("").setSort(new String[] {"_geoPoint(48.8583701,2.2922926):asc"});
   client.index("meteorites").search(searchRequest);
-getting_started_sorting_md: |-
+getting_started_sorting: |-
   SearchRequest searchRequest =
     new SearchRequest("").setFilter(new String[] {"mass < 200"});
     new SearchRequest("").setSort(new String[] {"mass:asc"});
