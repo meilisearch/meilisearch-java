@@ -431,6 +431,7 @@ getting_started_sorting: |-
   SearchRequest searchRequest =
     new SearchRequest("").setFilter(new String[] {"mass < 200"});
     new SearchRequest("").setSort(new String[] {"mass:asc"});
+    client.index("meteorites").search(searchRequest);
 getting_started_configure_settings: |-
   Settings settings = new Settings();
   settings.setFilterableAttributes(new String[] {"mass", "_geo"});
