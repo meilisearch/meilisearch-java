@@ -390,4 +390,50 @@ public class SettingsHandler {
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/distinct-attribute"),
                 Task.class);
     }
+
+    /**
+     * Gets the typo tolerance settings of a given index Refer
+     * https://docs.meilisearch.com/reference/api/typo-tolerance.html#get-typo-tolerance
+     *
+     * @param uid Index identifier
+     * @return a Map that contains all typo tolerance and their associated words
+     * @throws Exception if an error occurs
+     */
+    public Map<String, String[]> getTypoToleranceSettings(String uid) throws Exception {
+        return this.gson.<Map<String, String[]>>fromJson(
+                meilisearchHttpRequest.get("/indexes/" + uid + "/settings/typo-tolerance"),
+                Map.class);
+    }
+
+    /**
+     * Updates the typo tolerance settings of a given index Refer
+     * https://docs.meilisearch.com/reference/api/typo-tolerance.html#update-typo-tolerance
+     *
+     * @param uid Index identifier
+     * @param typoTolerance a Map that contains the new typo tolerance settings
+     * @return Task instance
+     * @throws Exception if an error occurs
+     */
+    public Task updateTypoToleranceSettings(String uid, Map<String, String[]> typoTolerance)
+            throws Exception {
+        String typoToleranceAsJson = gson.toJson(typoTolerance);
+        return this.gson.fromJson(
+                meilisearchHttpRequest.post(
+                        "/indexes/" + uid + "/settings/typo-tolerance", typoToleranceAsJson),
+                Task.class);
+    }
+
+    /**
+     * Resets the typo tolerance settings of a given index Refer
+     * https://docs.meilisearch.com/reference/api/typo-tolerance.html#reset-typo-tolerance
+     *
+     * @param uid Index identifier
+     * @return Task instance
+     * @throws Exception if an error occurs
+     */
+    public Task resetTypoToleranceSettings(String uid) throws Exception {
+        return this.gson.fromJson(
+                meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/typo-tolerance"),
+                Task.class);
+    }
 }
