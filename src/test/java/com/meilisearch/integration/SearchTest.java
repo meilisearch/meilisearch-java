@@ -270,7 +270,7 @@ public class SearchTest extends AbstractIT {
 
         SearchResult searchResult = index.search(searchRequest);
 
-        assertEquals(3, searchResult.getHits().size());
+        assertEquals(1, searchResult.getHits().size());
         assertNotNull(searchResult.getFacetsDistribution());
     }
 
