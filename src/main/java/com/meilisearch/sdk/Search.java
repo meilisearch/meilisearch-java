@@ -40,6 +40,11 @@ public class Search {
      * @param attributesToRetrieve Attributes to display in the returned documents
      * @param attributesToCrop Attributes whose values have been cropped
      * @param cropLength Length used to crop field values
+     * @param cropMarker String to customize default crop marker, default value: …
+     * @param highlightPreTag String to customize highlight tag before every highlighted query
+     *     terms, default value: <em>
+     * @param highlightPostTag String to customize highlight tag after every highlighted query
+     *     terms, default value: </em>
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
      * @param filter Filter queries by an attribute value
      * @param matches Defines whether an object that contains information about the matches should
@@ -57,6 +62,9 @@ public class Search {
             String[] attributesToRetrieve,
             String[] attributesToCrop,
             int cropLength,
+            String cropMarker,
+            String highlightPreTag,
+            String highlightPostTag,
             String[] attributesToHighlight,
             String[] filter,
             boolean matches,
@@ -72,6 +80,9 @@ public class Search {
                         attributesToRetrieve,
                         attributesToCrop,
                         cropLength,
+                        cropMarker,
+                        highlightPreTag,
+                        highlightPostTag,
                         attributesToHighlight,
                         filter,
                         matches,
@@ -114,6 +125,11 @@ public class Search {
      * @param attributesToRetrieve Attributes to display in the returned documents
      * @param attributesToCrop Attributes whose values have been cropped
      * @param cropLength Length used to crop field values
+     * @param cropMarker String to customize default crop marker, default value: …
+     * @param highlightPreTag String to customize highlight tag before every highlighted query
+     *     terms, default value: <em>
+     * @param highlightPostTag String to customize highlight tag after every highlighted query
+     *     terms, default value: </em>
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
      * @param filter Filter queries by an attribute value
      * @param matches Defines whether an object that contains information about the matches should
@@ -131,6 +147,9 @@ public class Search {
             String[] attributesToRetrieve,
             String[] attributesToCrop,
             int cropLength,
+            String cropMarker,
+            String highlightPreTag,
+            String highlightPostTag,
             String[] attributesToHighlight,
             String[] filter,
             boolean matches,
@@ -146,6 +165,9 @@ public class Search {
                         attributesToRetrieve,
                         attributesToCrop,
                         cropLength,
+                        cropMarker,
+                        highlightPreTag,
+                        highlightPostTag,
                         attributesToHighlight,
                         filter,
                         matches,
