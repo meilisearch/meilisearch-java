@@ -147,11 +147,37 @@ public class SearchTest extends AbstractIT {
         SearchRequest searchRequest =
                 new SearchRequest("and")
                         .setAttributesToCrop(new String[] {"overview"})
-                        .setCropLength(5);
+                        .setCropLength(1);
 
-        SearchResult searchResult = index.search(searchRequest);
+        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, searchResult.getHits().size());
+        assertEquals(20, res_gson.hits.length);
+        assertEquals(5, res_gson.hits[0].getFormatted().getOverview().length());
+        assertEquals("…and…", res_gson.hits[0].getFormatted().getOverview());
+    }
+
+    /** Test search with customized crop marker */
+    @Test
+    public void testSearchCropMarker() throws Exception {
+        String indexUid = "SearchCropMarker";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        Task task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getUid());
+
+        SearchRequest searchRequest =
+                new SearchRequest("and")
+                        .setAttributesToCrop(new String[] {"overview"})
+                        .setCropLength(1)
+                        .setCropMarker("(ꈍᴗꈍ)");
+
+        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+
+        assertEquals(20, res_gson.hits.length);
+        assertEquals("(ꈍᴗꈍ)and(ꈍᴗꈍ)", res_gson.hits[0].getFormatted().getOverview());
     }
 
     /** Test search highlight */
@@ -167,11 +193,40 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(task.getUid());
 
         SearchRequest searchRequest =
-                new SearchRequest("and").setAttributesToHighlight(new String[] {"overview"});
+                new SearchRequest("and").setAttributesToHighlight(new String[] {"title"});
 
-        SearchResult searchResult = index.search(searchRequest);
+        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, searchResult.getHits().size());
+        assertEquals(20, res_gson.hits.length);
+        assertEquals(
+                "Harry Potter <em>and</em> the Philosopher's Stone",
+                res_gson.hits[0].getFormatted().getTitle());
+    }
+
+    /** Test search with customized highlight */
+    @Test
+    public void testSearchWithCustomizedHighlight() throws Exception {
+        String indexUid = "SearchHighlight";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        Task task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getUid());
+
+        SearchRequest searchRequest =
+                new SearchRequest("and")
+                        .setAttributesToHighlight(new String[] {"title"})
+                        .setHighlightPreTag("(⊃｡•́‿•̀｡)⊃ ")
+                        .setHighlightPostTag(" ⊂(´• ω •`⊂)");
+
+        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+
+        assertEquals(20, res_gson.hits.length);
+        assertEquals(
+                "Harry Potter (⊃｡•́‿•̀｡)⊃ and ⊂(´• ω •`⊂) the Philosopher's Stone",
+                res_gson.hits[0].getFormatted().getTitle());
     }
 
     /** Test search with phrase */
