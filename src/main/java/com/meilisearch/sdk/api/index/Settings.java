@@ -1,6 +1,7 @@
 package com.meilisearch.sdk.api.index;
 
 import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.TypoTolerance;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ public class Settings {
     private String[] searchableAttributes;
     private String[] displayedAttributes;
     private String[] sortableAttributes;
+    private TypoTolerance typoTolerance;
 
     /** Empty SettingsRequest constructor */
     public Settings() {}
@@ -84,5 +86,13 @@ public class Settings {
 
     public void setSortableAttributes(String[] sortableAttributes) {
         this.sortableAttributes = sortableAttributes;
+    }
+
+    public TypoTolerance getTypoTolerance() {
+        return typoTolerance;
+    }
+
+    public void setTypoTolerance(TypoTolerance typoTolerance) {
+        this.typoTolerance = typoTolerance;
     }
 }

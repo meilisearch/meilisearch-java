@@ -19,7 +19,7 @@ public class Settings {
     @Getter @Setter private String[] searchableAttributes;
     @Getter @Setter private String[] displayedAttributes;
     @Getter @Setter private String[] sortableAttributes;
-    @Getter @Setter private HashMap<String, String[]> typoTolerance;
+    @Getter @Setter private TypoTolerance typoTolerance;
 
     /** Empty SettingsRequest constructor */
     public Settings() {}
@@ -56,7 +56,7 @@ public class Settings {
             jsonObject.put("sortableAttributes", this.getSortableAttributes());
         }
         if (this.getTypoTolerance() != null) {
-            jsonObject.put("typoTolerance", this.getTypoTolerance());
+            jsonObject.put("typoTolerance", this.getTypoTolerance().toJson());
         }
         return jsonObject.toString();
     }

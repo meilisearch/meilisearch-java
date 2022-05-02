@@ -399,8 +399,8 @@ public class SettingsHandler {
      * @return a Map that contains all typo tolerance and their associated words
      * @throws Exception if an error occurs
      */
-    public Map<String, String[]> getTypoToleranceSettings(String uid) throws Exception {
-        return this.gson.<Map<String, String[]>>fromJson(
+    public TypoTolerance getTypoToleranceSettings(String uid) throws Exception {
+        return this.gson.<TypoTolerance>fromJson(
                 meilisearchHttpRequest.get("/indexes/" + uid + "/settings/typo-tolerance"),
                 Map.class);
     }
@@ -414,7 +414,7 @@ public class SettingsHandler {
      * @return Task instance
      * @throws Exception if an error occurs
      */
-    public Task updateTypoToleranceSettings(String uid, Map<String, String[]> typoTolerance)
+    public Task updateTypoToleranceSettings(String uid, TypoTolerance typoTolerance)
             throws Exception {
         String typoToleranceAsJson = gson.toJson(typoTolerance);
         return this.gson.fromJson(

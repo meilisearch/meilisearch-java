@@ -18,6 +18,7 @@ public class Details {
     protected String[] stopWords;
     protected Map<String, String[]> synonyms;
     protected String distinctAttribute;
+    protected TypoTolerance typoTolerance;
 
     public int getReceivedDocuments() {
         return receivedDocuments;
@@ -113,5 +114,13 @@ public class Details {
 
     public void setDistinctAttribute(String distinctAttribute) {
         this.distinctAttribute = distinctAttribute;
+    }
+
+    public TypoTolerance getTypoTolerance() {
+        return typoTolerance;
+    }
+
+    public void setTypoTolerance(TypoTolerance typoTolerance) {
+        this.typoTolerance = typoTolerance;
     }
 }
