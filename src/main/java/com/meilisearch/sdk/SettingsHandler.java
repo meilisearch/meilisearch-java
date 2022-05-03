@@ -396,13 +396,13 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/typo-tolerance.html#get-typo-tolerance
      *
      * @param uid Index identifier
-     * @return a Map that contains all typo tolerance and their associated words
+     * @return a TypoTolerance instance that contains all typo tolerance settings
      * @throws Exception if an error occurs
      */
     public TypoTolerance getTypoToleranceSettings(String uid) throws Exception {
         return this.gson.<TypoTolerance>fromJson(
                 meilisearchHttpRequest.get("/indexes/" + uid + "/settings/typo-tolerance"),
-                Map.class);
+                TypoTolerance.class);
     }
 
     /**
@@ -410,7 +410,7 @@ public class SettingsHandler {
      * https://docs.meilisearch.com/reference/api/typo-tolerance.html#update-typo-tolerance
      *
      * @param uid Index identifier
-     * @param typoTolerance a Map that contains the new typo tolerance settings
+     * @param typoTolerance a TypoTolerance instance that contains the new typo tolerance settings
      * @return Task instance
      * @throws Exception if an error occurs
      */
