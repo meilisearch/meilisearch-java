@@ -120,16 +120,16 @@ public class SearchTest extends AbstractIT {
         SearchRequest searchRequest =
                 new SearchRequest("a").setAttributesToRetrieve(new String[] {"id", "title"});
 
-        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, res_gson.hits.length);
-        assertThat(res_gson.hits[0].getId(), instanceOf(String.class));
-        assertThat(res_gson.hits[0].getTitle(), instanceOf(String.class));
-        assertNull(res_gson.hits[0].getPoster());
-        assertNull(res_gson.hits[0].getOverview());
-        assertNull(res_gson.hits[0].getRelease_date());
-        assertNull(res_gson.hits[0].getLanguage());
-        assertNull(res_gson.hits[0].getGenres());
+        assertEquals(20, resGson.hits.length);
+        assertThat(resGson.hits[0].getId(), instanceOf(String.class));
+        assertThat(resGson.hits[0].getTitle(), instanceOf(String.class));
+        assertNull(resGson.hits[0].getPoster());
+        assertNull(resGson.hits[0].getOverview());
+        assertNull(resGson.hits[0].getRelease_date());
+        assertNull(resGson.hits[0].getLanguage());
+        assertNull(resGson.hits[0].getGenres());
     }
 
     /** Test search crop */
@@ -147,11 +147,37 @@ public class SearchTest extends AbstractIT {
         SearchRequest searchRequest =
                 new SearchRequest("and")
                         .setAttributesToCrop(new String[] {"overview"})
-                        .setCropLength(5);
+                        .setCropLength(1);
 
-        SearchResult searchResult = index.search(searchRequest);
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, searchResult.getHits().size());
+        assertEquals(20, resGson.hits.length);
+        assertEquals(5, resGson.hits[0].getFormatted().getOverview().length());
+        assertEquals("…and…", resGson.hits[0].getFormatted().getOverview());
+    }
+
+    /** Test search with customized crop marker */
+    @Test
+    public void testSearchCropMarker() throws Exception {
+        String indexUid = "SearchCropMarker";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        Task task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getUid());
+
+        SearchRequest searchRequest =
+                new SearchRequest("and")
+                        .setAttributesToCrop(new String[] {"overview"})
+                        .setCropLength(1)
+                        .setCropMarker("(ꈍᴗꈍ)");
+
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+
+        assertEquals(20, resGson.hits.length);
+        assertEquals("(ꈍᴗꈍ)and(ꈍᴗꈍ)", resGson.hits[0].getFormatted().getOverview());
     }
 
     /** Test search highlight */
@@ -167,11 +193,40 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(task.getUid());
 
         SearchRequest searchRequest =
-                new SearchRequest("and").setAttributesToHighlight(new String[] {"overview"});
+                new SearchRequest("and").setAttributesToHighlight(new String[] {"title"});
 
-        SearchResult searchResult = index.search(searchRequest);
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, searchResult.getHits().size());
+        assertEquals(20, resGson.hits.length);
+        assertEquals(
+                "Harry Potter <em>and</em> the Philosopher's Stone",
+                resGson.hits[0].getFormatted().getTitle());
+    }
+
+    /** Test search with customized highlight */
+    @Test
+    public void testSearchWithCustomizedHighlight() throws Exception {
+        String indexUid = "SearchHighlight";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        Task task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getUid());
+
+        SearchRequest searchRequest =
+                new SearchRequest("and")
+                        .setAttributesToHighlight(new String[] {"title"})
+                        .setHighlightPreTag("(⊃｡•́‿•̀｡)⊃ ")
+                        .setHighlightPostTag(" ⊂(´• ω •`⊂)");
+
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+
+        assertEquals(20, resGson.hits.length);
+        assertEquals(
+                "Harry Potter (⊃｡•́‿•̀｡)⊃ and ⊂(´• ω •`⊂) the Philosopher's Stone",
+                resGson.hits[0].getFormatted().getTitle());
     }
 
     /** Test search with phrase */
@@ -186,11 +241,11 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getUid());
 
-        Results res_gson = jsonGson.decode(index.rawSearch("coco \"harry\""), Results.class);
+        Results resGson = jsonGson.decode(index.rawSearch("coco \"harry\""), Results.class);
 
-        assertEquals(1, res_gson.hits.length);
-        assertEquals("671", res_gson.hits[0].getId());
-        assertEquals("Harry Potter and the Philosopher's Stone", res_gson.hits[0].getTitle());
+        assertEquals(1, resGson.hits.length);
+        assertEquals("671", resGson.hits[0].getId());
+        assertEquals("Harry Potter and the Philosopher's Stone", resGson.hits[0].getTitle());
     }
 
     /** Test search filter */
@@ -213,11 +268,11 @@ public class SearchTest extends AbstractIT {
         SearchRequest searchRequest =
                 new SearchRequest("and").setFilter(new String[] {"title = \"The Dark Knight\""});
 
-        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(1, res_gson.hits.length);
-        assertEquals("155", res_gson.hits[0].getId());
-        assertEquals("The Dark Knight", res_gson.hits[0].getTitle());
+        assertEquals(1, resGson.hits.length);
+        assertEquals("155", resGson.hits[0].getId());
+        assertEquals("The Dark Knight", resGson.hits[0].getTitle());
     }
 
     /** Test search filter complex */
@@ -241,11 +296,11 @@ public class SearchTest extends AbstractIT {
                 new SearchRequest("and")
                         .setFilter(new String[] {"title = \"The Dark Knight\" OR id = 290859"});
 
-        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(2, res_gson.hits.length);
-        assertEquals("155", res_gson.hits[0].getId());
-        assertEquals("290859", res_gson.hits[1].getId());
+        assertEquals(2, resGson.hits.length);
+        assertEquals("155", resGson.hits[0].getId());
+        assertEquals("290859", resGson.hits[1].getId());
     }
 
     /** Test search facet distribution */
@@ -293,15 +348,15 @@ public class SearchTest extends AbstractIT {
 
         SearchRequest searchRequest = new SearchRequest("and").setSort(new String[] {"title:asc"});
 
-        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, res_gson.hits.length);
-        assertEquals("671", res_gson.hits[0].getId());
-        assertEquals("Harry Potter and the Philosopher's Stone", res_gson.hits[0].getTitle());
-        assertEquals("495764", res_gson.hits[1].getId());
+        assertEquals(20, resGson.hits.length);
+        assertEquals("671", resGson.hits[0].getId());
+        assertEquals("Harry Potter and the Philosopher's Stone", resGson.hits[0].getTitle());
+        assertEquals("495764", resGson.hits[1].getId());
         assertEquals(
                 "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)",
-                res_gson.hits[1].getTitle());
+                resGson.hits[1].getTitle());
     }
 
     /** Test search sort */
@@ -323,15 +378,15 @@ public class SearchTest extends AbstractIT {
 
         SearchRequest searchRequest = new SearchRequest("and").setSort(new String[] {"id:asc"});
 
-        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, res_gson.hits.length);
-        assertEquals("671", res_gson.hits[0].getId());
-        assertEquals("Harry Potter and the Philosopher's Stone", res_gson.hits[0].getTitle());
-        assertEquals("495764", res_gson.hits[1].getId());
+        assertEquals(20, resGson.hits.length);
+        assertEquals("671", resGson.hits[0].getId());
+        assertEquals("Harry Potter and the Philosopher's Stone", resGson.hits[0].getTitle());
+        assertEquals("495764", resGson.hits[1].getId());
         assertEquals(
                 "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)",
-                res_gson.hits[1].getTitle());
+                resGson.hits[1].getTitle());
     }
 
     /** Test search sort */
@@ -354,13 +409,13 @@ public class SearchTest extends AbstractIT {
         SearchRequest searchRequest =
                 new SearchRequest("dark").setSort(new String[] {"id:asc", "title:asc"});
 
-        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(3, res_gson.hits.length);
-        assertEquals("155", res_gson.hits[0].getId());
-        assertEquals("The Dark Knight", res_gson.hits[0].getTitle());
-        assertEquals("290859", res_gson.hits[1].getId());
-        assertEquals("Terminator: Dark Fate", res_gson.hits[1].getTitle());
+        assertEquals(3, resGson.hits.length);
+        assertEquals("155", resGson.hits[0].getId());
+        assertEquals("The Dark Knight", resGson.hits[0].getTitle());
+        assertEquals("290859", resGson.hits[1].getId());
+        assertEquals("Terminator: Dark Fate", resGson.hits[1].getTitle());
     }
 
     /** Test search sort */
@@ -383,13 +438,13 @@ public class SearchTest extends AbstractIT {
         SearchRequest searchRequest =
                 new SearchRequest("").setSort(new String[] {"id:asc", "title:asc"});
 
-        Results res_gson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, res_gson.hits.length);
-        assertEquals("155", res_gson.hits[0].getId());
-        assertEquals("The Dark Knight", res_gson.hits[0].getTitle());
-        assertEquals("671", res_gson.hits[1].getId());
-        assertEquals("Harry Potter and the Philosopher's Stone", res_gson.hits[1].getTitle());
+        assertEquals(20, resGson.hits.length);
+        assertEquals("155", resGson.hits[0].getId());
+        assertEquals("The Dark Knight", resGson.hits[0].getTitle());
+        assertEquals("671", resGson.hits[1].getId());
+        assertEquals("Harry Potter and the Philosopher's Stone", resGson.hits[1].getTitle());
     }
 
     /** Test search matches */
