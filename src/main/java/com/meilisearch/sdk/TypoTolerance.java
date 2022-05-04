@@ -4,9 +4,6 @@ import java.util.HashMap;
 import org.json.JSONObject;
 
 public class TypoTolerance {
-
-    public TypoTolerance() {}
-
     protected boolean enabled = false;
     protected HashMap<String, Integer> minWordSizeForTypos;
     protected String[] disableOnWords;

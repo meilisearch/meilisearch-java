@@ -393,7 +393,7 @@ public class SettingsHandler {
 
     /**
      * Gets the typo tolerance settings of a given index Refer
-     * https://docs.meilisearch.com/reference/api/typo-tolerance.html#get-typo-tolerance
+     * https://docs.meilisearch.com/reference/api/typo_tolerance.html#get-typo-tolerance
      *
      * @param uid Index identifier
      * @return a TypoTolerance instance that contains all typo tolerance settings
@@ -407,7 +407,7 @@ public class SettingsHandler {
 
     /**
      * Updates the typo tolerance settings of a given index Refer
-     * https://docs.meilisearch.com/reference/api/typo-tolerance.html#update-typo-tolerance
+     * https://docs.meilisearch.com/reference/api/typo_tolerance.html#update-typo-tolerance
      *
      * @param uid Index identifier
      * @param typoTolerance a TypoTolerance instance that contains the new typo tolerance settings
@@ -425,7 +425,7 @@ public class SettingsHandler {
 
     /**
      * Resets the typo tolerance settings of a given index Refer
-     * https://docs.meilisearch.com/reference/api/typo-tolerance.html#reset-typo-tolerance
+     * https://docs.meilisearch.com/reference/api/typo_tolerance.html#reset-typo-tolerance
      *
      * @param uid Index identifier
      * @return Task instance

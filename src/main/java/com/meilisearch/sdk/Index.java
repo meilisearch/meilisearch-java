@@ -569,9 +569,9 @@ public class Index implements Serializable {
 
     /**
      * Get the typo tolerance field of an index.
-     * https://docs.meilisearch.com/reference/api/distinct_attribute.html#get-distinct-attribute
+     * https://docs.meilisearch.com/reference/api/typo_tolerance.html#get-typo-tolerance
      *
-     * @return typo tolerance field of a given uid as TypoTolerance instance
+     * @return TypoTolerance instance from Index
      * @throws Exception if an error occurs
      */
     public TypoTolerance getTypoToleranceSettings() throws Exception {
@@ -580,7 +580,7 @@ public class Index implements Serializable {
 
     /**
      * Update the typo tolerance field of an index.
-     * https://docs.meilisearch.com/reference/api/distinct_attribute.html#update-distinct-attribute
+     * https://docs.meilisearch.com/reference/api/typo_tolerance.html#update-typo-tolerance
      *
      * @param typoTolerance A TypoTolerance instance
      * @return Task instance
@@ -592,7 +592,7 @@ public class Index implements Serializable {
 
     /**
      * Reset the typo tolerance field of an index to its default value.
-     * https://docs.meilisearch.com/reference/api/distinct_attribute.html#reset-distinct-attribute
+     * https://docs.meilisearch.com/reference/api/typo_tolerance.html#reset-typo-tolerance
      *
      * @return Task instance
      * @throws Exception if an error occurs
