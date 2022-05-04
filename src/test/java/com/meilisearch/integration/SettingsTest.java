@@ -122,7 +122,7 @@ public class SettingsTest extends AbstractIT {
 
         assertEquals(1, newSettings.getTypoTolerance().getDisableOnWords().length);
         assertEquals(1, newSettings.getTypoTolerance().getDisableOnAttributes().length);
-        assertEquals(true, newSettings.getTypoTolerance().getEnabled());
+        assertEquals(true, newSettings.getTypoTolerance().isEnabled());
     }
 
     @Test
@@ -539,7 +539,7 @@ public class SettingsTest extends AbstractIT {
                 initialSettings.getTypoTolerance().getDisableOnAttributes().length,
                 initialTypoTolerance.getDisableOnAttributes().length);
         assertEquals(
-                initialSettings.getTypoTolerance().getEnabled(), initialTypoTolerance.getEnabled());
+                initialSettings.getTypoTolerance().isEnabled(), initialTypoTolerance.isEnabled());
         assertTrue(
                 initialTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo")
                         && initialTypoTolerance.getMinWordSizeForTypos().get("oneTypo") != null);
@@ -575,7 +575,7 @@ public class SettingsTest extends AbstractIT {
         assertEquals(
                 newTypoTolerance.getDisableOnAttributes().length,
                 updatedTypoTolerance.getDisableOnAttributes().length);
-        assertEquals(newTypoTolerance.getEnabled(), updatedTypoTolerance.getEnabled());
+        assertEquals(newTypoTolerance.isEnabled(), updatedTypoTolerance.isEnabled());
         assertTrue(
                 updatedTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo")
                         && updatedTypoTolerance.getMinWordSizeForTypos().get("oneTypo") == 7);
@@ -615,7 +615,7 @@ public class SettingsTest extends AbstractIT {
         assertEquals(
                 newTypoTolerance.getDisableOnAttributes().length,
                 updatedTypoTolerance.getDisableOnAttributes().length);
-        assertEquals(newTypoTolerance.getEnabled(), updatedTypoTolerance.getEnabled());
+        assertEquals(newTypoTolerance.isEnabled(), updatedTypoTolerance.isEnabled());
 
         assertEquals(
                 initialTypoTolerance.getDisableOnWords().length,
@@ -623,7 +623,7 @@ public class SettingsTest extends AbstractIT {
         assertEquals(
                 initialTypoTolerance.getDisableOnAttributes().length,
                 typoToleranceAfterReset.getDisableOnAttributes().length);
-        assertEquals(initialTypoTolerance.getEnabled(), typoToleranceAfterReset.getEnabled());
+        assertEquals(initialTypoTolerance.isEnabled(), typoToleranceAfterReset.isEnabled());
         assertTrue(
                 typoToleranceAfterReset.getMinWordSizeForTypos().containsKey("oneTypo")
                         && typoToleranceAfterReset.getMinWordSizeForTypos().get("oneTypo") != null);
