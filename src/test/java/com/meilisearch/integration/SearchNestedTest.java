@@ -10,7 +10,6 @@ import com.meilisearch.sdk.Settings;
 import com.meilisearch.sdk.Task;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.utils.Movie;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -32,13 +31,9 @@ public class SearchNestedTest extends AbstractIT {
 
     @BeforeEach
     public void initialize() {
+        cleanup();
         this.setUp();
         if (testData == null) testData = this.getTestData(NESTED_MOVIES, Movie.class);
-    }
-
-    @AfterAll
-    static void cleanMeiliSearch() {
-        cleanup();
     }
 
     /** Test basic search in nested fields */
