@@ -261,11 +261,11 @@ search_parameter_guide_crop_marker_1: |-
   client.index("movies").search(searchRequest);
 search_parameter_guide_highlight_1: |-
   SearchRequest searchRequest =
-    new SearchRequest("and").setAttributesToHighlight(new String[] {"overview"});
+    new SearchRequest("winter feast").setAttributesToHighlight(new String[] {"overview"});
   client.index("movies").search(searchRequest);
 search_parameter_guide_highlight_tag_1: |-
   SearchRequest searchRequest =
-    new SearchRequest("and")
+    new SearchRequest("winter feast")
     .setAttributesToHighlight(new String[] {"overview"})
     .setHighlightPreTag("<span class=\"highlight\">")
     .setHighlightPostTag("</span>");
