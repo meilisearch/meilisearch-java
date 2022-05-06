@@ -2,19 +2,20 @@ package com.meilisearch.sdk.api.documents;
 
 import java.util.Collections;
 import java.util.List;
+import lombok.Getter;
 
 public class SearchRequest {
-    private final String q;
-    private final int offset;
-    private final int limit;
-    private final String[] filter;
-    private final String[][] filterArray;
-    private final List<String> attributesToRetrieve;
-    private final List<String> attributesToCrop;
-    private final int cropLength;
-    private final List<String> attributesToHighlight;
-    private final boolean matches;
-    private final List<String> sort;
+   @Getter private final String q;
+   @Getter private final int offset;
+   @Getter private final int limit;
+   @Getter private final String[] filter;
+   @Getter private final String[][] filterArray;
+   @Getter private final List<String> attributesToRetrieve;
+   @Getter private final List<String> attributesToCrop;
+   @Getter private final int cropLength;
+   @Getter private final List<String> attributesToHighlight;
+   @Getter private final boolean matches;
+   @Getter private final List<String> sort;
 
     public SearchRequest(String q) {
         this(q, 0);
@@ -94,49 +95,5 @@ public class SearchRequest {
         this.filterArray = filterArray;
         this.matches = matches;
         this.sort = sort;
-    }
-
-    public String getQ() {
-        return q;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public List<String> getAttributesToRetrieve() {
-        return attributesToRetrieve;
-    }
-
-    public List<String> getAttributesToCrop() {
-        return attributesToCrop;
-    }
-
-    public int getCropLength() {
-        return cropLength;
-    }
-
-    public List<String> getAttributesToHighlight() {
-        return attributesToHighlight;
-    }
-
-    public String[] getFilter() {
-        return filter;
-    }
-
-    public String[][] getFilterArray() {
-        return filterArray;
-    }
-
-    public List<String> getSort() {
-        return sort;
-    }
-
-    public boolean isMatches() {
-        return matches;
     }
 }

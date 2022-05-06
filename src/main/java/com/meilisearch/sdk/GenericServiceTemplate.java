@@ -10,10 +10,12 @@ import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.HttpResponse;
 import com.meilisearch.sdk.json.JsonHandler;
 
+import lombok.Getter;
+
 public class GenericServiceTemplate implements ServiceTemplate {
-    private final AbstractHttpClient client;
-    private final JsonHandler processor;
-    private final RequestFactory requestFactory;
+    @Getter private final AbstractHttpClient client;
+    @Getter private final JsonHandler processor;
+    @Getter private final RequestFactory requestFactory;
 
     /**
      * @param client a {@link HttpClient}

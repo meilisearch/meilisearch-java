@@ -1,9 +1,12 @@
 package com.meilisearch.sdk;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /** Meilisearch configuration */
 public class Config {
-    String hostUrl;
-    String apiKey;
+    @Getter @Setter String hostUrl;
+    @Getter @Setter String apiKey;
 
     /**
      * Creates a configuration without an API key
@@ -23,24 +26,6 @@ public class Config {
     public Config(String hostUrl, String apiKey) {
         this.hostUrl = hostUrl;
         this.apiKey = apiKey;
-    }
-
-    /**
-     * Method for returning the hostUrl
-     *
-     * @return host URL string of the Meilisearch instance
-     */
-    public String getHostUrl() {
-        return hostUrl;
-    }
-
-    /**
-     * Method for returning the apiKey
-     *
-     * @return API key String
-     */
-    public String getApiKey() {
-        return apiKey;
     }
 
     /**

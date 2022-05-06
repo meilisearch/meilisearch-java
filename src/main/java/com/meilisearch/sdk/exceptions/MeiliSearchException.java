@@ -1,13 +1,16 @@
 package com.meilisearch.sdk.exceptions;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class MeiliSearchException extends Exception {
 
     /** This is a generic class for Meilisearch Exception handling */
-    String message;
+    @Getter @Setter String message;
 
-    String type;
-    String code;
-    String link;
+    @Getter @Setter String type;
+    @Getter @Setter String code;
+    @Getter @Setter String link;
 
     public MeiliSearchException(String message) {
         super(message);

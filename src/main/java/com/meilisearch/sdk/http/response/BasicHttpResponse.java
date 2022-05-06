@@ -1,11 +1,12 @@
 package com.meilisearch.sdk.http.response;
 
 import java.util.Map;
+import lombok.Getter;
 
 public class BasicHttpResponse implements HttpResponse<String> {
-    private final Map<String, String> headers;
-    private final int statusCode;
-    private final String content;
+    @Getter private final Map<String, String> headers;
+    @Getter private final int statusCode;
+    @Getter private final String content;
 
     public BasicHttpResponse(Map<String, String> headers, int statusCode, String content) {
         this.headers = headers;

@@ -2,12 +2,14 @@ package com.meilisearch.sdk.http.request;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import lombok.Setter;
+import lombok.Getter;
 
 public class BasicHttpRequest implements HttpRequest<String> {
-    private HttpMethod method;
-    private String path;
-    private Map<String, String> headers;
-    private String content;
+    @Getter @Setter private HttpMethod method;
+    @Getter @Setter private String path;
+    @Getter @Setter private Map<String, String> headers;
+    @Getter @Setter private String content;
 
     public BasicHttpRequest() {}
 

@@ -1,41 +1,14 @@
 package com.meilisearch.sdk.api.documents;
 
 import java.util.List;
+import lombok.Getter;
 
 public class SearchResponse<T> {
-    private List<T> hits;
-    private int offset;
-    private int limit;
-    private int nbHits;
-    private boolean exhaustiveNbHits;
-    private int processingTimeMs;
-    private String query;
-
-    public List<T> getHits() {
-        return hits;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public int getNbHits() {
-        return nbHits;
-    }
-
-    public boolean isExhaustiveNbHits() {
-        return exhaustiveNbHits;
-    }
-
-    public int getProcessingTimeMs() {
-        return processingTimeMs;
-    }
-
-    public String getQuery() {
-        return query;
-    }
+    @Getter private List<T> hits;
+    @Getter private int offset;
+    @Getter private int limit;
+    @Getter private int nbHits;
+    @Getter private boolean exhaustiveNbHits;
+    @Getter private int processingTimeMs;
+    @Getter private String query;
 }

@@ -11,6 +11,7 @@ public class MeiliSearchApiException extends MeiliSearchRuntimeException {
 
     public String getMessage() {
         return error.getMessage();
+        
     }
 
     public String getErrorCode() {
