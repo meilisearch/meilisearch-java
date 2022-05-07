@@ -61,7 +61,7 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
 
 	// Jwt
-	implementation 'com.auth0:java-jwt:3.19.1'
+	implementation 'com.auth0:java-jwt:3.19.2'
 }
 
 task buildJar(type: Jar) {
