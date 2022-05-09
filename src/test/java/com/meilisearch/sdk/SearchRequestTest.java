@@ -33,6 +33,9 @@ class SearchRequestTest {
                         new String[] {"bubble"},
                         new String[] {"crop"},
                         900,
+                        null,
+                        null,
+                        null,
                         new String[] {"highlight"},
                         new String[] {"test='test'"},
                         true,
@@ -44,6 +47,9 @@ class SearchRequestTest {
         assertEquals("bubble", classToTest.getAttributesToRetrieve()[0]);
         assertEquals("highlight", classToTest.getAttributesToHighlight()[0]);
         assertEquals("crop", classToTest.getAttributesToCrop()[0]);
+        assertEquals(null, classToTest.getCropMarker());
+        assertEquals(null, classToTest.getHighlightPreTag());
+        assertEquals(null, classToTest.getHighlightPostTag());
         assertEquals(null, classToTest.getFilterArray());
         assertEquals(1, classToTest.getFilter().length);
         assertEquals("test='test'", classToTest.getFilter()[0]);
@@ -59,6 +65,9 @@ class SearchRequestTest {
                         new String[] {"bubble"},
                         new String[] {"crop"},
                         900,
+                        "123",
+                        "abc",
+                        "zyx",
                         new String[] {"highlight"},
                         new String[][] {
                             new String[] {"test='test'"}, new String[] {"test1='test1'"}
@@ -69,6 +78,9 @@ class SearchRequestTest {
         assertEquals("This is a Test", classToTest.getQ());
         assertEquals(200, classToTest.getOffset());
         assertEquals(900, classToTest.getLimit());
+        assertEquals("123", classToTest.getCropMarker());
+        assertEquals("abc", classToTest.getHighlightPreTag());
+        assertEquals("zyx", classToTest.getHighlightPostTag());
         assertEquals("bubble", classToTest.getAttributesToRetrieve()[0]);
         assertEquals("highlight", classToTest.getAttributesToHighlight()[0]);
         assertEquals("crop", classToTest.getAttributesToCrop()[0]);
@@ -80,7 +92,7 @@ class SearchRequestTest {
         assertEquals("sort", classToTest.getSort()[0]);
         assertEquals(900, classToTest.getCropLength());
         assertEquals(
-                "{\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"facetsDistribution\":[\"facets\"],\"limit\":900,\"cropLength\":900,\"attributesToHighlight\":[\"highlight\"],\"sort\":[\"sort\"],\"matches\":true,\"attributesToCrop\":[\"crop\"]}",
+                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"facetsDistribution\":[\"facets\"],\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"matches\":true,\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"attributesToCrop\":[\"crop\"]}",
                 classToTest.getQuery());
     }
 }

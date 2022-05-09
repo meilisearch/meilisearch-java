@@ -10,6 +10,9 @@ public class SearchRequest {
     private String[] attributesToRetrieve;
     private String[] attributesToCrop;
     private int cropLength;
+    private String cropMarker;
+    private String highlightPreTag;
+    private String highlightPostTag;
     private String[] attributesToHighlight;
     private String[] filter;
     private String[][] filterArray;
@@ -76,6 +79,9 @@ public class SearchRequest {
                 null,
                 200,
                 null,
+                null,
+                null,
+                null,
                 (String[]) null,
                 false,
                 null,
@@ -117,6 +123,63 @@ public class SearchRequest {
                 attributesToRetrieve,
                 attributesToCrop,
                 cropLength,
+                null,
+                null,
+                null,
+                attributesToHighlight,
+                filter,
+                null,
+                matches,
+                facetsDistribution,
+                sort);
+    }
+
+    /**
+     * Full SearchRequest Constructor for building search queries
+     *
+     * @param q Query string
+     * @param offset Number of documents to skip
+     * @param limit Maximum number of documents returned
+     * @param attributesToRetrieve Attributes to display in the returned documents
+     * @param attributesToCrop Attributes whose values have been cropped
+     * @param cropLength Length used to crop field values
+     * @param cropMarker String to customize default crop marker, default value: …
+     * @param highlightPreTag String to customize highlight tag before every highlighted query
+     *     terms, default value: <em>
+     * @param highlightPostTag String to customize highlight tag after every highlighted query
+     *     terms, default value: </em>
+     * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
+     * @param filter Filter queries by an attribute value
+     * @param matches Defines whether an object that contains information about the matches should
+     *     be returned or not
+     * @param facetsDistribution Facets for which to retrieve the matching count
+     * @param sort Sort queries by an attribute value
+     */
+    public SearchRequest(
+            String q,
+            int offset,
+            int limit,
+            String[] attributesToRetrieve,
+            String[] attributesToCrop,
+            int cropLength,
+            String cropMarker,
+            String highlightPreTag,
+            String highlightPostTag,
+            String[] attributesToHighlight,
+            String[] filter,
+            boolean matches,
+            String[] facetsDistribution,
+            String[] sort) {
+        this(
+                q,
+                offset,
+                limit,
+                attributesToRetrieve,
+                attributesToCrop,
+                cropLength,
+                cropMarker,
+                highlightPreTag,
+                highlightPostTag,
                 attributesToHighlight,
                 filter,
                 null,
@@ -160,6 +223,63 @@ public class SearchRequest {
                 attributesToRetrieve,
                 attributesToCrop,
                 cropLength,
+                null,
+                null,
+                null,
+                attributesToHighlight,
+                null,
+                filterArray,
+                matches,
+                facetsDistribution,
+                sort);
+    }
+
+    /**
+     * Full SearchRequest Constructor for building search queries with 2D filter Array
+     *
+     * @param q Query string
+     * @param offset Number of documents to skip
+     * @param limit Maximum number of documents returned
+     * @param attributesToRetrieve Attributes to display in the returned documents
+     * @param attributesToCrop Attributes whose values have been cropped
+     * @param cropLength Length used to crop field values
+     * @param cropMarker String to customize default crop marker, default value: …
+     * @param highlightPreTag String to customize highlight tag before every highlighted query
+     *     terms, default value: <em>
+     * @param highlightPostTag String to customize highlight tag after every highlighted query
+     *     terms, default value: </em>
+     * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
+     * @param filterArray String array that can take multiple nested filters
+     * @param matches Defines whether an object that contains information about the matches should
+     *     be returned or not
+     * @param facetsDistribution Facets for which to retrieve the matching count
+     * @param sort Sort queries by an attribute value
+     */
+    public SearchRequest(
+            String q,
+            int offset,
+            int limit,
+            String[] attributesToRetrieve,
+            String[] attributesToCrop,
+            int cropLength,
+            String cropMarker,
+            String highlightPreTag,
+            String highlightPostTag,
+            String[] attributesToHighlight,
+            String[][] filterArray,
+            boolean matches,
+            String[] facetsDistribution,
+            String[] sort) {
+        this(
+                q,
+                offset,
+                limit,
+                attributesToRetrieve,
+                attributesToCrop,
+                cropLength,
+                cropMarker,
+                highlightPreTag,
+                highlightPostTag,
                 attributesToHighlight,
                 null,
                 filterArray,
@@ -175,6 +295,9 @@ public class SearchRequest {
             String[] attributesToRetrieve,
             String[] attributesToCrop,
             int cropLength,
+            String cropMarker,
+            String highlightPreTag,
+            String highlightPostTag,
             String[] attributesToHighlight,
             String[] filter,
             String[][] filterArray,
@@ -187,6 +310,9 @@ public class SearchRequest {
         this.attributesToRetrieve = attributesToRetrieve;
         this.attributesToCrop = attributesToCrop;
         this.cropLength = cropLength;
+        this.cropMarker = cropMarker;
+        this.highlightPreTag = highlightPreTag;
+        this.highlightPostTag = highlightPostTag;
         this.attributesToHighlight = attributesToHighlight;
         this.setFilter(filter);
         this.setFilterArray(filterArray);
@@ -246,6 +372,33 @@ public class SearchRequest {
      */
     public int getCropLength() {
         return cropLength;
+    }
+
+    /**
+     * Method for returning the cropMarker
+     *
+     * @return string containing the crop marker
+     */
+    public String getCropMarker() {
+        return cropMarker;
+    }
+
+    /**
+     * Method for returning the highlightPreTag
+     *
+     * @return string containing highlight before tag
+     */
+    public String getHighlightPreTag() {
+        return highlightPreTag;
+    }
+
+    /**
+     * Method for returning the highlightPostTag
+     *
+     * @return string containing highlight after tag
+     */
+    public String getHighlightPostTag() {
+        return highlightPostTag;
     }
 
     /**
@@ -369,6 +522,39 @@ public class SearchRequest {
     }
 
     /**
+     * Method to set the cropMarker
+     *
+     * @param cropMarker Marker used to crop field values
+     * @return altered SearchRequest
+     */
+    public SearchRequest setCropMarker(String cropMarker) {
+        this.cropMarker = cropMarker;
+        return this;
+    }
+
+    /**
+     * Method to set the highlightPreTag
+     *
+     * @param highlightPreTag Highlight tag use before every highlighted query terms
+     * @return altered SearchRequest
+     */
+    public SearchRequest setHighlightPreTag(String highlightPreTag) {
+        this.highlightPreTag = highlightPreTag;
+        return this;
+    }
+
+    /**
+     * Method to set the highlightPostTag
+     *
+     * @param highlightPostTag Highlight tag use after every highlighted query terms
+     * @return altered SearchRequest
+     */
+    public SearchRequest setHighlightPostTag(String highlightPostTag) {
+        this.highlightPostTag = highlightPostTag;
+        return this;
+    }
+
+    /**
      * Method to set the attributesToHighlight
      *
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
@@ -447,6 +633,9 @@ public class SearchRequest {
                         .put("limit", this.limit)
                         .put("attributesToRetrieve", this.attributesToRetrieve)
                         .put("cropLength", this.cropLength)
+                        .put("cropMarker", this.cropMarker)
+                        .put("highlightPreTag", this.highlightPreTag)
+                        .put("highlightPostTag", this.highlightPostTag)
                         .put("matches", this.matches)
                         .put("facetsDistribution", this.facetsDistribution)
                         .put("sort", this.sort);

@@ -22,10 +22,12 @@ public abstract class AbstractIT {
     private final Map<String, TestData<?>> testData = new HashMap<>();
 
     public static final String MOVIES_INDEX = "movies.json";
+    public static final String NESTED_MOVIES = "nested_movies.json";
 
     public AbstractIT() {
         try {
             loadResource(MOVIES_INDEX);
+            loadResource(NESTED_MOVIES);
         } catch (IOException e) {
             e.printStackTrace();
         }
