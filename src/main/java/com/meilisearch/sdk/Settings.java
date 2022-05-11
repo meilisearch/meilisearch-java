@@ -10,15 +10,17 @@ import org.json.JSONObject;
  *
  * <p>Refer https://docs.meilisearch.com/reference/api/settings.html
  */
+@Getter
+@Setter
 public class Settings {
-    @Getter @Setter private HashMap<String, String[]> synonyms;
-    @Getter @Setter private String[] stopWords;
-    @Getter @Setter private String[] rankingRules;
-    @Getter @Setter private String[] filterableAttributes;
-    @Getter @Setter private String distinctAttribute;
-    @Getter @Setter private String[] searchableAttributes;
-    @Getter @Setter private String[] displayedAttributes;
-    @Getter @Setter private String[] sortableAttributes;
+    private HashMap<String, String[]> synonyms;
+    private String[] stopWords;
+    private String[] rankingRules;
+    private String[] filterableAttributes;
+    private String distinctAttribute;
+    private String[] searchableAttributes;
+    private String[] displayedAttributes;
+    private String[] sortableAttributes;
 
     /** Empty SettingsRequest constructor */
     public Settings() {}

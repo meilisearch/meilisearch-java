@@ -1,8 +1,10 @@
 package com.meilisearch.sdk;
 
+import lombok.Getter;
 import org.json.JSONObject;
 
 /** Search request query string builder */
+@Getter
 public class SearchRequest {
     private String q;
     private int offset;
@@ -319,140 +321,6 @@ public class SearchRequest {
         this.matches = matches;
         this.facetsDistribution = facetsDistribution;
         this.sort = sort;
-    }
-    /**
-     * Method for returning the Query String
-     *
-     * @return query String
-     */
-    public String getQ() {
-        return q;
-    }
-
-    /**
-     * Method for returning the offset
-     *
-     * @return number of documents to skip
-     */
-    public int getOffset() {
-        return offset;
-    }
-
-    /**
-     * Method for returning the limit
-     *
-     * @return maximum number of documents returned
-     */
-    public int getLimit() {
-        return limit;
-    }
-
-    /**
-     * Method for returning the attributesToRetrieve
-     *
-     * @return attributes whose values will contain highlighted matching terms
-     */
-    public String[] getAttributesToRetrieve() {
-        return attributesToRetrieve;
-    }
-
-    /**
-     * Method for returning the attributesToCrop
-     *
-     * @return attributes whose values have to be cropped
-     */
-    public String[] getAttributesToCrop() {
-        return attributesToCrop;
-    }
-
-    /**
-     * Method for returning the cropLength
-     *
-     * @return length used to crop field values
-     */
-    public int getCropLength() {
-        return cropLength;
-    }
-
-    /**
-     * Method for returning the cropMarker
-     *
-     * @return string containing the crop marker
-     */
-    public String getCropMarker() {
-        return cropMarker;
-    }
-
-    /**
-     * Method for returning the highlightPreTag
-     *
-     * @return string containing highlight before tag
-     */
-    public String getHighlightPreTag() {
-        return highlightPreTag;
-    }
-
-    /**
-     * Method for returning the highlightPostTag
-     *
-     * @return string containing highlight after tag
-     */
-    public String getHighlightPostTag() {
-        return highlightPostTag;
-    }
-
-    /**
-     * Method for returning the attributesToHighlight
-     *
-     * @return attributes whose values will contain highlighted matching terms
-     */
-    public String[] getAttributesToHighlight() {
-        return attributesToHighlight;
-    }
-
-    /**
-     * Method to return the filter
-     *
-     * @return filter queries by an attribute value
-     */
-    public String[] getFilter() {
-        return filter;
-    }
-
-    /**
-     * Method to return the filterArray
-     *
-     * @return filterArray that can have multiple nested filters
-     */
-    public String[][] getFilterArray() {
-        return filterArray;
-    }
-    /**
-     * Method to return the matches
-     *
-     * @return defines whether an object that contains information about the matches should be
-     *     returned or not
-     */
-    public boolean getMatches() {
-        return matches;
-    }
-
-    /**
-     * Method for returning the facetsDistribution
-     *
-     * @return facets for which to retrieve the matching count
-     */
-    public String[] getFacetsDistribution() {
-        return facetsDistribution;
-    }
-
-    /**
-     * Method for returning the sort
-     *
-     * @return Sort queries by an attribute value
-     */
-    public String[] getSort() {
-        return sort;
     }
 
     /**

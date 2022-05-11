@@ -1,7 +1,9 @@
 package com.meilisearch.sdk.http.response;
 
 import java.util.Map;
+import lombok.Getter;
 
+@Getter
 public class BasicHttpResponse implements HttpResponse<String> {
     private final Map<String, String> headers;
     private final int statusCode;
@@ -14,23 +16,8 @@ public class BasicHttpResponse implements HttpResponse<String> {
     }
 
     @Override
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
-
-    @Override
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    @Override
     public boolean hasContent() {
         return content != null;
-    }
-
-    @Override
-    public String getContent() {
-        return content;
     }
 
     @Override
