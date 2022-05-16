@@ -1,5 +1,11 @@
 package com.meilisearch.sdk;
+
+import lombok.Getter;
+import lombok.Setter;
+
 /** The code, type and error of the task error */
+@Getter
+@Setter
 public class TaskError {
 
     public TaskError() {}
@@ -7,28 +13,4 @@ public class TaskError {
     protected String taskErrorCode = "";
     protected String taskErrorType = "";
     protected String taskErrorLink = "";
-
-    public String getTaskErrorCode() {
-        return taskErrorCode;
-    }
-
-    public void setTaskErrorCode(String taskErrorCode) {
-        this.taskErrorCode = taskErrorCode;
-    }
-
-    public String getTaskErrorType() {
-        return taskErrorType;
-    }
-
-    public void setTaskErrorType(String taskErrorType) {
-        this.taskErrorType = taskErrorType;
-    }
-
-    public String getTaskErrorLink() {
-        return taskErrorLink;
-    }
-
-    public void setTaskErrorLink(String taskErrorLink) {
-        this.taskErrorLink = taskErrorLink;
-    }
 }

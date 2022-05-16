@@ -9,7 +9,9 @@ import com.meilisearch.sdk.http.factory.RequestFactory;
 import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.HttpResponse;
 import com.meilisearch.sdk.json.JsonHandler;
+import lombok.Getter;
 
+@Getter
 public class GenericServiceTemplate implements ServiceTemplate {
     private final AbstractHttpClient client;
     private final JsonHandler processor;
@@ -25,24 +27,6 @@ public class GenericServiceTemplate implements ServiceTemplate {
         this.client = client;
         this.processor = processor;
         this.requestFactory = requestFactory;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AbstractHttpClient getClient() {
-        return client;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public JsonHandler getProcessor() {
-        return processor;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public RequestFactory getRequestFactory() {
-        return requestFactory;
     }
 
     /** {@inheritDoc} */

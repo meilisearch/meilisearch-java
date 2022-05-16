@@ -2,7 +2,9 @@ package com.meilisearch.sdk.api.documents;
 
 import java.util.Collections;
 import java.util.List;
+import lombok.Getter;
 
+@Getter
 public class SearchRequest {
     private final String q;
     private final int offset;
@@ -196,61 +198,5 @@ public class SearchRequest {
         this.filterArray = filterArray;
         this.matches = matches;
         this.sort = sort;
-    }
-
-    public String getQ() {
-        return q;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public List<String> getAttributesToRetrieve() {
-        return attributesToRetrieve;
-    }
-
-    public List<String> getAttributesToCrop() {
-        return attributesToCrop;
-    }
-
-    public int getCropLength() {
-        return cropLength;
-    }
-
-    public String getHighlightPreTag() {
-        return highlightPreTag;
-    }
-
-    public String getHighlightPostTag() {
-        return highlightPostTag;
-    }
-
-    public String getCropMarker() {
-        return cropMarker;
-    }
-
-    public List<String> getAttributesToHighlight() {
-        return attributesToHighlight;
-    }
-
-    public String[] getFilter() {
-        return filter;
-    }
-
-    public String[][] getFilterArray() {
-        return filterArray;
-    }
-
-    public List<String> getSort() {
-        return sort;
-    }
-
-    public boolean isMatches() {
-        return matches;
     }
 }

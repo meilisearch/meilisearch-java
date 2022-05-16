@@ -7,24 +7,25 @@ import lombok.Getter;
 import lombok.ToString;
 
 /** Result of `search` API Refer https://docs.meilisearch.com/references/search.html */
+@Getter
 @ToString
 public class SearchResult implements Serializable {
 
-    @Getter ArrayList<HashMap<String, Object>> hits;
+    ArrayList<HashMap<String, Object>> hits;
 
-    @Getter int offset;
+    int offset;
 
-    @Getter int limit;
+    int limit;
 
-    @Getter int nbHits;
+    int nbHits;
 
-    @Getter boolean exhaustiveNbHits;
+    boolean exhaustiveNbHits;
 
-    @Getter Object facetsDistribution;
+    Object facetsDistribution;
 
-    @Getter boolean exhaustiveFacetsCount;
+    boolean exhaustiveFacetsCount;
 
-    @Getter int processingTimeMs;
+    int processingTimeMs;
 
-    @Getter String query;
+    String query;
 }

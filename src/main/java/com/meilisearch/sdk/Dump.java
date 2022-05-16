@@ -4,9 +4,10 @@ import lombok.Getter;
 import lombok.ToString;
 
 /** Meilisearch dump */
+@Getter
 public class Dump {
-    @Getter private String status;
-    @Getter private String uid;
-    @Getter @ToString.Exclude private String startedAt;
-    @Getter @ToString.Exclude private String finishedAt;
+    private String status;
+    private String uid;
+    @ToString.Exclude private String startedAt;
+    @ToString.Exclude private String finishedAt;
 }
