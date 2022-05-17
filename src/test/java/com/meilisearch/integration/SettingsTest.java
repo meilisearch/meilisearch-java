@@ -107,7 +107,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update settings changing the typo tolerance")
     public void testUpdateSettingsTypoTolerance() throws Exception {
-        Index index = createIndex("updateSettingsSynonyms");
+        Index index = createIndex("updateSettingsTypoTolerance");
         Settings settings = index.getSettings();
 
         TypoTolerance typoTolerance = new TypoTolerance();

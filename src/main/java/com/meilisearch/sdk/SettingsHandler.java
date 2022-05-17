@@ -117,7 +117,7 @@ public class SettingsHandler {
      * @throws Exception if an error occurs
      */
     public Map<String, String[]> getSynonymsSettings(String uid) throws Exception {
-        return this.gson.<Map<String, String[]>>fromJson(
+        return this.gson.fromJson(
                 meilisearchHttpRequest.get("/indexes/" + uid + "/settings/synonyms"), Map.class);
     }
 
@@ -400,7 +400,7 @@ public class SettingsHandler {
      * @throws Exception if an error occurs
      */
     public TypoTolerance getTypoToleranceSettings(String uid) throws Exception {
-        return this.gson.<TypoTolerance>fromJson(
+        return this.gson.fromJson(
                 meilisearchHttpRequest.get("/indexes/" + uid + "/settings/typo-tolerance"),
                 TypoTolerance.class);
     }
