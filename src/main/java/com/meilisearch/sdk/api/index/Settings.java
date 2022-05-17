@@ -11,6 +11,8 @@ import lombok.Setter;
  *
  * <p>Refer https://docs.meilisearch.com/references/settings.html
  */
+@Getter
+@Setter
 public class Settings {
     @Getter @Setter private HashMap<String, String[]> synonyms;
     @Getter @Setter private String[] stopWords;

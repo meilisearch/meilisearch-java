@@ -1,7 +1,11 @@
 package com.meilisearch.sdk;
 
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Details {
 
     public Details() {}
@@ -19,108 +23,4 @@ public class Details {
     protected Map<String, String[]> synonyms;
     protected String distinctAttribute;
     protected TypoTolerance typoTolerance;
-
-    public int getReceivedDocuments() {
-        return receivedDocuments;
-    }
-
-    public void setReceivedDocuments(int receivedDocuments) {
-        this.receivedDocuments = receivedDocuments;
-    }
-
-    public int getIndexedDocuments() {
-        return indexedDocuments;
-    }
-
-    public void setIndexedDocuments(int indexedDocuments) {
-        this.indexedDocuments = indexedDocuments;
-    }
-
-    public int getDeletedDocuments() {
-        return deletedDocuments;
-    }
-
-    public void setDeletedDocuments(int deletedDocuments) {
-        this.deletedDocuments = deletedDocuments;
-    }
-
-    public String getPrimaryKey() {
-        return primaryKey;
-    }
-
-    public void setPrimaryKey(String primaryKey) {
-        this.primaryKey = primaryKey;
-    }
-
-    public String[] getRankingRules() {
-        return rankingRules;
-    }
-
-    public void setRankingRules(String[] rankingRules) {
-        this.rankingRules = rankingRules;
-    }
-
-    public String[] getSearchableAttributes() {
-        return searchableAttributes;
-    }
-
-    public void setSearchableAttributes(String[] searchableAttributes) {
-        this.searchableAttributes = searchableAttributes;
-    }
-
-    public String[] getDisplayedAttributes() {
-        return displayedAttributes;
-    }
-
-    public void setDisplayedAttributes(String[] displayedAttributes) {
-        this.displayedAttributes = displayedAttributes;
-    }
-
-    public String[] getFilterableAttributes() {
-        return filterableAttributes;
-    }
-
-    public void setFilterableAttributes(String[] filterableAttributes) {
-        this.filterableAttributes = filterableAttributes;
-    }
-
-    public String[] getSortableAttributes() {
-        return sortableAttributes;
-    }
-
-    public void setSortableAttributes(String[] sortableAttributes) {
-        this.sortableAttributes = sortableAttributes;
-    }
-
-    public String[] getStopWords() {
-        return stopWords;
-    }
-
-    public void setStopWords(String[] stopWords) {
-        this.stopWords = stopWords;
-    }
-
-    public Map<String, String[]> getSynonyms() {
-        return synonyms;
-    }
-
-    public void setSynonyms(Map<String, String[]> synonyms) {
-        this.synonyms = synonyms;
-    }
-
-    public String getDistinctAttribute() {
-        return distinctAttribute;
-    }
-
-    public void setDistinctAttribute(String distinctAttribute) {
-        this.distinctAttribute = distinctAttribute;
-    }
-
-    public TypoTolerance getTypoTolerance() {
-        return typoTolerance;
-    }
-
-    public void setTypoTolerance(TypoTolerance typoTolerance) {
-        this.typoTolerance = typoTolerance;
-    }
 }
