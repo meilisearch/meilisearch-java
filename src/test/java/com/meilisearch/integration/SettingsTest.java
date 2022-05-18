@@ -533,18 +533,16 @@ public class SettingsTest extends AbstractIT {
         Settings initialSettings = index.getSettings();
         TypoTolerance initialTypoTolerance = index.getTypoToleranceSettings();
 
-        assertEquals(
-                initialSettings.getTypoTolerance().getDisableOnWords().length,
-                initialTypoTolerance.getDisableOnWords().length);
-        assertEquals(
-                initialSettings.getTypoTolerance().getDisableOnAttributes().length,
-                initialTypoTolerance.getDisableOnAttributes().length);
+        assertEquals(initialSettings.getTypoTolerance().getDisableOnWords().length, 0);
+        assertEquals(initialTypoTolerance.getDisableOnWords().length, 0);
+        assertEquals(initialSettings.getTypoTolerance().getDisableOnAttributes().length, 0);
+        assertEquals(initialTypoTolerance.getDisableOnAttributes().length, 0);
         assertEquals(
                 initialSettings.getTypoTolerance().isEnabled(), initialTypoTolerance.isEnabled());
         assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo"));
         assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().get("oneTypo"));
-		assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().containsKey("twoTypos"));
-		assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().get("twoTypos"));
+        assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().containsKey("twoTypos"));
+        assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().get("twoTypos"));
     }
 
     @Test
@@ -569,11 +567,11 @@ public class SettingsTest extends AbstractIT {
         TypoTolerance updatedTypoTolerance = index.getTypoToleranceSettings();
 
         assertEquals(
-                newTypoTolerance.getDisableOnWords().length,
-                updatedTypoTolerance.getDisableOnWords().length);
+                newTypoTolerance.getDisableOnWords()[0],
+                updatedTypoTolerance.getDisableOnWords()[0]);
         assertEquals(
-                newTypoTolerance.getDisableOnAttributes().length,
-                updatedTypoTolerance.getDisableOnAttributes().length);
+                newTypoTolerance.getDisableOnAttributes()[0],
+                updatedTypoTolerance.getDisableOnAttributes()[0]);
         assertEquals(newTypoTolerance.isEnabled(), updatedTypoTolerance.isEnabled());
         assertTrue(
                 updatedTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo")
