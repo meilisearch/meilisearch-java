@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.meilisearch.integration.classes.AbstractIT;
@@ -122,7 +123,7 @@ public class SettingsTest extends AbstractIT {
 
         assertEquals(1, newSettings.getTypoTolerance().getDisableOnWords().length);
         assertEquals(1, newSettings.getTypoTolerance().getDisableOnAttributes().length);
-        assertEquals(true, newSettings.getTypoTolerance().isEnabled());
+        assertTrue(newSettings.getTypoTolerance().isEnabled());
     }
 
     @Test
@@ -540,12 +541,10 @@ public class SettingsTest extends AbstractIT {
                 initialTypoTolerance.getDisableOnAttributes().length);
         assertEquals(
                 initialSettings.getTypoTolerance().isEnabled(), initialTypoTolerance.isEnabled());
-        assertTrue(
-                initialTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo")
-                        && initialTypoTolerance.getMinWordSizeForTypos().get("oneTypo") != null);
-        assertTrue(
-                initialTypoTolerance.getMinWordSizeForTypos().containsKey("twoTypos")
-                        && initialTypoTolerance.getMinWordSizeForTypos().get("twoTypos") != null);
+        assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo"));
+        assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().get("oneTypo"));
+		assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().containsKey("twoTypos"));
+		assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().get("twoTypos"));
     }
 
     @Test
