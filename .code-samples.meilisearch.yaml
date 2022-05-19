@@ -196,7 +196,6 @@ get_typo_tolerance_1:
   client.index("books").getTypoToleranceSettings();
 update_typo_tolerance_1: |-
   TypoTolerance typoTolerance = new TypoTolerance();
-  typoTolerance.setDisableOnAttributes(new String[] {"title"});
   HashMap<String, Integer> minWordSizeTypos =
           new HashMap<String, Integer>() {
               {
@@ -204,8 +203,11 @@ update_typo_tolerance_1: |-
                   put("twoTypos", 10);
               }
           };
+
   typoTolerance.setMinWordSizeForTypos(minWordSizeTypos);
-  client.index("movies").updateTypoToleranceSettings(typoTolerance);
+  typoTolerance.setDisableOnAttributes(new String[] {"title"});
+
+  client.index("books").updateTypoToleranceSettings(typoTolerance);
 reset_typo_tolerance_1: |-
   client.index("books").resetTypoToleranceSettings();
 get_index_stats_1: |-
@@ -352,14 +354,16 @@ settings_guide_sortable_1: |-
   client.index("books").updateSettings(settings);
 settings_guide_typo_tolerance_1: |-
   TypoTolerance typoTolerance = new TypoTolerance();
-  typoTolerance.setDisableOnAttributes(new String[] {"title"});
   HashMap<String, Integer> minWordSizeTypos =
           new HashMap<String, Integer>() {
               {
                   put("twoTypos", 12);
               }
           };
+
   typoTolerance.setMinWordSizeForTypos(minWordSizeTypos);
+  typoTolerance.setDisableOnAttributes(new String[] {"title"});
+
   client.index("movies").updateTypoToleranceSettings(typoTolerance);
 typo_tolerance_guide_1: |-
   TypoTolerance typoTolerance = new TypoTolerance();
