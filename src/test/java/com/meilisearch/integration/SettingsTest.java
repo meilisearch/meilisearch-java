@@ -572,7 +572,7 @@ public class SettingsTest extends AbstractIT {
         assertEquals(
                 newTypoTolerance.getDisableOnAttributes()[0],
                 updatedTypoTolerance.getDisableOnAttributes()[0]);
-        assertEquals(newTypoTolerance.isEnabled(), updatedTypoTolerance.isEnabled());
+        assertTrue(updatedTypoTolerance.isEnabled());
         assertTrue(
                 updatedTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo")
                         && updatedTypoTolerance.getMinWordSizeForTypos().get("oneTypo") == 7);
