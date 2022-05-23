@@ -6,7 +6,7 @@ import lombok.Setter;
 import org.json.JSONObject;
 
 public class TypoTolerance {
-    @Getter @Setter private boolean enabled = false;
+    @Getter @Setter private boolean enabled = true;
     @Getter @Setter private HashMap<String, Integer> minWordSizeForTypos;
     @Getter @Setter private String[] disableOnWords;
     @Getter @Setter private String[] disableOnAttributes;

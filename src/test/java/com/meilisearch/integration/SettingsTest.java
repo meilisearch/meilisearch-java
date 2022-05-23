@@ -112,7 +112,6 @@ public class SettingsTest extends AbstractIT {
         Settings settings = index.getSettings();
 
         TypoTolerance typoTolerance = new TypoTolerance();
-        typoTolerance.setEnabled(true);
         typoTolerance.setDisableOnWords(new String[] {"and"});
         typoTolerance.setDisableOnAttributes(new String[] {"title"});
         settings.setTypoTolerance(typoTolerance);
@@ -579,6 +578,33 @@ public class SettingsTest extends AbstractIT {
         assertTrue(
                 updatedTypoTolerance.getMinWordSizeForTypos().containsKey("twoTypos")
                         && updatedTypoTolerance.getMinWordSizeForTypos().get("twoTypos") == 10);
+    }
+
+    @Test
+    @DisplayName("Test update typo tolerance settings")
+    public void testPartialUpdateTypoTolerance() throws Exception {
+        Index index = createIndex("testUpdateTypoTolerance");
+        TypoTolerance initialTypoTolerance = index.getTypoToleranceSettings();
+        TypoTolerance newTypoTolerance = new TypoTolerance();
+        newTypoTolerance.setDisableOnWords(new String[] {"the"});
+        newTypoTolerance.setDisableOnAttributes(new String[] {"title"});
+
+        index.waitForTask(index.updateTypoToleranceSettings(newTypoTolerance).getUid());
+        TypoTolerance updatedTypoTolerance = index.getTypoToleranceSettings();
+
+        assertEquals(
+                newTypoTolerance.getDisableOnWords()[0],
+                updatedTypoTolerance.getDisableOnWords()[0]);
+        assertEquals(
+                newTypoTolerance.getDisableOnAttributes()[0],
+                updatedTypoTolerance.getDisableOnAttributes()[0]);
+        assertTrue(updatedTypoTolerance.isEnabled());
+        assertTrue(
+                updatedTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo")
+                        && updatedTypoTolerance.getMinWordSizeForTypos().get("oneTypo") == 5);
+        assertTrue(
+                updatedTypoTolerance.getMinWordSizeForTypos().containsKey("twoTypos")
+                        && updatedTypoTolerance.getMinWordSizeForTypos().get("twoTypos") == 9);
     }
 
     @Test
