@@ -7,7 +7,7 @@ import lombok.Getter;
 public class Result<T> {
     @Getter protected T[] results = null;
 
-    private static Gson gsonUpdate = new Gson();
+    private static Gson gsonResult = new Gson();
 
     /**
      * Method to return the JSON String of the Result
@@ -16,6 +16,6 @@ public class Result<T> {
      */
     @Override
     public String toString() {
-        return gsonUpdate.toJson(this);
+        return gsonResult.toJson(this);
     }
 }

@@ -117,7 +117,7 @@ public class SettingsHandler {
      * @throws Exception if an error occurs
      */
     public Map<String, String[]> getSynonymsSettings(String uid) throws Exception {
-        return this.gson.<Map<String, String[]>>fromJson(
+        return this.gson.fromJson(
                 meilisearchHttpRequest.get("/indexes/" + uid + "/settings/synonyms"), Map.class);
     }
 
@@ -388,6 +388,52 @@ public class SettingsHandler {
     public Task resetDistinctAttributeSettings(String uid) throws Exception {
         return this.gson.fromJson(
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/distinct-attribute"),
+                Task.class);
+    }
+
+    /**
+     * Gets the typo tolerance settings of a given index Refer
+     * https://docs.meilisearch.com/reference/api/typo_tolerance.html#get-typo-tolerance
+     *
+     * @param uid Index identifier
+     * @return a TypoTolerance instance that contains all typo tolerance settings
+     * @throws Exception if an error occurs
+     */
+    public TypoTolerance getTypoToleranceSettings(String uid) throws Exception {
+        return this.gson.fromJson(
+                meilisearchHttpRequest.get("/indexes/" + uid + "/settings/typo-tolerance"),
+                TypoTolerance.class);
+    }
+
+    /**
+     * Updates the typo tolerance settings of a given index Refer
+     * https://docs.meilisearch.com/reference/api/typo_tolerance.html#update-typo-tolerance
+     *
+     * @param uid Index identifier
+     * @param typoTolerance a TypoTolerance instance that contains the new typo tolerance settings
+     * @return Task instance
+     * @throws Exception if an error occurs
+     */
+    public Task updateTypoToleranceSettings(String uid, TypoTolerance typoTolerance)
+            throws Exception {
+        String typoToleranceAsJson = gson.toJson(typoTolerance);
+        return this.gson.fromJson(
+                meilisearchHttpRequest.post(
+                        "/indexes/" + uid + "/settings/typo-tolerance", typoToleranceAsJson),
+                Task.class);
+    }
+
+    /**
+     * Resets the typo tolerance settings of a given index Refer
+     * https://docs.meilisearch.com/reference/api/typo_tolerance.html#reset-typo-tolerance
+     *
+     * @param uid Index identifier
+     * @return Task instance
+     * @throws Exception if an error occurs
+     */
+    public Task resetTypoToleranceSettings(String uid) throws Exception {
+        return this.gson.fromJson(
+                meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/typo-tolerance"),
                 Task.class);
     }
 }

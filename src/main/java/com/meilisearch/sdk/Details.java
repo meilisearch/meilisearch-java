@@ -22,4 +22,5 @@ public class Details {
     protected String[] stopWords;
     protected Map<String, String[]> synonyms;
     protected String distinctAttribute;
+    protected TypoTolerance typoTolerance;
 }

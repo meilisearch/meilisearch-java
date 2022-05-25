@@ -21,6 +21,7 @@ public class Settings {
     private String[] searchableAttributes;
     private String[] displayedAttributes;
     private String[] sortableAttributes;
+    private TypoTolerance typoTolerance;
 
     /** Empty SettingsRequest constructor */
     public Settings() {}
@@ -55,6 +56,9 @@ public class Settings {
         }
         if (this.getSortableAttributes() != null) {
             jsonObject.put("sortableAttributes", this.getSortableAttributes());
+        }
+        if (this.getTypoTolerance() != null) {
+            jsonObject.put("typoTolerance", this.getTypoTolerance().toJson());
         }
         return jsonObject.toString();
     }

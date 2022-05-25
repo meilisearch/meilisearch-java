@@ -568,6 +568,40 @@ public class Index implements Serializable {
     }
 
     /**
+     * Get the typo tolerance field of an index.
+     * https://docs.meilisearch.com/reference/api/typo_tolerance.html#get-typo-tolerance
+     *
+     * @return TypoTolerance instance from Index
+     * @throws Exception if an error occurs
+     */
+    public TypoTolerance getTypoToleranceSettings() throws Exception {
+        return this.settingsHandler.getTypoToleranceSettings(this.uid);
+    }
+
+    /**
+     * Update the typo tolerance field of an index.
+     * https://docs.meilisearch.com/reference/api/typo_tolerance.html#update-typo-tolerance
+     *
+     * @param typoTolerance A TypoTolerance instance
+     * @return Task instance
+     * @throws Exception if an error occurs
+     */
+    public Task updateTypoToleranceSettings(TypoTolerance typoTolerance) throws Exception {
+        return this.settingsHandler.updateTypoToleranceSettings(this.uid, typoTolerance);
+    }
+
+    /**
+     * Reset the typo tolerance field of an index to its default value.
+     * https://docs.meilisearch.com/reference/api/typo_tolerance.html#reset-typo-tolerance
+     *
+     * @return Task instance
+     * @throws Exception if an error occurs
+     */
+    public Task resetTypoToleranceSettings() throws Exception {
+        return this.settingsHandler.resetTypoToleranceSettings(this.uid);
+    }
+
+    /**
      * Retrieves an index tasks by its ID
      *
      * @param taskId Identifier of the requested index task

@@ -5,12 +5,15 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.Settings;
 import com.meilisearch.sdk.Task;
+import com.meilisearch.sdk.TypoTolerance;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Arrays;
@@ -39,6 +42,7 @@ public class SettingsTest extends AbstractIT {
         cleanup();
     }
 
+    /** Tests of the setting methods */
     @Test
     @DisplayName("Test get settings from an index by uid")
     public void testGetSettings() throws Exception {
@@ -102,6 +106,26 @@ public class SettingsTest extends AbstractIT {
     }
 
     @Test
+    @DisplayName("Test update settings changing the typo tolerance")
+    public void testUpdateSettingsTypoTolerance() throws Exception {
+        Index index = createIndex("updateSettingsTypoTolerance");
+        Settings settings = index.getSettings();
+
+        TypoTolerance typoTolerance = new TypoTolerance();
+        typoTolerance.setDisableOnWords(new String[] {"and"});
+        typoTolerance.setDisableOnAttributes(new String[] {"title"});
+        settings.setTypoTolerance(typoTolerance);
+
+        index.waitForTask(index.updateSettings(settings).getUid());
+
+        Settings newSettings = index.getSettings();
+
+        assertEquals(1, newSettings.getTypoTolerance().getDisableOnWords().length);
+        assertEquals(1, newSettings.getTypoTolerance().getDisableOnAttributes().length);
+        assertTrue(newSettings.getTypoTolerance().isEnabled());
+    }
+
+    @Test
     @DisplayName("Test reset settings")
     public void testResetSettings() throws Exception {
         Index index = createIndex("testResetSettings");
@@ -122,6 +146,7 @@ public class SettingsTest extends AbstractIT {
         assertEquals(initialSettings.getSynonyms().size(), settingsAfterReset.getSynonyms().size());
     }
 
+    /** Tests of the ranking rules setting methods */
     @Test
     @DisplayName("Test get ranking rules settings by uid")
     public void testGetRankingRuleSettings() throws Exception {
@@ -176,18 +201,19 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getUid());
         String[] updatedRankingRuleSettings = index.getRankingRuleSettings();
 
+        index.waitForTask(index.resetRankingRuleSettings().getUid());
+        String[] rankingRulesAfterReset = index.getRankingRuleSettings();
+
         assertEquals(newRankingRules.length, updatedRankingRuleSettings.length);
         assertArrayEquals(newRankingRules, updatedRankingRuleSettings);
         assertNotEquals(initialRuleSettings.length, updatedRankingRuleSettings.length);
-
-        index.waitForTask(index.resetRankingRuleSettings().getUid());
-        String[] rankingRulesAfterReset = index.getRankingRuleSettings();
 
         assertNotEquals(updatedRankingRuleSettings.length, rankingRulesAfterReset.length);
         assertEquals(initialRuleSettings.length, rankingRulesAfterReset.length);
         assertArrayEquals(initialRuleSettings, rankingRulesAfterReset);
     }
 
+    /** Tests of the synonyms setting methods */
     @Test
     @DisplayName("Test get synonyms settings by uid")
     public void testGetSynonymsSettings() throws Exception {
@@ -210,12 +236,12 @@ public class SettingsTest extends AbstractIT {
         newSynonymsSettings.put("wow", new String[] {"world of warcraft"});
 
         index.waitForTask(index.updateSynonymsSettings(newSynonymsSettings).getUid());
-        Map<String, String[]> updatedRankingRuleSettings = index.getSynonymsSettings();
+        Map<String, String[]> updatedSynonymsSettings = index.getSynonymsSettings();
 
-        assertEquals(newSynonymsSettings.size(), updatedRankingRuleSettings.size());
-        assertEquals(newSynonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
-        assertNotEquals(synonymsSettings.size(), updatedRankingRuleSettings.size());
-        assertNotEquals(synonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
+        assertEquals(newSynonymsSettings.size(), updatedSynonymsSettings.size());
+        assertEquals(newSynonymsSettings.keySet(), updatedSynonymsSettings.keySet());
+        assertNotEquals(synonymsSettings.size(), updatedSynonymsSettings.size());
+        assertNotEquals(synonymsSettings.keySet(), updatedSynonymsSettings.keySet());
     }
 
     @Test
@@ -229,21 +255,22 @@ public class SettingsTest extends AbstractIT {
         newSynonymsSettings.put("wow", new String[] {"world of warcraft"});
 
         index.waitForTask(index.updateSynonymsSettings(newSynonymsSettings).getUid());
-        Map<String, String[]> updatedRankingRuleSettings = index.getSynonymsSettings();
-
-        assertEquals(newSynonymsSettings.size(), updatedRankingRuleSettings.size());
-        assertEquals(newSynonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
-        assertNotEquals(synonymsSettings.size(), updatedRankingRuleSettings.size());
-        assertNotEquals(synonymsSettings.keySet(), updatedRankingRuleSettings.keySet());
+        Map<String, String[]> updatedSynonymsSettings = index.getSynonymsSettings();
 
         index.waitForTask(index.resetSynonymsSettings().getUid());
         Map<String, String[]> synonymsSettingsAfterReset = index.getSynonymsSettings();
 
-        assertNotEquals(updatedRankingRuleSettings.size(), synonymsSettingsAfterReset.size());
+        assertEquals(newSynonymsSettings.size(), updatedSynonymsSettings.size());
+        assertEquals(newSynonymsSettings.keySet(), updatedSynonymsSettings.keySet());
+        assertNotEquals(synonymsSettings.size(), updatedSynonymsSettings.size());
+        assertNotEquals(synonymsSettings.keySet(), updatedSynonymsSettings.keySet());
+
+        assertNotEquals(updatedSynonymsSettings.size(), synonymsSettingsAfterReset.size());
         assertEquals(synonymsSettings.size(), synonymsSettingsAfterReset.size());
         assertEquals(synonymsSettings.keySet(), synonymsSettingsAfterReset.keySet());
     }
 
+    /** Tests of the stop words setting methods */
     @Test
     @DisplayName("Test get stop-words settings by uid")
     public void testGetStopWordsSettings() throws Exception {
@@ -280,18 +307,19 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateStopWordsSettings(newStopWords).getUid());
         String[] updatedStopWordsSettings = index.getStopWordsSettings();
 
+        index.waitForTask(index.resetStopWordsSettings().getUid());
+        String[] stopWordsAfterReset = index.getStopWordsSettings();
+
         assertEquals(newStopWords.length, updatedStopWordsSettings.length);
         assertArrayEquals(newStopWords, updatedStopWordsSettings);
         assertNotEquals(initialStopWords.length, updatedStopWordsSettings.length);
-
-        index.waitForTask(index.resetStopWordsSettings().getUid());
-        String[] stopWordsAfterReset = index.getStopWordsSettings();
 
         assertNotEquals(updatedStopWordsSettings.length, stopWordsAfterReset.length);
         assertEquals(initialStopWords.length, stopWordsAfterReset.length);
         assertArrayEquals(initialStopWords, stopWordsAfterReset);
     }
 
+    /** Tests of the searchable attributes setting methods */
     @Test
     @DisplayName("Test get searchable attributes settings by uid")
     public void testGetSearchableAttributesSettings() throws Exception {
@@ -332,18 +360,19 @@ public class SettingsTest extends AbstractIT {
                 index.updateSearchableAttributesSettings(newSearchableAttributes).getUid());
         String[] updatedSearchableAttributes = index.getSearchableAttributesSettings();
 
+        index.waitForTask(index.resetSearchableAttributesSettings().getUid());
+        String[] searchableAttributesAfterReset = index.getSearchableAttributesSettings();
+
         assertEquals(newSearchableAttributes.length, updatedSearchableAttributes.length);
         assertArrayEquals(newSearchableAttributes, updatedSearchableAttributes);
         assertNotEquals(initialSearchableAttributes.length, updatedSearchableAttributes.length);
-
-        index.waitForTask(index.resetSearchableAttributesSettings().getUid());
-        String[] searchableAttributesAfterReset = index.getSearchableAttributesSettings();
 
         assertNotEquals(updatedSearchableAttributes.length, searchableAttributesAfterReset.length);
         assertEquals(initialSearchableAttributes.length, searchableAttributesAfterReset.length);
         assertArrayEquals(initialSearchableAttributes, searchableAttributesAfterReset);
     }
 
+    /** Tests of the display attributes setting methods */
     @Test
     @DisplayName("Test get display attributes settings by uid")
     public void testGetDisplayedAttributesSettings() throws Exception {
@@ -382,16 +411,17 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUid());
         String[] updatedDisplayedAttributes = index.getDisplayedAttributesSettings();
 
+        index.waitForTask(index.resetDisplayedAttributesSettings().getUid());
+        String[] displayedAttributesAfterReset = index.getDisplayedAttributesSettings();
+
         assertEquals(newDisplayedAttributes.length, updatedDisplayedAttributes.length);
         assertArrayEquals(newDisplayedAttributes, updatedDisplayedAttributes);
         assertNotEquals(initialDisplayedAttributes.length, updatedDisplayedAttributes.length);
 
-        index.waitForTask(index.resetDisplayedAttributesSettings().getUid());
-        String[] displayedAttributesAfterReset = index.getDisplayedAttributesSettings();
-
         assertNotEquals(updatedDisplayedAttributes.length, displayedAttributesAfterReset.length);
     }
 
+    /** Tests of the filterable attributes setting methods */
     @Test
     @DisplayName("Test get filterable attributes settings by uid")
     public void testGetFilterableAttributesSettings() throws Exception {
@@ -436,19 +466,20 @@ public class SettingsTest extends AbstractIT {
                 index.updateFilterableAttributesSettings(newFilterableAttributes).getUid());
         String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
 
+        index.waitForTask(index.resetFilterableAttributesSettings().getUid());
+        String[] filterableAttributesAfterReset = index.getFilterableAttributesSettings();
+
         assertEquals(newFilterableAttributes.length, updatedFilterableAttributes.length);
         assertThat(
                 Arrays.asList(newFilterableAttributes),
                 containsInAnyOrder(updatedFilterableAttributes));
         assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
 
-        index.waitForTask(index.resetFilterableAttributesSettings().getUid());
-        String[] filterableAttributesAfterReset = index.getFilterableAttributesSettings();
-
         assertNotEquals(updatedFilterableAttributes.length, filterableAttributesAfterReset.length);
         assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
     }
 
+    /** Tests of the distinct attributes setting methods */
     @Test
     @DisplayName("Test get distinct attribute settings by uid")
     public void testGetDistinctAttributeSettings() throws Exception {
@@ -476,50 +507,156 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test reset distinct attribute settings")
     public void testResetDistinctAttributeSettings() throws Exception {
-        Index index = createIndex("testUpdateDistinctAttributeSettings");
+        Index index = createIndex("testResetDistinctAttributeSettings");
         String initialDistinctAttribute = index.getDistinctAttributeSettings();
         String newDistinctAttribute = "title";
 
         index.waitForTask(index.updateDistinctAttributeSettings(newDistinctAttribute).getUid());
         String updatedDistinctAttribute = index.getDistinctAttributeSettings();
 
-        assertEquals(newDistinctAttribute, updatedDistinctAttribute);
-        assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
-
         index.waitForTask(index.resetDistinctAttributeSettings().getUid());
         String distinctAttributeAfterReset = index.getDistinctAttributeSettings();
+
+        assertEquals(newDistinctAttribute, updatedDistinctAttribute);
+        assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
 
         assertNotEquals(updatedDistinctAttribute, distinctAttributeAfterReset);
         assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
     }
 
+    /** Tests of the typo tolerance setting methods */
     @Test
-    @DisplayName("Test reset ranking rules when null value is passed")
-    public void testUpdateRankingRuleSettingsUsingNull() throws Exception {
-        Index index = createIndex("testUpdateRankingRuleSettingsUsingNull");
-        String[] initialRankingRule = index.getRankingRuleSettings();
-        String[] newRankingRules = {
-            "typo",
-            "words",
-            "sort",
-            "proximity",
-            "attribute",
-            "exactness",
-            "release_date:desc",
-            "rank:desc"
-        };
+    @DisplayName("Test get typo tolerance settings by uid")
+    public void testGetTypoTolerance() throws Exception {
+        Index index = createIndex("testGetTypoTolerance");
+        Settings initialSettings = index.getSettings();
+        TypoTolerance initialTypoTolerance = index.getTypoToleranceSettings();
 
-        index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getUid());
-        String[] newRankingRule = index.getRankingRuleSettings();
-
-        index.waitForTask(index.updateRankingRuleSettings(null).getUid());
-        String[] resetRankingRule = index.getRankingRuleSettings();
-
-        assertNotEquals(newRankingRule.length, resetRankingRule.length);
-        assertEquals(initialRankingRule.length, resetRankingRule.length);
-        assertArrayEquals(initialRankingRule, resetRankingRule);
+        assertEquals(initialSettings.getTypoTolerance().getDisableOnWords().length, 0);
+        assertEquals(initialTypoTolerance.getDisableOnWords().length, 0);
+        assertEquals(initialSettings.getTypoTolerance().getDisableOnAttributes().length, 0);
+        assertEquals(initialTypoTolerance.getDisableOnAttributes().length, 0);
+        assertEquals(
+                initialSettings.getTypoTolerance().isEnabled(), initialTypoTolerance.isEnabled());
+        assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo"));
+        assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().get("oneTypo"));
+        assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().containsKey("twoTypos"));
+        assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().get("twoTypos"));
     }
 
+    @Test
+    @DisplayName("Test update typo tolerance settings")
+    public void testUpdateTypoTolerance() throws Exception {
+        Index index = createIndex("testUpdateTypoTolerance");
+        TypoTolerance initialTypoTolerance = index.getTypoToleranceSettings();
+        TypoTolerance newTypoTolerance = new TypoTolerance();
+        newTypoTolerance.setEnabled(true);
+        newTypoTolerance.setDisableOnWords(new String[] {"and"});
+        newTypoTolerance.setDisableOnAttributes(new String[] {"title"});
+
+        HashMap<String, Integer> minWordSizeTypos =
+                new HashMap<String, Integer>() {
+                    {
+                        put("oneTypo", 7);
+                        put("twoTypos", 10);
+                    }
+                };
+        newTypoTolerance.setMinWordSizeForTypos(minWordSizeTypos);
+        index.waitForTask(index.updateTypoToleranceSettings(newTypoTolerance).getUid());
+        TypoTolerance updatedTypoTolerance = index.getTypoToleranceSettings();
+
+        assertEquals(
+                newTypoTolerance.getDisableOnWords()[0],
+                updatedTypoTolerance.getDisableOnWords()[0]);
+        assertEquals(
+                newTypoTolerance.getDisableOnAttributes()[0],
+                updatedTypoTolerance.getDisableOnAttributes()[0]);
+        assertTrue(updatedTypoTolerance.isEnabled());
+        assertTrue(
+                updatedTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo")
+                        && updatedTypoTolerance.getMinWordSizeForTypos().get("oneTypo") == 7);
+        assertTrue(
+                updatedTypoTolerance.getMinWordSizeForTypos().containsKey("twoTypos")
+                        && updatedTypoTolerance.getMinWordSizeForTypos().get("twoTypos") == 10);
+    }
+
+    @Test
+    @DisplayName("Test update typo tolerance settings")
+    public void testPartialUpdateTypoTolerance() throws Exception {
+        Index index = createIndex("testUpdateTypoTolerance");
+        TypoTolerance initialTypoTolerance = index.getTypoToleranceSettings();
+        TypoTolerance newTypoTolerance = new TypoTolerance();
+        newTypoTolerance.setDisableOnWords(new String[] {"the"});
+        newTypoTolerance.setDisableOnAttributes(new String[] {"title"});
+
+        index.waitForTask(index.updateTypoToleranceSettings(newTypoTolerance).getUid());
+        TypoTolerance updatedTypoTolerance = index.getTypoToleranceSettings();
+
+        assertEquals(
+                newTypoTolerance.getDisableOnWords()[0],
+                updatedTypoTolerance.getDisableOnWords()[0]);
+        assertEquals(
+                newTypoTolerance.getDisableOnAttributes()[0],
+                updatedTypoTolerance.getDisableOnAttributes()[0]);
+        assertTrue(updatedTypoTolerance.isEnabled());
+        assertTrue(
+                updatedTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo")
+                        && updatedTypoTolerance.getMinWordSizeForTypos().get("oneTypo") == 5);
+        assertTrue(
+                updatedTypoTolerance.getMinWordSizeForTypos().containsKey("twoTypos")
+                        && updatedTypoTolerance.getMinWordSizeForTypos().get("twoTypos") == 9);
+    }
+
+    @Test
+    @DisplayName("Test reset typo tolerance settings")
+    public void testResetTypoTolerance() throws Exception {
+        Index index = createIndex("testResetTypoTolerance");
+
+        TypoTolerance initialTypoTolerance = index.getTypoToleranceSettings();
+        TypoTolerance newTypoTolerance = new TypoTolerance();
+        newTypoTolerance.setEnabled(true);
+        newTypoTolerance.setDisableOnWords(new String[] {"and"});
+        newTypoTolerance.setDisableOnAttributes(new String[] {"title"});
+        HashMap<String, Integer> minWordSizeTypos =
+                new HashMap<String, Integer>() {
+                    {
+                        put("oneTypo", 7);
+                        put("twoTypos", 10);
+                    }
+                };
+        newTypoTolerance.setMinWordSizeForTypos(minWordSizeTypos);
+
+        index.waitForTask(index.updateTypoToleranceSettings(newTypoTolerance).getUid());
+        TypoTolerance updatedTypoTolerance = index.getTypoToleranceSettings();
+
+        index.waitForTask(index.resetTypoToleranceSettings().getUid());
+        TypoTolerance typoToleranceAfterReset = index.getTypoToleranceSettings();
+
+        assertEquals(
+                newTypoTolerance.getDisableOnWords().length,
+                updatedTypoTolerance.getDisableOnWords().length);
+        assertEquals(
+                newTypoTolerance.getDisableOnAttributes().length,
+                updatedTypoTolerance.getDisableOnAttributes().length);
+        assertEquals(newTypoTolerance.isEnabled(), updatedTypoTolerance.isEnabled());
+
+        assertEquals(
+                initialTypoTolerance.getDisableOnWords().length,
+                typoToleranceAfterReset.getDisableOnWords().length);
+        assertEquals(
+                initialTypoTolerance.getDisableOnAttributes().length,
+                typoToleranceAfterReset.getDisableOnAttributes().length);
+        assertEquals(initialTypoTolerance.isEnabled(), typoToleranceAfterReset.isEnabled());
+        assertTrue(
+                typoToleranceAfterReset.getMinWordSizeForTypos().containsKey("oneTypo")
+                        && typoToleranceAfterReset.getMinWordSizeForTypos().get("oneTypo") != null);
+        assertTrue(
+                typoToleranceAfterReset.getMinWordSizeForTypos().containsKey("twoTypos")
+                        && typoToleranceAfterReset.getMinWordSizeForTypos().get("twoTypos")
+                                != null);
+    }
+
+    /** Tests of all the specifics setting methods when null is passed */
     @Test
     @DisplayName("Test update synonyms settings when null is passed")
     public void testUpdateSynonymsSettingsUsingNull() throws Exception {
@@ -558,6 +695,33 @@ public class SettingsTest extends AbstractIT {
         assertNotEquals(updatedStopWords.length, resetStopWords.length);
         assertEquals(initialStopWords.length, resetStopWords.length);
         assertArrayEquals(initialStopWords, resetStopWords);
+    }
+
+    @Test
+    @DisplayName("Test reset ranking rules when null value is passed")
+    public void testUpdateRankingRuleSettingsUsingNull() throws Exception {
+        Index index = createIndex("testUpdateRankingRuleSettingsUsingNull");
+        String[] initialRankingRule = index.getRankingRuleSettings();
+        String[] newRankingRules = {
+            "typo",
+            "words",
+            "sort",
+            "proximity",
+            "attribute",
+            "exactness",
+            "release_date:desc",
+            "rank:desc"
+        };
+
+        index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getUid());
+        String[] newRankingRule = index.getRankingRuleSettings();
+
+        index.waitForTask(index.updateRankingRuleSettings(null).getUid());
+        String[] resetRankingRule = index.getRankingRuleSettings();
+
+        assertNotEquals(newRankingRule.length, resetRankingRule.length);
+        assertEquals(initialRankingRule.length, resetRankingRule.length);
+        assertArrayEquals(initialRankingRule, resetRankingRule);
     }
 
     @Test
