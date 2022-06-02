@@ -629,7 +629,7 @@ primary_field_guide_update_document_primary_key: |-
 primary_field_guide_create_index_primary_key: |-
   client.createIndex("books", "reference_number");
 primary_field_guide_add_document_primary_key: |-
-  client.index("movies").addDocuments("[{"
+  client.index("books").addDocuments("[{"
     + "\"reference_number\": 2879,"
     + "\"title\": \"Diary of a Wimpy Kid\","
     + "\"author\": \"Jeff Kinney\","
