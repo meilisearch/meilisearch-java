@@ -99,12 +99,12 @@ class TestMeilisearch {
 
     JSONArray array = new JSONArray();
     ArrayList items = new ArrayList() {{
-      add(new JSONObject().put("id", "1").put("title", "Carol").put("genre",new JSONArray("[\"Romance\",\"Drama\"]")));
-      add(new JSONObject().put("id", "2").put("title", "Wonder Woman").put("genre",new JSONArray("[\"Action\",\"Adventure\"]")));
-      add(new JSONObject().put("id", "3").put("title", "Life of Pi").put("genre",new JSONArray("[\"Adventure\",\"Drama\"]")));
-      add(new JSONObject().put("id", "4").put("title", "Mad Max: Fury Road").put("genre",new JSONArray("[\"Adventure\",\"Science Fiction\"]")));
-      add(new JSONObject().put("id", "5").put("title", "Moana").put("genre",new JSONArray("[\"Fantasy\",\"Action\"]")));
-      add(new JSONObject().put("id", "6").put("title", "Philadelphia").put("genre",new JSONArray("[\"Drama\"]")));
+      add(new JSONObject().put("id", "1").put("title", "Carol").put("genres",new JSONArray("[\"Romance\",\"Drama\"]")));
+      add(new JSONObject().put("id", "2").put("title", "Wonder Woman").put("genres",new JSONArray("[\"Action\",\"Adventure\"]")));
+      add(new JSONObject().put("id", "3").put("title", "Life of Pi").put("genres",new JSONArray("[\"Adventure\",\"Drama\"]")));
+      add(new JSONObject().put("id", "4").put("title", "Mad Max: Fury Road").put("genres",new JSONArray("[\"Adventure\",\"Science Fiction\"]")));
+      add(new JSONObject().put("id", "5").put("title", "Moana").put("genres",new JSONArray("[\"Fantasy\",\"Action\"]")));
+      add(new JSONObject().put("id", "6").put("title", "Philadelphia").put("genres",new JSONArray("[\"Drama\"]")));
     }};
 
     array.put(items);
@@ -137,7 +137,7 @@ System.out.println(results);
 - Output:
 
 ```
-SearchResult(hits=[{id=1.0, title=Carol, genre:[Romance, Drama]}], offset=0, limit=20, nbHits=1, exhaustiveNbHits=false, facetsDistribution=null, exhaustiveFacetsCount=false, processingTimeMs=3, query=carlo)
+SearchResult(hits=[{id=1.0, title=Carol, genres:[Romance, Drama]}], offset=0, limit=20, nbHits=1, exhaustiveNbHits=false, facetsDistribution=null, exhaustiveFacetsCount=false, processingTimeMs=3, query=carlo)
 ```
 
 #### Custom Search <!-- omit in toc -->
@@ -164,11 +164,11 @@ System.out.println(results.getHits());
 [{
   "id":3,
   "title":"Life of Pi",
-  "genre":["Adventure","Drama"],
+  "genres":["Adventure","Drama"],
   "_formatted":{
     "id":3,
     "title":"Life <em>of</em> Pi",
-    "genre":["Adventure","Drama"]
+    "genres":["Adventure","Drama"]
   },
   "_matchesInfo":{
     "title":[{
