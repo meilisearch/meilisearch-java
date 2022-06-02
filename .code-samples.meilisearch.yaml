@@ -624,6 +624,8 @@ geosearch_guide_sort_usage_2: |-
       "rating:desc",
     });
   client.index("restaurants").search(searchRequest);
+primary_field_guide_update_document_primary_key: |-
+  client.updateIndex("books", "title");
 primary_field_guide_create_index_primary_key: |-
   client.createIndex("books", "reference_number");
 primary_field_guide_add_document_primary_key: |-
@@ -679,31 +681,3 @@ tenant_token_guide_generate_sdk_1: |-
 tenant_token_guide_search_sdk_1: |-
   Client frontEndClient = new Client(new Config("http://localhost:7700", token));
   frontEndClient.index("patient_medical_records").search("blood test");
-updating_guide_check_version: |-
-  Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
-  client.getVersion();
-updating_guide_get_displayed_attributes_new: |-
-  # whenever you see {index_uid}, replace it with your index's unique id
-  Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
-  client.index({index_uid}).getDisplayedAttributes();
-updating_guide_get_displayed_attributes_old: |-
-  # whenever you see {index_uid}, replace it with your index's unique id
-  Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
-  client.index({index_uid}).getDisplayedAttributes();
-updating_guide_reset_displayed_attributes_new: |-
-  Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
-  client.index("movies").resetDisplayedAttributesSettings();
-updating_guide_reset_displayed_attributes_old: |-
-  Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
-  client.index("movies").resetDisplayedAttributesSettings();
-updating_guide_create_dump: |-
-  Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
-  client.createDump();
-updating_guide_get_dump_status: |-
-  # replace {dump_uid} with the uid returned by the previous command
-  Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
-  client.getDumpStatus({dump_uid});
-updating_guide_get_settings: |-
-updating_guide_retrieve_documents: |-
-updating_guide_update_settings: |-
-updating_guide_add_documents: |-
