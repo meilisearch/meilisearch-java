@@ -26,6 +26,22 @@ First of all, thank you for contributing to Meilisearch! The goal of this docume
 
 ## Development Workflow
 
+### Setup <!-- omit in TOC -->
+
+You can set up your local environment natively or using `docker`, check out the [`docker-compose.yml`](/docker-compose.yml).
+
+Example of running all the checks with docker:
+```bash
+docker-compose run --rm package bash -c "./gradlew build && ./gradlew test IntegrationTest"
+```
+
+To install dependencies:
+
+```bash
+./gradlew build
+```
+
+
 ### Tests <!-- omit in TOC -->
 
 Integration and unit tests will be run in your PR to check everything is OK. Each PR should pass all the tests to be accepted.

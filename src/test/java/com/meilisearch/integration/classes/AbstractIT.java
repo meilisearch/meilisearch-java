@@ -34,11 +34,19 @@ public abstract class AbstractIT {
     }
 
     public void setUp() {
-        if (client == null) client = new Client(new Config("http://localhost:7700", "masterKey"));
+        if (client == null) client = new Client(new Config(getMeilisearchHost(), "masterKey"));
     }
 
     public static void cleanup() {
         deleteAllIndexes();
+    }
+
+    public static String getMeilisearchHost() {
+        String meilisearchHost = System.getenv("MEILISEARCH_HOST");
+        if (meilisearchHost != null) {
+            return meilisearchHost;
+        }
+        return "http://localhost:7700";
     }
 
     public Index createEmptyIndex(String indexUid) throws Exception {
@@ -84,7 +92,7 @@ public abstract class AbstractIT {
 
     public static void deleteAllIndexes() {
         try {
-            Client ms = new Client(new Config("http://localhost:7700", "masterKey"));
+            Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"));
             Index[] indexes = ms.getIndexList();
             for (Index index : indexes) {
                 ms.deleteIndex(index.getUid());
@@ -96,7 +104,7 @@ public abstract class AbstractIT {
 
     public static void deleteAllKeys() {
         try {
-            Client ms = new Client(new Config("http://localhost:7700", "masterKey"));
+            Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"));
             Key[] keys = ms.getKeys();
             for (Key key : keys) {
                 if ((key.getDescription() == null) || (key.getDescription().contains("test"))) {

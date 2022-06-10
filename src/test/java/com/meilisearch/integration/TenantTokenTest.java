@@ -45,14 +45,14 @@ public class TenantTokenTest extends AbstractIT {
         Index index = createEmptyIndex(indexUid);
         Key key = getPrivateKey();
 
-        Client privateClient = new Client(new Config("http://localhost:7700", key.getKey()));
+        Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
 
         Map<String, Object> rules = new HashMap<String, Object>();
         rules.put("*", new HashMap<String, Object>());
 
         String jwtToken = privateClient.generateTenantToken(rules);
 
-        Client tokenClient = new Client(new Config("http://localhost:7700", jwtToken));
+        Client tokenClient = new Client(new Config(getMeilisearchHost(), jwtToken));
 
         assertDoesNotThrow(() -> tokenClient.index(indexUid).search(""));
     }
@@ -64,14 +64,14 @@ public class TenantTokenTest extends AbstractIT {
         Index index = createEmptyIndex(indexUid);
         Key key = getPrivateKey();
 
-        Client privateClient = new Client(new Config("http://localhost:7700", key.getKey()));
+        Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
 
         Map<String, Object> rules = new HashMap<String, Object>();
         rules.put(indexUid, new HashMap<String, Object>());
 
         String jwtToken = privateClient.generateTenantToken(rules);
 
-        Client tokenClient = new Client(new Config("http://localhost:7700", jwtToken));
+        Client tokenClient = new Client(new Config(getMeilisearchHost(), jwtToken));
 
         assertDoesNotThrow(() -> tokenClient.index(indexUid).search(""));
     }
@@ -82,7 +82,7 @@ public class TenantTokenTest extends AbstractIT {
         Key key = getPrivateKey();
         String indexUid = "GenerateTokenwithFilter";
 
-        Client privateClient = new Client(new Config("http://localhost:7700", key.getKey()));
+        Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
 
         Map<String, Object> filters = new HashMap<String, Object>();
         filters.put("filter", "id > 1");
@@ -91,7 +91,7 @@ public class TenantTokenTest extends AbstractIT {
 
         String jwtToken = privateClient.generateTenantToken(rules);
 
-        Client tokenClient = new Client(new Config("http://localhost:7700", jwtToken));
+        Client tokenClient = new Client(new Config(getMeilisearchHost(), jwtToken));
 
         Index index = client.index(indexUid);
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
@@ -116,7 +116,7 @@ public class TenantTokenTest extends AbstractIT {
         Index index = createEmptyIndex(indexUid);
         Key key = getPrivateKey();
 
-        Client privateClient = new Client(new Config("http://localhost:7700", key.getKey()));
+        Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
 
         Map<String, Object> rules = new HashMap<String, Object>();
         rules.put("*", new HashMap<String, Object>());
@@ -129,7 +129,7 @@ public class TenantTokenTest extends AbstractIT {
 
         String jwtToken = privateClient.generateTenantToken(rules, options);
 
-        Client tokenClient = new Client(new Config("http://localhost:7700", jwtToken));
+        Client tokenClient = new Client(new Config(getMeilisearchHost(), jwtToken));
 
         assertDoesNotThrow(() -> tokenClient.index(indexUid).search(""));
     }
@@ -149,7 +149,7 @@ public class TenantTokenTest extends AbstractIT {
 
         String jwtToken = client.generateTenantToken(rules, options);
 
-        Client tokenClient = new Client(new Config("http://localhost:7700", jwtToken));
+        Client tokenClient = new Client(new Config(getMeilisearchHost(), jwtToken));
 
         assertDoesNotThrow(() -> tokenClient.index(indexUid).search(""));
     }
@@ -173,7 +173,7 @@ public class TenantTokenTest extends AbstractIT {
 
         String jwtToken = client.generateTenantToken(rules, options);
 
-        Client tokenClient = new Client(new Config("http://localhost:7700", jwtToken));
+        Client tokenClient = new Client(new Config(getMeilisearchHost(), jwtToken));
 
         assertDoesNotThrow(() -> tokenClient.index(indexUid).search(""));
     }
@@ -184,7 +184,7 @@ public class TenantTokenTest extends AbstractIT {
         String indexUid = "GenerateTokenWithNoSearchRules";
         Key key = getPrivateKey();
 
-        Client privateClient = new Client(new Config("http://localhost:7700", key.getKey()));
+        Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
 
         assertThrows(MeiliSearchException.class, () -> privateClient.generateTenantToken(null));
     }
@@ -195,7 +195,7 @@ public class TenantTokenTest extends AbstractIT {
         String indexUid = "GenerateTenantTokenWithBadExpiresAt";
         Key key = getPrivateKey();
 
-        Client privateClient = new Client(new Config("http://localhost:7700", key.getKey()));
+        Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
 
         Map<String, Object> rules = new HashMap<String, Object>();
         rules.put("*", new HashMap<String, Object>());
@@ -217,7 +217,7 @@ public class TenantTokenTest extends AbstractIT {
     public void testGenerateTenantTokenWithEmptyApiKey() throws Exception {
         String indexUid = "GenerateTenantTokenWithEmptyApiKey";
 
-        Client privateClient = new Client(new Config("http://localhost:7700"));
+        Client privateClient = new Client(new Config(getMeilisearchHost()));
 
         Map<String, Object> rules = new HashMap<String, Object>();
         rules.put("*", new HashMap<String, Object>());
