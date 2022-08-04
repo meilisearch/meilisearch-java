@@ -11,6 +11,7 @@ plugins {
 	id 'java-library'
 	id 'maven-publish'
 	id 'signing'
+	id 'jacoco'
 	id 'io.codearte.nexus-staging' version '0.30.0'
 	id "com.diffplug.spotless" version "6.5.2"
 }
@@ -22,6 +23,11 @@ version = '0.7.2'
 java {
 	sourceCompatibility = JavaVersion.VERSION_1_8
 	targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+jacoco {
+  toolVersion = "0.8.8"
+  reportsDir = file("$projectDir/tmp/coverage")
 }
 
 repositories {
@@ -46,7 +52,7 @@ dependencies {
 	testImplementation(platform('org.junit:junit-bom:5.8.2'))
 	testImplementation('org.junit.jupiter:junit-jupiter:5.8.2')
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
-	testImplementation 'org.mockito:mockito-core:4.5.1'
+	testImplementation 'org.mockito:mockito-core:4.6.1'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
@@ -78,12 +84,17 @@ task buildJar(type: Jar) {
 }
 
 test {
+	finalizedBy jacocoTestReport
 	useJUnitPlatform {
 		excludeTags('integration')
 	}
 	testLogging {
 		events 'passed', 'skipped', 'failed'
 	}
+}
+
+jacocoTestReport {
+	dependsOn test
 }
 
 task integrationTest(type: Test) {
