@@ -61,3 +61,6 @@ atlassian-ide-plugin.xml
 
 *.gpg
 secring*
+
+# coverage output
+tmp/coverage
