@@ -7,7 +7,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
-import com.meilisearch.sdk.Dump;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.Task;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
@@ -207,23 +206,24 @@ public class ClientTest extends AbstractIT {
         assertEquals(primaryKey, index.getPrimaryKey());
     }
 
-    /** Test call to create dump */
-    @Test
-    public void testCreateDump() throws Exception {
-        Dump dump = client.createDump();
-        String status = dump.getStatus();
+    // /** Test call to create dump */
+    // TODO rewrite Dump test
+    // @Test
+    // public void testCreateDump() throws Exception {
+    //     Dump dump = client.createDump();
+    //     String status = dump.getStatus();
 
-        assertEquals(status, "in_progress");
-    }
+    //     assertEquals(status, "in_progress");
+    // }
 
-    /** Test call to get dump status by uid */
-    @Test
-    public void testGetDumpStatus() throws Exception {
-        Dump dump = client.createDump();
-        String uid = dump.getUid();
-        String status = client.getDumpStatus(uid);
+    // /** Test call to get dump status by uid */
+    // @Test
+    // public void testGetDumpStatus() throws Exception {
+    //     Dump dump = client.createDump();
+    //     String uid = dump.getUid();
+    //     String status = client.getDumpStatus(uid);
 
-        assertNotNull(status);
-        assertNotNull(uid);
-    }
+    //     assertNotNull(status);
+    //     assertNotNull(uid);
+    // }
 }
