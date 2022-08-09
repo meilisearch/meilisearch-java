@@ -1,15 +1,22 @@
-package com.meilisearch.sdk;
+package com.meilisearch.sdk.model;
 
 import java.util.HashMap;
 import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONObject;
 
+/**
+ * Data structure for the Typo tolerance setting
+ *
+ * <p>Refer https://docs.meilisearch.com/reference/api/typo_tolerance.html
+ */
+@Getter
+@Setter
 public class TypoTolerance {
-    @Getter @Setter private boolean enabled = true;
-    @Getter @Setter private HashMap<String, Integer> minWordSizeForTypos;
-    @Getter @Setter private String[] disableOnWords;
-    @Getter @Setter private String[] disableOnAttributes;
+    protected boolean enabled = true;
+    protected HashMap<String, Integer> minWordSizeForTypos;
+    protected String[] disableOnWords;
+    protected String[] disableOnAttributes;
 
     /**
      * Method to return the JSONObject of the TypoTolerance Setting

@@ -3,6 +3,8 @@ package com.meilisearch.sdk;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+import com.meilisearch.sdk.model.Key;
+import com.meilisearch.sdk.model.Result;
 
 /**
  * Wrapper around MeilisearchHttpRequest class to use for MeiliSearch keys
