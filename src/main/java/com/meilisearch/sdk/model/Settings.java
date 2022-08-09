@@ -1,5 +1,6 @@
-package com.meilisearch.sdk;
+package com.meilisearch.sdk.model;
 
+import com.meilisearch.sdk.Index;
 import java.util.HashMap;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,17 +14,16 @@ import org.json.JSONObject;
 @Getter
 @Setter
 public class Settings {
-    private HashMap<String, String[]> synonyms;
-    private String[] stopWords;
-    private String[] rankingRules;
-    private String[] filterableAttributes;
-    private String distinctAttribute;
-    private String[] searchableAttributes;
-    private String[] displayedAttributes;
-    private String[] sortableAttributes;
-    private TypoTolerance typoTolerance;
+    protected HashMap<String, String[]> synonyms;
+    protected String[] stopWords;
+    protected String[] rankingRules;
+    protected String[] filterableAttributes;
+    protected String distinctAttribute;
+    protected String[] searchableAttributes;
+    protected String[] displayedAttributes;
+    protected String[] sortableAttributes;
+    protected TypoTolerance typoTolerance;
 
-    /** Empty SettingsRequest constructor */
     public Settings() {}
 
     /**
@@ -31,7 +31,7 @@ public class Settings {
      *
      * @return JSON String of the update settings query
      */
-    String getUpdateQuery() {
+    public String getUpdateQuery() {
         JSONObject jsonObject = new JSONObject();
         if (this.getSynonyms() != null) {
             jsonObject.put("synonyms", this.getSynonyms());

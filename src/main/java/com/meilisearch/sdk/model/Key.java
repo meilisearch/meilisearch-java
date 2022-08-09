@@ -1,4 +1,4 @@
-package com.meilisearch.sdk;
+package com.meilisearch.sdk.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,7 +6,11 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
-/** MeiliSearch response for a Key */
+/**
+ * Data structure of MeiliSearch response for a Key
+ *
+ * <p>Refer https://docs.meilisearch.com/reference/api/keys.html
+ */
 @Getter
 public class Key {
     @Setter protected String description = null;
@@ -17,7 +21,6 @@ public class Key {
     protected Date createdAt = null;
     protected Date updatedAt = null;
 
-    /** Calls instance for MeiliSearch Key */
     public Key() {}
 
     /**

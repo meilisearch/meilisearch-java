@@ -7,6 +7,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.google.gson.Gson;
 import com.meilisearch.sdk.exceptions.MeiliSearchException;
+import com.meilisearch.sdk.model.Key;
+import com.meilisearch.sdk.model.Task;
 import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;

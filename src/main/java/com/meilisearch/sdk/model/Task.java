@@ -1,10 +1,15 @@
-package com.meilisearch.sdk;
+package com.meilisearch.sdk.model;
 
 import com.google.gson.Gson;
+import com.meilisearch.sdk.TaskError;
 import java.util.Date;
 import lombok.Getter;
 
-/** MeiliSearch response for a Task */
+/**
+ * Data structure of MeiliSearch response for a Task
+ *
+ * <p>Refer https://docs.meilisearch.com/reference/api/tasks.html
+ */
 @Getter
 public class Task {
     protected String status = "";
@@ -19,6 +24,8 @@ public class Task {
     protected Details details = null;
 
     private static Gson gsonTask = new Gson();
+
+    public Task() {}
 
     /**
      * Method to return the JSON String of the Task
