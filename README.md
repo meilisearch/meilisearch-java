@@ -283,7 +283,7 @@ Config config = new Config("http://localhost:7700", "masterKey");
 return new Client(config);
 ```
 
-The `Client(config)` constructor sets the config instance to the member variable. It also sets the 3 other instances namely `gson()`, `IndexesHandler(config)` and `DumpHandler(config)`.
+The `Client(config)` constructor sets the config instance to the member variable. It also sets the 4 other instances namely `gson()`, `IndexesHandler(config)`, `TasksHandler(config)` and `KeysHandler(config)`.
 
 Using the custom `Client`:
 
