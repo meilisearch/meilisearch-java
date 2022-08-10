@@ -1,16 +1,19 @@
-package com.meilisearch.sdk.api.instance;
+package com.meilisearch.sdk.model;
 
 import java.util.Date;
 import java.util.Map;
 import lombok.Getter;
-import lombok.Setter;
 
+/**
+ * Data structure for the stats
+ *
+ * <p>Refer https://docs.meilisearch.com/reference/api/stats.html
+ */
 @Getter
-@Setter
 public class Stats {
-    private long databaseSize;
-    private Date lastUpdate;
-    private Map<String, IndexStats> indexes;
+    protected long databaseSize;
+    protected Date lastUpdate;
+    protected Map<String, IndexStats> indexes;
 
     public Stats() {}
 

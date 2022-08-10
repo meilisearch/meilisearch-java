@@ -1,4 +1,4 @@
-package com.meilisearch.sdk.api.instance;
+package com.meilisearch.sdk.model;
 
 import java.util.Map;
 import lombok.Getter;
@@ -7,9 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class IndexStats {
-    private long numberOfDocuments;
-    private boolean isIndexing;
-    private Map<String, Integer> fieldDistribution;
+    protected long numberOfDocuments;
+    protected boolean isIndexing;
+    protected Map<String, Integer> fieldDistribution;
 
     public IndexStats() {}
 

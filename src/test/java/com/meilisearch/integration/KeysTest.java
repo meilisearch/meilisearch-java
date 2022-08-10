@@ -3,7 +3,7 @@ package com.meilisearch.integration;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.meilisearch.integration.classes.AbstractIT;
-import com.meilisearch.sdk.Key;
+import com.meilisearch.sdk.model.Key;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.junit.jupiter.api.AfterAll;

@@ -4,6 +4,7 @@ import static java.util.Collections.singletonList;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.meilisearch.sdk.model.Task;
 import java.util.List;
 
 /** Wrapper around MeiliSearchHttpRequest class to use for Meilisearch documents */

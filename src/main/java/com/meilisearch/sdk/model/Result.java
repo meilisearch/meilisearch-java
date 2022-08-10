@@ -1,9 +1,9 @@
-package com.meilisearch.sdk;
+package com.meilisearch.sdk.model;
 
 import com.google.gson.Gson;
 import lombok.Getter;
 
-/** MeiliSearch response for a Result */
+/** Data structure of MeiliSearch response for a Result */
 public class Result<T> {
     @Getter protected T[] results = null;
 

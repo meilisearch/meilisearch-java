@@ -7,6 +7,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.google.gson.Gson;
 import com.meilisearch.sdk.exceptions.MeiliSearchException;
+import com.meilisearch.sdk.model.Key;
+import com.meilisearch.sdk.model.Task;
 import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
@@ -18,7 +20,6 @@ public class Client {
     public TasksHandler tasksHandler;
     public KeysHandler keysHandler;
     public Gson gson;
-    public DumpHandler dumpHandler;
 
     /**
      * Calls instance for Meilisearch client
@@ -31,7 +32,6 @@ public class Client {
         this.indexesHandler = new IndexesHandler(config);
         this.tasksHandler = new TasksHandler(config);
         this.keysHandler = new KeysHandler(config);
-        this.dumpHandler = new DumpHandler(config);
     }
 
     /**
@@ -153,28 +153,26 @@ public class Client {
         return task;
     }
 
-    /**
-     * Triggers the creation of a Meilisearch dump. Refer
-     * https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
-     *
-     * @return Dump instance
-     * @throws Exception if an error occurs
-     */
-    public Dump createDump() throws Exception {
-        return this.dumpHandler.createDump();
-    }
-
-    /**
-     * Gets the status of a Meilisearch dump.
-     * https://docs.meilisearch.com/reference/api/dump.html#get-dump-status
-     *
-     * @param uid Unique identifier for correspondent dump
-     * @return String with dump status
-     * @throws Exception if an error occurs
-     */
-    public String getDumpStatus(String uid) throws Exception {
-        return this.dumpHandler.getDumpStatus(uid);
-    }
+    // TODO createDump will return a Task in v0.28
+    // /**
+    //  * Triggers the creation of a Meilisearch dump. Refer
+    //  * https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
+    //  *
+    //  * @return Dump instance
+    //  * @throws Exception if an error occurs
+    //  */
+    // public Dump createDump() throws Exception {
+    //     return this.dumpHandler.createDump();
+    // }
+    // /**
+    //  * Creates a dump Refer https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
+    //  *
+    //  * @return Dump object with Meilisearch API response
+    //  * @throws Exception if an error occurs
+    //  */
+    // public Dump createDump() throws Exception, MeiliSearchApiException {
+    //     return new Gson().fromJson(this.meiliSearchHttpRequest.post("/dumps", ""), Dump.class);
+    // }
 
     /**
      * Retrieves a task with the specified uid

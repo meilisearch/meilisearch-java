@@ -1,6 +1,9 @@
 package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
+import com.meilisearch.sdk.model.Settings;
+import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TypoTolerance;
 import java.util.Map;
 
 /**

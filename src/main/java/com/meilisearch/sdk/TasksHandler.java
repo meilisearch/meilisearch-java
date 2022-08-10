@@ -3,6 +3,8 @@ package com.meilisearch.sdk;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+import com.meilisearch.sdk.model.Result;
+import com.meilisearch.sdk.model.Task;
 import java.util.Date;
 
 /**
