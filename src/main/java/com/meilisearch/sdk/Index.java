@@ -1,5 +1,6 @@
 package com.meilisearch.sdk;
 
+import com.google.common.net.HttpHeaders;
 import com.google.gson.Gson;
 import com.meilisearch.sdk.model.SearchResult;
 import java.io.Serializable;
@@ -655,5 +656,130 @@ public class Index implements Serializable {
         Index retrievedIndex =
                 new Gson().fromJson(meilisearchHttpRequest.get(requestQuery), Index.class);
         this.primaryKey = retrievedIndex.getPrimaryKey();
+    }
+
+    /**
+     * Add Documents from NDJSON file
+     *
+     * @param document Document to add in NDJSON string format
+     * @param primaryKey PrimaryKey of the Document to Add
+     * @return MeiliSearch API response
+     * @throws Exception if something goes wrong
+     */
+    public String addDocumentsNDJSON(String document, String primaryKey) throws Exception {
+        return this.documents.addDocuments(
+                this.uid,
+                document,
+                primaryKey,
+                Collections.singletonMap(HttpHeaders.CONTENT_TYPE, "application/x-ndjson"));
+    }
+
+    /**
+     * Add Documents from NDJSON file in Batches
+     *
+     * @param document Document to add in NDJSON string format
+     * @param batchSize size of the batch of documents
+     * @param primaryKey PrimaryKey of the Document to Add
+     * @return Multiple MeiliSearch API response
+     * @throws Exception if something goes wrong
+     */
+    public String addDocumentsNDJSONinBatches(String document, Integer batchSize, String primaryKey)
+            throws Exception {
+        String[] documents = document.split("\n");
+        StringBuffer subDocuments = new StringBuffer();
+        JSONArray arrayResponses = new JSONArray();
+
+        for (int i = 0; i < documents.length; i += batchSize) {
+            for (int j = 0; j < batchSize && j + i < documents.length; j++) {
+                subDocuments.append(documents[i + j]);
+                subDocuments.append("\n");
+            }
+
+            arrayResponses.put(
+                    new JSONObject(
+                            this.documents.addDocuments(
+                                    this.uid,
+                                    subDocuments.toString(),
+                                    primaryKey,
+                                    Collections.singletonMap(
+                                            HttpHeaders.CONTENT_TYPE, "application/x-ndjson"))));
+            subDocuments.setLength(0);
+        }
+        return arrayResponses.toString();
+    }
+
+    /**
+     * Add Documents from NDJSON file in Batches
+     *
+     * @param document Document to add in NDJSON string format
+     * @return Multiple MeiliSearch API response
+     * @throws Exception if something goes wrong
+     */
+    public String addDocumentsNDJSONinBatches(String document) throws Exception {
+        return addDocumentsNDJSONinBatches(document, 1000, null);
+    }
+
+    /**
+     * Add Documents from CSV File
+     *
+     * @param document Document to add in CSV string format
+     * @param primaryKey PrimaryKey of the Document to Add
+     * @return MeiliSearch API response
+     * @throws Exception if something goes wrong
+     */
+    public String addDocumentsCSV(String document, String primaryKey) throws Exception {
+        return this.documents.addDocuments(
+                this.uid,
+                document,
+                primaryKey,
+                Collections.singletonMap(HttpHeaders.CONTENT_TYPE, "text/csv"));
+    }
+
+    /**
+     * Add CSV Documents in Batches
+     *
+     * @param document Document to add in CSV string format
+     * @param batchSize size of the batch of documents
+     * @param primaryKey PrimaryKey of the Document to Add
+     * @return Multiple MeiliSearch API response
+     * @throws Exception if something goes wrong
+     */
+    public String addDocumentsCSVinBatches(String document, Integer batchSize, String primaryKey)
+            throws Exception {
+        String[] documents = document.split("\n");
+        StringBuffer subDocuments = new StringBuffer();
+        JSONArray arrayResponses = new JSONArray();
+        String fields = documents[0];
+
+        for (int i = 1; i < documents.length; i += (batchSize)) {
+            subDocuments.append(fields);
+            subDocuments.append("\n");
+            for (int j = 0; j < (batchSize) && j + i < documents.length; j++) {
+                subDocuments.append(documents[i + j]);
+                subDocuments.append("\n");
+            }
+
+            arrayResponses.put(
+                    new JSONObject(
+                            this.documents.addDocuments(
+                                    this.uid,
+                                    subDocuments.toString(),
+                                    primaryKey,
+                                    Collections.singletonMap(
+                                            HttpHeaders.CONTENT_TYPE, "text/csv"))));
+            subDocuments.setLength(0);
+        }
+        return arrayResponses.toString();
+    }
+
+    /**
+     * Add CSV Documents in Batches
+     *
+     * @param document Document to add in CSV string format
+     * @return Multiple MeiliSearch API response
+     * @throws Exception if something goes wrong
+     */
+    public String addDocumentsCSVinBatches(String document) throws Exception {
+        return addDocumentsCSVinBatches(document, 1000, null);
     }
 }

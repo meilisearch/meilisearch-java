@@ -27,7 +27,8 @@ public class DefaultHttpClient extends AbstractHttpClient {
      * @return Validated connection (otherwise, will throw a {@link IOException})
      * @throws IOException if unable to establish connection
      */
-    private HttpURLConnection getConnection(final URL url, final String method, final String apiKey)
+    private HttpURLConnection getConnection(
+            final URL url, final String method, String dataType, final String apiKey)
             throws IOException {
         if (url == null || "".equals(method))
             throw new IOException("Unable to open an HttpURLConnection with no URL or method");
@@ -35,7 +36,7 @@ public class DefaultHttpClient extends AbstractHttpClient {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         connection.setRequestMethod(method);
-        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Content-Type", dataType);
 
         // Use API key header only if one is provided
         if (!"".equals(apiKey)) {
@@ -47,9 +48,23 @@ public class DefaultHttpClient extends AbstractHttpClient {
 
     private HttpResponse<?> execute(HttpRequest<?> request) throws IOException {
         URL url = new URL(this.config.getHostUrl() + request.getPath());
-        HttpURLConnection connection =
-                this.getConnection(url, request.getMethod().name(), this.config.getApiKey());
 
+        HttpURLConnection connection;
+        if (request.getHeaders().get("Content-Type") == null) {
+            connection =
+                    this.getConnection(
+                            url,
+                            request.getMethod().name(),
+                            "application/json",
+                            this.config.getApiKey());
+        } else {
+            connection =
+                    this.getConnection(
+                            url,
+                            request.getMethod().name(),
+                            request.getHeaders().get("Content-Type"),
+                            this.config.getApiKey());
+        }
         if (request.hasContent()) {
             connection.setDoOutput(true);
             connection.getOutputStream().write(request.getContentAsBytes());
