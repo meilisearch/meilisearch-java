@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.model.Result;
 import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
@@ -51,7 +52,8 @@ public class TasksTest extends AbstractIT {
     /** Test Get Tasks */
     @Test
     public void testClientGetTasks() throws Exception {
-        Task[] tasks = client.getTasks();
+        Result<Task> result = client.getTasks();
+        Task[] tasks = result.getResults();
 
         for (Task task : tasks) {
             client.waitForTask(task.getUid());

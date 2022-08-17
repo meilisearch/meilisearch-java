@@ -2,10 +2,8 @@ package com.meilisearch.sdk.model;
 
 import java.util.Map;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class Details {
     protected int receivedDocuments;
     protected int indexedDocuments;
@@ -20,6 +18,4 @@ public class Details {
     protected Map<String, String[]> synonyms;
     protected String distinctAttribute;
     protected TypoTolerance typoTolerance;
-
-    public Details() {}
 }

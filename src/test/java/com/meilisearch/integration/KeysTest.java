@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.sdk.model.Key;
+import com.meilisearch.sdk.model.Result;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.junit.jupiter.api.AfterAll;
@@ -28,7 +29,8 @@ public class KeysTest extends AbstractIT {
     /** Test Get Keys */
     @Test
     public void testClientGetKeys() throws Exception {
-        Key[] keys = client.getKeys();
+        Result<Key> result = client.getKeys();
+        Key[] keys = result.getResults();
 
         assertEquals(2, keys.length);
 

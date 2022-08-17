@@ -1,7 +1,5 @@
 package com.meilisearch.sdk;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import com.meilisearch.sdk.model.Result;
 import com.meilisearch.sdk.model.Task;
@@ -14,7 +12,6 @@ import java.util.Date;
  */
 public class TasksHandler {
     private final MeiliSearchHttpRequest meilisearchHttpRequest;
-    private final Gson gson = new Gson();
     public static final String SUCCEEDED = "succeeded";
     public static final String FAILED = "failed";
 
@@ -37,7 +34,8 @@ public class TasksHandler {
      */
     public Task getTask(String indexUid, int taskUid) throws Exception {
         String urlPath = "/indexes/" + indexUid + "/tasks/" + taskUid;
-        return this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Task.class);
+        return meilisearchHttpRequest.jsonHandler.decode(
+                this.meilisearchHttpRequest.get(urlPath), Task.class);
     }
 
     /**
@@ -47,9 +45,13 @@ public class TasksHandler {
      * @return List of task instance
      * @throws Exception if client request causes an error
      */
-    public Task[] getTasks(String indexUid) throws Exception {
+    public Result<Task> getTasks(String indexUid) throws Exception {
         String urlPath = "/indexes/" + indexUid + "/tasks";
-        return this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Task[].class);
+
+        Result<Task> result =
+                meilisearchHttpRequest.jsonHandler.decode(
+                        this.meilisearchHttpRequest.get(urlPath), Result.class, Task.class);
+        return result;
     }
 
     /**
@@ -61,7 +63,8 @@ public class TasksHandler {
      */
     public Task getTask(int taskUid) throws Exception, MeiliSearchApiException {
         String urlPath = "/tasks/" + taskUid;
-        return this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Task.class);
+        return meilisearchHttpRequest.jsonHandler.decode(
+                this.meilisearchHttpRequest.get(urlPath), Task.class);
     }
 
     /**
@@ -70,15 +73,13 @@ public class TasksHandler {
      * @return List of task instance
      * @throws Exception if client request causes an error
      */
-    public Task[] getTasks() throws Exception {
+    public Result<Task> getTasks() throws Exception {
         String urlPath = "/tasks";
 
         Result<Task> result =
-                this.gson.fromJson(
-                        this.meilisearchHttpRequest.get(urlPath),
-                        new TypeToken<Result<Task>>() {}.getType());
-
-        return result.getResults();
+                meilisearchHttpRequest.jsonHandler.decode(
+                        this.meilisearchHttpRequest.get(urlPath), Result.class, Task.class);
+        return result;
     }
 
     /**

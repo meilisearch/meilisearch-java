@@ -1,6 +1,6 @@
 package com.meilisearch.sdk;
 
-import com.google.gson.Gson;
+import com.meilisearch.sdk.model.Result;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.Task;
@@ -16,25 +16,15 @@ import org.json.JSONArray;
 /** Meilisearch index */
 @ToString
 public class Index implements Serializable {
-    @Getter String uid;
-
-    @Getter String primaryKey;
-
-    @Getter String createdAt;
-
-    @Getter @ToString.Exclude String updatedAt;
-
-    @Getter @ToString.Exclude Config config;
-
-    @ToString.Exclude Documents documents;
-
-    @ToString.Exclude TasksHandler tasksHandler;
-
-    @ToString.Exclude Search search;
-
-    @ToString.Exclude SettingsHandler settingsHandler;
-
-    Gson gson = new Gson();
+    @Getter protected String uid;
+    @Getter protected String primaryKey;
+    @Getter protected String createdAt;
+    @Getter @ToString.Exclude protected String updatedAt;
+    @Getter @ToString.Exclude protected Config config;
+    @ToString.Exclude protected Documents documents;
+    @ToString.Exclude protected TasksHandler tasksHandler;
+    @ToString.Exclude protected Search search;
+    @ToString.Exclude protected SettingsHandler settingsHandler;
 
     /**
      * Sets the Meilisearch configuration for the index
@@ -621,7 +611,7 @@ public class Index implements Serializable {
      * @return List of tasks in the MeiliSearch index
      * @throws Exception if an error occurs
      */
-    public Task[] getTasks() throws Exception {
+    public Result<Task> getTasks() throws Exception {
         return this.tasksHandler.getTasks(this.uid);
     }
 
@@ -656,7 +646,7 @@ public class Index implements Serializable {
         String requestQuery = "/indexes/" + this.uid;
         MeiliSearchHttpRequest meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
         Index retrievedIndex =
-                new Gson().fromJson(meilisearchHttpRequest.get(requestQuery), Index.class);
+                config.jsonHandler.decode(meilisearchHttpRequest.get(requestQuery), Index.class);
         this.primaryKey = retrievedIndex.getPrimaryKey();
     }
 }

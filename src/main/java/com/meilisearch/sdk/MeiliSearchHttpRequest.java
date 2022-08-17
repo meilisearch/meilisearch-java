@@ -9,22 +9,23 @@ import com.meilisearch.sdk.http.factory.RequestFactory;
 import com.meilisearch.sdk.http.request.HttpMethod;
 import com.meilisearch.sdk.http.response.HttpResponse;
 import com.meilisearch.sdk.json.GsonJsonHandler;
+import com.meilisearch.sdk.json.JsonHandler;
 import java.util.Collections;
 
 /** The HTTP requests for the different functions to be done through Meilisearch */
-class MeiliSearchHttpRequest {
+public class MeiliSearchHttpRequest {
     private final AbstractHttpClient client;
     private final RequestFactory factory;
-    private final GsonJsonHandler jsonHandler;
+    protected final JsonHandler jsonHandler;
 
     /**
      * Constructor for the MeiliSearchHttpRequest
      *
      * @param config Meilisearch configuration
      */
-    protected MeiliSearchHttpRequest(Config config) {
+    public MeiliSearchHttpRequest(Config config) {
         this.client = new DefaultHttpClient(config);
-        this.jsonHandler = new GsonJsonHandler();
+        this.jsonHandler = config.jsonHandler;
         this.factory = new BasicRequestFactory(jsonHandler);
     }
 
@@ -81,7 +82,7 @@ class MeiliSearchHttpRequest {
      * @throws Exception if the client has an error
      * @throws MeiliSearchApiException if the response is an error
      */
-    String post(String api, String body) throws Exception, MeiliSearchApiException {
+    <T> String post(String api, T body) throws Exception, MeiliSearchApiException {
         HttpResponse<?> httpResponse =
                 this.client.post(
                         factory.create(HttpMethod.POST, api, Collections.emptyMap(), body));
