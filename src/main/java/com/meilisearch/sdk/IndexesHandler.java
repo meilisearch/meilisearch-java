@@ -1,7 +1,7 @@
 package com.meilisearch.sdk;
 
-import com.google.gson.JsonObject;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+import java.util.HashMap;
 
 /** Wrapper around the MeiliSearchHttpRequest class to ease usage for Meilisearch indexes */
 class IndexesHandler {
@@ -37,12 +37,12 @@ class IndexesHandler {
      * @throws Exception if an error occurs
      */
     String create(String uid, String primaryKey) throws Exception, MeiliSearchApiException {
-        JsonObject params = new JsonObject();
-        params.addProperty("uid", uid);
-        if (primaryKey != null) {
-            params.addProperty("primaryKey", primaryKey);
-        }
-        return meilisearchHttpRequest.post("/indexes", params.toString());
+        HashMap<String, Object> index = new HashMap<String, Object>();
+        index.put("uid", uid);
+        index.put("primaryKey", primaryKey);
+
+        return meilisearchHttpRequest.post(
+                "/indexes", meilisearchHttpRequest.jsonHandler.encode(index));
     }
 
     /**
@@ -76,11 +76,12 @@ class IndexesHandler {
      * @throws Exception if an error occurs
      */
     String updatePrimaryKey(String uid, String primaryKey) throws Exception {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("primaryKey", primaryKey);
+        HashMap<String, Object> index = new HashMap<String, Object>();
+        index.put("primaryKey", primaryKey);
 
         String requestQuery = "/indexes/" + uid;
-        return meilisearchHttpRequest.put(requestQuery, jsonObject.toString());
+        return meilisearchHttpRequest.put(
+                requestQuery, meilisearchHttpRequest.jsonHandler.encode(index));
     }
 
     /**

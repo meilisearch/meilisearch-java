@@ -5,9 +5,10 @@ package com.meilisearch.sdk;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.google.gson.Gson;
 import com.meilisearch.sdk.exceptions.MeiliSearchException;
+import com.meilisearch.sdk.json.JsonHandler;
 import com.meilisearch.sdk.model.Key;
+import com.meilisearch.sdk.model.Result;
 import com.meilisearch.sdk.model.Task;
 import java.util.Date;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class Client {
     public IndexesHandler indexesHandler;
     public TasksHandler tasksHandler;
     public KeysHandler keysHandler;
-    public Gson gson;
+    public JsonHandler jsonHandler;
 
     /**
      * Calls instance for Meilisearch client
@@ -28,10 +29,10 @@ public class Client {
      */
     public Client(Config config) {
         this.config = config;
-        this.gson = new Gson();
         this.indexesHandler = new IndexesHandler(config);
         this.tasksHandler = new TasksHandler(config);
         this.keysHandler = new KeysHandler(config);
+        this.jsonHandler = config.jsonHandler;
     }
 
     /**
@@ -54,7 +55,7 @@ public class Client {
      * @throws Exception if an error occurs
      */
     public Task createIndex(String uid, String primaryKey) throws Exception {
-        Task task = gson.fromJson(this.indexesHandler.create(uid, primaryKey), Task.class);
+        Task task = jsonHandler.decode(this.indexesHandler.create(uid, primaryKey), Task.class);
         return task;
     }
 
@@ -66,7 +67,7 @@ public class Client {
      * @throws Exception if an error occurs
      */
     public Index[] getIndexList() throws Exception {
-        Index[] meiliSearchIndexList = gson.fromJson(getRawIndexList(), Index[].class);
+        Index[] meiliSearchIndexList = jsonHandler.decode(getRawIndexList(), Index[].class);
         for (Index indexes : meiliSearchIndexList) {
             indexes.setConfig(this.config);
         }
@@ -108,7 +109,7 @@ public class Client {
      * @throws Exception if an error occurs
      */
     public Index getIndex(String uid) throws Exception {
-        Index indexes = gson.fromJson(getRawIndex(uid), Index.class);
+        Index indexes = jsonHandler.decode(getRawIndex(uid), Index.class);
         indexes.setConfig(this.config);
         return indexes;
     }
@@ -136,7 +137,8 @@ public class Client {
      */
     public Task updateIndex(String uid, String primaryKey) throws Exception {
         Task task =
-                gson.fromJson(this.indexesHandler.updatePrimaryKey(uid, primaryKey), Task.class);
+                jsonHandler.decode(
+                        this.indexesHandler.updatePrimaryKey(uid, primaryKey), Task.class);
         return task;
     }
 
@@ -149,7 +151,7 @@ public class Client {
      * @throws Exception if an error occurs
      */
     public Task deleteIndex(String uid) throws Exception {
-        Task task = gson.fromJson(this.indexesHandler.delete(uid), Task.class);
+        Task task = jsonHandler.decode(this.indexesHandler.delete(uid), Task.class);
         return task;
     }
 
@@ -171,7 +173,7 @@ public class Client {
     //  * @throws Exception if an error occurs
     //  */
     // public Dump createDump() throws Exception, MeiliSearchApiException {
-    //     return new Gson().fromJson(this.meiliSearchHttpRequest.post("/dumps", ""), Dump.class);
+    //     return jsonHandler.decode(this.meiliSearchHttpRequest.post("/dumps", ""), Dump.class);
     // }
 
     /**
@@ -191,7 +193,7 @@ public class Client {
      * @return List of tasks in the Meilisearch client
      * @throws Exception if an error occurs
      */
-    public Task[] getTasks() throws Exception {
+    public Result<Task> getTasks() throws Exception {
         return this.tasksHandler.getTasks();
     }
 
@@ -222,7 +224,7 @@ public class Client {
      * @return List of keys in the Meilisearch client
      * @throws Exception if an error occurs
      */
-    public Key[] getKeys() throws Exception {
+    public Result<Key> getKeys() throws Exception {
         return this.keysHandler.getKeys();
     }
 

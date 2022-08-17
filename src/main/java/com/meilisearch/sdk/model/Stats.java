@@ -15,8 +15,6 @@ public class Stats {
     protected Date lastUpdate;
     protected Map<String, IndexStats> indexes;
 
-    public Stats() {}
-
     public Stats(long databaseSize, Date lastUpdate, Map<String, IndexStats> indexes) {
         this.databaseSize = databaseSize;
         this.lastUpdate = lastUpdate;

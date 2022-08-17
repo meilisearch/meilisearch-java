@@ -2,16 +2,12 @@ package com.meilisearch.sdk;
 
 import static java.util.Collections.singletonList;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.meilisearch.sdk.model.Task;
 import java.util.List;
 
 /** Wrapper around MeiliSearchHttpRequest class to use for Meilisearch documents */
 class Documents {
     private final MeiliSearchHttpRequest meilisearchHttpRequest;
-
-    Gson gson = new Gson();
 
     protected Documents(Config config) {
         meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
@@ -113,8 +109,9 @@ class Documents {
         if (primaryKey != null) {
             urlQuery += "?primaryKey=" + primaryKey;
         }
-
-        Task task = gson.fromJson(meilisearchHttpRequest.post(urlQuery, document), Task.class);
+        Task task =
+                meilisearchHttpRequest.jsonHandler.decode(
+                        meilisearchHttpRequest.post(urlQuery, document), Task.class);
         return task;
     }
 
@@ -132,8 +129,9 @@ class Documents {
         if (primaryKey != null) {
             urlPath += "?primaryKey=" + primaryKey;
         }
-
-        Task task = gson.fromJson(meilisearchHttpRequest.put(urlPath, document), Task.class);
+        Task task =
+                meilisearchHttpRequest.jsonHandler.decode(
+                        meilisearchHttpRequest.put(urlPath, document), Task.class);
         return task;
     }
 
@@ -147,8 +145,9 @@ class Documents {
      */
     Task deleteDocument(String uid, String identifier) throws Exception {
         String urlPath = "/indexes/" + uid + "/documents/" + identifier;
-
-        Task task = gson.fromJson(meilisearchHttpRequest.delete(urlPath), Task.class);
+        Task task =
+                meilisearchHttpRequest.jsonHandler.decode(
+                        meilisearchHttpRequest.delete(urlPath), Task.class);
         return task;
     }
 
@@ -162,12 +161,9 @@ class Documents {
      */
     Task deleteDocuments(String uid, List<String> identifiers) throws Exception {
         String urlPath = "/indexes/" + uid + "/documents/" + "delete-batch";
-        JsonArray requestData = new JsonArray(identifiers.size());
-        identifiers.forEach(requestData::add);
-
         Task task =
-                gson.fromJson(
-                        meilisearchHttpRequest.post(urlPath, requestData.toString()), Task.class);
+                meilisearchHttpRequest.jsonHandler.decode(
+                        meilisearchHttpRequest.post(urlPath, identifiers), Task.class);
         return task;
     }
 
@@ -180,8 +176,9 @@ class Documents {
      */
     Task deleteAllDocuments(String uid) throws Exception {
         String urlPath = "/indexes/" + uid + "/documents";
-
-        Task task = gson.fromJson(meilisearchHttpRequest.delete(urlPath), Task.class);
+        Task task =
+                meilisearchHttpRequest.jsonHandler.decode(
+                        meilisearchHttpRequest.delete(urlPath), Task.class);
         return task;
     }
 }

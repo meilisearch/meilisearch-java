@@ -1,7 +1,5 @@
 package com.meilisearch.sdk;
 
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.Result;
@@ -13,8 +11,6 @@ import com.meilisearch.sdk.model.Result;
  */
 public class KeysHandler {
     private final MeiliSearchHttpRequest meilisearchHttpRequest;
-    private final Gson gson =
-            new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
 
     /**
      * Creates and sets up an instance of Key to simplify MeiliSearch API calls to manage keys
@@ -34,7 +30,8 @@ public class KeysHandler {
      */
     public Key getKey(String uid) throws Exception, MeiliSearchApiException {
         String urlPath = "/keys/" + uid;
-        return this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Key.class);
+        return meilisearchHttpRequest.jsonHandler.decode(
+                this.meilisearchHttpRequest.get(urlPath), Key.class);
     }
 
     /**
@@ -43,13 +40,12 @@ public class KeysHandler {
      * @return List of key instance
      * @throws Exception if client request causes an error
      */
-    public Key[] getKeys() throws Exception {
+    public Result<Key> getKeys() throws Exception {
         String urlPath = "/keys";
         Result<Key> result =
-                this.gson.fromJson(
-                        this.meilisearchHttpRequest.get(urlPath),
-                        new TypeToken<Result<Key>>() {}.getType());
-        return result.getResults();
+                meilisearchHttpRequest.jsonHandler.decode(
+                        this.meilisearchHttpRequest.get(urlPath), Result.class, Key.class);
+        return result;
     }
 
     /**
@@ -61,8 +57,10 @@ public class KeysHandler {
      */
     public Key createKey(Key options) throws Exception {
         String urlPath = "/keys";
-        return this.gson.fromJson(
-                this.meilisearchHttpRequest.post(urlPath, options.toString()), Key.class);
+        return meilisearchHttpRequest.jsonHandler.decode(
+                this.meilisearchHttpRequest.post(
+                        urlPath, meilisearchHttpRequest.jsonHandler.encode(options)),
+                Key.class);
     }
 
     /**

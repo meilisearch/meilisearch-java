@@ -6,6 +6,7 @@ import com.meilisearch.sdk.Client;
 import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.model.Key;
+import com.meilisearch.sdk.model.Result;
 import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.utils.Movie;
 import java.io.*;
@@ -80,7 +81,8 @@ public abstract class AbstractIT {
     }
 
     public Key getPrivateKey() throws Exception {
-        Key[] keys = client.getKeys();
+        Result<Key> result = client.getKeys();
+        Key[] keys = result.getResults();
         for (Key key : keys) {
             if ((key.getDescription() == null)
                     || (key.getDescription().contains("Default Admin API"))) {
@@ -105,7 +107,8 @@ public abstract class AbstractIT {
     public static void deleteAllKeys() {
         try {
             Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"));
-            Key[] keys = ms.getKeys();
+            Result<Key> result = ms.getKeys();
+            Key[] keys = result.getResults();
             for (Key key : keys) {
                 if ((key.getDescription() == null) || (key.getDescription().contains("test"))) {
                     ms.deleteKey(key.getKey());
