@@ -58,9 +58,7 @@ public class KeysHandler {
     public Key createKey(Key options) throws Exception {
         String urlPath = "/keys";
         return meilisearchHttpRequest.jsonHandler.decode(
-                this.meilisearchHttpRequest.post(
-                        urlPath, meilisearchHttpRequest.jsonHandler.encode(options)),
-                Key.class);
+                this.meilisearchHttpRequest.post(urlPath, options), Key.class);
     }
 
     /**

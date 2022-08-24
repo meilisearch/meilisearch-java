@@ -2,8 +2,10 @@ package com.meilisearch.sdk.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
+import com.meilisearch.sdk.exceptions.JsonDecodingException;
+import com.meilisearch.sdk.exceptions.JsonEncodingException;
 import com.meilisearch.sdk.model.Key;
 
 public class GsonJsonHandler implements JsonHandler {
@@ -22,6 +24,7 @@ public class GsonJsonHandler implements JsonHandler {
         if (o != null && o.getClass() == String.class) {
             return (String) o;
         }
+        // TODO: review later
         if (o != null && o.getClass() == Key.class) {
             GsonBuilder builder = new GsonBuilder();
             this.gson = builder.serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
@@ -29,17 +32,18 @@ public class GsonJsonHandler implements JsonHandler {
         try {
             return gson.toJson(o);
         } catch (Exception e) {
-            throw new MeiliSearchRuntimeException(e);
+            throw new JsonEncodingException(e);
         }
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters) throws Exception {
+    public <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters)
+            throws JsonSyntaxException, JsonDecodingException {
         if (o == null) {
-            throw new MeiliSearchRuntimeException();
+            throw new JsonDecodingException("Response to deserialize is null");
         }
-        if (o != null && targetClass == String.class) {
+        if (targetClass == String.class) {
             return (T) o;
         }
         try {
@@ -49,8 +53,8 @@ public class GsonJsonHandler implements JsonHandler {
                 TypeToken<?> parameterized = TypeToken.getParameterized(targetClass, parameters);
                 return gson.fromJson((String) o, parameterized.getType());
             }
-        } catch (Exception e) {
-            throw new MeiliSearchRuntimeException(e);
+        } catch (JsonSyntaxException e) {
+            throw new JsonDecodingException(e);
         }
     }
 }
