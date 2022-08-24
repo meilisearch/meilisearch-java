@@ -41,8 +41,7 @@ class IndexesHandler {
         index.put("uid", uid);
         index.put("primaryKey", primaryKey);
 
-        return meilisearchHttpRequest.post(
-                "/indexes", meilisearchHttpRequest.jsonHandler.encode(index));
+        return meilisearchHttpRequest.post("/indexes", index);
     }
 
     /**
@@ -80,8 +79,7 @@ class IndexesHandler {
         index.put("primaryKey", primaryKey);
 
         String requestQuery = "/indexes/" + uid;
-        return meilisearchHttpRequest.put(
-                requestQuery, meilisearchHttpRequest.jsonHandler.encode(index));
+        return meilisearchHttpRequest.put(requestQuery, index);
     }
 
     /**

@@ -21,6 +21,18 @@ public class Config {
     }
 
     /**
+     * Creates a configuration without an API key and with a JsonHandler
+     *
+     * @param hostUrl URL of the Meilisearch instance
+     * @param jsonHandler Json handler to serialize and deserialize Java objects to JSON
+     */
+    public Config(String hostUrl, JsonHandler jsonHandler) {
+        this.hostUrl = hostUrl;
+        this.apiKey = "";
+        this.jsonHandler = jsonHandler;
+    }
+
+    /**
      * Creates a configuration with an API key
      *
      * @param hostUrl URL of the Meilisearch instance
@@ -33,7 +45,7 @@ public class Config {
     }
 
     /**
-     * Creates a configuration with an API key
+     * Creates a configuration with an API key and a JsonHandler
      *
      * @param hostUrl URL of the Meilisearch instance
      * @param apiKey API key to pass to the header of requests sent to Meilisearch

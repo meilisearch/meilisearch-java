@@ -3,6 +3,8 @@ package com.meilisearch.sdk.json;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.meilisearch.sdk.exceptions.JsonDecodingException;
+import com.meilisearch.sdk.exceptions.JsonEncodingException;
 import java.io.IOException;
 
 public class JacksonJsonHandler implements JsonHandler {
@@ -32,8 +34,7 @@ public class JacksonJsonHandler implements JsonHandler {
         try {
             return mapper.writeValueAsString(o);
         } catch (JsonProcessingException e) {
-            // todo: use dedicated exception
-            throw new RuntimeException("Error while serializing: ", e);
+            throw new JsonEncodingException(e);
         }
     }
 
@@ -42,8 +43,7 @@ public class JacksonJsonHandler implements JsonHandler {
     @Override
     public <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters) throws Exception {
         if (o == null) {
-            // todo: use dedicated exception
-            throw new RuntimeException("String to deserialize is null");
+            throw new JsonDecodingException("Response to deserialize is null");
         }
         if (targetClass == String.class) {
             return (T) o;
@@ -57,8 +57,7 @@ public class JacksonJsonHandler implements JsonHandler {
                         mapper.getTypeFactory().constructParametricType(targetClass, parameters));
             }
         } catch (IOException e) {
-            // todo: use dedicated exception
-            throw new RuntimeException("Error while serializing: ", e);
+            throw new JsonDecodingException(e);
         }
     }
 }
