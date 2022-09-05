@@ -102,7 +102,7 @@ public class MeiliSearchHttpRequest {
      * @throws Exception if the client has an error
      * @throws MeiliSearchApiException if the response is an error
      */
-    String put(String api, String body) throws Exception, MeiliSearchApiException {
+    <T> String put(String api, T body) throws Exception, MeiliSearchApiException {
         HttpResponse<?> httpResponse =
                 this.client.put(factory.create(HttpMethod.PUT, api, Collections.emptyMap(), body));
         if (httpResponse.getStatusCode() >= 400) {

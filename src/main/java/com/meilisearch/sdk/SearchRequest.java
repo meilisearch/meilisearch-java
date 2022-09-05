@@ -323,4 +323,15 @@ public class SearchRequest {
         this.facetsDistribution = facetsDistribution;
         this.sort = sort;
     }
+
+    /**
+     * Method to set the Query String
+     *
+     * <p>This method is an alias of setQ()
+     *
+     * @param q Query String
+     */
+    public void setQuery(String q) {
+        setQ(q);
+    }
 }
