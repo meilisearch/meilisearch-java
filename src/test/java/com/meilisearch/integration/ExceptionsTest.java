@@ -32,9 +32,9 @@ public class ExceptionsTest extends AbstractIT {
             throw new MeiliSearchApiException(new APIError(message, code, type, link));
         } catch (MeiliSearchApiException e) {
             assertEquals(message, e.getMessage());
-            assertEquals(code, e.getErrorCode());
-            assertEquals(type, e.getErrorType());
-            assertEquals(link, e.getErrorLink());
+            assertEquals(code, e.getCode());
+            assertEquals(type, e.getType());
+            assertEquals(link, e.getLink());
         }
     }
 
@@ -54,7 +54,7 @@ public class ExceptionsTest extends AbstractIT {
         try {
             client.getIndex(indexUid);
         } catch (MeiliSearchApiException e) {
-            assertEquals("index_not_found", e.getErrorCode());
+            assertEquals("index_not_found", e.getCode());
         }
     }
 }

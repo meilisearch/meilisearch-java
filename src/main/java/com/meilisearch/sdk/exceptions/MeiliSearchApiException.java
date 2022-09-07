@@ -13,20 +13,15 @@ public class MeiliSearchApiException extends MeiliSearchRuntimeException {
         return error.getMessage();
     }
 
-    public String getErrorCode() {
-        return error.getErrorCode();
+    public String getCode() {
+        return error.getCode();
     }
 
-    public String getErrorType() {
-        return error.getErrorType();
+    public String getType() {
+        return error.getType();
     }
 
-    public String getErrorLink() {
-        return error.getErrorLink();
-    }
-
-    @Override
-    public String toString() {
-        return "MeiliSearchApiException{" + "error=" + error + '}';
+    public String getLink() {
+        return error.getLink();
     }
 }
