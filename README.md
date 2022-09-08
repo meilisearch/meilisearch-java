@@ -223,53 +223,34 @@ index.search(
 
 ### JSON <!-- omit in toc -->
 
-#### Basic JSON <!-- omit in toc -->
+#### Default JSON `GsonJsonHandler` <!-- omit in toc -->
 
-The default JSON can be created by calling the default constructor of `JsonbJsonHandler` class which will create a config of type `JsonbConfig` and using this config. It will initialize the mapper variable by calling the create method of `JsonbBuilder` class.
+The default JSON library used in the Meilisearch-Java SDK is `Gson`. You can easily use another library with the help of the ready-to-use `JsonHandler` Class.
 
-#### Creating a Custom `GsonJsonHandler` <!-- omit in toc -->
+*Notes*: We strongly recommend to use the `Gson` library which is the one that will be best maintained.
 
-To create a custom JSON handler, create an object of GsonJsonHandler and send the GSON object in the parameterized constructor.<br>
+#### Use a Custom `JacksonJsonHandler` <!-- omit in toc -->
+
+Using the `jackson json` Library:
+Just create a `JacksonJsonHandler` object and send it through the `Config` object to the parameterized client.
 
 ```java
-Gson gson = new GsonBuilder()
-             .disableHtmlEscaping()
-             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-             .setPrettyPrinting()
-             .serializeNulls()
-             .create();
-private GsonJsonHandler jsonGson = new GsonJsonHandler(gson);
-jsonGson.encode("your_data");
+import com.meilisearch.sdk.json.JacksonJsonHandler;
+
+Config config = new Config("http://localhost:7700", "masterKey", new JacksonJsonHandler());
+Client client = new Client(config);
 ```
 
-#### Creating a Custom `JacksonJsonHandler` <!-- omit in toc -->
+### Use a Custom `JsonbJsonHandler` <!-- omit in toc -->
 
-Another method is to create an object of `JacksonJsonHandler` and set the required parameters. The supported option is an object of `ObjectMapper`. It's passed as a parameter to the `JacksonJsonHandler`’s parameterized constructor. This is used to initialize the mapper variable.
-
-The mapper variable is responsible for the encoding and decoding of the JSON.
-
-Using the custom JSON:
+Using the `jackson json` Library:
+Just create a `JacksonJsonHandler` object and send it through the `Config` object to the parameterized client.
 
 ```java
-Config config = new Config("http://localhost:7700", "masterKey");
-HttpAsyncClient client = HttpAsyncClients.createDefault();
-ApacheHttpClient client = new ApacheHttpClient(config, client);
-private final JsonHandler jsonHandler = new JacksonJsonHandler(new ObjectMapper());
-private final RequestFactory requestFactory = new BasicRequestFactory(jsonHandler);
-private final GenericServiceTemplate serviceTemplate = new GenericServiceTemplate(client, jsonHandler, requestFactory);
+import com.meilisearch.sdk.json.JsonbJsonHandler;
 
-private final ServiceTemplate serviceTemplate;
-serviceTemplate.getProcessor().encode("your_data");
-```
-
-### Creating a Custom `JsonbJsonHandler <!-- omit in toc -->
-
-Another method of creating a JSON handler is to create an object of `JsonbJsonHandler` and send the `Jsonb` object to the parameterized constructor.
-
-```java
-Jsonb jsonb = JsonbBuilder.create();
-private JsonbJsonHandler jsonbHandler = new JsonbJsonHandler(jsonb);
-jsonbHandler.encode("your_data");
+Config config = new Config("http://localhost:7700", "masterKey", new JsonbJsonHandler());
+Client client = new Client(config);
 ```
 
 ### Custom Client <!-- omit in toc -->
