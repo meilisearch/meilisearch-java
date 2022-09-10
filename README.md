@@ -241,15 +241,18 @@ Config config = new Config("http://localhost:7700", "masterKey", new JacksonJson
 Client client = new Client(config);
 ```
 
-### Use a Custom `JsonbJsonHandler` <!-- omit in toc -->
+#### Use a Custom `JsonHandler` <!-- omit in toc -->
 
-Using the `jackson json` Library:
-Just create a `JacksonJsonHandler` object and send it through the `Config` object to the parameterized client.
+To create your own `JsonHandler`, you will need to make it implement the two methods of the `JsonHandler` class. Then pass it to the `Client`.
 
 ```java
-import com.meilisearch.sdk.json.JsonbJsonHandler;
+    String encode(Object o) throws Exception;
 
-Config config = new Config("http://localhost:7700", "masterKey", new JsonbJsonHandler());
+    <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters) throws Exception;
+```
+
+```java
+Config config = new Config("http://localhost:7700", "masterKey", new myJsonHandler());
 Client client = new Client(config);
 ```
 
