@@ -3,6 +3,7 @@ package com.meilisearch.sdk.model;
 import java.util.HashMap;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * Data structure for the Typo tolerance setting
@@ -11,6 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Accessors(chain = true)
 public class TypoTolerance {
     protected boolean enabled = true;
     protected HashMap<String, Integer> minWordSizeForTypos;

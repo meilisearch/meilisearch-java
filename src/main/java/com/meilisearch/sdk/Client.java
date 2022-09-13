@@ -109,9 +109,9 @@ public class Client {
      * @throws Exception if an error occurs
      */
     public Index getIndex(String uid) throws Exception {
-        Index indexes = jsonHandler.decode(getRawIndex(uid), Index.class);
-        indexes.setConfig(this.config);
-        return indexes;
+        Index index = jsonHandler.decode(getRawIndex(uid), Index.class);
+        index.setConfig(this.config);
+        return index;
     }
 
     /**

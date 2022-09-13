@@ -3,6 +3,7 @@ package com.meilisearch.sdk.model;
 import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * Data structure of MeiliSearch response for a Key
@@ -11,11 +12,24 @@ import lombok.Setter;
  */
 @Getter
 public class Key {
-    @Setter protected String description = null;
+    @Setter
+    @Accessors(chain = true)
+    protected String description = null;
+
     protected String key = "";
-    @Setter protected String[] actions = null;
-    @Setter protected String[] indexes = null;
-    @Setter protected Date expiresAt = null;
+
+    @Setter
+    @Accessors(chain = true)
+    protected String[] actions = null;
+
+    @Setter
+    @Accessors(chain = true)
+    protected String[] indexes = null;
+
+    @Setter
+    @Accessors(chain = true)
+    protected Date expiresAt = null;
+
     protected Date createdAt = null;
     protected Date updatedAt = null;
 
