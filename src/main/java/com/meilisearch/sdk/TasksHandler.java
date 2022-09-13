@@ -1,6 +1,5 @@
 package com.meilisearch.sdk;
 
-import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import com.meilisearch.sdk.model.Result;
 import com.meilisearch.sdk.model.Task;
 import java.util.Date;
@@ -61,7 +60,7 @@ public class TasksHandler {
      * @return Task instance
      * @throws Exception if client request causes an error
      */
-    public Task getTask(int taskUid) throws Exception, MeiliSearchApiException {
+    public Task getTask(int taskUid) throws Exception {
         String urlPath = "/tasks/" + taskUid;
         return meilisearchHttpRequest.jsonHandler.decode(
                 this.meilisearchHttpRequest.get(urlPath), Task.class);

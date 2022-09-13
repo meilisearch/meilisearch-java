@@ -21,4 +21,22 @@ public class APIError implements Serializable {
         this.type = type;
         this.link = link;
     }
+
+    @Override
+    public String toString() {
+        return "APIError: {"
+                + "message='"
+                + message
+                + '\''
+                + ", code='"
+                + code
+                + '\''
+                + ", type='"
+                + type
+                + '\''
+                + ", link='"
+                + link
+                + '\''
+                + '}';
+    }
 }

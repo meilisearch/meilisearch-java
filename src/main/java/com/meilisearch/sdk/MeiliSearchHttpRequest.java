@@ -2,6 +2,7 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.APIError;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+import com.meilisearch.sdk.exceptions.MeiliSearchCommunicationException;
 import com.meilisearch.sdk.http.AbstractHttpClient;
 import com.meilisearch.sdk.http.DefaultHttpClient;
 import com.meilisearch.sdk.http.factory.BasicRequestFactory;
@@ -10,6 +11,7 @@ import com.meilisearch.sdk.http.request.HttpMethod;
 import com.meilisearch.sdk.http.response.HttpResponse;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.json.JsonHandler;
+import java.io.IOException;
 import java.util.Collections;
 
 /** The HTTP requests for the different functions to be done through Meilisearch */
@@ -63,14 +65,19 @@ public class MeiliSearchHttpRequest {
      * @throws MeiliSearchApiException if the response is an error
      */
     String get(String api, String param) throws Exception, MeiliSearchApiException {
-        HttpResponse<?> httpResponse =
-                this.client.get(
-                        factory.create(HttpMethod.GET, api + param, Collections.emptyMap(), null));
-        if (httpResponse.getStatusCode() >= 400) {
-            throw new MeiliSearchApiException(
-                    jsonHandler.decode(httpResponse.getContent(), APIError.class));
+        try {
+            HttpResponse<?> httpResponse =
+                    this.client.get(
+                            factory.create(
+                                    HttpMethod.GET, api + param, Collections.emptyMap(), null));
+            if (httpResponse.getStatusCode() >= 400) {
+                throw new MeiliSearchApiException(
+                        jsonHandler.decode(httpResponse.getContent(), APIError.class));
+            }
+            return new String(httpResponse.getContentAsBytes());
+        } catch (IOException e) {
+            throw new MeiliSearchCommunicationException(e);
         }
-        return new String(httpResponse.getContentAsBytes());
     }
 
     /**
@@ -83,14 +90,18 @@ public class MeiliSearchHttpRequest {
      * @throws MeiliSearchApiException if the response is an error
      */
     <T> String post(String api, T body) throws Exception, MeiliSearchApiException {
-        HttpResponse<?> httpResponse =
-                this.client.post(
-                        factory.create(HttpMethod.POST, api, Collections.emptyMap(), body));
-        if (httpResponse.getStatusCode() >= 400) {
-            throw new MeiliSearchApiException(
-                    jsonHandler.decode(httpResponse.getContent(), APIError.class));
+        try {
+            HttpResponse<?> httpResponse =
+                    this.client.post(
+                            factory.create(HttpMethod.POST, api, Collections.emptyMap(), body));
+            if (httpResponse.getStatusCode() >= 400) {
+                throw new MeiliSearchApiException(
+                        jsonHandler.decode(httpResponse.getContent(), APIError.class));
+            }
+            return new String(httpResponse.getContentAsBytes());
+        } catch (IOException e) {
+            throw new MeiliSearchCommunicationException(e);
         }
-        return new String(httpResponse.getContentAsBytes());
     }
 
     /**
@@ -103,13 +114,18 @@ public class MeiliSearchHttpRequest {
      * @throws MeiliSearchApiException if the response is an error
      */
     <T> String put(String api, T body) throws Exception, MeiliSearchApiException {
-        HttpResponse<?> httpResponse =
-                this.client.put(factory.create(HttpMethod.PUT, api, Collections.emptyMap(), body));
-        if (httpResponse.getStatusCode() >= 400) {
-            throw new MeiliSearchApiException(
-                    jsonHandler.decode(httpResponse.getContent(), APIError.class));
+        try {
+            HttpResponse<?> httpResponse =
+                    this.client.put(
+                            factory.create(HttpMethod.PUT, api, Collections.emptyMap(), body));
+            if (httpResponse.getStatusCode() >= 400) {
+                throw new MeiliSearchApiException(
+                        jsonHandler.decode(httpResponse.getContent(), APIError.class));
+            }
+            return new String(httpResponse.getContentAsBytes());
+        } catch (IOException e) {
+            throw new MeiliSearchCommunicationException(e);
         }
-        return new String(httpResponse.getContentAsBytes());
     }
 
     /**
@@ -121,13 +137,17 @@ public class MeiliSearchHttpRequest {
      * @throws MeiliSearchApiException if the response is an error
      */
     String delete(String api) throws Exception, MeiliSearchApiException {
-        HttpResponse<?> httpResponse =
-                this.client.put(
-                        factory.create(HttpMethod.DELETE, api, Collections.emptyMap(), null));
-        if (httpResponse.getStatusCode() >= 400) {
-            throw new MeiliSearchApiException(
-                    jsonHandler.decode(httpResponse.getContent(), APIError.class));
+        try {
+            HttpResponse<?> httpResponse =
+                    this.client.put(
+                            factory.create(HttpMethod.DELETE, api, Collections.emptyMap(), null));
+            if (httpResponse.getStatusCode() >= 400) {
+                throw new MeiliSearchApiException(
+                        jsonHandler.decode(httpResponse.getContent(), APIError.class));
+            }
+            return new String(httpResponse.getContentAsBytes());
+        } catch (IOException e) {
+            throw new MeiliSearchCommunicationException(e);
         }
-        return new String(httpResponse.getContentAsBytes());
     }
 }

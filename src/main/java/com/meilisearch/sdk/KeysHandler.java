@@ -1,6 +1,5 @@
 package com.meilisearch.sdk;
 
-import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.Result;
 
@@ -28,7 +27,7 @@ public class KeysHandler {
      * @return Key instance
      * @throws Exception if client request causes an error
      */
-    public Key getKey(String uid) throws Exception, MeiliSearchApiException {
+    public Key getKey(String uid) throws Exception {
         String urlPath = "/keys/" + uid;
         return meilisearchHttpRequest.jsonHandler.decode(
                 this.meilisearchHttpRequest.get(urlPath), Key.class);
