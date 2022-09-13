@@ -3,9 +3,12 @@ package com.meilisearch.integration;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.meilisearch.integration.classes.AbstractIT;
+import com.meilisearch.sdk.Client;
+import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.TaskError;
 import com.meilisearch.sdk.exceptions.APIError;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+import com.meilisearch.sdk.exceptions.MeiliSearchCommunicationException;
 import org.junit.jupiter.api.*;
 
 @Tag("integration")
@@ -19,6 +22,13 @@ public class ExceptionsTest extends AbstractIT {
     @AfterAll
     static void cleanMeiliSearch() {
         cleanup();
+    }
+
+    @Test
+    public void testMeilisearchCommunicationException() throws Exception {
+        String indexUid = "MeilisearchCommunicationException";
+        Client wrongClient = new Client(new Config("http://wrongurl:1234", "masterKey"));
+        assertThrows(MeiliSearchCommunicationException.class, () -> wrongClient.getIndex(indexUid));
     }
 
     /** Test MeiliSearchApiException serialization and getters */
