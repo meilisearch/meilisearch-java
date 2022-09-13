@@ -12,11 +12,24 @@ import lombok.experimental.Accessors;
  */
 @Getter
 public class Key {
-    @Setter @Accessors(chain = true) protected String description = null;
+    @Setter
+    @Accessors(chain = true)
+    protected String description = null;
+
     protected String key = "";
-    @Setter @Accessors(chain = true) protected String[] actions = null;
-    @Setter @Accessors(chain = true) protected String[] indexes = null;
-    @Setter @Accessors(chain = true) protected Date expiresAt = null;
+
+    @Setter
+    @Accessors(chain = true)
+    protected String[] actions = null;
+
+    @Setter
+    @Accessors(chain = true)
+    protected String[] indexes = null;
+
+    @Setter
+    @Accessors(chain = true)
+    protected Date expiresAt = null;
+
     protected Date createdAt = null;
     protected Date updatedAt = null;
 
