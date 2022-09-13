@@ -3,6 +3,7 @@ package com.meilisearch.sdk.model;
 import java.util.HashMap;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * Data Structure for the Settings
@@ -11,6 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Accessors(chain = true)
 public class Settings {
     protected HashMap<String, String[]> synonyms;
     protected String[] stopWords;

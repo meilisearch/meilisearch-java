@@ -38,6 +38,7 @@ public class JacksonJsonHandler implements JsonHandler {
             return (String) o;
         }
         try {
+        	// TODO: review later
             if (o != null && o.getClass() != Key.class) {
                 this.mapper.setSerializationInclusion(Include.NON_NULL);
             }

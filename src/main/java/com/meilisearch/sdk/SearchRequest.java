@@ -2,10 +2,12 @@ package com.meilisearch.sdk;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /** Search request query string builder */
 @Getter
 @Setter
+@Accessors(chain = true)
 public class SearchRequest {
     private String q;
     private int offset;
