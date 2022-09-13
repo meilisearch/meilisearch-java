@@ -1,5 +1,6 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.model.TypoTolerance;
@@ -28,9 +29,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return settings of a given uid as String
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Settings getSettings(String uid) throws Exception {
+    public Settings getSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.get("/indexes/" + uid + "/settings"), Settings.class);
     }
@@ -42,9 +43,9 @@ public class SettingsHandler {
      * @param uid Index identifier
      * @param settings the data that contains the new settings
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task updateSettings(String uid, Settings settings) throws Exception {
+    public Task updateSettings(String uid, Settings settings) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.post("/indexes/" + uid + "/settings", settings), Task.class);
     }
@@ -55,9 +56,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetSettings(String uid) throws Exception {
+    public Task resetSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings"), Task.class);
     }
@@ -68,9 +69,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return an array of strings that contains the ranking rules settings
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String[] getRankingRuleSettings(String uid) throws Exception {
+    public String[] getRankingRuleSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.get("/indexes/" + uid + "/settings/ranking-rules"),
                 String[].class);
@@ -83,9 +84,10 @@ public class SettingsHandler {
      * @param uid Index identifier
      * @param rankingRules the data that contains the new settings
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task updateRankingRuleSettings(String uid, String[] rankingRules) throws Exception {
+    public Task updateRankingRuleSettings(String uid, String[] rankingRules)
+            throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/ranking-rules",
@@ -101,9 +103,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetRankingRulesSettings(String uid) throws Exception {
+    public Task resetRankingRulesSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/ranking-rules"),
                 Task.class);
@@ -115,9 +117,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return a Map that contains all synonyms and their associated words
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Map<String, String[]> getSynonymsSettings(String uid) throws Exception {
+    public Map<String, String[]> getSynonymsSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.get("/indexes/" + uid + "/settings/synonyms"), Map.class);
     }
@@ -129,10 +131,10 @@ public class SettingsHandler {
      * @param uid Index identifier
      * @param synonyms a Map that contains the new synonyms settings
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
     public Task updateSynonymsSettings(String uid, Map<String, String[]> synonyms)
-            throws Exception {
+            throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/synonyms",
@@ -148,9 +150,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetSynonymsSettings(String uid) throws Exception {
+    public Task resetSynonymsSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/synonyms"),
                 Task.class);
@@ -162,9 +164,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return an array of strings that contains the stop-words
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String[] getStopWordsSettings(String uid) throws Exception {
+    public String[] getStopWordsSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.get("/indexes/" + uid + "/settings/stop-words"),
                 String[].class);
@@ -177,9 +179,10 @@ public class SettingsHandler {
      * @param uid Index identifier
      * @param stopWords an array of strings that contains the new stop-words settings
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task updateStopWordsSettings(String uid, String[] stopWords) throws Exception {
+    public Task updateStopWordsSettings(String uid, String[] stopWords)
+            throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/stop-words",
@@ -195,9 +198,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetStopWordsSettings(String uid) throws Exception {
+    public Task resetStopWordsSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/stop-words"),
                 Task.class);
@@ -209,9 +212,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return an array of strings that contains the searchable attributes
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String[] getSearchableAttributesSettings(String uid) throws Exception {
+    public String[] getSearchableAttributesSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.get("/indexes/" + uid + "/settings/searchable-attributes"),
                 String[].class);
@@ -225,10 +228,10 @@ public class SettingsHandler {
      * @param searchableAttributes an array of strings that contains the new searchable attributes
      *     settings
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
     public Task updateSearchableAttributesSettings(String uid, String[] searchableAttributes)
-            throws Exception {
+            throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/searchable-attributes",
@@ -244,9 +247,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetSearchableAttributesSettings(String uid) throws Exception {
+    public Task resetSearchableAttributesSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.delete(
                         "/indexes/" + uid + "/settings/searchable-attributes"),
@@ -259,9 +262,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return an array of strings that contains attributes of an index to display
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String[] getDisplayedAttributesSettings(String uid) throws Exception {
+    public String[] getDisplayedAttributesSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.get("/indexes/" + uid + "/settings/displayed-attributes"),
                 String[].class);
@@ -275,10 +278,10 @@ public class SettingsHandler {
      * @param displayAttributes an array of strings that contains the new displayed attributes
      *     settings
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
     public Task updateDisplayedAttributesSettings(String uid, String[] displayAttributes)
-            throws Exception {
+            throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/displayed-attributes",
@@ -294,9 +297,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetDisplayedAttributesSettings(String uid) throws Exception {
+    public Task resetDisplayedAttributesSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/displayed-attributes"),
                 Task.class);
@@ -308,9 +311,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return an array of strings that contains the filterable attributes settings
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String[] getFilterableAttributesSettings(String uid) throws Exception {
+    public String[] getFilterableAttributesSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.get("/indexes/" + uid + "/settings/filterable-attributes"),
                 String[].class);
@@ -324,10 +327,10 @@ public class SettingsHandler {
      * @param filterableAttributes an array of strings that contains the new filterable attributes
      *     settings
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
     public Task updateFilterableAttributesSettings(String uid, String[] filterableAttributes)
-            throws Exception {
+            throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/filterable-attributes",
@@ -343,9 +346,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetFilterableAttributesSettings(String uid) throws Exception {
+    public Task resetFilterableAttributesSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.delete(
                         "/indexes/" + uid + "/settings/filterable-attributes"),
@@ -358,9 +361,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return a string of the distinct attribute field
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String getDistinctAttributeSettings(String uid) throws Exception {
+    public String getDistinctAttributeSettings(String uid) throws MeilisearchException {
         String response =
                 meilisearchHttpRequest.jsonHandler.decode(
                         meilisearchHttpRequest.get(
@@ -376,10 +379,10 @@ public class SettingsHandler {
      * @param uid Index identifier
      * @param distinctAttribute a String that contains the new distinct attributes settings
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
     public Task updateDistinctAttributeSettings(String uid, String distinctAttribute)
-            throws Exception {
+            throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/distinct-attribute",
@@ -395,9 +398,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetDistinctAttributeSettings(String uid) throws Exception {
+    public Task resetDistinctAttributeSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/distinct-attribute"),
                 Task.class);
@@ -409,9 +412,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return a TypoTolerance instance that contains all typo tolerance settings
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public TypoTolerance getTypoToleranceSettings(String uid) throws Exception {
+    public TypoTolerance getTypoToleranceSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.get("/indexes/" + uid + "/settings/typo-tolerance"),
                 TypoTolerance.class);
@@ -424,10 +427,10 @@ public class SettingsHandler {
      * @param uid Index identifier
      * @param typoTolerance a TypoTolerance instance that contains the new typo tolerance settings
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
     public Task updateTypoToleranceSettings(String uid, TypoTolerance typoTolerance)
-            throws Exception {
+            throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.post(
                         "/indexes/" + uid + "/settings/typo-tolerance",
@@ -443,9 +446,9 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetTypoToleranceSettings(String uid) throws Exception {
+    public Task resetTypoToleranceSettings(String uid) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 meilisearchHttpRequest.delete("/indexes/" + uid + "/settings/typo-tolerance"),
                 Task.class);

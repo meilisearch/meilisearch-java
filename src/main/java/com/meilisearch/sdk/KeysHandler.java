@@ -1,10 +1,11 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.Result;
 
 /**
- * Wrapper around MeilisearchHttpRequest class to use for MeiliSearch keys
+ * Wrapper around MeilisearchHttpRequest class to use for Meilisearch keys
  *
  * <p>Refer https://docs.meilisearch.com/reference/api/keys.html
  */
@@ -12,9 +13,9 @@ public class KeysHandler {
     private final MeiliSearchHttpRequest meilisearchHttpRequest;
 
     /**
-     * Creates and sets up an instance of Key to simplify MeiliSearch API calls to manage keys
+     * Creates and sets up an instance of Key to simplify Meilisearch API calls to manage keys
      *
-     * @param config MeiliSearch configuration
+     * @param config Meilisearch configuration
      */
     public KeysHandler(Config config) {
         this.meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
@@ -25,9 +26,9 @@ public class KeysHandler {
      *
      * @param uid Identifier of the requested Key
      * @return Key instance
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    public Key getKey(String uid) throws Exception {
+    public Key getKey(String uid) throws MeilisearchException {
         String urlPath = "/keys/" + uid;
         return meilisearchHttpRequest.jsonHandler.decode(
                 this.meilisearchHttpRequest.get(urlPath), Key.class);
@@ -37,9 +38,9 @@ public class KeysHandler {
      * Retrieves Keys from the client
      *
      * @return List of key instance
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    public Result<Key> getKeys() throws Exception {
+    public Result<Key> getKeys() throws MeilisearchException {
         String urlPath = "/keys";
         Result<Key> result =
                 meilisearchHttpRequest.jsonHandler.decode(
@@ -52,9 +53,9 @@ public class KeysHandler {
      *
      * @param options Key containing the options
      * @return Key Instance
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    public Key createKey(Key options) throws Exception {
+    public Key createKey(Key options) throws MeilisearchException {
         String urlPath = "/keys";
         return meilisearchHttpRequest.jsonHandler.decode(
                 this.meilisearchHttpRequest.post(urlPath, options), Key.class);
@@ -64,9 +65,9 @@ public class KeysHandler {
      * Deletes a key
      *
      * @param key String containing the key
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    public void deleteKey(String key) throws Exception {
+    public void deleteKey(String key) throws MeilisearchException {
         String urlPath = "/keys/" + key;
         this.meilisearchHttpRequest.delete(urlPath);
     }

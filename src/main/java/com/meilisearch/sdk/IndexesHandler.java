@@ -1,6 +1,6 @@
 package com.meilisearch.sdk;
 
-import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+import com.meilisearch.sdk.exceptions.MeilisearchException;
 import java.util.HashMap;
 
 /** Wrapper around the MeiliSearchHttpRequest class to ease usage for Meilisearch indexes */
@@ -22,9 +22,9 @@ class IndexesHandler {
      *
      * @param uid Unique identifier to create the index with
      * @return Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    String create(String uid) throws Exception, MeiliSearchApiException {
+    String create(String uid) throws MeilisearchException {
         return this.create(uid, null);
     }
 
@@ -34,9 +34,9 @@ class IndexesHandler {
      * @param uid Unique identifier to create the index with
      * @param primaryKey Field to use as the primary key for documents in that index
      * @return Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    String create(String uid, String primaryKey) throws Exception, MeiliSearchApiException {
+    String create(String uid, String primaryKey) throws MeilisearchException {
         HashMap<String, Object> index = new HashMap<String, Object>();
         index.put("uid", uid);
         index.put("primaryKey", primaryKey);
@@ -49,9 +49,9 @@ class IndexesHandler {
      *
      * @param uid Unique identifier of the index to get
      * @return Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    String get(String uid) throws Exception {
+    String get(String uid) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid;
         return meilisearchHttpRequest.get(requestQuery);
     }
@@ -60,9 +60,9 @@ class IndexesHandler {
      * Gets all indexes in the current Meilisearch instance
      *
      * @return Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    String getAll() throws Exception {
+    String getAll() throws MeilisearchException {
         return meilisearchHttpRequest.get("/indexes");
     }
 
@@ -72,9 +72,9 @@ class IndexesHandler {
      * @param uid Unique identifier of the index to update
      * @param primaryKey New primary key field to use for documents in that index
      * @return Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    String updatePrimaryKey(String uid, String primaryKey) throws Exception {
+    String updatePrimaryKey(String uid, String primaryKey) throws MeilisearchException {
         HashMap<String, Object> index = new HashMap<String, Object>();
         index.put("primaryKey", primaryKey);
 
@@ -87,9 +87,9 @@ class IndexesHandler {
      *
      * @param uid Unique identifier of the index to delete
      * @return Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    String delete(String uid) throws Exception {
+    String delete(String uid) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid;
         return meilisearchHttpRequest.delete(requestQuery);
     }

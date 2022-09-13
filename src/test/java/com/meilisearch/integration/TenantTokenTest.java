@@ -8,7 +8,7 @@ import com.meilisearch.sdk.Client;
 import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.TenantTokenOptions;
-import com.meilisearch.sdk.exceptions.MeiliSearchException;
+import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.model.Settings;
@@ -186,7 +186,7 @@ public class TenantTokenTest extends AbstractIT {
 
         Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
 
-        assertThrows(MeiliSearchException.class, () -> privateClient.generateTenantToken(null));
+        assertThrows(MeilisearchException.class, () -> privateClient.generateTenantToken(null));
     }
 
     /** Test Create Tenant Token with bad expireation date */
@@ -208,7 +208,7 @@ public class TenantTokenTest extends AbstractIT {
         options.setExpiresAt(yesterday);
 
         assertThrows(
-                MeiliSearchException.class,
+                MeilisearchException.class,
                 () -> privateClient.generateTenantToken(rules, options));
     }
 
@@ -225,7 +225,7 @@ public class TenantTokenTest extends AbstractIT {
         options.setApiKey("");
 
         assertThrows(
-                MeiliSearchException.class,
+                MeilisearchException.class,
                 () -> privateClient.generateTenantToken(rules, options));
     }
 }

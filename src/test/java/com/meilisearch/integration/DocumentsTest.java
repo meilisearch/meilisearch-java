@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+import com.meilisearch.sdk.exceptions.MeilisearchApiException;
 import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.ArrayList;
@@ -466,7 +466,7 @@ public class DocumentsTest extends AbstractIT {
         task = index.deleteDocument(toDelete.getId());
         index.waitForTask(task.getUid());
 
-        assertThrows(MeiliSearchApiException.class, () -> index.getDocument(toDelete.getId()));
+        assertThrows(MeilisearchApiException.class, () -> index.getDocument(toDelete.getId()));
     }
 
     /** Test deleteDocuments */

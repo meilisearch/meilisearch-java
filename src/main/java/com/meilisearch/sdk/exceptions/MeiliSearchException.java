@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MeiliSearchException extends Exception {
+public class MeilisearchException extends Exception {
 
     /** This is a generic class for Meilisearch Exception handling */
     String message;
@@ -14,23 +14,23 @@ public class MeiliSearchException extends Exception {
     String code;
     String link;
 
-    public MeiliSearchException() {}
+    public MeilisearchException() {}
 
-    public MeiliSearchException(String message) {
+    public MeilisearchException(String message) {
         super(message);
         this.setMessage(message);
     }
 
-    public MeiliSearchException(Exception e) {
+    public MeilisearchException(Exception e) {
         super(e);
     }
 
-    public MeiliSearchException(Throwable cause) {
+    public MeilisearchException(Throwable cause) {
         super(cause);
     }
 
     public String toString() {
-        return "MeiliSearch Exception: {"
+        return "Meilisearch Exception: {"
                 + this.getClass().getName()
                 + ". Error message: "
                 + this.message

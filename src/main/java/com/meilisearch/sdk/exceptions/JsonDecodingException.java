@@ -1,6 +1,6 @@
 package com.meilisearch.sdk.exceptions;
 
-public class JsonDecodingException extends Exception {
+public class JsonDecodingException extends MeilisearchException {
     public JsonDecodingException(Exception e) {
         super(e);
     }

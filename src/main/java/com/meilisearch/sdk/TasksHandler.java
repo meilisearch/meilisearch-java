@@ -1,5 +1,6 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.Result;
 import com.meilisearch.sdk.model.Task;
 import java.util.Date;
@@ -29,9 +30,9 @@ public class TasksHandler {
      * @param indexUid Index identifier to the requested Task
      * @param taskUid Identifier of the requested Task
      * @return Task instance
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    public Task getTask(String indexUid, int taskUid) throws Exception {
+    public Task getTask(String indexUid, int taskUid) throws MeilisearchException {
         String urlPath = "/indexes/" + indexUid + "/tasks/" + taskUid;
         return meilisearchHttpRequest.jsonHandler.decode(
                 this.meilisearchHttpRequest.get(urlPath), Task.class);
@@ -42,9 +43,9 @@ public class TasksHandler {
      *
      * @param indexUid Index identifier to the requested Tasks
      * @return List of task instance
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    public Result<Task> getTasks(String indexUid) throws Exception {
+    public Result<Task> getTasks(String indexUid) throws MeilisearchException {
         String urlPath = "/indexes/" + indexUid + "/tasks";
 
         Result<Task> result =
@@ -58,9 +59,9 @@ public class TasksHandler {
      *
      * @param taskUid Identifier of the requested Task
      * @return Task instance
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    public Task getTask(int taskUid) throws Exception {
+    public Task getTask(int taskUid) throws MeilisearchException {
         String urlPath = "/tasks/" + taskUid;
         return meilisearchHttpRequest.jsonHandler.decode(
                 this.meilisearchHttpRequest.get(urlPath), Task.class);
@@ -70,9 +71,9 @@ public class TasksHandler {
      * Retrieves Tasks from the client
      *
      * @return List of task instance
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    public Result<Task> getTasks() throws Exception {
+    public Result<Task> getTasks() throws MeilisearchException {
         String urlPath = "/tasks";
 
         Result<Task> result =
@@ -85,9 +86,9 @@ public class TasksHandler {
      * Waits for a task to be processed
      *
      * @param taskUid Identifier of the Task
-     * @throws Exception if timeout is reached
+     * @throws MeilisearchException if timeout is reached
      */
-    public void waitForTask(int taskUid) throws Exception {
+    public void waitForTask(int taskUid) throws MeilisearchException {
         this.waitForTask(taskUid, 5000, 50);
     }
 
@@ -97,9 +98,10 @@ public class TasksHandler {
      * @param taskUid Identifier of the Task
      * @param timeoutInMs number of milliseconds before throwing an Exception
      * @param intervalInMs number of milliseconds before requesting the status again
-     * @throws Exception if timeout is reached
+     * @throws MeilisearchException if timeout is reached
      */
-    public void waitForTask(int taskUid, int timeoutInMs, int intervalInMs) throws Exception {
+    public void waitForTask(int taskUid, int timeoutInMs, int intervalInMs)
+            throws MeilisearchException {
         Task task;
         String status = "";
         long startTime = new Date().getTime();
@@ -107,11 +109,15 @@ public class TasksHandler {
 
         while (!status.equals(SUCCEEDED) && !status.equals(FAILED)) {
             if (elapsedTime >= timeoutInMs) {
-                throw new Exception();
+                throw new MeilisearchException();
             }
             task = this.getTask(taskUid);
             status = task.getStatus();
-            Thread.sleep(intervalInMs);
+            try {
+                Thread.sleep(intervalInMs);
+            } catch (Exception e) {
+                throw new MeilisearchException();
+            }
             elapsedTime = new Date().getTime() - startTime;
         }
     }

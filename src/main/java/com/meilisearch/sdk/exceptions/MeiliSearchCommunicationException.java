@@ -5,25 +5,25 @@ import lombok.Setter;
 
 @Getter
 @Setter
-/** This is class wraps MeiliSearchExceptions dealing with Communication errors */
-public class MeiliSearchCommunicationException extends MeiliSearchException {
+/** This is class wraps MeilisearchExceptions dealing with Communication errors */
+public class MeilisearchCommunicationException extends MeilisearchException {
 
     String error;
 
-    public MeiliSearchCommunicationException() {}
+    public MeilisearchCommunicationException() {}
 
-    public MeiliSearchCommunicationException(Exception e) {
+    public MeilisearchCommunicationException(Exception e) {
         super(e);
         this.error = e.toString();
     }
 
-    public MeiliSearchCommunicationException(String error) {
+    public MeilisearchCommunicationException(String error) {
         super(error);
         this.setError(error);
     }
 
     @Override
     public String toString() {
-        return "MeiliSearch CommunicationException: {" + "error=" + this.error + '}';
+        return "Meilisearch CommunicationException: {" + "error=" + this.error + '}';
     }
 }

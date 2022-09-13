@@ -6,6 +6,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.exceptions.JsonDecodingException;
 import com.meilisearch.sdk.exceptions.JsonEncodingException;
+import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.Key;
 
 public class GsonJsonHandler implements JsonHandler {
@@ -20,7 +21,7 @@ public class GsonJsonHandler implements JsonHandler {
     }
 
     @Override
-    public String encode(Object o) throws Exception {
+    public String encode(Object o) throws MeilisearchException {
         if (o != null && o.getClass() == String.class) {
             return (String) o;
         }
@@ -39,7 +40,7 @@ public class GsonJsonHandler implements JsonHandler {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters)
-            throws JsonSyntaxException, JsonDecodingException {
+            throws MeilisearchException {
         if (o == null) {
             throw new JsonDecodingException("Response to deserialize is null");
         }
