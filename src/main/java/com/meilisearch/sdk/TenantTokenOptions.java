@@ -7,6 +7,7 @@ import lombok.Setter;
 /** The option you want to pass for generate a Tenant Token */
 @Getter
 @Setter
+@Accessors(chain = true)
 public class TenantTokenOptions {
 
     public TenantTokenOptions() {}
