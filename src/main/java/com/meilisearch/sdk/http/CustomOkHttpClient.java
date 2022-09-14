@@ -1,11 +1,15 @@
 package com.meilisearch.sdk.http;
 
 import com.meilisearch.sdk.Config;
+import com.meilisearch.sdk.exceptions.MeilisearchCommunicationException;
+import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.exceptions.MeilisearchTimeoutException;
 import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.BasicHttpResponse;
 import com.meilisearch.sdk.http.response.HttpResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -77,30 +81,62 @@ public class CustomOkHttpClient extends AbstractHttpClient {
     }
 
     @Override
-    public HttpResponse<?> get(HttpRequest<?> request) throws Exception {
-        Request okRequest = buildRequest(request);
-        Response execute = client.newCall(okRequest).execute();
-        return buildResponse(execute);
+    public HttpResponse<?> get(HttpRequest<?> request) throws MeilisearchException {
+        try {
+            Request okRequest = buildRequest(request);
+            Response execute = client.newCall(okRequest).execute();
+            return buildResponse(execute);
+        } catch (MalformedURLException e) {
+            throw new MeilisearchException(e);
+        } catch (SocketTimeoutException e) {
+            throw new MeilisearchTimeoutException(e);
+        } catch (IOException e) {
+            throw new MeilisearchCommunicationException(e);
+        }
     }
 
     @Override
-    public HttpResponse<?> post(HttpRequest<?> request) throws Exception {
-        Request okRequest = buildRequest(request);
-        Response execute = client.newCall(okRequest).execute();
-        return buildResponse(execute);
+    public HttpResponse<?> post(HttpRequest<?> request) throws MeilisearchException {
+        try {
+            Request okRequest = buildRequest(request);
+            Response execute = client.newCall(okRequest).execute();
+            return buildResponse(execute);
+        } catch (MalformedURLException e) {
+            throw new MeilisearchException(e);
+        } catch (SocketTimeoutException e) {
+            throw new MeilisearchTimeoutException(e);
+        } catch (IOException e) {
+            throw new MeilisearchCommunicationException(e);
+        }
     }
 
     @Override
-    public HttpResponse<?> put(HttpRequest<?> request) throws Exception {
-        Request okRequest = buildRequest(request);
-        Response execute = client.newCall(okRequest).execute();
-        return buildResponse(execute);
+    public HttpResponse<?> put(HttpRequest<?> request) throws MeilisearchException {
+        try {
+            Request okRequest = buildRequest(request);
+            Response execute = client.newCall(okRequest).execute();
+            return buildResponse(execute);
+        } catch (MalformedURLException e) {
+            throw new MeilisearchException(e);
+        } catch (SocketTimeoutException e) {
+            throw new MeilisearchTimeoutException(e);
+        } catch (IOException e) {
+            throw new MeilisearchCommunicationException(e);
+        }
     }
 
     @Override
-    public HttpResponse<?> delete(HttpRequest<?> request) throws Exception {
-        Request okRequest = buildRequest(request);
-        Response execute = client.newCall(okRequest).execute();
-        return buildResponse(execute);
+    public HttpResponse<?> delete(HttpRequest<?> request) throws MeilisearchException {
+        try {
+            Request okRequest = buildRequest(request);
+            Response execute = client.newCall(okRequest).execute();
+            return buildResponse(execute);
+        } catch (MalformedURLException e) {
+            throw new MeilisearchException(e);
+        } catch (SocketTimeoutException e) {
+            throw new MeilisearchTimeoutException(e);
+        } catch (IOException e) {
+            throw new MeilisearchCommunicationException(e);
+        }
     }
 }

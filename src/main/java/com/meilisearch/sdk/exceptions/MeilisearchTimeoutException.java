@@ -6,29 +6,29 @@ import lombok.Setter;
 @Getter
 @Setter
 /** This is class wraps MeilisearchExceptions dealing with Communication errors */
-public class MeilisearchCommunicationException extends MeilisearchException {
+public class MeilisearchTimeoutException extends MeilisearchException {
 
     String error;
 
-    public MeilisearchCommunicationException() {}
+    public MeilisearchTimeoutException() {}
 
-    public MeilisearchCommunicationException(String error) {
+    public MeilisearchTimeoutException(String error) {
         super(error);
         this.setError(error);
     }
 
-    public MeilisearchCommunicationException(Exception e) {
+    public MeilisearchTimeoutException(Exception e) {
         super(e);
         this.error = e.toString();
     }
 
-    public MeilisearchCommunicationException(Throwable cause) {
+    public MeilisearchTimeoutException(Throwable cause) {
         super(cause);
         this.error = cause.toString();
     }
 
     @Override
     public String toString() {
-        return "Meilisearch CommunicationException: {" + "error=" + this.error + '}';
+        return "Meilisearch TimeoutException: {" + "error=" + this.error + '}';
     }
 }

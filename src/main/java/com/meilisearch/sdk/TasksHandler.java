@@ -1,6 +1,7 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.exceptions.MeilisearchTimeoutException;
 import com.meilisearch.sdk.model.Result;
 import com.meilisearch.sdk.model.Task;
 import java.util.Date;
@@ -109,14 +110,14 @@ public class TasksHandler {
 
         while (!status.equals(SUCCEEDED) && !status.equals(FAILED)) {
             if (elapsedTime >= timeoutInMs) {
-                throw new MeilisearchException();
+                throw new MeilisearchTimeoutException();
             }
             task = this.getTask(taskUid);
             status = task.getStatus();
             try {
                 Thread.sleep(intervalInMs);
             } catch (Exception e) {
-                throw new MeilisearchException();
+                throw new MeilisearchTimeoutException();
             }
             elapsedTime = new Date().getTime() - startTime;
         }

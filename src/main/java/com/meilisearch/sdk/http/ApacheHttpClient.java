@@ -1,13 +1,12 @@
 package com.meilisearch.sdk.http;
 
 import com.meilisearch.sdk.Config;
+import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.BasicHttpResponse;
 import com.meilisearch.sdk.http.response.HttpResponse;
 import java.util.Arrays;
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import org.apache.hc.client5.http.async.HttpAsyncClient;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
@@ -39,7 +38,7 @@ public class ApacheHttpClient extends AbstractHttpClient {
         this.client = client;
     }
 
-    private HttpResponse<?> execute(HttpRequest<?> request) throws Exception {
+    private HttpResponse<?> execute(HttpRequest<?> request) throws MeilisearchException {
         CompletableFuture<SimpleHttpResponse> response = new CompletableFuture<>();
         client.execute(
                 SimpleRequestProducer.create(mapRequest(request)),
@@ -49,29 +48,28 @@ public class ApacheHttpClient extends AbstractHttpClient {
                 getCallback(response));
         try {
             return response.thenApply(this::mapResponse).get();
-        } catch (CancellationException | ExecutionException e) {
-            // todo: throw dedicated exception
-            throw new Exception(e);
+        } catch (Exception e) {
+            throw new MeilisearchException(e);
         }
     }
 
     @Override
-    public HttpResponse<?> get(HttpRequest<?> request) throws Exception {
+    public HttpResponse<?> get(HttpRequest<?> request) throws MeilisearchException {
         return execute(request);
     }
 
     @Override
-    public HttpResponse<?> post(HttpRequest<?> request) throws Exception {
+    public HttpResponse<?> post(HttpRequest<?> request) throws MeilisearchException {
         return execute(request);
     }
 
     @Override
-    public HttpResponse<?> put(HttpRequest<?> request) throws Exception {
+    public HttpResponse<?> put(HttpRequest<?> request) throws MeilisearchException {
         return execute(request);
     }
 
     @Override
-    public HttpResponse<?> delete(HttpRequest<?> request) throws Exception {
+    public HttpResponse<?> delete(HttpRequest<?> request) throws MeilisearchException {
         return execute(request);
     }
 
