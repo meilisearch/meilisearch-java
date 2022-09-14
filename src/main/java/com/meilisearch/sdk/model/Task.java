@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Getter;
 
 /**
- * Data structure of MeiliSearch response for a Task
+ * Data structure of Meilisearch response for a Task
  *
  * <p>Refer https://docs.meilisearch.com/reference/api/tasks.html
  */
