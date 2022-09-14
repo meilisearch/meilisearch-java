@@ -121,7 +121,6 @@ public class MeiliSearchHttpRequest {
                 this.client.put(
                         factory.create(HttpMethod.DELETE, api, Collections.emptyMap(), null));
         if (httpResponse.getStatusCode() >= 400) {
-            System.out.println("STATUS CODE API EXCEPTION");
             throw new MeilisearchApiException(
                     jsonHandler.decode(httpResponse.getContent(), APIError.class));
         }

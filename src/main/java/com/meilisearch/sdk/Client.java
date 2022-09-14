@@ -172,7 +172,7 @@ public class Client {
     //  * @return Dump object with Meilisearch API response
     //  * @throws MeilisearchException if an error occurs
     //  */
-    // public Dump createDump() throws MeilisearchException, MeilisearchApiMeilisearchException {
+    // public Dump createDump() throws MeilisearchException {
     //     return jsonHandler.decode(this.meiliSearchHttpRequest.post("/dumps", ""), Dump.class);
     // }
 

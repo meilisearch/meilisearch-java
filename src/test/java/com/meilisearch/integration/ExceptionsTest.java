@@ -28,6 +28,7 @@ public class ExceptionsTest extends AbstractIT {
     public void testMeilisearchCommunicationException() throws Exception {
         String indexUid = "MeilisearchCommunicationException";
         Client wrongClient = new Client(new Config("http://wrongurl:1234", "masterKey"));
+
         assertThrows(MeilisearchCommunicationException.class, () -> wrongClient.getIndex(indexUid));
     }
 
