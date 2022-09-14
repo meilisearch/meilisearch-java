@@ -34,7 +34,7 @@ public class TenantTokenTest extends AbstractIT {
     }
 
     @AfterAll
-    static void cleanMeiliSearch() {
+    static void cleanMeilisearch() {
         cleanup();
     }
 

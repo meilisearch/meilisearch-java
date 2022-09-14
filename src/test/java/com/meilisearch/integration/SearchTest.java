@@ -40,7 +40,7 @@ public class SearchTest extends AbstractIT {
     }
 
     @AfterAll
-    static void cleanMeiliSearch() {
+    static void cleanMeilisearch() {
         cleanup();
     }
 
