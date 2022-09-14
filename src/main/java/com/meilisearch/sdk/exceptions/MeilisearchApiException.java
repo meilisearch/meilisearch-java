@@ -1,5 +1,6 @@
 package com.meilisearch.sdk.exceptions;
 
+/** This class wraps MeilisearchExceptions dealing with Meilisearch API errors */
 public class MeilisearchApiException extends MeilisearchException {
 
     private final APIError error;

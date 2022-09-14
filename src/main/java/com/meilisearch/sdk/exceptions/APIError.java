@@ -4,7 +4,7 @@ import java.io.Serializable;
 import lombok.Getter;
 
 @Getter
-/** This is class wraps errors sent by Meilisearch API */
+/** This class wraps errors sent by Meilisearch API */
 public class APIError implements Serializable {
     private static final long serialVersionUID = 900737636809105793L;
 

@@ -5,9 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
+/** This is a generic class for Meilisearch Exception handling */
 public class MeilisearchException extends Exception {
 
-    /** This is a generic class for Meilisearch Exception handling */
     String message;
 
     String type;

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-/** This is class wraps MeilisearchExceptions dealing with Communication errors */
+/** This class wraps MeilisearchExceptions dealing with Timeout errors */
 public class MeilisearchTimeoutException extends MeilisearchException {
 
     String error;
