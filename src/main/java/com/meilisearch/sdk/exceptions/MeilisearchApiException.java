@@ -28,6 +28,6 @@ public class MeilisearchApiException extends MeilisearchException {
 
     @Override
     public String toString() {
-        return "Meilisearch ApiException: {" + "error=" + error + '}';
+        return "Meilisearch ApiException: {" + "Error=" + error + '}';
     }
 }

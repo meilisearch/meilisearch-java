@@ -29,6 +29,6 @@ public class MeilisearchTimeoutException extends MeilisearchException {
 
     @Override
     public String toString() {
-        return "Meilisearch TimeoutException: {" + "error=" + this.error + '}';
+        return "Meilisearch TimeoutException: {" + "Error=" + this.error + '}';
     }
 }

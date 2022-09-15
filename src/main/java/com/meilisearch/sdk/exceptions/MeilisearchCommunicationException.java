@@ -29,6 +29,6 @@ public class MeilisearchCommunicationException extends MeilisearchException {
 
     @Override
     public String toString() {
-        return "Meilisearch CommunicationException: {" + "error=" + this.error + '}';
+        return "Meilisearch CommunicationException: {" + "Error=" + this.error + '}';
     }
 }

@@ -8,32 +8,31 @@ import lombok.Setter;
 /** This is a generic class for Meilisearch Exception handling */
 public class MeilisearchException extends Exception {
 
-    String message;
-
-    String type;
-    String code;
-    String link;
+    String error;
+    String name;
 
     public MeilisearchException() {}
 
-    public MeilisearchException(String message) {
-        super(message);
-        this.setMessage(message);
+    public MeilisearchException(String error) {
+        super(error);
+        this.setError(error);
+        this.name = this.getClass().getName();
     }
 
     public MeilisearchException(Exception e) {
         super(e);
+        this.error = e.toString();
+        this.name = e.getClass().getName();
     }
 
     public MeilisearchException(Throwable cause) {
         super(cause);
+        this.error = cause.toString();
+        this.name = cause.getClass().getName();
     }
 
+    @Override
     public String toString() {
-        return "Meilisearch Exception: {"
-                + this.getClass().getName()
-                + ". Error message: "
-                + this.message
-                + '}';
+        return "Meilisearch Exception: {" + this.name + ". Error=" + this.error + '}';
     }
 }
