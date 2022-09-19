@@ -8,7 +8,7 @@ import com.google.gson.JsonParser;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+import com.meilisearch.sdk.exceptions.MeilisearchApiException;
 import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Arrays;
@@ -30,7 +30,7 @@ public class ClientTest extends AbstractIT {
     }
 
     @AfterAll
-    static void cleanMeiliSearch() {
+    static void cleanMeilisearch() {
         cleanup();
     }
 
@@ -166,7 +166,7 @@ public class ClientTest extends AbstractIT {
         Task task = client.deleteIndex(index.getUid());
         client.waitForTask(task.getUid());
 
-        assertThrows(MeiliSearchApiException.class, () -> client.getIndex(indexUid));
+        assertThrows(MeilisearchApiException.class, () -> client.getIndex(indexUid));
     }
 
     /** Test call to index method with an inexistent index */
@@ -176,7 +176,7 @@ public class ClientTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         assertEquals(indexUid, index.getUid());
-        assertThrows(MeiliSearchApiException.class, () -> client.getIndex(indexUid));
+        assertThrows(MeilisearchApiException.class, () -> client.getIndex(indexUid));
     }
 
     /** Test call to index method with an existing index */

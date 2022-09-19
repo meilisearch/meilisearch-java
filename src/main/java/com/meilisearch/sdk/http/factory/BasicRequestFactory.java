@@ -1,6 +1,5 @@
 package com.meilisearch.sdk.http.factory;
 
-import com.meilisearch.sdk.exceptions.MeiliSearchRuntimeException;
 import com.meilisearch.sdk.http.request.BasicHttpRequest;
 import com.meilisearch.sdk.http.request.HttpMethod;
 import com.meilisearch.sdk.http.request.HttpRequest;
@@ -24,7 +23,7 @@ public class BasicRequestFactory implements RequestFactory {
                     headers,
                     content == null ? null : this.jsonHandler.encode(content));
         } catch (Exception e) {
-            throw new MeiliSearchRuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 }

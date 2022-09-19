@@ -1,6 +1,9 @@
 package com.meilisearch.sdk.http;
 
 import com.meilisearch.sdk.Config;
+import com.meilisearch.sdk.exceptions.MeilisearchCommunicationException;
+import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.exceptions.MeilisearchTimeoutException;
 import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.BasicHttpResponse;
 import com.meilisearch.sdk.http.response.HttpResponse;
@@ -8,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -45,50 +50,58 @@ public class DefaultHttpClient extends AbstractHttpClient {
         return connection;
     }
 
-    private HttpResponse<?> execute(HttpRequest<?> request) throws IOException {
-        URL url = new URL(this.config.getHostUrl() + request.getPath());
-        HttpURLConnection connection =
-                this.getConnection(url, request.getMethod().name(), this.config.getApiKey());
+    private HttpResponse<?> execute(HttpRequest<?> request) throws MeilisearchException {
+        try {
+            URL url = new URL(this.config.getHostUrl() + request.getPath());
+            HttpURLConnection connection =
+                    this.getConnection(url, request.getMethod().name(), this.config.getApiKey());
 
-        if (request.hasContent()) {
-            connection.setDoOutput(true);
-            connection.getOutputStream().write(request.getContentAsBytes());
-        }
+            if (request.hasContent()) {
+                connection.setDoOutput(true);
+                connection.getOutputStream().write(request.getContentAsBytes());
+            }
 
-        if (connection.getResponseCode() >= 400) {
+            if (connection.getResponseCode() >= 400) {
+                return new BasicHttpResponse(
+                        Collections.emptyMap(),
+                        connection.getResponseCode(),
+                        new BufferedReader(new InputStreamReader(connection.getErrorStream()))
+                                .lines()
+                                .collect(Collectors.joining("\n")));
+            }
+
             return new BasicHttpResponse(
                     Collections.emptyMap(),
                     connection.getResponseCode(),
-                    new BufferedReader(new InputStreamReader(connection.getErrorStream()))
+                    new BufferedReader(new InputStreamReader(connection.getInputStream()))
                             .lines()
                             .collect(Collectors.joining("\n")));
+        } catch (MalformedURLException e) {
+            throw new MeilisearchException(e);
+        } catch (SocketTimeoutException e) {
+            throw new MeilisearchTimeoutException(e);
+        } catch (IOException e) {
+            throw new MeilisearchCommunicationException(e);
         }
-
-        return new BasicHttpResponse(
-                Collections.emptyMap(),
-                connection.getResponseCode(),
-                new BufferedReader(new InputStreamReader(connection.getInputStream()))
-                        .lines()
-                        .collect(Collectors.joining("\n")));
     }
 
     @Override
-    public HttpResponse<?> get(HttpRequest<?> request) throws Exception {
+    public HttpResponse<?> get(HttpRequest<?> request) throws MeilisearchException {
         return execute(request);
     }
 
     @Override
-    public HttpResponse<?> post(HttpRequest<?> request) throws Exception {
+    public HttpResponse<?> post(HttpRequest<?> request) throws MeilisearchException {
         return execute(request);
     }
 
     @Override
-    public HttpResponse<?> put(HttpRequest<?> request) throws Exception {
+    public HttpResponse<?> put(HttpRequest<?> request) throws MeilisearchException {
         return execute(request);
     }
 
     @Override
-    public HttpResponse<?> delete(HttpRequest<?> request) throws Exception {
+    public HttpResponse<?> delete(HttpRequest<?> request) throws MeilisearchException {
         return execute(request);
     }
 }

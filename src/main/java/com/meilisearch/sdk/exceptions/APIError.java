@@ -2,9 +2,13 @@ package com.meilisearch.sdk.exceptions;
 
 import java.io.Serializable;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Getter
-/** This is class wraps errors sent by Meilisearch API */
+@Setter
+@Accessors(chain = true)
+/** This class wraps errors sent by Meilisearch API */
 public class APIError implements Serializable {
     private static final long serialVersionUID = 900737636809105793L;
 
@@ -20,5 +24,23 @@ public class APIError implements Serializable {
         this.code = code;
         this.type = type;
         this.link = link;
+    }
+
+    @Override
+    public String toString() {
+        return "APIError: {"
+                + "message='"
+                + message
+                + '\''
+                + ", code='"
+                + code
+                + '\''
+                + ", type='"
+                + type
+                + '\''
+                + ", link='"
+                + link
+                + '\''
+                + '}';
     }
 }

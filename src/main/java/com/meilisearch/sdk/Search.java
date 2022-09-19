@@ -1,5 +1,6 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.SearchResult;
 
 /** Search Object for searching on indexes */
@@ -21,9 +22,9 @@ public class Search {
      * @param uid Index identifier
      * @param q Query to search on index
      * @return search results, as raw data
-     * @throws Exception Search Exception or Client Error
+     * @throws MeilisearchException Search Exception or Client Error
      */
-    String rawSearch(String uid, String q) throws Exception {
+    String rawSearch(String uid, String q) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/search";
         SearchRequest sr = new SearchRequest(q);
         return meilisearchHttpRequest.post(requestQuery, sr);
@@ -50,7 +51,7 @@ public class Search {
      * @param facetsDistribution Facets for which to retrieve the matching count
      * @param sort Sort queries by an attribute value
      * @return search results, as raw data
-     * @throws Exception Search Exception or Client Error
+     * @throws MeilisearchException Search Exception or Client Error
      */
     String rawSearch(
             String uid,
@@ -68,7 +69,7 @@ public class Search {
             boolean matches,
             String[] facetsDistribution,
             String[] sort)
-            throws Exception {
+            throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/search";
         SearchRequest sr =
                 new SearchRequest(
@@ -95,9 +96,9 @@ public class Search {
      * @param uid Index identifier
      * @param sr SearchRequest to search on index
      * @return search results, as raw data
-     * @throws Exception Search Exception or Client Error
+     * @throws MeilisearchException Search Exception or Client Error
      */
-    String rawSearch(String uid, SearchRequest sr) throws Exception {
+    String rawSearch(String uid, SearchRequest sr) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/search";
         return meilisearchHttpRequest.post(requestQuery, sr);
     }
@@ -108,9 +109,9 @@ public class Search {
      * @param uid Index identifier
      * @param q Query to search on index
      * @return search results
-     * @throws Exception Search Exception or Client Error
+     * @throws MeilisearchException Search Exception or Client Error
      */
-    SearchResult search(String uid, String q) throws Exception {
+    SearchResult search(String uid, String q) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(rawSearch(uid, q), SearchResult.class);
     }
 
@@ -135,7 +136,7 @@ public class Search {
      * @param facetsDistribution Facets for which to retrieve the matching count
      * @param sort Sort queries by an attribute value
      * @return search results
-     * @throws Exception Search Exception or Client Error
+     * @throws MeilisearchException Search Exception or Client Error
      */
     SearchResult search(
             String uid,
@@ -153,7 +154,7 @@ public class Search {
             boolean matches,
             String[] facetsDistribution,
             String[] sort)
-            throws Exception {
+            throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(
                 rawSearch(
                         uid,
@@ -180,9 +181,9 @@ public class Search {
      * @param uid Index identifier
      * @param sr SearchRequest to search on index
      * @return search results
-     * @throws Exception Search Exception or Client Error
+     * @throws MeilisearchException Search Exception or Client Error
      */
-    SearchResult search(String uid, SearchRequest sr) throws Exception {
+    SearchResult search(String uid, SearchRequest sr) throws MeilisearchException {
         return meilisearchHttpRequest.jsonHandler.decode(rawSearch(uid, sr), SearchResult.class);
     }
 }

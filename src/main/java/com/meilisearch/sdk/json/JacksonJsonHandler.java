@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.meilisearch.sdk.exceptions.JsonDecodingException;
 import com.meilisearch.sdk.exceptions.JsonEncodingException;
+import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.Key;
 import java.io.IOException;
 
@@ -33,7 +34,7 @@ public class JacksonJsonHandler implements JsonHandler {
 
     /** {@inheritDoc} */
     @Override
-    public String encode(Object o) throws Exception {
+    public String encode(Object o) throws MeilisearchException {
         if (o != null && o.getClass() == String.class) {
             return (String) o;
         }
@@ -51,7 +52,8 @@ public class JacksonJsonHandler implements JsonHandler {
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters) throws Exception {
+    public <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters)
+            throws MeilisearchException {
         if (o == null) {
             throw new JsonDecodingException("Response to deserialize is null");
         }

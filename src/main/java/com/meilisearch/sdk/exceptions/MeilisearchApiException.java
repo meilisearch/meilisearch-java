@@ -1,10 +1,11 @@
 package com.meilisearch.sdk.exceptions;
 
-public class MeiliSearchApiException extends MeiliSearchRuntimeException {
+/** This class wraps MeilisearchExceptions dealing with Meilisearch API errors */
+public class MeilisearchApiException extends MeilisearchException {
 
     private final APIError error;
 
-    public MeiliSearchApiException(APIError error) {
+    public MeilisearchApiException(APIError error) {
         super();
         this.error = error;
     }
@@ -23,5 +24,10 @@ public class MeiliSearchApiException extends MeiliSearchRuntimeException {
 
     public String getLink() {
         return error.getLink();
+    }
+
+    @Override
+    public String toString() {
+        return "Meilisearch ApiException: {" + "Error=" + error + '}';
     }
 }
