@@ -50,7 +50,7 @@ dependencies {
 
 	// Use JUnit test framework
 	testImplementation(platform('org.junit:junit-bom:5.8.2'))
-	testImplementation('org.junit.jupiter:junit-jupiter:5.8.2')
+	testImplementation('org.junit.jupiter:junit-jupiter:5.9.1')
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:4.6.1'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
