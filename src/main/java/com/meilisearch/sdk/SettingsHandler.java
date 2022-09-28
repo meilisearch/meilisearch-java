@@ -12,7 +12,7 @@ import java.util.Map;
  * <p>Refer https://docs.meilisearch.com/reference/api/settings.html
  */
 public class SettingsHandler {
-    private final MeiliSearchHttpRequest meilisearchHttpRequest;
+    private final MeilisearchHttpRequest meilisearchHttpRequest;
 
     /**
      * Constructor for the Meilisearch Settings object
@@ -20,7 +20,7 @@ public class SettingsHandler {
      * @param config Meilisearch configuration
      */
     public SettingsHandler(Config config) {
-        meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+        meilisearchHttpRequest = new MeilisearchHttpRequest(config);
     }
 
     /**

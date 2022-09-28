@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 /** Wrapper around the MeiliSearchHttpRequest class to ease usage for Meilisearch indexes */
 class IndexesHandler {
-    MeiliSearchHttpRequest meilisearchHttpRequest;
+    MeilisearchHttpRequest meilisearchHttpRequest;
 
     /**
      * Creates and sets up an instance of IndexesHandler to simplify Meilisearch API calls to manage
@@ -14,7 +14,7 @@ class IndexesHandler {
      * @param config Meilisearch configuration
      */
     IndexesHandler(Config config) {
-        this.meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+        this.meilisearchHttpRequest = new MeilisearchHttpRequest(config);
     }
 
     /**

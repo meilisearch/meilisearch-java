@@ -6,12 +6,12 @@ import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.Task;
 import java.util.List;
 
-/** Wrapper around MeiliSearchHttpRequest class to use for Meilisearch documents */
+/** Wrapper around MeilisearchHttpRequest class to use for Meilisearch documents */
 class Documents {
-    private final MeiliSearchHttpRequest meilisearchHttpRequest;
+    private final MeilisearchHttpRequest meilisearchHttpRequest;
 
     protected Documents(Config config) {
-        meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+        meilisearchHttpRequest = new MeilisearchHttpRequest(config);
     }
 
     /**
