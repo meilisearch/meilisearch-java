@@ -4,7 +4,7 @@ import com.meilisearch.sdk.exceptions.APIError;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.AbstractHttpClient;
-import com.meilisearch.sdk.http.DefaultHttpClient;
+import com.meilisearch.sdk.http.CustomOkHttpClient;
 import com.meilisearch.sdk.http.factory.BasicRequestFactory;
 import com.meilisearch.sdk.http.factory.RequestFactory;
 import com.meilisearch.sdk.http.request.HttpMethod;
@@ -25,7 +25,7 @@ public class MeilisearchHttpRequest {
      * @param config Meilisearch configuration
      */
     public MeilisearchHttpRequest(Config config) {
-        this.client = new DefaultHttpClient(config);
+        this.client = new CustomOkHttpClient(config);
         this.jsonHandler = config.jsonHandler;
         this.factory = new BasicRequestFactory(jsonHandler);
     }
