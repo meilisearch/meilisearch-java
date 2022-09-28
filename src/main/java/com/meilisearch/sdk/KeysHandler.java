@@ -18,7 +18,7 @@ public class KeysHandler {
      * @param config Meilisearch configuration
      */
     public KeysHandler(Config config) {
-        this.meilisearchHttpRequest = new MeilisearchHttpRequest;
+        this.meilisearchHttpRequest = new MeilisearchHttpRequest(config);
     }
 
     /**
