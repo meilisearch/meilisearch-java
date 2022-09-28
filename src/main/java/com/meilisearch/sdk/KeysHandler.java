@@ -10,7 +10,7 @@ import com.meilisearch.sdk.model.Result;
  * <p>Refer https://docs.meilisearch.com/reference/api/keys.html
  */
 public class KeysHandler {
-    private final MeiliSearchHttpRequest meilisearchHttpRequest;
+    private final MeilisearchHttpRequest meilisearchHttpRequest;
 
     /**
      * Creates and sets up an instance of Key to simplify Meilisearch API calls to manage keys
@@ -18,7 +18,7 @@ public class KeysHandler {
      * @param config Meilisearch configuration
      */
     public KeysHandler(Config config) {
-        this.meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+        this.meilisearchHttpRequest = new MeilisearchHttpRequest(config);
     }
 
     /**

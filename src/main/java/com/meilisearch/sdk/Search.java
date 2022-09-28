@@ -5,7 +5,7 @@ import com.meilisearch.sdk.model.SearchResult;
 
 /** Search Object for searching on indexes */
 public class Search {
-    private final MeiliSearchHttpRequest meilisearchHttpRequest;
+    private final MeilisearchHttpRequest meilisearchHttpRequest;
 
     /**
      * Constructor for the Meilisearch Search object
@@ -13,7 +13,7 @@ public class Search {
      * @param config Meilisearch configuration
      */
     protected Search(Config config) {
-        meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+        meilisearchHttpRequest = new MeilisearchHttpRequest(config);
     }
 
     /**

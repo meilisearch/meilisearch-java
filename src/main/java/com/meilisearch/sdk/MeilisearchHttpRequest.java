@@ -14,29 +14,29 @@ import com.meilisearch.sdk.json.JsonHandler;
 import java.util.Collections;
 
 /** The HTTP requests for the different functions to be done through Meilisearch */
-public class MeiliSearchHttpRequest {
+public class MeilisearchHttpRequest {
     private final AbstractHttpClient client;
     private final RequestFactory factory;
     protected final JsonHandler jsonHandler;
 
     /**
-     * Constructor for the MeiliSearchHttpRequest
+     * Constructor for the MeilisearchHttpRequest
      *
      * @param config Meilisearch configuration
      */
-    public MeiliSearchHttpRequest(Config config) {
+    public MeilisearchHttpRequest(Config config) {
         this.client = new DefaultHttpClient(config);
         this.jsonHandler = config.jsonHandler;
         this.factory = new BasicRequestFactory(jsonHandler);
     }
 
     /**
-     * Constructor for the MeiliSearchHttpRequest
+     * Constructor for the MeilisearchHttpRequest
      *
      * @param client HttpClient for making calls to server
      * @param factory RequestFactory for generating calls to server
      */
-    public MeiliSearchHttpRequest(AbstractHttpClient client, RequestFactory factory) {
+    public MeilisearchHttpRequest(AbstractHttpClient client, RequestFactory factory) {
         this.client = client;
         this.factory = factory;
         this.jsonHandler = new GsonJsonHandler();

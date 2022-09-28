@@ -12,7 +12,7 @@ import java.util.Date;
  * <p>Refer https://docs.meilisearch.com/reference/api/tasks.html
  */
 public class TasksHandler {
-    private final MeiliSearchHttpRequest meilisearchHttpRequest;
+    private final MeilisearchHttpRequest meilisearchHttpRequest;
     public static final String SUCCEEDED = "succeeded";
     public static final String FAILED = "failed";
 
@@ -22,7 +22,7 @@ public class TasksHandler {
      * @param config MeiliSearch configuration
      */
     public TasksHandler(Config config) {
-        this.meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+        this.meilisearchHttpRequest = new MeilisearchHttpRequest(config);
     }
 
     /**
