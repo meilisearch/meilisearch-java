@@ -13,7 +13,7 @@ public class Search {
      * @param config Meilisearch configuration
      */
     protected Search(Config config) {
-        meilisearchHttpRequest = new MeilisearchHttpRequest(config);
+        meilisearchHttpRequest = config.meilisearchHttpRequest;
     }
 
     /**
