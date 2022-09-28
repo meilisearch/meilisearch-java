@@ -1,23 +1,19 @@
-package com.meilisearch.sdk.http.factory;
+package com.meilisearch.sdk.http.request;
 
-import com.meilisearch.sdk.http.request.BasicHttpRequest;
-import com.meilisearch.sdk.http.request.HttpMethod;
-import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.json.JsonHandler;
 import java.util.Map;
 
-public class BasicRequestFactory implements RequestFactory {
+public class BasicRequest {
     private final JsonHandler jsonHandler;
 
-    public BasicRequestFactory(JsonHandler jsonHandler) {
+    public BasicRequest(JsonHandler jsonHandler) {
         this.jsonHandler = jsonHandler;
     }
 
-    @Override
-    public <T> HttpRequest<?> create(
+    public <T> HttpRequest create(
             HttpMethod method, String path, Map<String, String> headers, T content) {
         try {
-            return new BasicHttpRequest(
+            return new HttpRequest(
                     method,
                     path,
                     headers,

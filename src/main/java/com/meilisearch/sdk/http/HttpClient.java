@@ -4,7 +4,7 @@ import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.HttpResponse;
 
-public interface HttpClient<T extends HttpRequest<?>, R extends HttpResponse<?>> {
+public interface HttpClient<T extends HttpRequest, R extends HttpResponse> {
     R get(T request) throws MeilisearchException;
 
     R post(T request) throws MeilisearchException;

@@ -1,23 +1,20 @@
-package com.meilisearch.sdk.http.factory;
+package com.meilisearch.sdk.http.request;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import com.meilisearch.sdk.http.request.HttpMethod;
-import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
-class BasicRequestFactoryTest {
+class BasicRequestTest {
 
-    private final RequestFactory factory = new BasicRequestFactory(new GsonJsonHandler());
+    private final BasicRequest request = new BasicRequest(new GsonJsonHandler());
 
     @Test
     void basicUseCase() {
-        HttpRequest<?> httpRequest =
-                factory.create(HttpMethod.GET, "/", Collections.emptyMap(), null);
+        HttpRequest httpRequest = request.create(HttpMethod.GET, "/", Collections.emptyMap(), null);
         assertThat(httpRequest.hasContent(), is(false));
         assertThat(httpRequest.getPath(), is("/"));
         assertThat(httpRequest.getMethod(), is(HttpMethod.GET));
@@ -25,8 +22,8 @@ class BasicRequestFactoryTest {
 
     @Test
     void contentString() {
-        HttpRequest<?> httpRequest =
-                factory.create(HttpMethod.GET, "/", Collections.emptyMap(), "thisisatest");
+        HttpRequest httpRequest =
+                request.create(HttpMethod.GET, "/", Collections.emptyMap(), "thisisatest");
         assertThat(httpRequest.hasContent(), is(true));
         assertThat(httpRequest.getContent(), is("thisisatest"));
         assertThat(httpRequest.getPath(), is("/"));
@@ -35,8 +32,8 @@ class BasicRequestFactoryTest {
 
     @Test
     void contentClass() {
-        HttpRequest<?> httpRequest =
-                factory.create(
+        HttpRequest httpRequest =
+                request.create(
                         HttpMethod.GET,
                         "/",
                         Collections.emptyMap(),
