@@ -14,7 +14,7 @@ class IndexesHandler {
      * @param config Meilisearch configuration
      */
     IndexesHandler(Config config) {
-        this.meilisearchHttpRequest = new MeilisearchHttpRequest(config);
+        this.meilisearchHttpRequest = config.meilisearchHttpRequest;
     }
 
     /**
