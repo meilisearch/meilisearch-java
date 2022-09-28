@@ -3,6 +3,7 @@ package com.meilisearch.sdk;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.json.JSONObject;
 
 /** Search request query string builder */
 @Getter
@@ -335,5 +336,40 @@ public class SearchRequest {
      */
     public void setQuery(String q) {
         setQ(q);
+    }
+
+    /**
+     * Method that returns the JSON String of the SearchRequest
+     *
+     * @return JSON String of the SearchRequest query
+     */
+    @Override
+    public String toString() {
+        JSONObject jsonObject =
+                new JSONObject()
+                        .put("q", this.q)
+                        .put("offset", this.offset)
+                        .put("limit", this.limit)
+                        .put("attributesToRetrieve", this.attributesToRetrieve)
+                        .put("cropLength", this.cropLength)
+                        .put("cropMarker", this.cropMarker)
+                        .put("highlightPreTag", this.highlightPreTag)
+                        .put("highlightPostTag", this.highlightPostTag)
+                        .put("matches", this.matches)
+                        .put("facetsDistribution", this.facetsDistribution)
+                        .put("sort", this.sort);
+        if (this.attributesToCrop != null) {
+            jsonObject.put("attributesToCrop", this.attributesToCrop);
+        }
+        if (this.attributesToHighlight != null) {
+            jsonObject.put("attributesToHighlight", this.attributesToHighlight);
+        }
+        if (this.filter != null) {
+            jsonObject.put("filter", this.filter);
+        }
+        if (this.filterArray != null) {
+            jsonObject.put("filter", this.filterArray);
+        }
+        return jsonObject.toString();
     }
 }
