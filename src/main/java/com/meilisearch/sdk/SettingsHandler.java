@@ -20,7 +20,7 @@ public class SettingsHandler {
      * @param config Meilisearch configuration
      */
     public SettingsHandler(Config config) {
-        meilisearchHttpRequest = new MeilisearchHttpRequest(config);
+        meilisearchHttpRequest = config.meilisearchHttpRequest;
     }
 
     /**

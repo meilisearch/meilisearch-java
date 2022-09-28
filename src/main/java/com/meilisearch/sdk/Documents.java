@@ -11,7 +11,7 @@ class Documents {
     private final MeilisearchHttpRequest meilisearchHttpRequest;
 
     protected Documents(Config config) {
-        meilisearchHttpRequest = new MeilisearchHttpRequest(config);
+        meilisearchHttpRequest = config.meilisearchHttpRequest;
     }
 
     /**
