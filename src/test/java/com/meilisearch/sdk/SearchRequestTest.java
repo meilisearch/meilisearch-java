@@ -7,25 +7,41 @@ import org.junit.jupiter.api.Test;
 class SearchRequestTest {
 
     @Test
-    public String toString() {
+    void toStringSimpleQuery() {
         SearchRequest classToTest = new SearchRequest("This is a Test");
         assertEquals(
                 "{\"q\":\"This is a Test\",\"attributesToRetrieve\":[\"*\"],\"offset\":0,\"limit\":20,\"cropLength\":200,\"matches\":false}",
                 classToTest.toString());
-        classToTest = new SearchRequest("This is a Test", 200);
+    }
+
+    @Test
+    void toStringQueryAndOffset() {
+        SearchRequest classToTest = new SearchRequest("This is a Test", 200);
         assertEquals(
                 "{\"q\":\"This is a Test\",\"attributesToRetrieve\":[\"*\"],\"offset\":200,\"limit\":20,\"cropLength\":200,\"matches\":false}",
                 classToTest.toString());
-        classToTest = new SearchRequest("This is a Test", 200, 900);
+    }
+
+    @Test
+    void toStringQueryLimitAndOffset() {
+        SearchRequest classToTest = new SearchRequest("This is a Test", 200, 900);
         assertEquals(
                 "{\"q\":\"This is a Test\",\"attributesToRetrieve\":[\"*\"],\"offset\":200,\"limit\":900,\"cropLength\":200,\"matches\":false}",
                 classToTest.toString());
-        classToTest = new SearchRequest("This is a Test", 200, 900, new String[] {"bubble"});
+    }
+
+    @Test
+    void toStringQueryLimitOffsetAndAttributesToRetrieve() {
+        SearchRequest classToTest =
+                new SearchRequest("This is a Test", 200, 900, new String[] {"bubble"});
         assertEquals(
                 "{\"q\":\"This is a Test\",\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"limit\":900,\"cropLength\":200,\"matches\":false}",
                 classToTest.toString());
+    }
 
-        classToTest =
+    @Test
+    void toStringEveryParameters() {
+        SearchRequest classToTest =
                 new SearchRequest(
                         "This is a Test",
                         200,
@@ -56,8 +72,11 @@ class SearchRequestTest {
         assertEquals("facets", classToTest.getFacetsDistribution()[0]);
         assertEquals("sort", classToTest.getSort()[0]);
         assertEquals(900, classToTest.getCropLength());
+    }
 
-        classToTest =
+    @Test
+    void toStringEveryParametersWithArray() {
+        SearchRequest classToTest =
                 new SearchRequest(
                         "This is a Test",
                         200,
@@ -94,6 +113,5 @@ class SearchRequestTest {
         assertEquals(
                 "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"facetsDistribution\":[\"facets\"],\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"matches\":true,\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"attributesToCrop\":[\"crop\"]}",
                 classToTest.toString());
-        return null;
     }
 }

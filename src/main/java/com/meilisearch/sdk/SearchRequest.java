@@ -357,19 +357,11 @@ public class SearchRequest {
                         .put("highlightPostTag", this.highlightPostTag)
                         .put("matches", this.matches)
                         .put("facetsDistribution", this.facetsDistribution)
-                        .put("sort", this.sort);
-        if (this.attributesToCrop != null) {
-            jsonObject.put("attributesToCrop", this.attributesToCrop);
-        }
-        if (this.attributesToHighlight != null) {
-            jsonObject.put("attributesToHighlight", this.attributesToHighlight);
-        }
-        if (this.filter != null) {
-            jsonObject.put("filter", this.filter);
-        }
-        if (this.filterArray != null) {
-            jsonObject.put("filter", this.filterArray);
-        }
+                        .put("sort", this.sort)
+                        .putOpt("attributesToCrop", this.attributesToCrop)
+                        .putOpt("attributesToHighlight", this.attributesToHighlight)
+                        .putOpt("filter", this.filter)
+                        .putOpt("filter", this.filterArray);
         return jsonObject.toString();
     }
 }
