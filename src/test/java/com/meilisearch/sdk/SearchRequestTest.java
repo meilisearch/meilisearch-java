@@ -9,6 +9,7 @@ class SearchRequestTest {
     @Test
     void toStringSimpleQuery() {
         SearchRequest classToTest = new SearchRequest("This is a Test");
+
         assertEquals(
                 "{\"q\":\"This is a Test\",\"attributesToRetrieve\":[\"*\"],\"offset\":0,\"limit\":20,\"cropLength\":200,\"matches\":false}",
                 classToTest.toString());
