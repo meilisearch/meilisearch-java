@@ -5,7 +5,7 @@ import com.meilisearch.sdk.model.SearchResult;
 
 /** Search Object for searching on indexes */
 public class Search {
-    private final MeilisearchHttpRequest meilisearchHttpRequest;
+    private final HttpClient httpClient;
 
     /**
      * Constructor for the Meilisearch Search object
@@ -13,7 +13,7 @@ public class Search {
      * @param config Meilisearch configuration
      */
     protected Search(Config config) {
-        meilisearchHttpRequest = config.meilisearchHttpRequest;
+        httpClient = config.httpClient;
     }
 
     /**
@@ -27,7 +27,7 @@ public class Search {
     String rawSearch(String uid, String q) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/search";
         SearchRequest sr = new SearchRequest(q);
-        return meilisearchHttpRequest.post(requestQuery, sr);
+        return httpClient.post(requestQuery, sr);
     }
 
     /**
@@ -87,7 +87,7 @@ public class Search {
                         matches,
                         facetsDistribution,
                         sort);
-        return meilisearchHttpRequest.post(requestQuery, sr);
+        return httpClient.post(requestQuery, sr);
     }
 
     /**
@@ -100,7 +100,7 @@ public class Search {
      */
     String rawSearch(String uid, SearchRequest sr) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/search";
-        return meilisearchHttpRequest.post(requestQuery, sr);
+        return httpClient.post(requestQuery, sr);
     }
 
     /**
@@ -112,7 +112,7 @@ public class Search {
      * @throws MeilisearchException Search Exception or Client Error
      */
     SearchResult search(String uid, String q) throws MeilisearchException {
-        return meilisearchHttpRequest.jsonHandler.decode(rawSearch(uid, q), SearchResult.class);
+        return httpClient.jsonHandler.decode(rawSearch(uid, q), SearchResult.class);
     }
 
     /**
@@ -155,7 +155,7 @@ public class Search {
             String[] facetsDistribution,
             String[] sort)
             throws MeilisearchException {
-        return meilisearchHttpRequest.jsonHandler.decode(
+        return httpClient.jsonHandler.decode(
                 rawSearch(
                         uid,
                         q,
@@ -184,6 +184,6 @@ public class Search {
      * @throws MeilisearchException Search Exception or Client Error
      */
     SearchResult search(String uid, SearchRequest sr) throws MeilisearchException {
-        return meilisearchHttpRequest.jsonHandler.decode(rawSearch(uid, sr), SearchResult.class);
+        return httpClient.jsonHandler.decode(rawSearch(uid, sr), SearchResult.class);
     }
 }

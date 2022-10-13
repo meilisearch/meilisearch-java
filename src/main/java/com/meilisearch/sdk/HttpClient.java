@@ -3,7 +3,6 @@ package com.meilisearch.sdk;
 import com.meilisearch.sdk.exceptions.APIError;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
-import com.meilisearch.sdk.http.AbstractHttpClient;
 import com.meilisearch.sdk.http.CustomOkHttpClient;
 import com.meilisearch.sdk.http.request.BasicRequest;
 import com.meilisearch.sdk.http.request.HttpMethod;
@@ -14,18 +13,18 @@ import com.meilisearch.sdk.json.JsonHandler;
 import java.util.Collections;
 
 /** The HTTP requests for the different functions to be done through Meilisearch */
-public class MeilisearchHttpRequest {
-    private final AbstractHttpClient client;
+public class HttpClient {
+    private final CustomOkHttpClient client;
     private final BasicRequest request;
     private final BasicResponse response;
     protected final JsonHandler jsonHandler;
 
     /**
-     * Constructor for the MeilisearchHttpRequest
+     * Constructor for the HttpClient
      *
      * @param config Meilisearch configuration
      */
-    public MeilisearchHttpRequest(Config config) {
+    public HttpClient(Config config) {
         this.client = new CustomOkHttpClient(config);
         this.jsonHandler = config.jsonHandler;
         this.request = new BasicRequest(jsonHandler);
@@ -33,12 +32,12 @@ public class MeilisearchHttpRequest {
     }
 
     /**
-     * Constructor for the MeilisearchHttpRequest
+     * Constructor for the HttpClient
      *
      * @param client HttpClient for making calls to server
      * @param request BasicRequest for generating calls to server
      */
-    public MeilisearchHttpRequest(AbstractHttpClient client, BasicRequest request) {
+    public HttpClient(CustomOkHttpClient client, BasicRequest request) {
         this.client = client;
         this.request = request;
         this.jsonHandler = new GsonJsonHandler();

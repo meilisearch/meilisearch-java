@@ -651,9 +651,8 @@ public class Index implements Serializable {
      */
     public void fetchPrimaryKey() throws MeilisearchException {
         String requestQuery = "/indexes/" + this.uid;
-        MeilisearchHttpRequest meilisearchHttpRequest = config.meilisearchHttpRequest;
-        Index retrievedIndex =
-                config.jsonHandler.decode(meilisearchHttpRequest.get(requestQuery), Index.class);
+        HttpClient httpClient = config.httpClient;
+        Index retrievedIndex = config.jsonHandler.decode(httpClient.get(requestQuery), Index.class);
         this.primaryKey = retrievedIndex.getPrimaryKey();
     }
 }

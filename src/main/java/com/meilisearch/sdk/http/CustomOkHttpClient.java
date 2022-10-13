@@ -15,18 +15,19 @@ import java.util.List;
 import java.util.Map;
 import okhttp3.*;
 
-public class CustomOkHttpClient extends AbstractHttpClient {
+public class CustomOkHttpClient {
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create("".getBytes());
     private final OkHttpClient client;
+    protected final Config config;
 
     public CustomOkHttpClient(Config config, OkHttpClient client) {
-        super(config);
+        this.config = config;
         this.client = client;
     }
 
     public CustomOkHttpClient(Config config) {
-        super(config);
+        this.config = config;
         this.client = new OkHttpClient();
     }
 

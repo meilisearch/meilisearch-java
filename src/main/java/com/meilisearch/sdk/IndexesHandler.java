@@ -3,9 +3,9 @@ package com.meilisearch.sdk;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import java.util.HashMap;
 
-/** Wrapper around the MeiliSearchHttpRequest class to ease usage for Meilisearch indexes */
+/** Wrapper around the HttpClient class to ease usage for Meilisearch indexes */
 class IndexesHandler {
-    MeilisearchHttpRequest meilisearchHttpRequest;
+    HttpClient httpClient;
 
     /**
      * Creates and sets up an instance of IndexesHandler to simplify Meilisearch API calls to manage
@@ -14,7 +14,7 @@ class IndexesHandler {
      * @param config Meilisearch configuration
      */
     IndexesHandler(Config config) {
-        this.meilisearchHttpRequest = config.meilisearchHttpRequest;
+        this.httpClient = config.httpClient;
     }
 
     /**
@@ -41,7 +41,7 @@ class IndexesHandler {
         index.put("uid", uid);
         index.put("primaryKey", primaryKey);
 
-        return meilisearchHttpRequest.post("/indexes", index);
+        return httpClient.post("/indexes", index);
     }
 
     /**
@@ -53,7 +53,7 @@ class IndexesHandler {
      */
     String get(String uid) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid;
-        return meilisearchHttpRequest.get(requestQuery);
+        return httpClient.get(requestQuery);
     }
 
     /**
@@ -63,7 +63,7 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     String getAll() throws MeilisearchException {
-        return meilisearchHttpRequest.get("/indexes");
+        return httpClient.get("/indexes");
     }
 
     /**
@@ -79,7 +79,7 @@ class IndexesHandler {
         index.put("primaryKey", primaryKey);
 
         String requestQuery = "/indexes/" + uid;
-        return meilisearchHttpRequest.put(requestQuery, index);
+        return httpClient.put(requestQuery, index);
     }
 
     /**
@@ -91,6 +91,6 @@ class IndexesHandler {
      */
     String delete(String uid) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid;
-        return meilisearchHttpRequest.delete(requestQuery);
+        return httpClient.delete(requestQuery);
     }
 }
