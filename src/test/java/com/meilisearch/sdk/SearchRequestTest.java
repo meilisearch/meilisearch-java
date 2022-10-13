@@ -98,6 +98,7 @@ class SearchRequestTest {
                         true,
                         new String[] {"facets"},
                         new String[] {"sort"});
+
         assertEquals("This is a Test", classToTest.getQ());
         assertEquals(200, classToTest.getOffset());
         assertEquals(900, classToTest.getLimit());
