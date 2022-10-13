@@ -7,9 +7,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.meilisearch.sdk.Config;
-import com.meilisearch.sdk.http.request.BasicHttpRequest;
 import com.meilisearch.sdk.http.request.HttpMethod;
-import com.meilisearch.sdk.http.response.BasicHttpResponse;
+import com.meilisearch.sdk.http.request.HttpRequest;
+import com.meilisearch.sdk.http.response.HttpResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -84,9 +84,9 @@ class CustomOkHttpClientTest {
 
     @Test
     void get() throws Exception {
-        BasicHttpRequest request =
-                new BasicHttpRequest(HttpMethod.GET, "/test", Collections.emptyMap(), "some body");
-        BasicHttpResponse response = (BasicHttpResponse) classToTest.get(request);
+        HttpRequest request =
+                new HttpRequest(HttpMethod.GET, "/test", Collections.emptyMap(), "some body");
+        HttpResponse response = classToTest.get(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
 
@@ -100,9 +100,9 @@ class CustomOkHttpClientTest {
 
     @Test
     void post() throws Exception {
-        BasicHttpRequest request =
-                new BasicHttpRequest(HttpMethod.POST, "/test", Collections.emptyMap(), "some body");
-        BasicHttpResponse response = (BasicHttpResponse) classToTest.post(request);
+        HttpRequest request =
+                new HttpRequest(HttpMethod.POST, "/test", Collections.emptyMap(), "some body");
+        HttpResponse response = classToTest.post(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
         assertThat(response.getContent(), equalTo(request.getContent()));
@@ -118,9 +118,9 @@ class CustomOkHttpClientTest {
 
     @Test
     void postWithoutBody() throws Exception {
-        BasicHttpRequest request =
-                new BasicHttpRequest(HttpMethod.POST, "/test", Collections.emptyMap(), null);
-        BasicHttpResponse response = (BasicHttpResponse) classToTest.post(request);
+        HttpRequest request =
+                new HttpRequest(HttpMethod.POST, "/test", Collections.emptyMap(), null);
+        HttpResponse response = classToTest.post(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
         assertThat(response.getContent(), equalTo(""));
@@ -136,9 +136,9 @@ class CustomOkHttpClientTest {
 
     @Test
     void put() throws Exception {
-        BasicHttpRequest request =
-                new BasicHttpRequest(HttpMethod.PUT, "/test", Collections.emptyMap(), "some body");
-        BasicHttpResponse response = (BasicHttpResponse) classToTest.put(request);
+        HttpRequest request =
+                new HttpRequest(HttpMethod.PUT, "/test", Collections.emptyMap(), "some body");
+        HttpResponse response = classToTest.put(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
         assertThat(response.getContent(), equalTo(request.getContent()));
@@ -154,10 +154,9 @@ class CustomOkHttpClientTest {
 
     @Test
     void delete() throws Exception {
-        BasicHttpRequest request =
-                new BasicHttpRequest(
-                        HttpMethod.DELETE, "/test", Collections.emptyMap(), "some body");
-        BasicHttpResponse response = (BasicHttpResponse) classToTest.delete(request);
+        HttpRequest request =
+                new HttpRequest(HttpMethod.DELETE, "/test", Collections.emptyMap(), "some body");
+        HttpResponse response = classToTest.delete(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
 
@@ -171,9 +170,9 @@ class CustomOkHttpClientTest {
 
     @Test
     void deleteWithoutBody() throws Exception {
-        BasicHttpRequest request =
-                new BasicHttpRequest(HttpMethod.DELETE, "/test", Collections.emptyMap(), null);
-        BasicHttpResponse response = (BasicHttpResponse) classToTest.delete(request);
+        HttpRequest request =
+                new HttpRequest(HttpMethod.DELETE, "/test", Collections.emptyMap(), null);
+        HttpResponse response = classToTest.delete(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
 
