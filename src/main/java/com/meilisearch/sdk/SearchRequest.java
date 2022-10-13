@@ -362,6 +362,7 @@ public class SearchRequest {
                         .putOpt("attributesToHighlight", this.attributesToHighlight)
                         .putOpt("filter", this.filter)
                         .putOpt("filter", this.filterArray);
+
         return jsonObject.toString();
     }
 }
