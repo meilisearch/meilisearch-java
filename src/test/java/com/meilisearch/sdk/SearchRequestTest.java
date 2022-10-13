@@ -36,6 +36,7 @@ class SearchRequestTest {
     void toStringQueryLimitOffsetAndAttributesToRetrieve() {
         SearchRequest classToTest =
                 new SearchRequest("This is a Test", 200, 900, new String[] {"bubble"});
+
         assertEquals(
                 "{\"q\":\"This is a Test\",\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"limit\":900,\"cropLength\":200,\"matches\":false}",
                 classToTest.toString());
