@@ -26,6 +26,7 @@ class SearchRequestTest {
     @Test
     void toStringQueryLimitAndOffset() {
         SearchRequest classToTest = new SearchRequest("This is a Test", 200, 900);
+
         assertEquals(
                 "{\"q\":\"This is a Test\",\"attributesToRetrieve\":[\"*\"],\"offset\":200,\"limit\":900,\"cropLength\":200,\"matches\":false}",
                 classToTest.toString());
