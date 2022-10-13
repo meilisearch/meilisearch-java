@@ -86,7 +86,7 @@ class CustomOkHttpClientTest {
     void get() throws Exception {
         HttpRequest request =
                 new HttpRequest(HttpMethod.GET, "/test", Collections.emptyMap(), "some body");
-        HttpResponse response = (HttpResponse) classToTest.get(request);
+        HttpResponse response = classToTest.get(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
 
@@ -102,7 +102,7 @@ class CustomOkHttpClientTest {
     void post() throws Exception {
         HttpRequest request =
                 new HttpRequest(HttpMethod.POST, "/test", Collections.emptyMap(), "some body");
-        HttpResponse response = (HttpResponse) classToTest.post(request);
+        HttpResponse response = classToTest.post(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
         assertThat(response.getContent(), equalTo(request.getContent()));
@@ -120,7 +120,7 @@ class CustomOkHttpClientTest {
     void postWithoutBody() throws Exception {
         HttpRequest request =
                 new HttpRequest(HttpMethod.POST, "/test", Collections.emptyMap(), null);
-        HttpResponse response = (HttpResponse) classToTest.post(request);
+        HttpResponse response = classToTest.post(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
         assertThat(response.getContent(), equalTo(""));
@@ -138,7 +138,7 @@ class CustomOkHttpClientTest {
     void put() throws Exception {
         HttpRequest request =
                 new HttpRequest(HttpMethod.PUT, "/test", Collections.emptyMap(), "some body");
-        HttpResponse response = (HttpResponse) classToTest.put(request);
+        HttpResponse response = classToTest.put(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
         assertThat(response.getContent(), equalTo(request.getContent()));
@@ -156,7 +156,7 @@ class CustomOkHttpClientTest {
     void delete() throws Exception {
         HttpRequest request =
                 new HttpRequest(HttpMethod.DELETE, "/test", Collections.emptyMap(), "some body");
-        HttpResponse response = (HttpResponse) classToTest.delete(request);
+        HttpResponse response = classToTest.delete(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
 
@@ -172,7 +172,7 @@ class CustomOkHttpClientTest {
     void deleteWithoutBody() throws Exception {
         HttpRequest request =
                 new HttpRequest(HttpMethod.DELETE, "/test", Collections.emptyMap(), null);
-        HttpResponse response = (HttpResponse) classToTest.delete(request);
+        HttpResponse response = classToTest.delete(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
 
