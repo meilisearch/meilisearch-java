@@ -33,8 +33,9 @@ public class CustomOkHttpClient extends AbstractHttpClient {
     public HttpResponse execute(HttpRequest request) throws MeilisearchException {
         try {
             Request okRequest = buildRequest(request);
-            Response execute = client.newCall(okRequest).execute();
-            return buildResponse(execute);
+            Response response = client.newCall(okRequest).execute();
+
+            return buildResponse(response);
         } catch (MalformedURLException e) {
             throw new MeilisearchException(e);
         } catch (SocketTimeoutException e) {
