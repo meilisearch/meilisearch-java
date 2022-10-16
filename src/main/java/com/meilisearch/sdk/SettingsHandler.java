@@ -45,7 +45,7 @@ public class SettingsHandler {
      */
     public Task updateSettings(String uid, Settings settings) throws Exception {
         return this.gson.fromJson(
-                meilisearchHttpRequest.post(
+                meilisearchHttpRequest.patch(
                         "/indexes/" + uid + "/settings", settings.getUpdateQuery()),
                 Task.class);
     }

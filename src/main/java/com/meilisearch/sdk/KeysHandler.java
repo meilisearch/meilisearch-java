@@ -17,10 +17,10 @@ public class KeysHandler {
     /**
      * Creates and sets up an instance of Key to simplify MeiliSearch API calls to manage keys
      *
-     * @param config MeiliSearch configuration
+     * @param meilisearchHttpRequest MeiliSearch Http Request
      */
-    public KeysHandler(Config config) {
-        this.meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+    public KeysHandler(MeiliSearchHttpRequest meilisearchHttpRequest) {
+        this.meilisearchHttpRequest = meilisearchHttpRequest;
     }
 
     /**

@@ -11,10 +11,10 @@ public class DumpHandler {
     /**
      * Creates and sets up an instance of Dump to simplify Meilisearch API calls to manage dumps
      *
-     * @param config Meilisearch configuration
+     * @param meiliSearchHttpRequest Meilisearch Http Request
      */
-    public DumpHandler(Config config) {
-        this.meiliSearchHttpRequest = new MeiliSearchHttpRequest(config);
+    public DumpHandler(MeiliSearchHttpRequest meiliSearchHttpRequest) {
+        this.meiliSearchHttpRequest = meiliSearchHttpRequest;
     }
 
     /**

@@ -14,6 +14,7 @@ import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Arrays;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -30,8 +31,8 @@ public class ClientTest extends AbstractIT {
         if (testData == null) testData = this.getTestData(MOVIES_INDEX, Movie.class);
     }
 
-    @AfterAll
-    static void cleanMeiliSearch() {
+    @AfterEach
+    public void cleanMeiliSearch() {
         cleanup();
     }
 
@@ -147,7 +148,7 @@ public class ClientTest extends AbstractIT {
         Index index2 = createEmptyIndex(indexUids[1], this.primaryKey);
 
         String indexes = client.getRawIndexList();
-        JsonArray jsonIndexArray = JsonParser.parseString(indexes).getAsJsonArray();
+        JsonArray jsonIndexArray = JsonParser.parseString(indexes).getAsJsonObject().getAsJsonArray("results");
 
         assertEquals(jsonIndexArray.size(), 2);
         assert (Arrays.asList(indexUids)
@@ -213,17 +214,7 @@ public class ClientTest extends AbstractIT {
         Dump dump = client.createDump();
         String status = dump.getStatus();
 
-        assertEquals(status, "in_progress");
+        assertEquals(status, "enqueued");
     }
 
-    /** Test call to get dump status by uid */
-    @Test
-    public void testGetDumpStatus() throws Exception {
-        Dump dump = client.createDump();
-        String uid = dump.getUid();
-        String status = client.getDumpStatus(uid);
-
-        assertNotNull(status);
-        assertNotNull(uid);
-    }
 }

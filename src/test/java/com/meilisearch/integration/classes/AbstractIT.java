@@ -6,7 +6,9 @@ import com.meilisearch.sdk.Client;
 import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.Key;
+import com.meilisearch.sdk.MeiliSearchHttpRequest;
 import com.meilisearch.sdk.Task;
+import com.meilisearch.sdk.http.ApacheHttpClient;
 import com.meilisearch.sdk.utils.Movie;
 import java.io.*;
 import java.net.URL;
@@ -16,6 +18,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class AbstractIT {
+    private static ApacheHttpClient apacheHttpClient;
     protected Client client;
     protected final Gson gson = new Gson();
 
@@ -34,11 +37,17 @@ public abstract class AbstractIT {
     }
 
     public void setUp() {
-        if (client == null) client = new Client(new Config(getMeilisearchHost(), "masterKey"));
+        if (client == null) {
+            Config config = new Config(getMeilisearchHost(), "masterKey");
+            apacheHttpClient = new ApacheHttpClient(config);
+            client = new Client(config, new MeiliSearchHttpRequest(apacheHttpClient));
+        } 
+            
     }
 
     public static void cleanup() {
         deleteAllIndexes();
+        apacheHttpClient.shutdown();
     }
 
     public static String getMeilisearchHost() {
@@ -52,12 +61,14 @@ public abstract class AbstractIT {
     public Index createEmptyIndex(String indexUid) throws Exception {
         Task task = client.createIndex(indexUid);
         client.waitForTask(task.getUid());
+        Thread.sleep(500);
         return client.getIndex(indexUid);
     }
 
     public Index createEmptyIndex(String indexUid, String primaryKey) throws Exception {
         Task task = client.createIndex(indexUid, primaryKey);
         client.waitForTask(task.getUid());
+        Thread.sleep(500);
         return client.getIndex(indexUid);
     }
 
@@ -92,7 +103,8 @@ public abstract class AbstractIT {
 
     public static void deleteAllIndexes() {
         try {
-            Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"));
+            Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"), 
+                                                new MeiliSearchHttpRequest(apacheHttpClient));
             Index[] indexes = ms.getIndexList();
             for (Index index : indexes) {
                 ms.deleteIndex(index.getUid());

@@ -5,7 +5,7 @@ import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 
 /** Wrapper around the MeiliSearchHttpRequest class to ease usage for Meilisearch indexes */
 class IndexesHandler {
-    MeiliSearchHttpRequest meilisearchHttpRequest;
+    private final MeiliSearchHttpRequest meilisearchHttpRequest;
 
     /**
      * Creates and sets up an instance of IndexesHandler to simplify Meilisearch API calls to manage
@@ -15,6 +15,16 @@ class IndexesHandler {
      */
     IndexesHandler(Config config) {
         this.meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+    }
+
+    /**
+     * Creates and sets up an instance of IndexesHandler to simplify Meilisearch API calls to manage
+     * indexes
+     *
+     * @param meilisearchHttpRequest Meilisearch Http Request
+     */
+    IndexesHandler(MeiliSearchHttpRequest meilisearchHttpRequest) {
+        this.meilisearchHttpRequest = meilisearchHttpRequest;
     }
 
     /**
@@ -80,7 +90,7 @@ class IndexesHandler {
         jsonObject.addProperty("primaryKey", primaryKey);
 
         String requestQuery = "/indexes/" + uid;
-        return meilisearchHttpRequest.put(requestQuery, jsonObject.toString());
+        return meilisearchHttpRequest.patch(requestQuery, jsonObject.toString());
     }
 
     /**

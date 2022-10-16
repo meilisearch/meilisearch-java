@@ -21,8 +21,8 @@ public class TasksHandler {
      *
      * @param config MeiliSearch configuration
      */
-    public TasksHandler(Config config) {
-        this.meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+    public TasksHandler(MeiliSearchHttpRequest meilisearchHttpRequest) {
+        this.meilisearchHttpRequest = meilisearchHttpRequest;
     }
 
     /**

@@ -41,7 +41,7 @@ public class Index implements Serializable {
     void setConfig(Config config) {
         this.config = config;
         this.documents = new Documents(config);
-        this.tasksHandler = new TasksHandler(config);
+        this.tasksHandler = new TasksHandler(new MeiliSearchHttpRequest(config));
         this.search = new Search(config);
         this.settingsHandler = new SettingsHandler(config);
     }

@@ -6,7 +6,10 @@ package com.meilisearch.sdk;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.exceptions.MeiliSearchException;
+
+import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
@@ -14,6 +17,7 @@ import java.util.TimeZone;
 /** Meilisearch client */
 public class Client {
     public Config config;
+    public MeiliSearchHttpRequest meilisearchHttpRequest;
     public IndexesHandler indexesHandler;
     public TasksHandler tasksHandler;
     public KeysHandler keysHandler;
@@ -28,10 +32,26 @@ public class Client {
     public Client(Config config) {
         this.config = config;
         this.gson = new Gson();
-        this.indexesHandler = new IndexesHandler(config);
-        this.tasksHandler = new TasksHandler(config);
-        this.keysHandler = new KeysHandler(config);
-        this.dumpHandler = new DumpHandler(config);
+        this.meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+        this.indexesHandler = new IndexesHandler(meilisearchHttpRequest);
+        this.tasksHandler = new TasksHandler(meilisearchHttpRequest);
+        this.keysHandler = new KeysHandler(meilisearchHttpRequest);
+        this.dumpHandler = new DumpHandler(meilisearchHttpRequest);
+    }
+
+    /**
+     * Calls instance for Meilisearch client
+     *
+     * @param config Configuration to connect to Meilisearch instance
+     */
+    public Client(Config config, MeiliSearchHttpRequest meilisearchHttpRequest) {
+        this.config = config;
+        this.gson = new Gson();
+        this.meilisearchHttpRequest = meilisearchHttpRequest;
+        this.indexesHandler = new IndexesHandler(meilisearchHttpRequest);
+        this.tasksHandler = new TasksHandler(meilisearchHttpRequest);
+        this.keysHandler = new KeysHandler(meilisearchHttpRequest);
+        this.dumpHandler = new DumpHandler(meilisearchHttpRequest);
     }
 
     /**
@@ -66,11 +86,12 @@ public class Client {
      * @throws Exception if an error occurs
      */
     public Index[] getIndexList() throws Exception {
-        Index[] meiliSearchIndexList = gson.fromJson(getRawIndexList(), Index[].class);
-        for (Index indexes : meiliSearchIndexList) {
+        Type typeOfT = TypeToken.getParameterized(Result.class, Index.class).getType();
+        Result<Index> meiliSearchIndexList = gson.fromJson(getRawIndexList(), typeOfT);
+        for (Index indexes : meiliSearchIndexList.getResults()) {
             indexes.setConfig(this.config);
         }
-        return meiliSearchIndexList;
+        return meiliSearchIndexList.getResults();
     }
 
     /**
@@ -171,6 +192,8 @@ public class Client {
      * @param uid Unique identifier for correspondent dump
      * @return String with dump status
      * @throws Exception if an error occurs
+     * 
+     * TODO remove this. No more supported
      */
     public String getDumpStatus(String uid) throws Exception {
         return this.dumpHandler.getDumpStatus(uid);

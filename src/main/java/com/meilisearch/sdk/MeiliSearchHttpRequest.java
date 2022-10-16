@@ -12,7 +12,7 @@ import com.meilisearch.sdk.json.GsonJsonHandler;
 import java.util.Collections;
 
 /** The HTTP requests for the different functions to be done through Meilisearch */
-class MeiliSearchHttpRequest {
+public class MeiliSearchHttpRequest {
     private final AbstractHttpClient client;
     private final RequestFactory factory;
     private final GsonJsonHandler jsonHandler;
@@ -23,7 +23,19 @@ class MeiliSearchHttpRequest {
      * @param config Meilisearch configuration
      */
     protected MeiliSearchHttpRequest(Config config) {
+        //TODO check if to keep DefaultHttpClient
         this.client = new DefaultHttpClient(config);
+        this.jsonHandler = new GsonJsonHandler();
+        this.factory = new BasicRequestFactory(jsonHandler);
+    }
+
+    /**
+     * Constructor for the MeiliSearchHttpRequest
+     *
+     * @param client HttpClient for making calls to server
+     */
+    public MeiliSearchHttpRequest(AbstractHttpClient client) {
+        this.client = client;
         this.jsonHandler = new GsonJsonHandler();
         this.factory = new BasicRequestFactory(jsonHandler);
     }
@@ -123,6 +135,26 @@ class MeiliSearchHttpRequest {
         HttpResponse<?> httpResponse =
                 this.client.put(
                         factory.create(HttpMethod.DELETE, api, Collections.emptyMap(), null));
+        if (httpResponse.getStatusCode() >= 400) {
+            throw new MeiliSearchApiException(
+                    jsonHandler.decode(httpResponse.getContent(), APIError.class));
+        }
+        return new String(httpResponse.getContentAsBytes());
+    }
+
+    /**
+     * Executes a PATCH request with given body
+     *
+     * @param api Path to server
+     * @param body Body of the request
+     * @return results of the request
+     * @throws Exception if the client has an error
+     * @throws MeiliSearchApiException if the response is an error
+     */
+    String patch(String api, String body) throws Exception, MeiliSearchApiException {
+        HttpResponse<?> httpResponse =
+                this.client.patch(
+                        factory.create(HttpMethod.PATCH, api, Collections.emptyMap(), body));
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeiliSearchApiException(
                     jsonHandler.decode(httpResponse.getContent(), APIError.class));

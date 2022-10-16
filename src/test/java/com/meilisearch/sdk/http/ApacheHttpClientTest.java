@@ -20,6 +20,7 @@ import org.apache.hc.client5.http.async.HttpAsyncClient;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
 import org.apache.hc.client5.http.async.methods.SimpleRequestProducer;
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.core5.concurrent.FutureCallback;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.nio.support.BasicRequestProducer;
@@ -29,7 +30,7 @@ import org.junit.jupiter.api.Test;
 
 class ApacheHttpClientTest {
     private final Config config = new Config("http://localhost:7700", "masterKey");
-    private final HttpAsyncClient client = mock(HttpAsyncClient.class);
+    private final CloseableHttpAsyncClient client = mock(CloseableHttpAsyncClient.class);
     private final ApacheHttpClient classToTest = new ApacheHttpClient(config, client);
 
     private final ArrayDeque<SimpleHttpRequest> requestQueue = new ArrayDeque<>();

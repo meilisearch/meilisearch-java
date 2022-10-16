@@ -33,8 +33,8 @@ public class DefaultHttpClient extends AbstractHttpClient {
             throw new IOException("Unable to open an HttpURLConnection with no URL or method");
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestMethod(method);
+    
+        connection.setRequestMethod(method);     
         connection.setRequestProperty("Content-Type", "application/json");
 
         // Use API key header only if one is provided
@@ -90,5 +90,10 @@ public class DefaultHttpClient extends AbstractHttpClient {
     @Override
     public HttpResponse<?> delete(HttpRequest<?> request) throws Exception {
         return execute(request);
+    }
+
+    @Override
+    public HttpResponse<?> patch(HttpRequest<?> request) throws Exception {
+        throw new UnsupportedOperationException("Can not execute PATCH using DefaultHttpClient");
     }
 }

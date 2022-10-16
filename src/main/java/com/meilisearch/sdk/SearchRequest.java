@@ -18,18 +18,21 @@ public class SearchRequest {
     private String[] attributesToHighlight;
     private String[] filter;
     private String[][] filterArray;
-    private boolean matches;
-    private String[] facetsDistribution;
+    private boolean showMatchesPosition;
+    private String[] facets;
     private String[] sort;
 
     /** Empty SearchRequest constructor */
-    public SearchRequest() {}
+    public SearchRequest() {
+    }
 
     /**
-     * Constructor for SearchRequest for building search queries with the default values: offset: 0,
-     * limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
-     * attributesToHighlight: null, filter: null, matches: false, facetsDistribution: null, sort:
-     * null
+     * Constructor for SearchRequest for building search queries with the default
+     * values: offset: 0,
+     * limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength:
+     * 200,
+     * attributesToHighlight: null, filter: null, showMatchesPosition: false,
+     * facets: null, sort: null
      *
      * @param q Query String
      */
@@ -38,11 +41,13 @@ public class SearchRequest {
     }
 
     /**
-     * Constructor for SearchRequest for building search queries with the default values: limit: 20,
-     * attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200, attributesToHighlight:
-     * null, filter: null, matches: false, facetsDistribution: null, sort: null
+     * Constructor for SearchRequest for building search queries with the default
+     * values: limit: 20,
+     * attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
+     * attributesToHighlight: null, filter: null, showMatchesPosition: false,
+     * facets: null, sort: null
      *
-     * @param q Query String
+     * @param q      Query String
      * @param offset Number of documents to skip
      */
     public SearchRequest(String q, int offset) {
@@ -50,26 +55,30 @@ public class SearchRequest {
     }
 
     /**
-     * Constructor for SearchRequest for building search queries with the default values:
-     * attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200, attributesToHighlight:
-     * null, filter: null, matches: false, facetsDistribution: null, sort: null
+     * Constructor for SearchRequest for building search queries with the default
+     * values:
+     * attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
+     * attributesToHighlight: null, filter: null, showMatchesPosition: false,
+     * facets: null, sort: null
      *
-     * @param q Query String
+     * @param q      Query String
      * @param offset Number of documents to skip
-     * @param limit Maximum number of documents returned
+     * @param limit  Maximum number of documents returned
      */
     public SearchRequest(String q, int offset, int limit) {
-        this(q, offset, limit, new String[] {"*"});
+        this(q, offset, limit, new String[] { "*" });
     }
 
     /**
-     * Constructor for SearchRequest for building search queries with the default values:
-     * attributesToCrop: null, cropLength: 200, attributesToHighlight: null, filter: null, matches:
-     * false, facetsDistribution: null, sort: null
+     * Constructor for SearchRequest for building search queries with the default
+     * values:
+     * attributesToCrop: null, cropLength: 200, attributesToHighlight: null, filter:
+     * null,
+     * showMatchesPosition: false, facets: null, sort: null
      *
-     * @param q Query String
-     * @param offset Number of documents to skip
-     * @param limit Maximum number of documents returned
+     * @param q                    Query String
+     * @param offset               Number of documents to skip
+     * @param limit                Maximum number of documents returned
      * @param attributesToRetrieve Attributes to display in the returned documents
      */
     public SearchRequest(String q, int offset, int limit, String[] attributesToRetrieve) {
@@ -93,18 +102,20 @@ public class SearchRequest {
     /**
      * Full SearchRequest Constructor for building search queries
      *
-     * @param q Query string
-     * @param offset Number of documents to skip
-     * @param limit Maximum number of documents returned
-     * @param attributesToRetrieve Attributes to display in the returned documents
-     * @param attributesToCrop Attributes whose values have been cropped
-     * @param cropLength Length used to crop field values
-     * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
-     * @param filter Filter queries by an attribute value
-     * @param matches Defines whether an object that contains information about the matches should
-     *     be returned or not
-     * @param facetsDistribution Facets for which to retrieve the matching count
-     * @param sort Sort queries by an attribute value
+     * @param q                     Query string
+     * @param offset                Number of documents to skip
+     * @param limit                 Maximum number of documents returned
+     * @param attributesToRetrieve  Attributes to display in the returned documents
+     * @param attributesToCrop      Attributes whose values have been cropped
+     * @param cropLength            Length used to crop field values
+     * @param attributesToHighlight Attributes whose values will contain highlighted
+     *                              matching terms
+     * @param filter                Filter queries by an attribute value
+     * @param showMatchesPosition   Defines whether an object that contains
+     *                              information about the showMatchesPosition should
+     *                              be returned or not
+     * @param facets                Facets for which to retrieve the matching count
+     * @param sort                  Sort queries by an attribute value
      */
     public SearchRequest(
             String q,
@@ -115,8 +126,8 @@ public class SearchRequest {
             int cropLength,
             String[] attributesToHighlight,
             String[] filter,
-            boolean matches,
-            String[] facetsDistribution,
+            boolean showMatchesPosition,
+            String[] facets,
             String[] sort) {
         this(
                 q,
@@ -131,31 +142,36 @@ public class SearchRequest {
                 attributesToHighlight,
                 filter,
                 null,
-                matches,
-                facetsDistribution,
+                showMatchesPosition,
+                facets,
                 sort);
     }
 
     /**
      * Full SearchRequest Constructor for building search queries
      *
-     * @param q Query string
-     * @param offset Number of documents to skip
-     * @param limit Maximum number of documents returned
-     * @param attributesToRetrieve Attributes to display in the returned documents
-     * @param attributesToCrop Attributes whose values have been cropped
-     * @param cropLength Length used to crop field values
-     * @param cropMarker String to customize default crop marker, default value: …
-     * @param highlightPreTag String to customize highlight tag before every highlighted query
-     *     terms, default value: <em>
-     * @param highlightPostTag String to customize highlight tag after every highlighted query
-     *     terms, default value: </em>
-     * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
-     * @param filter Filter queries by an attribute value
-     * @param matches Defines whether an object that contains information about the matches should
-     *     be returned or not
-     * @param facetsDistribution Facets for which to retrieve the matching count
-     * @param sort Sort queries by an attribute value
+     * @param q                     Query string
+     * @param offset                Number of documents to skip
+     * @param limit                 Maximum number of documents returned
+     * @param attributesToRetrieve  Attributes to display in the returned documents
+     * @param attributesToCrop      Attributes whose values have been cropped
+     * @param cropLength            Length used to crop field values
+     * @param cropMarker            String to customize default crop marker, default
+     *                              value: …
+     * @param highlightPreTag       String to customize highlight tag before every
+     *                              highlighted query
+     *                              terms, default value: <em>
+     * @param highlightPostTag      String to customize highlight tag after every
+     *                              highlighted query
+     *                              terms, default value: </em>
+     * @param attributesToHighlight Attributes whose values will contain highlighted
+     *                              matching terms
+     * @param filter                Filter queries by an attribute value
+     * @param showMatchesPosition   Defines whether an object that contains
+     *                              information about the showMatchesPosition should
+     *                              be returned or not
+     * @param facets                Facets for which to retrieve the matching count
+     * @param sort                  Sort queries by an attribute value
      */
     public SearchRequest(
             String q,
@@ -169,8 +185,8 @@ public class SearchRequest {
             String highlightPostTag,
             String[] attributesToHighlight,
             String[] filter,
-            boolean matches,
-            String[] facetsDistribution,
+            boolean showMatchesPosition,
+            String[] facets,
             String[] sort) {
         this(
                 q,
@@ -185,26 +201,30 @@ public class SearchRequest {
                 attributesToHighlight,
                 filter,
                 null,
-                matches,
-                facetsDistribution,
+                showMatchesPosition,
+                facets,
                 sort);
     }
 
     /**
-     * Full SearchRequest Constructor for building search queries with 2D filter Array
+     * Full SearchRequest Constructor for building search queries with 2D filter
+     * Array
      *
-     * @param q Query string
-     * @param offset Number of documents to skip
-     * @param limit Maximum number of documents returned
-     * @param attributesToRetrieve Attributes to display in the returned documents
-     * @param attributesToCrop Attributes whose values have been cropped
-     * @param cropLength Length used to crop field values
-     * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
-     * @param filterArray String array that can take multiple nested filters
-     * @param matches Defines whether an object that contains information about the matches should
-     *     be returned or not
-     * @param facetsDistribution Facets for which to retrieve the matching count
-     * @param sort Sort queries by an attribute value
+     * @param q                     Query string
+     * @param offset                Number of documents to skip
+     * @param limit                 Maximum number of documents returned
+     * @param attributesToRetrieve  Attributes to display in the returned documents
+     * @param attributesToCrop      Attributes whose values have been cropped
+     * @param cropLength            Length used to crop field values
+     * @param attributesToHighlight Attributes whose values will contain highlighted
+     *                              matching terms
+     * @param filterArray           String array that can take multiple nested
+     *                              filters
+     * @param showMatchesPosition   Defines whether an object that contains
+     *                              information about the showMatchesPosition should
+     *                              be returned or not
+     * @param facets                Facets for which to retrieve the matching count
+     * @param sort                  Sort queries by an attribute value
      */
     public SearchRequest(
             String q,
@@ -215,8 +235,8 @@ public class SearchRequest {
             int cropLength,
             String[] attributesToHighlight,
             String[][] filterArray,
-            boolean matches,
-            String[] facetsDistribution,
+            boolean showMatchesPosition,
+            String[] facets,
             String[] sort) {
         this(
                 q,
@@ -231,31 +251,38 @@ public class SearchRequest {
                 attributesToHighlight,
                 null,
                 filterArray,
-                matches,
-                facetsDistribution,
+                showMatchesPosition,
+                facets,
                 sort);
     }
 
     /**
-     * Full SearchRequest Constructor for building search queries with 2D filter Array
+     * Full SearchRequest Constructor for building search queries with 2D filter
+     * Array
      *
-     * @param q Query string
-     * @param offset Number of documents to skip
-     * @param limit Maximum number of documents returned
-     * @param attributesToRetrieve Attributes to display in the returned documents
-     * @param attributesToCrop Attributes whose values have been cropped
-     * @param cropLength Length used to crop field values
-     * @param cropMarker String to customize default crop marker, default value: …
-     * @param highlightPreTag String to customize highlight tag before every highlighted query
-     *     terms, default value: <em>
-     * @param highlightPostTag String to customize highlight tag after every highlighted query
-     *     terms, default value: </em>
-     * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
-     * @param filterArray String array that can take multiple nested filters
-     * @param matches Defines whether an object that contains information about the matches should
-     *     be returned or not
-     * @param facetsDistribution Facets for which to retrieve the matching count
-     * @param sort Sort queries by an attribute value
+     * @param q                     Query string
+     * @param offset                Number of documents to skip
+     * @param limit                 Maximum number of documents returned
+     * @param attributesToRetrieve  Attributes to display in the returned documents
+     * @param attributesToCrop      Attributes whose values have been cropped
+     * @param cropLength            Length used to crop field values
+     * @param cropMarker            String to customize default crop marker, default
+     *                              value: …
+     * @param highlightPreTag       String to customize highlight tag before every
+     *                              highlighted query
+     *                              terms, default value: <em>
+     * @param highlightPostTag      String to customize highlight tag after every
+     *                              highlighted query
+     *                              terms, default value: </em>
+     * @param attributesToHighlight Attributes whose values will contain highlighted
+     *                              matching terms
+     * @param filterArray           String array that can take multiple nested
+     *                              filters
+     * @param showMatchesPosition   Defines whether an object that contains
+     *                              information about the showMatchesPosition should
+     *                              be returned or not
+     * @param facets                Facets for which to retrieve the matching count
+     * @param sort                  Sort queries by an attribute value
      */
     public SearchRequest(
             String q,
@@ -269,8 +296,8 @@ public class SearchRequest {
             String highlightPostTag,
             String[] attributesToHighlight,
             String[][] filterArray,
-            boolean matches,
-            String[] facetsDistribution,
+            boolean showMatchesPosition,
+            String[] facets,
             String[] sort) {
         this(
                 q,
@@ -285,8 +312,8 @@ public class SearchRequest {
                 attributesToHighlight,
                 null,
                 filterArray,
-                matches,
-                facetsDistribution,
+                showMatchesPosition,
+                facets,
                 sort);
     }
 
@@ -303,8 +330,8 @@ public class SearchRequest {
             String[] attributesToHighlight,
             String[] filter,
             String[][] filterArray,
-            boolean matches,
-            String[] facetsDistribution,
+            boolean showMatchesPosition,
+            String[] facets,
             String[] sort) {
         this.q = q;
         this.offset = offset;
@@ -318,8 +345,8 @@ public class SearchRequest {
         this.attributesToHighlight = attributesToHighlight;
         this.setFilter(filter);
         this.setFilterArray(filterArray);
-        this.matches = matches;
-        this.facetsDistribution = facetsDistribution;
+        this.showMatchesPosition = showMatchesPosition;
+        this.facets = facets;
         this.sort = sort;
     }
 
@@ -425,7 +452,8 @@ public class SearchRequest {
     /**
      * Method to set the attributesToHighlight
      *
-     * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
+     * @param attributesToHighlight Attributes whose values will contain highlighted
+     *                              matching terms
      * @return altered SearchRequest
      */
     public SearchRequest setAttributesToHighlight(String[] attributesToHighlight) {
@@ -454,25 +482,26 @@ public class SearchRequest {
     }
 
     /**
-     * Method to set the matches boolean
+     * Method to set the showMatchesPosition boolean
      *
-     * @param matches Defines whether an object that contains information about the matches should
-     *     be returned or not
+     * @param showMatchesPosition Defines whether an object that contains
+     *                            information about the matches should
+     *                            be returned or not
      * @return altered SearchRequest
      */
-    public SearchRequest setMatches(boolean matches) {
-        this.matches = matches;
+    public SearchRequest setShowMatchesPosition(boolean showMatchesPosition) {
+        this.showMatchesPosition = showMatchesPosition;
         return this;
     }
 
     /**
-     * Method to set the facetsDistribution
+     * Method to set the facets
      *
-     * @param facetsDistribution Facets for which to retrieve the matching count
+     * @param facets Facets for which to retrieve the matching count
      * @return altered SearchRequest
      */
-    public SearchRequest setFacetsDistribution(String[] facetsDistribution) {
-        this.facetsDistribution = facetsDistribution;
+    public SearchRequest setFacets(String[] facets) {
+        this.facets = facets;
         return this;
     }
 
@@ -494,19 +523,18 @@ public class SearchRequest {
      */
     String getQuery() {
 
-        JSONObject jsonObject =
-                new JSONObject()
-                        .put("q", this.q)
-                        .put("offset", this.offset)
-                        .put("limit", this.limit)
-                        .put("attributesToRetrieve", this.attributesToRetrieve)
-                        .put("cropLength", this.cropLength)
-                        .put("cropMarker", this.cropMarker)
-                        .put("highlightPreTag", this.highlightPreTag)
-                        .put("highlightPostTag", this.highlightPostTag)
-                        .put("matches", this.matches)
-                        .put("facetsDistribution", this.facetsDistribution)
-                        .put("sort", this.sort);
+        JSONObject jsonObject = new JSONObject()
+                .put("q", this.q)
+                .put("offset", this.offset)
+                .put("limit", this.limit)
+                .put("attributesToRetrieve", this.attributesToRetrieve)
+                .put("cropLength", this.cropLength)
+                .put("cropMarker", this.cropMarker)
+                .put("highlightPreTag", this.highlightPreTag)
+                .put("highlightPostTag", this.highlightPostTag)
+                .put("showMatchesPosition", this.showMatchesPosition)
+                .put("facets", this.facets)
+                .put("sort", this.sort);
         if (this.attributesToCrop != null) {
             jsonObject.put("attributesToCrop", this.attributesToCrop);
         }

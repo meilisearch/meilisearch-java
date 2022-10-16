@@ -6,7 +6,9 @@ import java.util.HashMap;
 import lombok.Getter;
 import lombok.ToString;
 
-/** Result of `search` API Refer https://docs.meilisearch.com/references/search.html */
+/**
+ * Result of `search` API Refer https://docs.meilisearch.com/references/search.html
+ */
 @Getter
 @ToString
 public class SearchResult implements Serializable {
@@ -17,13 +19,9 @@ public class SearchResult implements Serializable {
 
     int limit;
 
-    int nbHits;
+    int estimatedTotalHits;
 
-    boolean exhaustiveNbHits;
-
-    Object facetsDistribution;
-
-    boolean exhaustiveFacetsCount;
+    Object facetDistribution;
 
     int processingTimeMs;
 

@@ -106,7 +106,7 @@ public class TenantTokenTest extends AbstractIT {
 
         assertEquals(20, searchResult.getHits().size());
         assertEquals(20, searchResult.getLimit());
-        assertEquals(30, searchResult.getNbHits());
+        assertEquals(30, searchResult.getEstimatedTotalHits());
     }
 
     /** Test Create Tenant Token with expiration date */

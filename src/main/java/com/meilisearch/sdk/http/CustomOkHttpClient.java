@@ -52,6 +52,9 @@ public class CustomOkHttpClient extends AbstractHttpClient {
                 if (request.hasContent()) builder.delete(getBodyFromRequest(request));
                 else builder.delete();
                 break;
+            case PATCH:
+                builder.patch(getBodyFromRequest(request));
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + request.getMethod());
         }
@@ -99,6 +102,13 @@ public class CustomOkHttpClient extends AbstractHttpClient {
 
     @Override
     public HttpResponse<?> delete(HttpRequest<?> request) throws Exception {
+        Request okRequest = buildRequest(request);
+        Response execute = client.newCall(okRequest).execute();
+        return buildResponse(execute);
+    }
+
+    @Override
+    public HttpResponse<?> patch(HttpRequest<?> request) throws Exception {
         Request okRequest = buildRequest(request);
         Response execute = client.newCall(okRequest).execute();
         return buildResponse(execute);
