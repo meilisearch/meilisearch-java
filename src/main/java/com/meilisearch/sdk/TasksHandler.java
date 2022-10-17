@@ -19,7 +19,7 @@ public class TasksHandler {
     /**
      * Creates and sets up an instance of Task to simplify MeiliSearch API calls to manage tasks
      *
-     * @param config MeiliSearch configuration
+     * @param meilisearchHttpRequest MeiliSearchHttpRequest the Meilisearch Http request 
      */
     public TasksHandler(MeiliSearchHttpRequest meilisearchHttpRequest) {
         this.meilisearchHttpRequest = meilisearchHttpRequest;

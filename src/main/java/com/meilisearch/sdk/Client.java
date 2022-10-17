@@ -42,7 +42,8 @@ public class Client {
     /**
      * Calls instance for Meilisearch client
      *
-     * @param config Configuration to connect to Meilisearch instance
+     * @param config Configuration to connect to Meilisearch instance 
+     * @param meilisearchHttpRequest MeiliSearchHttpRequest the Meilisearch Http request 
      */
     public Client(Config config, MeiliSearchHttpRequest meilisearchHttpRequest) {
         this.config = config;
