@@ -46,7 +46,11 @@ public abstract class AbstractIT {
     }
 
     public static void cleanup() {
-        deleteAllIndexes();
+        cleanup(null);
+    }
+
+    public static void cleanup(String prefix) {
+        deleteAllIndexes(prefix);
         apacheHttpClient.shutdown();
     }
 
@@ -101,12 +105,16 @@ public abstract class AbstractIT {
         return null;
     }
 
-    public static void deleteAllIndexes() {
+    public static void deleteAllIndexes(String prefix) {
         try {
             Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"), 
                                                 new MeiliSearchHttpRequest(apacheHttpClient));
             Index[] indexes = ms.getIndexList();
             for (Index index : indexes) {
+                String indexUid = index.getUid();
+                if (prefix != null && !indexUid.startsWith(prefix)) {
+                    continue;
+                }
                 ms.deleteIndex(index.getUid());
             }
         } catch (Exception e) {

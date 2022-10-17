@@ -1,6 +1,7 @@
 package com.meilisearch.sdk;
 
 import com.google.gson.Gson;
+
 import java.util.Map;
 
 /**
@@ -89,7 +90,7 @@ public class SettingsHandler {
     public Task updateRankingRuleSettings(String uid, String[] rankingRules) throws Exception {
         String rankingRulesAsJson = gson.toJson(rankingRules);
         return this.gson.fromJson(
-                meilisearchHttpRequest.post(
+                meilisearchHttpRequest.put(
                         "/indexes/" + uid + "/settings/ranking-rules", rankingRulesAsJson),
                 Task.class);
     }
@@ -134,7 +135,7 @@ public class SettingsHandler {
             throws Exception {
         String synonymsAsJson = gson.toJson(synonyms);
         return this.gson.fromJson(
-                meilisearchHttpRequest.post(
+                meilisearchHttpRequest.put(
                         "/indexes/" + uid + "/settings/synonyms", synonymsAsJson),
                 Task.class);
     }
@@ -179,7 +180,7 @@ public class SettingsHandler {
     public Task updateStopWordsSettings(String uid, String[] stopWords) throws Exception {
         String stopWordsAsJson = gson.toJson(stopWords);
         return this.gson.fromJson(
-                meilisearchHttpRequest.post(
+                meilisearchHttpRequest.put(
                         "/indexes/" + uid + "/settings/stop-words", stopWordsAsJson),
                 Task.class);
     }
@@ -226,7 +227,7 @@ public class SettingsHandler {
             throws Exception {
         String searchableAttributesAsJson = gson.toJson(searchableAttributes);
         return this.gson.fromJson(
-                meilisearchHttpRequest.post(
+                meilisearchHttpRequest.put(
                         "/indexes/" + uid + "/settings/searchable-attributes",
                         searchableAttributesAsJson),
                 Task.class);
@@ -275,7 +276,7 @@ public class SettingsHandler {
             throws Exception {
         String displayAttributesAsJson = gson.toJson(displayAttributes);
         return this.gson.fromJson(
-                meilisearchHttpRequest.post(
+                meilisearchHttpRequest.put(
                         "/indexes/" + uid + "/settings/displayed-attributes",
                         displayAttributesAsJson),
                 Task.class);
@@ -323,7 +324,7 @@ public class SettingsHandler {
             throws Exception {
         String filterableAttributesAsJson = gson.toJson(filterableAttributes);
         return this.gson.fromJson(
-                meilisearchHttpRequest.post(
+                meilisearchHttpRequest.put(
                         "/indexes/" + uid + "/settings/filterable-attributes",
                         filterableAttributesAsJson),
                 Task.class);
@@ -371,7 +372,7 @@ public class SettingsHandler {
             throws Exception {
         String distinctAttributeAsJson = gson.toJson(distinctAttribute);
         return this.gson.fromJson(
-                meilisearchHttpRequest.post(
+                meilisearchHttpRequest.put(
                         "/indexes/" + uid + "/settings/distinct-attribute",
                         distinctAttributeAsJson),
                 Task.class);
@@ -418,7 +419,7 @@ public class SettingsHandler {
             throws Exception {
         String typoToleranceAsJson = gson.toJson(typoTolerance);
         return this.gson.fromJson(
-                meilisearchHttpRequest.post(
+                meilisearchHttpRequest.patch(
                         "/indexes/" + uid + "/settings/typo-tolerance", typoToleranceAsJson),
                 Task.class);
     }

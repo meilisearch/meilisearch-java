@@ -3,6 +3,7 @@ package com.meilisearch.sdk;
 import com.meilisearch.sdk.exceptions.APIError;
 import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
 import com.meilisearch.sdk.http.AbstractHttpClient;
+import com.meilisearch.sdk.http.ApacheHttpClient;
 import com.meilisearch.sdk.http.DefaultHttpClient;
 import com.meilisearch.sdk.http.factory.BasicRequestFactory;
 import com.meilisearch.sdk.http.factory.RequestFactory;
@@ -23,8 +24,7 @@ public class MeiliSearchHttpRequest {
      * @param config Meilisearch configuration
      */
     protected MeiliSearchHttpRequest(Config config) {
-        //TODO check if to keep DefaultHttpClient
-        this.client = new DefaultHttpClient(config);
+        this.client = new ApacheHttpClient(config);
         this.jsonHandler = new GsonJsonHandler();
         this.factory = new BasicRequestFactory(jsonHandler);
     }

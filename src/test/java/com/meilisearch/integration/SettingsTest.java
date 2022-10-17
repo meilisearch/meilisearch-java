@@ -32,21 +32,22 @@ public class SettingsTest extends AbstractIT {
     private final GsonJsonHandler jsonGson = new GsonJsonHandler();
 
     @BeforeEach
-    public void initialize() {
+    public void initialize() throws Exception {
+        Thread.sleep(500);
         this.setUp();
         if (testData == null) testData = this.getTestData(MOVIES_INDEX, Movie.class);
     }
 
     @AfterAll
     static void cleanMeiliSearch() {
-        cleanup();
+        cleanup("SettingsTest-");
     }
 
     /** Tests of the setting methods */
     @Test
     @DisplayName("Test get settings from an index by uid")
     public void testGetSettings() throws Exception {
-        Index index = createIndex("getSettings");
+        Index index = createIndex("SettingsTest-getSettings");
         Settings settings = index.getSettings();
 
         assertEquals(6, settings.getRankingRules().length);
@@ -55,7 +56,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update settings changing the ranking rules")
     public void testUpdateSettingsRankingRules() throws Exception {
-        Index index = createIndex("updateSettingsRankingRules");
+        Index index = createIndex("SettingsTest-updateSettingsRankingRules");
         Settings settings = index.getSettings();
         settings.setRankingRules(
                 new String[] {
@@ -68,7 +69,7 @@ public class SettingsTest extends AbstractIT {
                     "release_date:desc",
                     "rank:desc"
                 });
-        index.waitForTask(index.updateSettings(settings).getUid());
+        index.waitForTask(index.updateSettings(settings).getUid(), 5000, 1000);
         Settings newSettings = index.getSettings();
         assertEquals(8, newSettings.getRankingRules().length);
     }
@@ -76,7 +77,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update settings changing the synonyms")
     public void testUpdateSettingsSynonyms() throws Exception {
-        Index index = createIndex("updateSettingsSynonyms");
+        Index index = createIndex("SettingsTest-updateSettingsSynonyms");
         Settings settings = index.getSettings();
 
         HashMap<String, String[]> synonyms = new HashMap<>();
@@ -84,7 +85,7 @@ public class SettingsTest extends AbstractIT {
         synonyms.put("logan", new String[] {"wolverine"});
         settings.setSynonyms(synonyms);
 
-        index.waitForTask(index.updateSettings(settings).getUid());
+        index.waitForTask(index.updateSettings(settings).getUid(), 5000, 1000);
 
         Settings newSettings = index.getSettings();
 
@@ -94,11 +95,11 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update settings changing the sort")
     public void testUpdateSettingsSort() throws Exception {
-        Index index = createIndex("updateSettingsSort");
+        Index index = createIndex("SettingsTest-updateSettingsSort");
         Settings settings = index.getSettings();
         settings.setSortableAttributes(new String[] {"title", "year"});
 
-        index.waitForTask(index.updateSettings(settings).getUid());
+        index.waitForTask(index.updateSettings(settings).getUid(), 5000, 1000);
 
         Settings newSettings = index.getSettings();
 
@@ -108,7 +109,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update settings changing the typo tolerance")
     public void testUpdateSettingsTypoTolerance() throws Exception {
-        Index index = createIndex("updateSettingsTypoTolerance");
+        Index index = createIndex("SettingsTest-updateSettingsTypoTolerance");
         Settings settings = index.getSettings();
 
         TypoTolerance typoTolerance = new TypoTolerance();
@@ -116,7 +117,7 @@ public class SettingsTest extends AbstractIT {
         typoTolerance.setDisableOnAttributes(new String[] {"title"});
         settings.setTypoTolerance(typoTolerance);
 
-        index.waitForTask(index.updateSettings(settings).getUid());
+        index.waitForTask(index.updateSettings(settings).getUid(), 5000, 1000);
 
         Settings newSettings = index.getSettings();
 
@@ -128,7 +129,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test reset settings")
     public void testResetSettings() throws Exception {
-        Index index = createIndex("testResetSettings");
+        Index index = createIndex("SettingsTest-testResetSettings");
         Settings initialSettings = index.getSettings();
 
         Settings settingsWithSynonyms = new Settings();
@@ -137,11 +138,11 @@ public class SettingsTest extends AbstractIT {
         synonyms.put("logan", new String[] {"wolverine"});
         settingsWithSynonyms.setSynonyms(synonyms);
 
-        index.waitForTask(index.updateSettings(settingsWithSynonyms).getUid());
+        index.waitForTask(index.updateSettings(settingsWithSynonyms).getUid(), 5000, 1000);
         settingsWithSynonyms = index.getSettings();
         assertEquals(2, settingsWithSynonyms.getSynonyms().size());
 
-        index.waitForTask(index.resetSettings().getUid());
+        index.waitForTask(index.resetSettings().getUid(), 5000, 1000);
         Settings settingsAfterReset = index.getSettings();
         assertEquals(initialSettings.getSynonyms().size(), settingsAfterReset.getSynonyms().size());
     }
@@ -150,7 +151,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test get ranking rules settings by uid")
     public void testGetRankingRuleSettings() throws Exception {
-        Index index = createIndex("testGetRankingRuleSettings");
+        Index index = createIndex("SettingsTest-testGetRankingRuleSettings");
         Settings initialSettings = index.getSettings();
         String[] initialRankingRules = index.getRankingRuleSettings();
 
@@ -161,7 +162,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update ranking rules settings")
     public void testUpdateRankingRuleSettings() throws Exception {
-        Index index = createIndex("testUpdateRankingRuleSettings");
+        Index index = createIndex("SettingsTest-testUpdateRankingRuleSettings");
         String[] initialRuleSettings = index.getRankingRuleSettings();
         String[] newRankingRules = {
             "typo",
@@ -174,7 +175,7 @@ public class SettingsTest extends AbstractIT {
             "rank:desc"
         };
 
-        index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getUid());
+        index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getUid(), 5000, 1000);
         String[] updatedRankingRuleSettings = index.getRankingRuleSettings();
 
         assertEquals(newRankingRules.length, updatedRankingRuleSettings.length);
@@ -185,7 +186,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test reset ranking rules settings")
     public void testResetRankingRuleSettings() throws Exception {
-        Index index = createIndex("testResetRankingRuleSettings");
+        Index index = createIndex("SettingsTest-testResetRankingRuleSettings");
         String[] initialRuleSettings = index.getRankingRuleSettings();
         String[] newRankingRules = {
             "typo",
@@ -198,10 +199,10 @@ public class SettingsTest extends AbstractIT {
             "rank:desc"
         };
 
-        index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getUid());
+        index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getUid(), 5000, 1000);
         String[] updatedRankingRuleSettings = index.getRankingRuleSettings();
 
-        index.waitForTask(index.resetRankingRuleSettings().getUid());
+        index.waitForTask(index.resetRankingRuleSettings().getUid(), 5000, 1000);
         String[] rankingRulesAfterReset = index.getRankingRuleSettings();
 
         assertEquals(newRankingRules.length, updatedRankingRuleSettings.length);
@@ -217,7 +218,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test get synonyms settings by uid")
     public void testGetSynonymsSettings() throws Exception {
-        Index index = createIndex("testGetSynonymsSettings");
+        Index index = createIndex("SettingsTest-testGetSynonymsSettings");
         Settings initialSettings = index.getSettings();
         Map<String, String[]> synonymsSettings = index.getSynonymsSettings();
 
@@ -228,14 +229,14 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update synonyms settings")
     public void testUpdateSynonymsSettings() throws Exception {
-        Index index = createIndex("testUpdateSynonymsSettings");
+        Index index = createIndex("SettingsTest-testUpdateSynonymsSettings");
         Map<String, String[]> synonymsSettings = index.getSynonymsSettings();
         HashMap<String, String[]> newSynonymsSettings = new HashMap<>();
         newSynonymsSettings.put("wolverine", new String[] {"xmen", "logan"});
         newSynonymsSettings.put("logan", new String[] {"wolverine", "xmen"});
         newSynonymsSettings.put("wow", new String[] {"world of warcraft"});
 
-        index.waitForTask(index.updateSynonymsSettings(newSynonymsSettings).getUid());
+        index.waitForTask(index.updateSynonymsSettings(newSynonymsSettings).getUid(), 5000, 1000);
         Map<String, String[]> updatedSynonymsSettings = index.getSynonymsSettings();
 
         assertEquals(newSynonymsSettings.size(), updatedSynonymsSettings.size());
@@ -247,17 +248,17 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test reset synonyms settings")
     public void testResetSynonymsSettings() throws Exception {
-        Index index = createIndex("testResetSynonymsSettings");
+        Index index = createIndex("SettingsTest-testResetSynonymsSettings");
         Map<String, String[]> synonymsSettings = index.getSynonymsSettings();
         HashMap<String, String[]> newSynonymsSettings = new HashMap<>();
         newSynonymsSettings.put("wolverine", new String[] {"xmen", "logan"});
         newSynonymsSettings.put("logan", new String[] {"wolverine", "xmen"});
         newSynonymsSettings.put("wow", new String[] {"world of warcraft"});
 
-        index.waitForTask(index.updateSynonymsSettings(newSynonymsSettings).getUid());
+        index.waitForTask(index.updateSynonymsSettings(newSynonymsSettings).getUid(), 5000, 1000);
         Map<String, String[]> updatedSynonymsSettings = index.getSynonymsSettings();
 
-        index.waitForTask(index.resetSynonymsSettings().getUid());
+        index.waitForTask(index.resetSynonymsSettings().getUid(), 5000, 1000);
         Map<String, String[]> synonymsSettingsAfterReset = index.getSynonymsSettings();
 
         assertEquals(newSynonymsSettings.size(), updatedSynonymsSettings.size());
@@ -274,7 +275,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test get stop-words settings by uid")
     public void testGetStopWordsSettings() throws Exception {
-        Index index = createIndex("testGetStopWordsSettings");
+        Index index = createIndex("SettingsTest-testGetStopWordsSettings");
         Settings initialSettings = index.getSettings();
         String[] initialStopWords = index.getStopWordsSettings();
 
@@ -285,11 +286,11 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update stop-words settings")
     public void testUpdateStopWordsSettings() throws Exception {
-        Index index = createIndex("testUpdateStopWordsSettings");
+        Index index = createIndex("SettingsTest-testUpdateStopWordsSettings");
         String[] initialStopWords = index.getStopWordsSettings();
         String[] newStopWords = {"of", "the", "to"};
 
-        index.waitForTask(index.updateStopWordsSettings(newStopWords).getUid());
+        index.waitForTask(index.updateStopWordsSettings(newStopWords).getUid(), 5000, 1000);
         String[] updatedStopWordsSettings = index.getStopWordsSettings();
 
         assertEquals(newStopWords.length, updatedStopWordsSettings.length);
@@ -300,14 +301,14 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test reset stop-words settings")
     public void testResetStopWordsSettings() throws Exception {
-        Index index = createIndex("testResetStopWordsSettings");
+        Index index = createIndex("SettingsTest-testResetStopWordsSettings");
         String[] initialStopWords = index.getStopWordsSettings();
         String[] newStopWords = {"of", "the", "to"};
 
-        index.waitForTask(index.updateStopWordsSettings(newStopWords).getUid());
+        index.waitForTask(index.updateStopWordsSettings(newStopWords).getUid(), 5000, 1000);
         String[] updatedStopWordsSettings = index.getStopWordsSettings();
 
-        index.waitForTask(index.resetStopWordsSettings().getUid());
+        index.waitForTask(index.resetStopWordsSettings().getUid(), 5000, 1000);
         String[] stopWordsAfterReset = index.getStopWordsSettings();
 
         assertEquals(newStopWords.length, updatedStopWordsSettings.length);
@@ -323,7 +324,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test get searchable attributes settings by uid")
     public void testGetSearchableAttributesSettings() throws Exception {
-        Index index = createIndex("testGetSearchableAttributesSettings");
+        Index index = createIndex("SettingsTest-testGetSearchableAttributesSettings");
         Settings initialSettings = index.getSettings();
         String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
 
@@ -336,12 +337,12 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update searchable attributes settings")
     public void testUpdateSearchableAttributesSettings() throws Exception {
-        Index index = createIndex("testUpdateSearchableAttributesSettings");
+        Index index = createIndex("SettingsTest-testUpdateSearchableAttributesSettings");
         String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
         String[] newSearchableAttributes = {"title", "description", "genre"};
 
         index.waitForTask(
-                index.updateSearchableAttributesSettings(newSearchableAttributes).getUid());
+                index.updateSearchableAttributesSettings(newSearchableAttributes).getUid(), 5000, 1000);
         String[] updatedSearchableAttributes = index.getSearchableAttributesSettings();
 
         assertEquals(newSearchableAttributes.length, updatedSearchableAttributes.length);
@@ -352,15 +353,15 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test reset searchable attributes settings")
     public void testResetSearchableAttributesSettings() throws Exception {
-        Index index = createIndex("testUpdateSearchableAttributesSettings");
+        Index index = createIndex("SettingsTest-testResetSearchableAttributesSettings");
         String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
         String[] newSearchableAttributes = {"title", "description", "genre"};
 
         index.waitForTask(
-                index.updateSearchableAttributesSettings(newSearchableAttributes).getUid());
+                index.updateSearchableAttributesSettings(newSearchableAttributes).getUid(), 5000, 1000);
         String[] updatedSearchableAttributes = index.getSearchableAttributesSettings();
 
-        index.waitForTask(index.resetSearchableAttributesSettings().getUid());
+        index.waitForTask(index.resetSearchableAttributesSettings().getUid(), 5000, 1000);
         String[] searchableAttributesAfterReset = index.getSearchableAttributesSettings();
 
         assertEquals(newSearchableAttributes.length, updatedSearchableAttributes.length);
@@ -376,7 +377,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test get display attributes settings by uid")
     public void testGetDisplayedAttributesSettings() throws Exception {
-        Index index = createIndex("testGetDisplayedAttributesSettings");
+        Index index = createIndex("SettingsTest-testGetDisplayedAttributesSettings");
         Settings initialSettings = index.getSettings();
         String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
 
@@ -389,11 +390,11 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update display attributes settings")
     public void testUpdateDisplayedAttributesSettings() throws Exception {
-        Index index = createIndex("testUpdateDisplayedAttributesSettings");
+        Index index = createIndex("SettingsTest-testUpdateDisplayedAttributesSettings");
         String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
         String[] newDisplayedAttributes = {"title", "description", "genre", "release_date"};
 
-        index.waitForTask(index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUid());
+        index.waitForTask(index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUid(), 5000, 1000);
         String[] updatedDisplayedAttributes = index.getDisplayedAttributesSettings();
 
         assertEquals(newDisplayedAttributes.length, updatedDisplayedAttributes.length);
@@ -404,14 +405,14 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test reset display attributes settings")
     public void testResetDisplayedAttributesSettings() throws Exception {
-        Index index = createIndex("testUpdateDisplayedAttributesSettings");
+        Index index = createIndex("SettingsTest-testUpdateDisplayedAttributesSettings");
         String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
         String[] newDisplayedAttributes = {"title", "description", "genre", "release_date", "cast"};
 
-        index.waitForTask(index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUid());
+        index.waitForTask(index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUid(), 5000, 1000);
         String[] updatedDisplayedAttributes = index.getDisplayedAttributesSettings();
 
-        index.waitForTask(index.resetDisplayedAttributesSettings().getUid());
+        index.waitForTask(index.resetDisplayedAttributesSettings().getUid(), 5000, 1000);
         String[] displayedAttributesAfterReset = index.getDisplayedAttributesSettings();
 
         assertEquals(newDisplayedAttributes.length, updatedDisplayedAttributes.length);
@@ -425,7 +426,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test get filterable attributes settings by uid")
     public void testGetFilterableAttributesSettings() throws Exception {
-        Index index = createIndex("testGetDisplayedAttributesSettings");
+        Index index = createIndex("SettingsTest-testGetDisplayedAttributesSettings");
         Settings initialSettings = index.getSettings();
         String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
 
@@ -438,12 +439,12 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update filterable attributes settings")
     public void testUpdateFilterableAttributesSettings() throws Exception {
-        Index index = createIndex("testUpdateDisplayedAttributesSettings");
+        Index index = createIndex("SettingsTest-testUpdateDisplayedAttributesSettings");
         String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
         String[] newFilterableAttributes = {"title", "description", "genre", "release_date"};
 
         index.waitForTask(
-                index.updateFilterableAttributesSettings(newFilterableAttributes).getUid());
+                index.updateFilterableAttributesSettings(newFilterableAttributes).getUid(), 5000, 1000);
         String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
 
         assertEquals(newFilterableAttributes.length, updatedFilterableAttributes.length);
@@ -456,17 +457,17 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test reset filterable attributes settings")
     public void testResetFilterableAttributesSettings() throws Exception {
-        Index index = createIndex("testUpdateDisplayedAttributesSettings");
+        Index index = createIndex("SettingsTest-testUpdateDisplayedAttributesSettings");
         String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
         String[] newFilterableAttributes = {
             "title", "description", "genres", "director", "release_date"
         };
 
         index.waitForTask(
-                index.updateFilterableAttributesSettings(newFilterableAttributes).getUid());
+                index.updateFilterableAttributesSettings(newFilterableAttributes).getUid(), 5000, 1000);
         String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
 
-        index.waitForTask(index.resetFilterableAttributesSettings().getUid());
+        index.waitForTask(index.resetFilterableAttributesSettings().getUid(), 5000, 1000);
         String[] filterableAttributesAfterReset = index.getFilterableAttributesSettings();
 
         assertEquals(newFilterableAttributes.length, updatedFilterableAttributes.length);
@@ -483,7 +484,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test get distinct attribute settings by uid")
     public void testGetDistinctAttributeSettings() throws Exception {
-        Index index = createIndex("testGetDistinctAttributeSettings");
+        Index index = createIndex("SettingsTest-testGetDistinctAttributeSettings");
         Settings initialSettings = index.getSettings();
         String initialDistinctAttribute = index.getDistinctAttributeSettings();
 
@@ -493,11 +494,11 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update distinct attribute settings")
     public void testUpdateDistinctAttributeSettings() throws Exception {
-        Index index = createIndex("testUpdateDistinctAttributeSettings");
+        Index index = createIndex("SettingsTest-testUpdateDistinctAttributeSettings");
         String initialDistinctAttribute = index.getDistinctAttributeSettings();
         String newDistinctAttribute = "title";
 
-        index.waitForTask(index.updateDistinctAttributeSettings(newDistinctAttribute).getUid());
+        index.waitForTask(index.updateDistinctAttributeSettings(newDistinctAttribute).getUid(), 5000, 1000);
         String updatedDistinctAttribute = index.getDistinctAttributeSettings();
 
         assertEquals(newDistinctAttribute, updatedDistinctAttribute);
@@ -507,14 +508,14 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test reset distinct attribute settings")
     public void testResetDistinctAttributeSettings() throws Exception {
-        Index index = createIndex("testResetDistinctAttributeSettings");
+        Index index = createIndex("SettingsTest-testResetDistinctAttributeSettings");
         String initialDistinctAttribute = index.getDistinctAttributeSettings();
         String newDistinctAttribute = "title";
 
-        index.waitForTask(index.updateDistinctAttributeSettings(newDistinctAttribute).getUid());
+        index.waitForTask(index.updateDistinctAttributeSettings(newDistinctAttribute).getUid(), 5000, 1000);
         String updatedDistinctAttribute = index.getDistinctAttributeSettings();
 
-        index.waitForTask(index.resetDistinctAttributeSettings().getUid());
+        index.waitForTask(index.resetDistinctAttributeSettings().getUid(), 5000, 1000);
         String distinctAttributeAfterReset = index.getDistinctAttributeSettings();
 
         assertEquals(newDistinctAttribute, updatedDistinctAttribute);
@@ -528,7 +529,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test get typo tolerance settings by uid")
     public void testGetTypoTolerance() throws Exception {
-        Index index = createIndex("testGetTypoTolerance");
+        Index index = createIndex("SettingsTest-testGetTypoTolerance");
         Settings initialSettings = index.getSettings();
         TypoTolerance initialTypoTolerance = index.getTypoToleranceSettings();
 
@@ -547,7 +548,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update typo tolerance settings")
     public void testUpdateTypoTolerance() throws Exception {
-        Index index = createIndex("testUpdateTypoTolerance");
+        Index index = createIndex("SettingsTest-testUpdateTypoTolerance");
         TypoTolerance initialTypoTolerance = index.getTypoToleranceSettings();
         TypoTolerance newTypoTolerance = new TypoTolerance();
         newTypoTolerance.setEnabled(true);
@@ -562,7 +563,7 @@ public class SettingsTest extends AbstractIT {
                     }
                 };
         newTypoTolerance.setMinWordSizeForTypos(minWordSizeTypos);
-        index.waitForTask(index.updateTypoToleranceSettings(newTypoTolerance).getUid());
+        index.waitForTask(index.updateTypoToleranceSettings(newTypoTolerance).getUid(), 5000, 1000);
         TypoTolerance updatedTypoTolerance = index.getTypoToleranceSettings();
 
         assertEquals(
@@ -583,13 +584,13 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update typo tolerance settings")
     public void testPartialUpdateTypoTolerance() throws Exception {
-        Index index = createIndex("testUpdateTypoTolerance");
+        Index index = createIndex("SettingsTest-testUpdateTypoTolerance");
         TypoTolerance initialTypoTolerance = index.getTypoToleranceSettings();
         TypoTolerance newTypoTolerance = new TypoTolerance();
         newTypoTolerance.setDisableOnWords(new String[] {"the"});
         newTypoTolerance.setDisableOnAttributes(new String[] {"title"});
 
-        index.waitForTask(index.updateTypoToleranceSettings(newTypoTolerance).getUid());
+        index.waitForTask(index.updateTypoToleranceSettings(newTypoTolerance).getUid(), 5000, 1000);
         TypoTolerance updatedTypoTolerance = index.getTypoToleranceSettings();
 
         assertEquals(
@@ -610,7 +611,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test reset typo tolerance settings")
     public void testResetTypoTolerance() throws Exception {
-        Index index = createIndex("testResetTypoTolerance");
+        Index index = createIndex("SettingsTest-testResetTypoTolerance");
 
         TypoTolerance initialTypoTolerance = index.getTypoToleranceSettings();
         TypoTolerance newTypoTolerance = new TypoTolerance();
@@ -626,10 +627,10 @@ public class SettingsTest extends AbstractIT {
                 };
         newTypoTolerance.setMinWordSizeForTypos(minWordSizeTypos);
 
-        index.waitForTask(index.updateTypoToleranceSettings(newTypoTolerance).getUid());
+        index.waitForTask(index.updateTypoToleranceSettings(newTypoTolerance).getUid(), 5000, 1000);
         TypoTolerance updatedTypoTolerance = index.getTypoToleranceSettings();
 
-        index.waitForTask(index.resetTypoToleranceSettings().getUid());
+        index.waitForTask(index.resetTypoToleranceSettings().getUid(), 5000, 1000);
         TypoTolerance typoToleranceAfterReset = index.getTypoToleranceSettings();
 
         assertEquals(
@@ -660,16 +661,16 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update synonyms settings when null is passed")
     public void testUpdateSynonymsSettingsUsingNull() throws Exception {
-        Index index = createIndex("testUpdateSynonymsSettingsUsingNull");
+        Index index = createIndex("SettingsTest-testUpdateSynonymsSettingsUsingNull");
         Map<String, String[]> initialSynonymsSettings = index.getSynonymsSettings();
         HashMap<String, String[]> newSynonymsSettings = new HashMap<>();
         newSynonymsSettings.put("007", new String[] {"james bond", "bond"});
         newSynonymsSettings.put("ironman", new String[] {"tony stark", "iron man"});
 
-        index.waitForTask(index.updateSynonymsSettings(newSynonymsSettings).getUid());
+        index.waitForTask(index.updateSynonymsSettings(newSynonymsSettings).getUid(), 5000, 1000);
         Map<String, String[]> updatedSynonymsSettings = index.getSynonymsSettings();
 
-        index.waitForTask(index.updateSynonymsSettings(null).getUid());
+        index.waitForTask(index.updateSynonymsSettings(null).getUid(), 5000, 1000);
         Map<String, String[]> resetSynonymsSettings = index.getSynonymsSettings();
 
         assertNotEquals(initialSynonymsSettings.size(), updatedSynonymsSettings.size());
@@ -681,14 +682,14 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update stop-words settings when null is passed")
     public void testUpdateStopWordsSettingsUsingNull() throws Exception {
-        Index index = createIndex("testUpdateStopWordsSettingsUsingNull");
+        Index index = createIndex("SettingsTest-testUpdateStopWordsSettingsUsingNull");
         String[] initialStopWords = index.getStopWordsSettings();
         String[] newStopWords = {"the", "to", "in", "on"};
 
-        index.waitForTask(index.updateStopWordsSettings(newStopWords).getUid());
+        index.waitForTask(index.updateStopWordsSettings(newStopWords).getUid(), 5000, 1000);
         String[] updatedStopWords = index.getStopWordsSettings();
 
-        index.waitForTask(index.updateStopWordsSettings(null).getUid());
+        index.waitForTask(index.updateStopWordsSettings(null).getUid(), 5000, 1000);
         String[] resetStopWords = index.getStopWordsSettings();
 
         assertNotEquals(initialStopWords.length, updatedStopWords.length);
@@ -700,7 +701,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test reset ranking rules when null value is passed")
     public void testUpdateRankingRuleSettingsUsingNull() throws Exception {
-        Index index = createIndex("testUpdateRankingRuleSettingsUsingNull");
+        Index index = createIndex("SettingsTest-testUpdateRankingRuleSettingsUsingNull");
         String[] initialRankingRule = index.getRankingRuleSettings();
         String[] newRankingRules = {
             "typo",
@@ -713,10 +714,10 @@ public class SettingsTest extends AbstractIT {
             "rank:desc"
         };
 
-        index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getUid());
+        index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getUid(), 5000, 1000);
         String[] newRankingRule = index.getRankingRuleSettings();
 
-        index.waitForTask(index.updateRankingRuleSettings(null).getUid());
+        index.waitForTask(index.updateRankingRuleSettings(null).getUid(), 5000, 1000);
         String[] resetRankingRule = index.getRankingRuleSettings();
 
         assertNotEquals(newRankingRule.length, resetRankingRule.length);
@@ -727,15 +728,15 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update searchable attributes settings when null is passed")
     public void testUpdateSearchableAttributesSettingssUsingNull() throws Exception {
-        Index index = createIndex("testUpdateSearchableAttributesSettingssUsingNull");
+        Index index = createIndex("SettingsTest-testUpdateSearchableAttributesSettingssUsingNull");
         String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
         String[] newSearchableAttributes = {"title", "release_date", "cast"};
 
         index.waitForTask(
-                index.updateSearchableAttributesSettings(newSearchableAttributes).getUid());
+                index.updateSearchableAttributesSettings(newSearchableAttributes).getUid(), 5000, 1000);
 
         String[] updatedSearchableAttributes = index.getSearchableAttributesSettings();
-        index.waitForTask(index.updateSearchableAttributesSettings(null).getUid());
+        index.waitForTask(index.updateSearchableAttributesSettings(null).getUid(), 5000, 1000);
         String[] resetSearchableAttributes = index.getSearchableAttributesSettings();
 
         assertNotEquals(initialSearchableAttributes.length, updatedSearchableAttributes.length);
@@ -747,14 +748,14 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update display attributes settings when null is passed")
     public void testUpdateDisplayedAttributesSettingsUsingNull() throws Exception {
-        Index index = createIndex("testUpdateDisplayedAttributesSettingsUsingNull");
+        Index index = createIndex("SettingsTest-testUpdateDisplayedAttributesSettingsUsingNull");
         String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
         String[] newDisplayedAttributes = {"title", "genre", "release_date"};
 
-        index.waitForTask(index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUid());
+        index.waitForTask(index.updateDisplayedAttributesSettings(newDisplayedAttributes).getUid(), 5000, 1000);
         String[] updatedDisplayedAttributes = index.getDisplayedAttributesSettings();
 
-        index.waitForTask(index.updateDisplayedAttributesSettings(null).getUid());
+        index.waitForTask(index.updateDisplayedAttributesSettings(null).getUid(), 5000, 1000);
         String[] resetDisplayedAttributes = index.getDisplayedAttributesSettings();
 
         assertNotEquals(initialDisplayedAttributes.length, updatedDisplayedAttributes.length);
@@ -766,15 +767,15 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update filterable attributes settings when null is passed")
     public void testUpdateFilterableAttributesSettingsUsingNull() throws Exception {
-        Index index = createIndex("testUpdateFilterableAttributesSettingsUsingNull");
+        Index index = createIndex("SettingsTest-testUpdateFilterableAttributesSettingsUsingNull");
         String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
         String[] newFilterableAttributes = {"title", "genres", "cast", "release_date"};
 
         index.waitForTask(
-                index.updateFilterableAttributesSettings(newFilterableAttributes).getUid());
+                index.updateFilterableAttributesSettings(newFilterableAttributes).getUid(), 5000, 1000);
         String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
 
-        index.waitForTask(index.updateFilterableAttributesSettings(null).getUid());
+        index.waitForTask(index.updateFilterableAttributesSettings(null).getUid(), 5000, 1000);
         String[] resetFilterableAttributes = index.getFilterableAttributesSettings();
 
         assertNotEquals(updatedFilterableAttributes.length, resetFilterableAttributes.length);
@@ -786,14 +787,14 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update distinct attribute settings when null is passed")
     public void testUpdateDistinctAttributeSettingsUsingNull() throws Exception {
-        Index index = createIndex("testUpdateDistinctAttributeSettingsUsingNull");
+        Index index = createIndex("SettingsTest-testUpdateDistinctAttributeSettingsUsingNull");
         String initialDistinctAttribute = index.getDistinctAttributeSettings();
         String newDistinctAttribute = "genres";
 
-        index.waitForTask(index.updateDistinctAttributeSettings(newDistinctAttribute).getUid());
+        index.waitForTask(index.updateDistinctAttributeSettings(newDistinctAttribute).getUid(), 5000, 1000);
         String updatedDistinctAttribute = index.getDistinctAttributeSettings();
 
-        index.waitForTask(index.updateDistinctAttributeSettings(null).getUid());
+        index.waitForTask(index.updateDistinctAttributeSettings(null).getUid(), 5000, 1000);
         String resetDistinctAttribute = index.getDistinctAttributeSettings();
 
         assertNotEquals(updatedDistinctAttribute, resetDistinctAttribute);
@@ -804,7 +805,7 @@ public class SettingsTest extends AbstractIT {
     private Index createIndex(String indexUid) throws Exception {
         Index index = client.index(indexUid);
         Task updateInfo = index.addDocuments(testData.getRaw());
-        index.waitForTask(updateInfo.getUid());
+        index.waitForTask(updateInfo.getUid(), 5_000, 500);
 
         return index;
     }
