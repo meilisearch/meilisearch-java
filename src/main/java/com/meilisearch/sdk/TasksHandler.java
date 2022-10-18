@@ -7,12 +7,12 @@ import com.meilisearch.sdk.model.Task;
 import java.util.Date;
 
 /**
- * Wrapper around MeilisearchHttpRequest class to use for MeiliSearch tasks
+ * Wrapper around HttpClient class to use for MeiliSearch tasks
  *
  * <p>Refer https://docs.meilisearch.com/reference/api/tasks.html
  */
 public class TasksHandler {
-    private final MeilisearchHttpRequest meilisearchHttpRequest;
+    private final HttpClient httpClient;
     public static final String SUCCEEDED = "succeeded";
     public static final String FAILED = "failed";
 
@@ -22,7 +22,7 @@ public class TasksHandler {
      * @param config MeiliSearch configuration
      */
     public TasksHandler(Config config) {
-        this.meilisearchHttpRequest = config.meilisearchHttpRequest;
+        this.httpClient = config.httpClient;
     }
 
     /**
@@ -35,8 +35,7 @@ public class TasksHandler {
      */
     public Task getTask(String indexUid, int taskUid) throws MeilisearchException {
         String urlPath = "/indexes/" + indexUid + "/tasks/" + taskUid;
-        return meilisearchHttpRequest.jsonHandler.decode(
-                this.meilisearchHttpRequest.get(urlPath), Task.class);
+        return httpClient.jsonHandler.decode(this.httpClient.get(urlPath), Task.class);
     }
 
     /**
@@ -50,8 +49,8 @@ public class TasksHandler {
         String urlPath = "/indexes/" + indexUid + "/tasks";
 
         Result<Task> result =
-                meilisearchHttpRequest.jsonHandler.decode(
-                        this.meilisearchHttpRequest.get(urlPath), Result.class, Task.class);
+                httpClient.jsonHandler.decode(
+                        this.httpClient.get(urlPath), Result.class, Task.class);
         return result;
     }
 
@@ -64,8 +63,7 @@ public class TasksHandler {
      */
     public Task getTask(int taskUid) throws MeilisearchException {
         String urlPath = "/tasks/" + taskUid;
-        return meilisearchHttpRequest.jsonHandler.decode(
-                this.meilisearchHttpRequest.get(urlPath), Task.class);
+        return httpClient.jsonHandler.decode(this.httpClient.get(urlPath), Task.class);
     }
 
     /**
@@ -78,8 +76,8 @@ public class TasksHandler {
         String urlPath = "/tasks";
 
         Result<Task> result =
-                meilisearchHttpRequest.jsonHandler.decode(
-                        this.meilisearchHttpRequest.get(urlPath), Result.class, Task.class);
+                httpClient.jsonHandler.decode(
+                        this.httpClient.get(urlPath), Result.class, Task.class);
         return result;
     }
 

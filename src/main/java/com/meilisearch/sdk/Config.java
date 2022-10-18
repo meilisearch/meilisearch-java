@@ -10,7 +10,7 @@ public class Config {
     protected final String hostUrl;
     protected final String apiKey;
     protected final JsonHandler jsonHandler;
-    protected final MeilisearchHttpRequest meilisearchHttpRequest;
+    protected final HttpClient httpClient;
 
     /**
      * Creates a configuration without an API key
@@ -31,7 +31,7 @@ public class Config {
         this.hostUrl = hostUrl;
         this.apiKey = "";
         this.jsonHandler = jsonHandler;
-        this.meilisearchHttpRequest = new MeilisearchHttpRequest(this);
+        this.httpClient = new HttpClient(this);
     }
 
     /**
@@ -44,7 +44,7 @@ public class Config {
         this.hostUrl = hostUrl;
         this.apiKey = apiKey;
         this.jsonHandler = new GsonJsonHandler();
-        this.meilisearchHttpRequest = new MeilisearchHttpRequest(this);
+        this.httpClient = new HttpClient(this);
     }
 
     /**
@@ -58,7 +58,7 @@ public class Config {
         this.hostUrl = hostUrl;
         this.apiKey = apiKey;
         this.jsonHandler = jsonHandler;
-        this.meilisearchHttpRequest = new MeilisearchHttpRequest(this);
+        this.httpClient = new HttpClient(this);
     }
 
     /**
