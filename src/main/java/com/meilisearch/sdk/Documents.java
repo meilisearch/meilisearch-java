@@ -172,6 +172,7 @@ class Documents {
     Task deleteAllDocuments(String uid) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/documents";
         Task task = httpClient.jsonHandler.decode(httpClient.delete(urlPath), Task.class);
+
         return task;
     }
 }
