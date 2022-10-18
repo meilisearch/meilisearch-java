@@ -111,6 +111,7 @@ class Documents {
             urlQuery += "?primaryKey=" + primaryKey;
         }
         Task task = httpClient.jsonHandler.decode(httpClient.post(urlQuery, document), Task.class);
+
         return task;
     }
 
