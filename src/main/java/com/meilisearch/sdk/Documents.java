@@ -159,6 +159,7 @@ class Documents {
         String urlPath = "/indexes/" + uid + "/documents/" + "delete-batch";
         Task task =
                 httpClient.jsonHandler.decode(httpClient.post(urlPath, identifiers), Task.class);
+
         return task;
     }
 
