@@ -32,8 +32,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public Settings getSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.get("/indexes/" + uid + "/settings"), Settings.class);
+        String urlPath = "/indexes/" + uid + "/settings";
+        return httpClient.get(urlPath, Settings.class);
     }
 
     /**
@@ -72,8 +72,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public String[] getRankingRuleSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.get("/indexes/" + uid + "/settings/ranking-rules"), String[].class);
+        String urlPath = "/indexes/" + uid + "/settings/ranking-rules";
+        return httpClient.get(urlPath, String[].class);
     }
 
     /**
@@ -118,8 +118,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public Map<String, String[]> getSynonymsSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.get("/indexes/" + uid + "/settings/synonyms"), Map.class);
+        String urlPath = "/indexes/" + uid + "/settings/synonyms";
+        return httpClient.jsonHandler.decode(httpClient.get(urlPath, String.class), Map.class);
     }
 
     /**
@@ -162,8 +162,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public String[] getStopWordsSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.get("/indexes/" + uid + "/settings/stop-words"), String[].class);
+        String urlPath = "/indexes/" + uid + "/settings/stop-words";
+        return httpClient.get(urlPath, String[].class);
     }
 
     /**
@@ -206,9 +206,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public String[] getSearchableAttributesSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.get("/indexes/" + uid + "/settings/searchable-attributes"),
-                String[].class);
+        String urlPath = "/indexes/" + uid + "/settings/searchable-attributes";
+        return httpClient.get(urlPath, String[].class);
     }
 
     /**
@@ -255,9 +254,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public String[] getDisplayedAttributesSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.get("/indexes/" + uid + "/settings/displayed-attributes"),
-                String[].class);
+        String urlPath = "/indexes/" + uid + "/settings/displayed-attributes";
+        return httpClient.get(urlPath, String[].class);
     }
 
     /**
@@ -304,9 +302,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public String[] getFilterableAttributesSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.get("/indexes/" + uid + "/settings/filterable-attributes"),
-                String[].class);
+        String urlPath = "/indexes/" + uid + "/settings/filterable-attributes";
+        return httpClient.get(urlPath, String[].class);
     }
 
     /**
@@ -353,10 +350,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public String getDistinctAttributeSettings(String uid) throws MeilisearchException {
-        String response =
-                httpClient.jsonHandler.decode(
-                        httpClient.get("/indexes/" + uid + "/settings/distinct-attribute"),
-                        String.class);
+        String urlPath = "/indexes/" + uid + "/settings/distinct-attribute";
+        String response = httpClient.get(urlPath, String.class);
         return response.equals("null") ? null : response.substring(1, response.length() - 1);
     }
 
@@ -402,9 +397,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public TypoTolerance getTypoToleranceSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.get("/indexes/" + uid + "/settings/typo-tolerance"),
-                TypoTolerance.class);
+        String urlPath = "/indexes/" + uid + "/settings/typo-tolerance";
+        return httpClient.get(urlPath, TypoTolerance.class);
     }
 
     /**

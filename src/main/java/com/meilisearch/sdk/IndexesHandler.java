@@ -53,7 +53,7 @@ class IndexesHandler {
      */
     String get(String uid) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid;
-        return httpClient.get(requestQuery);
+        return httpClient.get(requestQuery, String.class);
     }
 
     /**
@@ -63,7 +63,7 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     String getAll() throws MeilisearchException {
-        return httpClient.get("/indexes");
+        return httpClient.get("/indexes", String.class);
     }
 
     /**

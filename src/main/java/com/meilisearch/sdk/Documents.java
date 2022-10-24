@@ -24,7 +24,7 @@ class Documents {
      */
     String getDocument(String uid, String identifier) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/documents/" + identifier;
-        return httpClient.get(urlPath);
+        return httpClient.get(urlPath, String.class);
     }
 
     /**
@@ -36,7 +36,7 @@ class Documents {
      */
     String getDocuments(String uid) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/documents";
-        return httpClient.get(urlPath);
+        return httpClient.get(urlPath, String.class);
     }
 
     /**
@@ -49,7 +49,7 @@ class Documents {
      */
     String getDocuments(String uid, int limit) throws MeilisearchException {
         String urlQuery = "/indexes/" + uid + "/documents?limit=" + limit;
-        return httpClient.get(urlQuery);
+        return httpClient.get(urlQuery, String.class);
     }
 
     /**
@@ -63,7 +63,7 @@ class Documents {
      */
     String getDocuments(String uid, int limit, int offset) throws MeilisearchException {
         String urlQuery = "/indexes/" + uid + "/documents?limit=" + limit + "&offset=" + offset;
-        return httpClient.get(urlQuery);
+        return httpClient.get(urlQuery, String.class);
     }
 
     /**
@@ -93,7 +93,7 @@ class Documents {
                         + "&attributesToRetrieve="
                         + attributesToRetrieveCommaSeparated;
 
-        return httpClient.get(urlQuery);
+        return httpClient.get(urlQuery, String.class);
     }
 
     /**

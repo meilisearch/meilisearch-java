@@ -51,8 +51,9 @@ public class HttpClient {
      * @return document that was requested
      * @throws MeilisearchException if the response is an error
      */
-    public String get(String api) throws MeilisearchException {
-        return this.get(api, "");
+    <T> T get(String api, Class<T> targetClass, Class<?>... parameters)
+            throws MeilisearchException {
+        return this.get(api, "", targetClass, parameters);
     }
 
     /**
@@ -63,15 +64,20 @@ public class HttpClient {
      * @return document that was requested
      * @throws MeilisearchException if the response is an error
      */
-    String get(String api, String param) throws MeilisearchException {
-        HttpResponse httpResponse =
-                this.client.get(
-                        request.create(HttpMethod.GET, api + param, Collections.emptyMap(), null));
+    <T> T get(String api, String param, Class<T> targetClass, Class<?>... parameters)
+            throws MeilisearchException {
+        HttpResponse<T> httpResponse =
+                response.create(
+                        this.client.get(
+                                request.create(
+                                        HttpMethod.GET, api + param, Collections.emptyMap(), null)),
+                        targetClass,
+                        parameters);
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
                     jsonHandler.decode(httpResponse.getContent(), APIError.class));
         }
-        return new String(httpResponse.getContentAsBytes());
+        return httpResponse.getContent();
     }
 
     /**

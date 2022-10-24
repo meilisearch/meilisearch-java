@@ -9,14 +9,16 @@ public class BasicResponse {
         this.jsonHandler = jsonHandler;
     }
 
-    public <T> HttpResponse create(HttpResponse response, Class<?> targetClass) {
+    public <T> HttpResponse<T> create(
+            HttpResponse<T> httpResponse, Class<T> targetClass, Class<?>... parameters) {
         try {
-            return new HttpResponse(
-                    response.getHeaders(),
-                    response.getStatusCode(),
-                    response.getContent() == null
+            return new HttpResponse<T>(
+                    httpResponse.getHeaders(),
+                    httpResponse.getStatusCode(),
+                    httpResponse.getContent() == null
                             ? null
-                            : this.jsonHandler.decode(response.getContent(), targetClass));
+                            : this.jsonHandler.decode(
+                                    httpResponse.getContent(), targetClass, parameters));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

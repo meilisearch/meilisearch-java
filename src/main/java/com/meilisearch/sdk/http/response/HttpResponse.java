@@ -4,12 +4,12 @@ import java.util.Map;
 import lombok.Getter;
 
 @Getter
-public class HttpResponse {
+public class HttpResponse<T> {
     private final Map<String, String> headers;
     private final int statusCode;
-    private final String content;
+    private final T content;
 
-    public HttpResponse(Map<String, String> headers, int statusCode, String content) {
+    public HttpResponse(Map<String, String> headers, int statusCode, T content) {
         this.headers = headers;
         this.statusCode = statusCode;
         this.content = content;
@@ -20,6 +20,6 @@ public class HttpResponse {
     }
 
     public byte[] getContentAsBytes() {
-        return content.getBytes();
+        return ((String) content).getBytes();
     }
 }
