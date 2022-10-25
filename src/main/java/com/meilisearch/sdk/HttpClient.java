@@ -6,6 +6,7 @@ import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.CustomOkHttpClient;
 import com.meilisearch.sdk.http.request.BasicRequest;
 import com.meilisearch.sdk.http.request.HttpMethod;
+import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.BasicResponse;
 import com.meilisearch.sdk.http.response.HttpResponse;
 import com.meilisearch.sdk.json.GsonJsonHandler;
@@ -66,13 +67,11 @@ public class HttpClient {
      */
     <T> T get(String api, String param, Class<T> targetClass, Class<?>... parameters)
             throws MeilisearchException {
-        HttpResponse<T> httpResponse =
-                response.create(
-                        this.client.get(
-                                request.create(
-                                        HttpMethod.GET, api + param, Collections.emptyMap(), null)),
-                        targetClass,
-                        parameters);
+        HttpRequest requestConfig =
+                request.create(HttpMethod.GET, api + param, Collections.emptyMap(), null);
+        HttpResponse<T> httpRequest = this.client.get(requestConfig);
+        HttpResponse<T> httpResponse = response.create(httpRequest, targetClass, parameters);
+
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
                     jsonHandler.decode(httpResponse.getContent(), APIError.class));
