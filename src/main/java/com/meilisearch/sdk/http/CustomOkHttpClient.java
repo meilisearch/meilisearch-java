@@ -31,7 +31,7 @@ public class CustomOkHttpClient {
         this.client = new OkHttpClient();
     }
 
-    public HttpResponse execute(HttpRequest request) throws MeilisearchException {
+    public <T> HttpResponse<T> execute(HttpRequest request) throws MeilisearchException {
         try {
             Request okRequest = buildRequest(request);
             Response response = client.newCall(okRequest).execute();
@@ -78,13 +78,13 @@ public class CustomOkHttpClient {
         return builder.build();
     }
 
-    private HttpResponse buildResponse(Response response) throws IOException {
+    private <T> HttpResponse<T> buildResponse(Response response) throws IOException {
         String body = null;
         ResponseBody responseBody = response.body();
         if (responseBody != null) body = responseBody.string();
 
-        return new HttpResponse(
-                parseHeaders(response.headers().toMultimap()), response.code(), body);
+        return new HttpResponse<T>(
+                parseHeaders(response.headers().toMultimap()), response.code(), (T) body);
     }
 
     private Map<String, String> parseHeaders(Map<String, List<String>> headers) {
@@ -95,19 +95,19 @@ public class CustomOkHttpClient {
         return headerMap;
     }
 
-    public HttpResponse get(HttpRequest request) throws MeilisearchException {
+    public <T> HttpResponse<T> get(HttpRequest request) throws MeilisearchException {
         return execute(request);
     }
 
-    public HttpResponse post(HttpRequest request) throws MeilisearchException {
+    public <T> HttpResponse<T> post(HttpRequest request) throws MeilisearchException {
         return execute(request);
     }
 
-    public HttpResponse put(HttpRequest request) throws MeilisearchException {
+    public <T> HttpResponse<T> put(HttpRequest request) throws MeilisearchException {
         return execute(request);
     }
 
-    public HttpResponse delete(HttpRequest request) throws MeilisearchException {
+    public <T> HttpResponse<T> delete(HttpRequest request) throws MeilisearchException {
         return execute(request);
     }
 }
