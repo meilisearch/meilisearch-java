@@ -13,6 +13,7 @@ public class BasicResponse {
             HttpResponse<T> httpResponse, Class<T> targetClass, Class<?>... parameters) {
         try {
             T content = this.jsonHandler.decode(httpResponse.getContent(), targetClass, parameters);
+
             return new HttpResponse<T>(
                     httpResponse.getHeaders(),
                     httpResponse.getStatusCode(),
