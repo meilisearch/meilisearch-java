@@ -55,8 +55,7 @@ public class Client {
      * @throws MeilisearchException if an error occurs
      */
     public Task createIndex(String uid, String primaryKey) throws MeilisearchException {
-        Task task = jsonHandler.decode(this.indexesHandler.create(uid, primaryKey), Task.class);
-        return task;
+        return this.indexesHandler.create(uid, primaryKey);
     }
 
     /**
@@ -173,7 +172,7 @@ public class Client {
     //  * @throws MeilisearchException if an error occurs
     //  */
     // public Dump createDump() throws MeilisearchException {
-    //     return jsonHandler.decode(this.meiliSearchHttpRequest.post("/dumps", ""), Dump.class);
+    //     return this.meiliSearchHttpRequest.post("/dumps", "", Dump.class);
     // }
 
     /**

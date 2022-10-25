@@ -1,6 +1,7 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.model.Task;
 import java.util.HashMap;
 
 /** Wrapper around the HttpClient class to ease usage for Meilisearch indexes */
@@ -24,7 +25,7 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    String create(String uid) throws MeilisearchException {
+    Task create(String uid) throws MeilisearchException {
         return this.create(uid, null);
     }
 
@@ -36,12 +37,12 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    String create(String uid, String primaryKey) throws MeilisearchException {
+    Task create(String uid, String primaryKey) throws MeilisearchException {
         HashMap<String, Object> index = new HashMap<String, Object>();
         index.put("uid", uid);
         index.put("primaryKey", primaryKey);
 
-        return httpClient.post("/indexes", index);
+        return httpClient.post("/indexes", index, Task.class);
     }
 
     /**
