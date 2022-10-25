@@ -147,8 +147,7 @@ public class Client {
      * @throws MeilisearchException if an error occurs
      */
     public Task deleteIndex(String uid) throws MeilisearchException {
-        Task task = jsonHandler.decode(this.indexesHandler.delete(uid), Task.class);
-        return task;
+        return this.indexesHandler.delete(uid);
     }
 
     // TODO createDump will return a Task in v0.28

@@ -59,8 +59,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public Task resetSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.delete("/indexes/" + uid + "/settings"), Task.class);
+        String urlPath = "/indexes/" + uid + "/settings";
+        return httpClient.delete(urlPath, Task.class);
     }
 
     /**
@@ -103,8 +103,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public Task resetRankingRulesSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.delete("/indexes/" + uid + "/settings/ranking-rules"), Task.class);
+        String urlPath = "/indexes/" + uid + "/settings/ranking-rules";
+        return httpClient.delete(urlPath, Task.class);
     }
 
     /**
@@ -147,8 +147,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public Task resetSynonymsSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.delete("/indexes/" + uid + "/settings/synonyms"), Task.class);
+        String urlPath = "/indexes/" + uid + "/settings/synonyms";
+        return httpClient.delete(urlPath, Task.class);
     }
 
     /**
@@ -191,8 +191,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public Task resetStopWordsSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.delete("/indexes/" + uid + "/settings/stop-words"), Task.class);
+        String urlPath = "/indexes/" + uid + "/settings/stop-words";
+        return httpClient.delete(urlPath, Task.class);
     }
 
     /**
@@ -238,9 +238,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public Task resetSearchableAttributesSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.delete("/indexes/" + uid + "/settings/searchable-attributes"),
-                Task.class);
+        String urlPath = "/indexes/" + uid + "/settings/searchable-attributes";
+        return httpClient.delete(urlPath, Task.class);
     }
 
     /**
@@ -286,9 +285,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public Task resetDisplayedAttributesSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.delete("/indexes/" + uid + "/settings/displayed-attributes"),
-                Task.class);
+        String urlPath = "/indexes/" + uid + "/settings/displayed-attributes";
+        return httpClient.delete(urlPath, Task.class);
     }
 
     /**
@@ -334,9 +332,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public Task resetFilterableAttributesSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.delete("/indexes/" + uid + "/settings/filterable-attributes"),
-                Task.class);
+        String urlPath = "/indexes/" + uid + "/settings/filterable-attributes";
+        return httpClient.delete(urlPath, Task.class);
     }
 
     /**
@@ -382,8 +379,8 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public Task resetDistinctAttributeSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.delete("/indexes/" + uid + "/settings/distinct-attribute"), Task.class);
+        String urlPath = "/indexes/" + uid + "/settings/distinct-attribute";
+        return httpClient.delete(urlPath, Task.class);
     }
 
     /**
@@ -428,7 +425,7 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     public Task resetTypoToleranceSettings(String uid) throws MeilisearchException {
-        return httpClient.jsonHandler.decode(
-                httpClient.delete("/indexes/" + uid + "/settings/typo-tolerance"), Task.class);
+        String urlPath = "/indexes/" + uid + "/settings/typo-tolerance";
+        return httpClient.delete(urlPath, Task.class);
     }
 }

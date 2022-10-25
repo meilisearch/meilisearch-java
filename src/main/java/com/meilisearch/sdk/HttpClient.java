@@ -128,14 +128,16 @@ public class HttpClient {
      * @return deleted resource
      * @throws MeilisearchException if the response is an error
      */
-    String delete(String api) throws MeilisearchException {
-        HttpResponse httpResponse =
-                this.client.put(
-                        request.create(HttpMethod.DELETE, api, Collections.emptyMap(), null));
+    <T> T delete(String api, Class<T> targetClass) throws MeilisearchException {
+        HttpRequest requestConfig =
+                request.create(HttpMethod.DELETE, api, Collections.emptyMap(), null);
+        HttpResponse<T> httpRequest = this.client.delete(requestConfig);
+        HttpResponse<T> httpResponse = response.create(httpRequest, targetClass);
+
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
                     jsonHandler.decode(httpResponse.getContent(), APIError.class));
         }
-        return new String(httpResponse.getContentAsBytes());
+        return httpResponse.getContent();
     }
 }
