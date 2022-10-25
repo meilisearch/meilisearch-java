@@ -75,12 +75,12 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    String updatePrimaryKey(String uid, String primaryKey) throws MeilisearchException {
+    Task updatePrimaryKey(String uid, String primaryKey) throws MeilisearchException {
         HashMap<String, Object> index = new HashMap<String, Object>();
         index.put("primaryKey", primaryKey);
 
         String requestQuery = "/indexes/" + uid;
-        return httpClient.put(requestQuery, index);
+        return httpClient.put(requestQuery, index, Task.class);
     }
 
     /**

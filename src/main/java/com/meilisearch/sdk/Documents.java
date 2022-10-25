@@ -128,9 +128,7 @@ class Documents {
         if (primaryKey != null) {
             urlPath += "?primaryKey=" + primaryKey;
         }
-        Task task = httpClient.jsonHandler.decode(httpClient.put(urlPath, document), Task.class);
-
-        return task;
+        return httpClient.put(urlPath, document, Task.class);
     }
 
     /**
