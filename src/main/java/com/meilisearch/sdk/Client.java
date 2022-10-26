@@ -135,10 +135,7 @@ public class Client {
      * @throws MeilisearchException if an error occurs
      */
     public Task updateIndex(String uid, String primaryKey) throws MeilisearchException {
-        Task task =
-                jsonHandler.decode(
-                        this.indexesHandler.updatePrimaryKey(uid, primaryKey), Task.class);
-        return task;
+        return this.indexesHandler.updatePrimaryKey(uid, primaryKey);
     }
 
     /**
