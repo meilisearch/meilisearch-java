@@ -90,8 +90,8 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    String delete(String uid) throws MeilisearchException {
+    Task delete(String uid) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid;
-        return httpClient.delete(requestQuery);
+        return httpClient.delete(requestQuery, Task.class);
     }
 }

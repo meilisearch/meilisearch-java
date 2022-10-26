@@ -65,6 +65,6 @@ public class KeysHandler {
      */
     public void deleteKey(String key) throws MeilisearchException {
         String urlPath = "/keys/" + key;
-        this.httpClient.delete(urlPath);
+        httpClient.delete(urlPath, String.class);
     }
 }
