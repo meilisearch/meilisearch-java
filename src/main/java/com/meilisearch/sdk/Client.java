@@ -283,6 +283,18 @@ public class Client {
     }
 
     /**
+     * Updates a key Refer https://docs.meilisearch.com/reference/api/keys.html#update-a-key
+     *
+     * @param key String containing the key
+     * @param options String containing the options to update
+     * @return Key Instance
+     * @throws Exception if client request causes an error
+     */
+    public Key updateKey(String key, Key options) throws Exception {
+        return this.keysHandler.updateKey(key, options);
+    }
+
+    /**
      * Deletes a key
      *
      * @param key String containing the key
