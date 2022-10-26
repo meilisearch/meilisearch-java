@@ -122,6 +122,29 @@ public class HttpClient {
     }
 
     /**
+     * Patch the specified resource
+     *
+     * @param api Path to server
+     * @param body Query for search
+     * @return results of the search
+     * @throws MeilisearchException if the response is an error
+     */
+    <S, T> T patch(String api, S body, Class<T> targetClass) throws MeilisearchException {
+        HttpRequest requestConfig =
+                request.create(HttpMethod.PATCH, api, Collections.emptyMap(), body);
+        HttpResponse<T> httpRequest = this.client.patch(requestConfig);
+        System.out.println(httpRequest);
+        HttpResponse<T> httpResponse = response.create(httpRequest, targetClass);
+
+        System.out.println(httpResponse);
+        if (httpResponse.getStatusCode() >= 400) {
+            throw new MeilisearchApiException(
+                    jsonHandler.decode(httpResponse.getContent(), APIError.class));
+        }
+        return httpResponse.getContent();
+    }
+
+    /**
      * Deletes the specified resource
      *
      * @param api Path to the requested resource
