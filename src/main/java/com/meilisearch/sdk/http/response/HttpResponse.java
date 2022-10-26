@@ -18,8 +18,4 @@ public class HttpResponse<T> {
     public boolean hasContent() {
         return content != null;
     }
-
-    public byte[] getContentAsBytes() {
-        return ((String) content).getBytes();
-    }
 }
