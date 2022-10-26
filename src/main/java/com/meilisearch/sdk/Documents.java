@@ -24,7 +24,7 @@ class Documents {
      */
     String getDocument(String uid, String identifier) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/documents/" + identifier;
-        return httpClient.get(urlPath);
+        return httpClient.get(urlPath, String.class);
     }
 
     /**
@@ -36,7 +36,7 @@ class Documents {
      */
     String getDocuments(String uid) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/documents";
-        return httpClient.get(urlPath);
+        return httpClient.get(urlPath, String.class);
     }
 
     /**
@@ -49,7 +49,7 @@ class Documents {
      */
     String getDocuments(String uid, int limit) throws MeilisearchException {
         String urlQuery = "/indexes/" + uid + "/documents?limit=" + limit;
-        return httpClient.get(urlQuery);
+        return httpClient.get(urlQuery, String.class);
     }
 
     /**
@@ -63,7 +63,7 @@ class Documents {
      */
     String getDocuments(String uid, int limit, int offset) throws MeilisearchException {
         String urlQuery = "/indexes/" + uid + "/documents?limit=" + limit + "&offset=" + offset;
-        return httpClient.get(urlQuery);
+        return httpClient.get(urlQuery, String.class);
     }
 
     /**
@@ -93,7 +93,7 @@ class Documents {
                         + "&attributesToRetrieve="
                         + attributesToRetrieveCommaSeparated;
 
-        return httpClient.get(urlQuery);
+        return httpClient.get(urlQuery, String.class);
     }
 
     /**
@@ -110,9 +110,7 @@ class Documents {
         if (primaryKey != null) {
             urlQuery += "?primaryKey=" + primaryKey;
         }
-        Task task = httpClient.jsonHandler.decode(httpClient.post(urlQuery, document), Task.class);
-
-        return task;
+        return httpClient.post(urlQuery, document, Task.class);
     }
 
     /**
@@ -130,9 +128,7 @@ class Documents {
         if (primaryKey != null) {
             urlPath += "?primaryKey=" + primaryKey;
         }
-        Task task = httpClient.jsonHandler.decode(httpClient.put(urlPath, document), Task.class);
-
-        return task;
+        return httpClient.put(urlPath, document, Task.class);
     }
 
     /**
@@ -145,9 +141,7 @@ class Documents {
      */
     Task deleteDocument(String uid, String identifier) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/documents/" + identifier;
-        Task task = httpClient.jsonHandler.decode(httpClient.delete(urlPath), Task.class);
-
-        return task;
+        return httpClient.delete(urlPath, Task.class);
     }
 
     /**
@@ -160,10 +154,7 @@ class Documents {
      */
     Task deleteDocuments(String uid, List<String> identifiers) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/documents/" + "delete-batch";
-        Task task =
-                httpClient.jsonHandler.decode(httpClient.post(urlPath, identifiers), Task.class);
-
-        return task;
+        return httpClient.post(urlPath, identifiers, Task.class);
     }
 
     /**
@@ -175,8 +166,6 @@ class Documents {
      */
     Task deleteAllDocuments(String uid) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/documents";
-        Task task = httpClient.jsonHandler.decode(httpClient.delete(urlPath), Task.class);
-
-        return task;
+        return httpClient.delete(urlPath, Task.class);
     }
 }

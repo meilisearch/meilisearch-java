@@ -30,7 +30,7 @@ public class KeysHandler {
      */
     public Key getKey(String uid) throws MeilisearchException {
         String urlPath = "/keys/" + uid;
-        return httpClient.jsonHandler.decode(this.httpClient.get(urlPath), Key.class);
+        return httpClient.get(urlPath, Key.class);
     }
 
     /**
@@ -41,9 +41,7 @@ public class KeysHandler {
      */
     public Result<Key> getKeys() throws MeilisearchException {
         String urlPath = "/keys";
-        Result<Key> result =
-                httpClient.jsonHandler.decode(
-                        this.httpClient.get(urlPath), Result.class, Key.class);
+        Result<Key> result = httpClient.get(urlPath, Result.class, Key.class);
         return result;
     }
 
@@ -56,7 +54,7 @@ public class KeysHandler {
      */
     public Key createKey(Key options) throws MeilisearchException {
         String urlPath = "/keys";
-        return httpClient.jsonHandler.decode(this.httpClient.post(urlPath, options), Key.class);
+        return httpClient.post(urlPath, options, Key.class);
     }
 
     /**
@@ -67,6 +65,6 @@ public class KeysHandler {
      */
     public void deleteKey(String key) throws MeilisearchException {
         String urlPath = "/keys/" + key;
-        this.httpClient.delete(urlPath);
+        httpClient.delete(urlPath, String.class);
     }
 }

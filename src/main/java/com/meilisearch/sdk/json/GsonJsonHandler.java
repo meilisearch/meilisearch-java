@@ -49,7 +49,7 @@ public class GsonJsonHandler implements JsonHandler {
         }
         try {
             if (parameters == null || parameters.length == 0) {
-                return (T) gson.fromJson((String) o, targetClass);
+                return gson.<T>fromJson((String) o, targetClass);
             } else {
                 TypeToken<?> parameterized = TypeToken.getParameterized(targetClass, parameters);
                 return gson.fromJson((String) o, parameterized.getType());

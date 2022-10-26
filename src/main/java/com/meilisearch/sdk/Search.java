@@ -27,7 +27,7 @@ public class Search {
     String rawSearch(String uid, String q) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/search";
         SearchRequest sr = new SearchRequest(q);
-        return httpClient.post(requestQuery, sr);
+        return httpClient.post(requestQuery, sr, String.class);
     }
 
     /**
@@ -87,7 +87,7 @@ public class Search {
                         matches,
                         facetsDistribution,
                         sort);
-        return httpClient.post(requestQuery, sr);
+        return httpClient.post(requestQuery, sr, String.class);
     }
 
     /**
@@ -100,7 +100,7 @@ public class Search {
      */
     String rawSearch(String uid, SearchRequest sr) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/search";
-        return httpClient.post(requestQuery, sr);
+        return httpClient.post(requestQuery, sr, String.class);
     }
 
     /**

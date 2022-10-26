@@ -35,7 +35,7 @@ public class TasksHandler {
      */
     public Task getTask(String indexUid, int taskUid) throws MeilisearchException {
         String urlPath = "/indexes/" + indexUid + "/tasks/" + taskUid;
-        return httpClient.jsonHandler.decode(this.httpClient.get(urlPath), Task.class);
+        return httpClient.get(urlPath, Task.class);
     }
 
     /**
@@ -48,9 +48,7 @@ public class TasksHandler {
     public Result<Task> getTasks(String indexUid) throws MeilisearchException {
         String urlPath = "/indexes/" + indexUid + "/tasks";
 
-        Result<Task> result =
-                httpClient.jsonHandler.decode(
-                        this.httpClient.get(urlPath), Result.class, Task.class);
+        Result<Task> result = httpClient.get(urlPath, Result.class, Task.class);
         return result;
     }
 
@@ -63,7 +61,7 @@ public class TasksHandler {
      */
     public Task getTask(int taskUid) throws MeilisearchException {
         String urlPath = "/tasks/" + taskUid;
-        return httpClient.jsonHandler.decode(this.httpClient.get(urlPath), Task.class);
+        return httpClient.get(urlPath, Task.class);
     }
 
     /**
@@ -75,9 +73,7 @@ public class TasksHandler {
     public Result<Task> getTasks() throws MeilisearchException {
         String urlPath = "/tasks";
 
-        Result<Task> result =
-                httpClient.jsonHandler.decode(
-                        this.httpClient.get(urlPath), Result.class, Task.class);
+        Result<Task> result = httpClient.get(urlPath, Result.class, Task.class);
         return result;
     }
 

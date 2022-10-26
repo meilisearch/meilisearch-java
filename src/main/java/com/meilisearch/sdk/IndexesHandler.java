@@ -1,6 +1,7 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.model.Task;
 import java.util.HashMap;
 
 /** Wrapper around the HttpClient class to ease usage for Meilisearch indexes */
@@ -24,7 +25,7 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    String create(String uid) throws MeilisearchException {
+    Task create(String uid) throws MeilisearchException {
         return this.create(uid, null);
     }
 
@@ -36,12 +37,12 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    String create(String uid, String primaryKey) throws MeilisearchException {
+    Task create(String uid, String primaryKey) throws MeilisearchException {
         HashMap<String, Object> index = new HashMap<String, Object>();
         index.put("uid", uid);
         index.put("primaryKey", primaryKey);
 
-        return httpClient.post("/indexes", index);
+        return httpClient.post("/indexes", index, Task.class);
     }
 
     /**
@@ -53,7 +54,7 @@ class IndexesHandler {
      */
     String get(String uid) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid;
-        return httpClient.get(requestQuery);
+        return httpClient.get(requestQuery, String.class);
     }
 
     /**
@@ -63,7 +64,7 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     String getAll() throws MeilisearchException {
-        return httpClient.get("/indexes");
+        return httpClient.get("/indexes", String.class);
     }
 
     /**
@@ -74,12 +75,12 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    String updatePrimaryKey(String uid, String primaryKey) throws MeilisearchException {
+    Task updatePrimaryKey(String uid, String primaryKey) throws MeilisearchException {
         HashMap<String, Object> index = new HashMap<String, Object>();
         index.put("primaryKey", primaryKey);
 
         String requestQuery = "/indexes/" + uid;
-        return httpClient.put(requestQuery, index);
+        return httpClient.put(requestQuery, index, Task.class);
     }
 
     /**
@@ -89,8 +90,8 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    String delete(String uid) throws MeilisearchException {
+    Task delete(String uid) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid;
-        return httpClient.delete(requestQuery);
+        return httpClient.delete(requestQuery, Task.class);
     }
 }
