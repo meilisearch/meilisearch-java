@@ -135,7 +135,6 @@ public class HttpClient {
         HttpResponse<T> httpRequest = this.client.patch(requestConfig);
         HttpResponse<T> httpResponse = response.create(httpRequest, targetClass);
 
-        System.out.println(httpResponse);
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
                     jsonHandler.decode(httpResponse.getContent(), APIError.class));
