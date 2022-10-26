@@ -67,6 +67,9 @@ public class CustomOkHttpClient {
             case PUT:
                 builder.put(getBodyFromRequest(request));
                 break;
+            case PATCH:
+                builder.patch(getBodyFromRequest(request));
+                break;
             case DELETE:
                 if (request.hasContent()) builder.delete(getBodyFromRequest(request));
                 else builder.delete();
@@ -104,6 +107,10 @@ public class CustomOkHttpClient {
     }
 
     public <T> HttpResponse<T> put(HttpRequest request) throws MeilisearchException {
+        return execute(request);
+    }
+
+    public <T> HttpResponse<T> patch(HttpRequest request) throws MeilisearchException {
         return execute(request);
     }
 

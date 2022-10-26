@@ -86,7 +86,7 @@ class CustomOkHttpClientTest {
     void get() throws Exception {
         HttpRequest request =
                 new HttpRequest(HttpMethod.GET, "/test", Collections.emptyMap(), "some body");
-        HttpResponse response = classToTest.get(request);
+        HttpResponse<Object> response = classToTest.get(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
 
@@ -102,7 +102,7 @@ class CustomOkHttpClientTest {
     void post() throws Exception {
         HttpRequest request =
                 new HttpRequest(HttpMethod.POST, "/test", Collections.emptyMap(), "some body");
-        HttpResponse response = classToTest.post(request);
+        HttpResponse<Object> response = classToTest.post(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
         assertThat(response.getContent(), equalTo(request.getContent()));
@@ -120,7 +120,43 @@ class CustomOkHttpClientTest {
     void postWithoutBody() throws Exception {
         HttpRequest request =
                 new HttpRequest(HttpMethod.POST, "/test", Collections.emptyMap(), null);
-        HttpResponse response = classToTest.post(request);
+        HttpResponse<Object> response = classToTest.post(request);
+
+        assertThat(response.getStatusCode(), equalTo(200));
+        assertThat(response.getContent(), equalTo(""));
+
+        Request expectedRequest = requestQueue.poll();
+        assertThat(expectedRequest, notNullValue());
+        assertThat(readBody(expectedRequest.body()), equalTo(""));
+        assertThat(expectedRequest.method(), equalTo(request.getMethod().name()));
+        assertThat(
+                expectedRequest.url().toString(),
+                equalTo(this.config.getHostUrl() + request.getPath()));
+    }
+
+    @Test
+    void patch() throws Exception {
+        HttpRequest request =
+                new HttpRequest(HttpMethod.PATCH, "/test", Collections.emptyMap(), "some body");
+        HttpResponse<Object> response = classToTest.patch(request);
+
+        assertThat(response.getStatusCode(), equalTo(200));
+        assertThat(response.getContent(), equalTo(request.getContent()));
+
+        Request expectedRequest = requestQueue.poll();
+        assertThat(expectedRequest, notNullValue());
+        assertThat(request.getContent(), equalTo(readBody(expectedRequest.body())));
+        assertThat(expectedRequest.method(), equalTo(request.getMethod().name()));
+        assertThat(
+                expectedRequest.url().toString(),
+                equalTo(this.config.getHostUrl() + request.getPath()));
+    }
+
+    @Test
+    void patchWithoutBody() throws Exception {
+        HttpRequest request =
+                new HttpRequest(HttpMethod.PATCH, "/test", Collections.emptyMap(), null);
+        HttpResponse<Object> response = classToTest.post(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
         assertThat(response.getContent(), equalTo(""));
@@ -138,7 +174,7 @@ class CustomOkHttpClientTest {
     void put() throws Exception {
         HttpRequest request =
                 new HttpRequest(HttpMethod.PUT, "/test", Collections.emptyMap(), "some body");
-        HttpResponse response = classToTest.put(request);
+        HttpResponse<Object> response = classToTest.put(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
         assertThat(response.getContent(), equalTo(request.getContent()));
@@ -156,7 +192,7 @@ class CustomOkHttpClientTest {
     void delete() throws Exception {
         HttpRequest request =
                 new HttpRequest(HttpMethod.DELETE, "/test", Collections.emptyMap(), "some body");
-        HttpResponse response = classToTest.delete(request);
+        HttpResponse<Object> response = classToTest.delete(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
 
@@ -172,7 +208,7 @@ class CustomOkHttpClientTest {
     void deleteWithoutBody() throws Exception {
         HttpRequest request =
                 new HttpRequest(HttpMethod.DELETE, "/test", Collections.emptyMap(), null);
-        HttpResponse response = classToTest.delete(request);
+        HttpResponse<Object> response = classToTest.delete(request);
 
         assertThat(response.getStatusCode(), equalTo(200));
 
