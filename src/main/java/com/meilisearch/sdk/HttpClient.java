@@ -74,7 +74,7 @@ public class HttpClient {
 
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
-                    jsonHandler.decode(httpResponse.getContent(), APIError.class));
+                    jsonHandler.decode(httpRequest.getContent(), APIError.class));
         }
         return httpResponse.getContent();
     }
@@ -95,7 +95,7 @@ public class HttpClient {
 
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
-                    jsonHandler.decode(httpResponse.getContent(), APIError.class));
+                    jsonHandler.decode(httpRequest.getContent(), APIError.class));
         }
         return httpResponse.getContent();
     }
@@ -116,7 +116,7 @@ public class HttpClient {
 
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
-                    jsonHandler.decode(httpResponse.getContent(), APIError.class));
+                    jsonHandler.decode(httpRequest.getContent(), APIError.class));
         }
         return httpResponse.getContent();
     }
@@ -157,7 +157,7 @@ public class HttpClient {
 
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
-                    jsonHandler.decode(httpResponse.getContent(), APIError.class));
+                    jsonHandler.decode(httpRequest.getContent(), APIError.class));
         }
         return httpResponse.getContent();
     }

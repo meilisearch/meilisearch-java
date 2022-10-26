@@ -9,6 +9,7 @@ import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.json.JsonHandler;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.Result;
+import com.meilisearch.sdk.model.Stats;
 import com.meilisearch.sdk.model.Task;
 import java.util.Date;
 import java.util.Map;
@@ -18,6 +19,7 @@ import java.util.TimeZone;
 public class Client {
     public Config config;
     public IndexesHandler indexesHandler;
+    public InstanceHandler instanceHandler;
     public TasksHandler tasksHandler;
     public KeysHandler keysHandler;
     public JsonHandler jsonHandler;
@@ -30,6 +32,7 @@ public class Client {
     public Client(Config config) {
         this.config = config;
         this.indexesHandler = new IndexesHandler(config);
+        this.instanceHandler = new InstanceHandler(config);
         this.tasksHandler = new TasksHandler(config);
         this.keysHandler = new KeysHandler(config);
         this.jsonHandler = config.jsonHandler;
@@ -170,6 +173,51 @@ public class Client {
     // public Dump createDump() throws MeilisearchException {
     //     return this.meiliSearchHttpRequest.post("/dumps", "", Dump.class);
     // }
+
+    /**
+     * Gets the status and availability of a Meilisearch instance
+     * https://docs.meilisearch.com/reference/api/health.html#health
+     *
+     * @return String containing the status of the Meilisearch instance from Meilisearch API
+     *     response
+     * @throws MeilisearchException if an error occurs
+     */
+    public String health() throws MeilisearchException {
+        return this.instanceHandler.health();
+    }
+
+    /**
+     * Gets the status and availability of a Meilisearch instance
+     * https://docs.meilisearch.com/reference/api/health.html#health
+     *
+     * @return True if the Meilisearch instance is available or false if it is not
+     * @throws MeilisearchException if an error occurs
+     */
+    public Boolean isHealthy() throws MeilisearchException {
+        return this.instanceHandler.isHealthy();
+    }
+
+    /**
+     * Gets extended information and metrics about indexes and the Meilisearch database
+     * https://docs.meilisearch.com/reference/api/stats.html#stats-object
+     *
+     * @return Stats instance from Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     */
+    public Stats getStats() throws MeilisearchException {
+        return this.instanceHandler.getStats();
+    }
+
+    /**
+     * Gets the version of Meilisearch instance
+     * https://docs.meilisearch.com/reference/api/version.html#version
+     *
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     */
+    public String getVersion() throws MeilisearchException {
+        return this.instanceHandler.getVersion();
+    }
 
     /**
      * Retrieves a task with the specified uid

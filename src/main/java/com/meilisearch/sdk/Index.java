@@ -1,6 +1,7 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.model.IndexStats;
 import com.meilisearch.sdk.model.Result;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.model.Settings;
@@ -26,6 +27,7 @@ public class Index implements Serializable {
     @ToString.Exclude protected TasksHandler tasksHandler;
     @ToString.Exclude protected Search search;
     @ToString.Exclude protected SettingsHandler settingsHandler;
+    @ToString.Exclude protected InstanceHandler instanceHandler;
 
     /**
      * Sets the Meilisearch configuration for the index
@@ -38,6 +40,7 @@ public class Index implements Serializable {
         this.tasksHandler = new TasksHandler(config);
         this.search = new Search(config);
         this.settingsHandler = new SettingsHandler(config);
+        this.instanceHandler = new InstanceHandler(config);
     }
 
     /**
@@ -598,6 +601,17 @@ public class Index implements Serializable {
      */
     public Task resetTypoToleranceSettings() throws MeilisearchException {
         return this.settingsHandler.resetTypoToleranceSettings(this.uid);
+    }
+
+    /**
+     * Gets extended information and metrics about indexes and the Meilisearch database
+     * https://docs.meilisearch.com/reference/api/stats.html#stats-object
+     *
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     */
+    public IndexStats getStats() throws MeilisearchException {
+        return this.instanceHandler.getIndexStats(this.uid);
     }
 
     /**
