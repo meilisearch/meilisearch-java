@@ -133,7 +133,6 @@ public class HttpClient {
         HttpRequest requestConfig =
                 request.create(HttpMethod.PATCH, api, Collections.emptyMap(), body);
         HttpResponse<T> httpRequest = this.client.patch(requestConfig);
-        System.out.println(httpRequest);
         HttpResponse<T> httpResponse = response.create(httpRequest, targetClass);
 
         System.out.println(httpResponse);
