@@ -39,7 +39,8 @@ public class Client {
     }
 
     /**
-     * Creates index Refer https://docs.meilisearch.com/reference/api/indexes.html#create-an-index
+     * Creates an index with a unique identifier Refer
+     * https://docs.meilisearch.com/reference/api/indexes.html#create-an-index
      *
      * @param uid Unique identifier for the index to create
      * @return Meilisearch API response as Task
@@ -50,7 +51,8 @@ public class Client {
     }
 
     /**
-     * Creates index Refer https://docs.meilisearch.com/reference/api/indexes.html#create-an-index
+     * Creates an index with a unique identifier Refer
+     * https://docs.meilisearch.com/reference/api/indexes.html#create-an-index
      *
      * @param uid Unique identifier for the index to create
      * @param primaryKey The primary key of the documents in that index
@@ -62,7 +64,7 @@ public class Client {
     }
 
     /**
-     * Gets all indexes Refer
+     * Gets all indexes in the current Meilisearch instance Refer
      * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
      * @return List of indexes in the Meilisearch client
@@ -77,7 +79,8 @@ public class Client {
     }
 
     /**
-     * Gets all indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     * Gets all indexes in the current Meilisearch instance Refer
+     * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
      * @return Meilisearch API response as String
      * @throws MeilisearchException if an error occurs
@@ -103,7 +106,7 @@ public class Client {
     }
 
     /**
-     * Gets single index by uid Refer
+     * Gets single index by its unique identifier Refer
      * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
      *
      * @param uid Unique identifier of the index to get
@@ -117,7 +120,7 @@ public class Client {
     }
 
     /**
-     * Gets single index by uid Refer
+     * Gets single index by its unique identifier Refer
      * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
      *
      * @param uid Unique identifier of the index to get
@@ -129,7 +132,7 @@ public class Client {
     }
 
     /**
-     * Updates single index by uid Refer
+     * Updates the primary key of an index in the Meilisearch instance Refer
      * https://docs.meilisearch.com/reference/api/indexes.html#update-an-index
      *
      * @param uid Unique identifier of the index to update
@@ -142,7 +145,7 @@ public class Client {
     }
 
     /**
-     * Deletes single index by uid Refer
+     * Deletes single index by its unique identifier Refer
      * https://docs.meilisearch.com/reference/api/indexes.html#delete-one-index
      *
      * @param uid Unique identifier of the index to delete
@@ -187,7 +190,7 @@ public class Client {
     }
 
     /**
-     * Gets the status and availability of a Meilisearch instance
+     * Gets the status and availability of a Meilisearch instance Refer
      * https://docs.meilisearch.com/reference/api/health.html#health
      *
      * @return True if the Meilisearch instance is available or false if it is not
@@ -198,7 +201,7 @@ public class Client {
     }
 
     /**
-     * Gets extended information and metrics about indexes and the Meilisearch database
+     * Gets extended information and metrics about indexes and the Meilisearch database Refer
      * https://docs.meilisearch.com/reference/api/stats.html#stats-object
      *
      * @return Stats instance from Meilisearch API response
@@ -209,7 +212,7 @@ public class Client {
     }
 
     /**
-     * Gets the version of Meilisearch instance
+     * Gets the version of Meilisearch instance Refer
      * https://docs.meilisearch.com/reference/api/version.html#version
      *
      * @return Meilisearch API response
@@ -220,7 +223,8 @@ public class Client {
     }
 
     /**
-     * Retrieves a task with the specified uid
+     * Retrieves a task with the specified uid Refer
+     * https://docs.meilisearch.com/reference/api/tasks.html#get-one-task
      *
      * @param uid Identifier of the requested Task
      * @return Task Instance
@@ -231,7 +235,7 @@ public class Client {
     }
 
     /**
-     * Retrieves list of tasks
+     * Retrieves list of tasks Refer https://docs.meilisearch.com/reference/api/tasks.html#get-tasks
      *
      * @return List of tasks in the Meilisearch client
      * @throws MeilisearchException if an error occurs
@@ -251,7 +255,8 @@ public class Client {
     }
 
     /**
-     * Retrieves the key with the specified uid
+     * Retrieves the key with the specified uid Refer
+     * https://docs.meilisearch.com/reference/api/keys.html#get-one-key
      *
      * @param uid Identifier of the requested Key
      * @return Key Instance
@@ -262,7 +267,8 @@ public class Client {
     }
 
     /**
-     * Retrieves list of keys
+     * Retrieves list of keys Refer
+     * https://docs.meilisearch.com/reference/api/keys.html#get-all-keys
      *
      * @return List of keys in the Meilisearch client
      * @throws MeilisearchException if an error occurs
@@ -272,7 +278,7 @@ public class Client {
     }
 
     /**
-     * Creates a key
+     * Creates a key Refer https://docs.meilisearch.com/reference/api/keys.html#create-a-key
      *
      * @param options Key containing the options of the key
      * @return Key Instance
@@ -283,7 +289,7 @@ public class Client {
     }
 
     /**
-     * Deletes a key
+     * Deletes a key Refer https://docs.meilisearch.com/reference/api/keys.html#delete-a-key
      *
      * @param key String containing the key
      * @throws MeilisearchException if an error occurs
@@ -297,7 +303,8 @@ public class Client {
     }
 
     /**
-     * Generate a tenant token
+     * Generate a tenant token Refer
+     * https://docs.meilisearch.com/learn/security/tenant_tokens.html#multitenancy-and-tenant-tokens
      *
      * @param searchRules A Map of string, object which contains the rules to be enforced at search
      *     time for all or specific accessible indexes for the signing API Key.
