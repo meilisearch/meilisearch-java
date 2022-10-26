@@ -94,6 +94,4 @@ class IndexesHandler {
         String requestQuery = "/indexes/" + uid;
         return httpClient.delete(requestQuery, Task.class);
     }
-
-    }
 }
