@@ -128,7 +128,7 @@ public class ClientTest extends AbstractIT {
         String[] indexUids = {"GetIndexList", "GetIndexList2"};
         Index index1 = createEmptyIndex(indexUids[0]);
         Index index2 = createEmptyIndex(indexUids[1], this.primaryKey);
-        Index[] indexes = client.getIndexList();
+        Index[] indexes = client.getIndexes();
 
         assertEquals(2, indexes.length);
         assert (Arrays.asList(indexUids).contains(indexUids[0]));

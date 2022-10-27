@@ -68,7 +68,7 @@ public class Client {
      * @return List of indexes in the Meilisearch client
      * @throws MeilisearchException if an error occurs
      */
-    public Index[] getIndexList() throws MeilisearchException {
+    public Index[] getIndexes() throws MeilisearchException {
         Index[] meiliSearchIndexList = jsonHandler.decode(getRawIndexList(), Index[].class);
         for (Index indexes : meiliSearchIndexList) {
             indexes.setConfig(this.config);
