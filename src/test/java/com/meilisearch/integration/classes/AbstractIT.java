@@ -95,7 +95,7 @@ public abstract class AbstractIT {
     public static void deleteAllIndexes() {
         try {
             Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"));
-            Index[] indexes = ms.getIndexList();
+            Index[] indexes = ms.getIndexes();
             for (Index index : indexes) {
                 ms.deleteIndex(index.getUid());
             }
