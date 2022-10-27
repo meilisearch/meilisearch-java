@@ -46,7 +46,7 @@ public class HttpClient {
     }
 
     /**
-     * Gets a document at the specified path
+     * Gets the specified resource from the specified path with a given parameter
      *
      * @param api Path to document
      * @return document that was requested
@@ -58,7 +58,7 @@ public class HttpClient {
     }
 
     /**
-     * Gets a document at the specified path with a given parameter
+     * Gets the specified resource from the specified path with a given parameter
      *
      * @param api Path to document
      * @param param Parameter to be passed
@@ -80,7 +80,7 @@ public class HttpClient {
     }
 
     /**
-     * Adds a document to the specified path
+     * Adds the specified resource to the specified path
      *
      * @param api Path to server
      * @param body Query for search
@@ -101,7 +101,7 @@ public class HttpClient {
     }
 
     /**
-     * Replaces the requested resource with new data
+     * Replaces the specified resource with new data to the specified path
      *
      * @param api Path to the requested resource
      * @param body Replacement data for the requested resource
@@ -122,7 +122,7 @@ public class HttpClient {
     }
 
     /**
-     * Patch the specified resource
+     * Patch the specified resource with new data to the specified path
      *
      * @param api Path to server
      * @param body Query for search
@@ -143,7 +143,7 @@ public class HttpClient {
     }
 
     /**
-     * Deletes the specified resource
+     * Deletes the specified resource to the specified path
      *
      * @param api Path to the requested resource
      * @return deleted resource

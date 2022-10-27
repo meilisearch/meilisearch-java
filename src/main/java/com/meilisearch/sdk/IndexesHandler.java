@@ -46,7 +46,7 @@ class IndexesHandler {
     }
 
     /**
-     * Gets an index from its unique identifier
+     * Gets an index from its uid
      *
      * @param uid Unique identifier of the index to get
      * @return Meilisearch API response

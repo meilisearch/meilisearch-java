@@ -44,7 +44,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Gets a document in the index
+     * Gets a documents with the specified uid Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-one-document
      *
      * @param identifier Identifier of the document to get
      * @return Meilisearch API response
@@ -55,7 +56,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Gets documents in the index
+     * Gets documenta at the specified index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
      *
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
@@ -65,7 +67,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Gets documents in the index and limit the number of documents returned
+     * Gets documents at the specified index and limit the number of documents returned Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
      *
      * @param limits Maximum amount of documents to return
      * @return Meilisearch API response
@@ -76,7 +79,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Gets documents in the index and limit the number of documents returned
+     * Gets documents at the specified index and limit the number of documents returned Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
      *
      * @param limits Maximum amount of documents to return
      * @param offset Number of documents to skip
@@ -88,7 +92,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Gets documents in the index and limit the number of documents returned
+     * Gets documents at the specified index and limit the number of documents returned Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
      *
      * @param limits Maximum amount of documents to return
      * @param offset Number of documents to skip
@@ -102,7 +107,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Adds a document in the index
+     * Adds/Replaces documents in the index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-replace-documents
      *
      * @param document Document to add in JSON string format
      * @return Task Meilisearch API response
@@ -113,7 +119,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Adds a document in the index
+     * Adds/Replaces documents in the index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-replace-documents
      *
      * @param document Document to add in JSON string format
      * @param primaryKey PrimaryKey of the document to add
@@ -125,7 +132,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Adds a document in the index in batches
+     * Adds/Replaces documents in the index in batches Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-replace-documents
      *
      * @param batchSize size of the batch of documents
      * @param document Document to add in JSON string format
@@ -154,7 +162,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Add Documents in Index in Batches
+     * Adds/Replaces documents in index in batches Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-replace-documents
      *
      * @param document Document to add in JSON string format
      * @return Task Meilisearch API response
@@ -165,7 +174,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Updates a document in the index
+     * Updates documents in the index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-update-documents
      *
      * @param document Document to update in JSON string format
      * @return Task Meilisearch API response
@@ -176,7 +186,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Updates a document in the index
+     * Updates documents in the index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-update-documents
      *
      * @param document Document to update in JSON string format
      * @param primaryKey PrimaryKey of the document
@@ -188,7 +199,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Update Documents in Index in Batches
+     * Updates documents in index in batches Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-update-documents
      *
      * @param document Document to add in JSON string format
      * @param batchSize size of the batch of documents
@@ -217,7 +229,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Update Documents in Index in Batches
+     * Updates documents in index in batches Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-update-documents
      *
      * @param document Document to add in JSON string format
      * @return Task Meilisearch API response
@@ -228,7 +241,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Deletes a document from the index
+     * Deletes a document from the index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#delete-one-document
      *
      * @param identifier Identifier of the document to delete
      * @return Task Meilisearch API response
@@ -239,7 +253,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Deletes list of documents from the index
+     * Deletes list of documents from the index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#delete-documents-by-batch
      *
      * @param documentsIdentifiers list of identifiers of documents to delete
      * @return Task Meilisearch API response
@@ -250,7 +265,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Deletes all documents in the index
+     * Deletes all documents in the index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#delete-all-documents
      *
      * @return List of tasks Meilisearch API response
      * @throws MeilisearchException if an error occurs
@@ -260,7 +276,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Searches documents in index
+     * Searches documents in the index Refer
+     * https://docs.meilisearch.com/reference/api/search.html#search-in-an-index-with-post-route
      *
      * @param q Query string
      * @return Meilisearch API response
@@ -271,7 +288,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Searches documents in index
+     * Searches documents in the index Refer
+     * https://docs.meilisearch.com/reference/api/search.html#search-in-an-index-with-post-route
      *
      * @param searchRequest SearchRequest SearchRequest
      * @return Meilisearch API response
@@ -359,7 +377,7 @@ public class Index implements Serializable {
 
     /**
      * Gets the synonyms settings of the index Refer
-     * https://docs.meilisearch.com/reference/api/settings.html#get-settings
+     * https://docs.meilisearch.com/reference/api/synonyms.html#get-synonyms
      *
      * @return synonyms of a given uid as String
      * @throws MeilisearchException if an error occurs
@@ -426,7 +444,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Get the searchable attributes of an index.
+     * Gets the searchable attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/searchable_attributes.html#get-searchable-attributes
      *
      * @return searchable attributes of a given uid as String
@@ -437,7 +455,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Updates the searchable attributes an index Refer
+     * Updates the searchable attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/searchable_attributes.html#update-searchable-attributes
      *
      * @param searchableAttributes An array of strings that contains the searchable attributes.
@@ -451,7 +469,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Reset the searchable attributes of the index to the default value.
+     * Resets the searchable attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/searchable_attributes.html#reset-searchable-attributes
      *
      * @return Task instance
@@ -462,7 +480,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Get the display attributes of an index.
+     * Gets the display attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/displayed_attributes.html#get-displayed-attributes
      *
      * @return display attributes of a given uid as String
@@ -473,7 +491,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Updates the display attributes of an index Refer
+     * Updates the display attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/displayed_attributes.html#update-displayed-attributes
      *
      * @param displayAttributes An array of strings that contains attributes of an index to display
@@ -486,7 +504,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Reset the displayed attributes of the index to the default value.
+     * Resets the displayed attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/displayed_attributes.html#reset-displayed-attributes
      *
      * @return Task instance
@@ -497,7 +515,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Get an index's filterable attributes.
+     * Gets the filterable attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/filterable_attributes.html#get-filterable-attributes
      *
      * @return filterable attributes of a given uid as String
@@ -508,7 +526,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Update an index's filterable attributes list. This will re-index all documents in the index.
+     * Updates the filterable attributes of the index. This will re-index all documents in the index
+     * Refer
      * https://docs.meilisearch.com/reference/api/filterable_attributes.html#update-filterable-attributes
      *
      * @param filterableAttributes An array of strings containing the attributes that can be used as
@@ -523,7 +542,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Reset an index's filterable attributes list back to its default value.
+     * Resets the filterable attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/filterable_attributes.html#reset-filterable-attributes
      *
      * @return Task instance
@@ -534,7 +553,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Get the distinct attribute field of an index.
+     * Gets the distinct attribute field of the index Refer
      * https://docs.meilisearch.com/reference/api/distinct_attribute.html#get-distinct-attribute
      *
      * @return distinct attribute field of a given uid as String
@@ -545,7 +564,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Update the distinct attribute field of an index.
+     * Updates the distinct attribute field of the index Refer
      * https://docs.meilisearch.com/reference/api/distinct_attribute.html#update-distinct-attribute
      *
      * @param distinctAttribute A String: the field name.
@@ -558,7 +577,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Reset the distinct attribute field of an index to its default value.
+     * Resets the distinct attribute field of the index Refer
      * https://docs.meilisearch.com/reference/api/distinct_attribute.html#reset-distinct-attribute
      *
      * @return Task instance
@@ -569,7 +588,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Get the typo tolerance field of an index.
+     * Gets the typo tolerance field of the index Refer
      * https://docs.meilisearch.com/reference/api/typo_tolerance.html#get-typo-tolerance
      *
      * @return TypoTolerance instance from Index
@@ -580,7 +599,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Update the typo tolerance field of an index.
+     * Updates the typo tolerance field of the index Refer
      * https://docs.meilisearch.com/reference/api/typo_tolerance.html#update-typo-tolerance
      *
      * @param typoTolerance A TypoTolerance instance
@@ -593,7 +612,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Reset the typo tolerance field of an index to its default value.
+     * Resets the typo tolerance field of the index Refer
      * https://docs.meilisearch.com/reference/api/typo_tolerance.html#reset-typo-tolerance
      *
      * @return Task instance
@@ -604,7 +623,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Gets extended information and metrics about indexes and the Meilisearch database
+     * Gets extended information and metrics about indexes and the Meilisearch database Refer
      * https://docs.meilisearch.com/reference/api/stats.html#stats-object
      *
      * @return Meilisearch API response
@@ -615,7 +634,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Retrieves an index tasks by its ID
+     * Retrieves an index tasks by its uid Refer
+     * https://docs.meilisearch.com/reference/api/tasks.html#get-one-task
      *
      * @param taskId Identifier of the requested index task
      * @return Task instance
@@ -626,7 +646,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Retrieves list of tasks of the index
+     * Retrieves list of tasks of the index Refer
+     * https://docs.meilisearch.com/reference/api/tasks.html#get-tasks
      *
      * @return List of tasks in the Meilisearch index
      * @throws MeilisearchException if an error occurs
@@ -636,7 +657,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Waits for a task to be processed
+     * Waits for a task to be processed Refer
+     * https://docs.meilisearch.com/reference/api/tasks.html#task-object
      *
      * @param taskId Identifier of the requested Task
      * @throws MeilisearchException if an error occurs or if timeout is reached
@@ -646,7 +668,8 @@ public class Index implements Serializable {
     }
 
     /**
-     * Waits for a task to be processed
+     * Waits for a task to be processed Refer
+     * https://docs.meilisearch.com/reference/api/tasks.html#task-object
      *
      * @param taskId ID of the index update
      * @param timeoutInMs number of milliseconds before throwing an Exception

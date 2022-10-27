@@ -21,31 +21,31 @@ public class TasksHandler {
      *
      * @param config MeiliSearch configuration
      */
-    public TasksHandler(Config config) {
+    TasksHandler(Config config) {
         this.httpClient = config.httpClient;
     }
 
     /**
-     * Retrieves the Task at the specified indexUid with the specified taskUid
+     * Retrieves the task at the specified index uid with the specified task uid
      *
      * @param indexUid Index identifier to the requested Task
      * @param taskUid Identifier of the requested Task
      * @return Task instance
      * @throws MeilisearchException if client request causes an error
      */
-    public Task getTask(String indexUid, int taskUid) throws MeilisearchException {
+    Task getTask(String indexUid, int taskUid) throws MeilisearchException {
         String urlPath = "/indexes/" + indexUid + "/tasks/" + taskUid;
         return httpClient.get(urlPath, Task.class);
     }
 
     /**
-     * Retrieves all TasksHandler at the specified iud
+     * Retrieves all TasksHandler at the specified index uid
      *
      * @param indexUid Index identifier to the requested Tasks
      * @return List of task instance
      * @throws MeilisearchException if client request causes an error
      */
-    public Result<Task> getTasks(String indexUid) throws MeilisearchException {
+    Result<Task> getTasks(String indexUid) throws MeilisearchException {
         String urlPath = "/indexes/" + indexUid + "/tasks";
 
         Result<Task> result = httpClient.get(urlPath, Result.class, Task.class);
@@ -53,24 +53,24 @@ public class TasksHandler {
     }
 
     /**
-     * Retrieves the Task at the specified iud with the specified taskUid
+     * Retrieves the task with the specified task uid
      *
      * @param taskUid Identifier of the requested Task
      * @return Task instance
      * @throws MeilisearchException if client request causes an error
      */
-    public Task getTask(int taskUid) throws MeilisearchException {
+    Task getTask(int taskUid) throws MeilisearchException {
         String urlPath = "/tasks/" + taskUid;
         return httpClient.get(urlPath, Task.class);
     }
 
     /**
-     * Retrieves Tasks from the client
+     * Retrieves tasks from the client
      *
      * @return List of task instance
      * @throws MeilisearchException if client request causes an error
      */
-    public Result<Task> getTasks() throws MeilisearchException {
+    Result<Task> getTasks() throws MeilisearchException {
         String urlPath = "/tasks";
 
         Result<Task> result = httpClient.get(urlPath, Result.class, Task.class);
@@ -83,7 +83,7 @@ public class TasksHandler {
      * @param taskUid Identifier of the Task
      * @throws MeilisearchException if timeout is reached
      */
-    public void waitForTask(int taskUid) throws MeilisearchException {
+    void waitForTask(int taskUid) throws MeilisearchException {
         this.waitForTask(taskUid, 5000, 50);
     }
 
@@ -95,8 +95,7 @@ public class TasksHandler {
      * @param intervalInMs number of milliseconds before requesting the status again
      * @throws MeilisearchException if timeout is reached
      */
-    public void waitForTask(int taskUid, int timeoutInMs, int intervalInMs)
-            throws MeilisearchException {
+    void waitForTask(int taskUid, int timeoutInMs, int intervalInMs) throws MeilisearchException {
         Task task;
         String status = "";
         long startTime = new Date().getTime();

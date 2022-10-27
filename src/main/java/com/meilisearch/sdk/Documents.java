@@ -15,7 +15,7 @@ class Documents {
     }
 
     /**
-     * Retrieves the document at the specified uid with the specified identifier
+     * Retrieves the document at the specified index uid with the specified identifier
      *
      * @param uid Partial index identifier for the requested documents
      * @param identifier ID of the document
@@ -28,7 +28,7 @@ class Documents {
     }
 
     /**
-     * Retrieves the documents at the specified uid
+     * Retrieves the document at the specified index
      *
      * @param uid Partial index identifier for the requested documents
      * @return String containing the requested document
@@ -40,7 +40,7 @@ class Documents {
     }
 
     /**
-     * Retrieves the documents at the specified uid
+     * Retrieves the document at the specified index
      *
      * @param uid Partial index identifier for the requested documents
      * @param limit Limit on the requested documents to be returned
@@ -53,7 +53,7 @@ class Documents {
     }
 
     /**
-     * Retrieves the documents at the specified uid
+     * Retrieves the document at the specified index
      *
      * @param uid Partial index identifier for the requested documents
      * @param limit Limit on the requested documents to be returned
@@ -67,7 +67,7 @@ class Documents {
     }
 
     /**
-     * Retrieves the documents at the specified uid
+     * Retrieves the document at the specified index
      *
      * @param uid Partial index identifier for the requested documents
      * @param limit Limit on the requested documents to be returned
@@ -97,7 +97,7 @@ class Documents {
     }
 
     /**
-     * Adds/Replaces a document at the specified uid
+     * Adds/Replaces a document at the specified index uid
      *
      * @param uid Partial index identifier for the document
      * @param document String containing the document to add
@@ -114,7 +114,7 @@ class Documents {
     }
 
     /**
-     * Replaces a document at the specified uid
+     * Replaces a document at the specified index uid
      *
      * @param uid Partial index identifier for the document
      * @param document String containing the document to replace the existing document
@@ -132,7 +132,7 @@ class Documents {
     }
 
     /**
-     * Deletes the document at the specified uid with the specified identifier
+     * Deletes the document at the specified index uid with the specified identifier
      *
      * @param uid Partial index identifier for the requested document
      * @param identifier ID of the document
@@ -145,7 +145,7 @@ class Documents {
     }
 
     /**
-     * Deletes the documents at the specified uid with the specified identifiers
+     * Deletes the documents at the specified index uid with the specified identifiers
      *
      * @param uid Partial index identifier for the requested documents
      * @param identifiers ID of documents to delete
@@ -158,7 +158,7 @@ class Documents {
     }
 
     /**
-     * Deletes all documents at the specified uid
+     * Deletes all documents at the specified index uid
      *
      * @param uid Partial index identifier for the requested documents
      * @return Meilisearch's Task API response
