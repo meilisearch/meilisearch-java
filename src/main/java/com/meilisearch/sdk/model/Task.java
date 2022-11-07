@@ -21,4 +21,6 @@ public class Task {
     protected Date finishedAt = null;
     protected TaskError error = null;
     protected Details details = null;
+
+    public Task() {}
 }

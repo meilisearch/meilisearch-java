@@ -23,4 +23,6 @@ public class SearchResult implements Serializable {
     protected boolean exhaustiveFacetsCount;
     protected int processingTimeMs;
     protected String query;
+
+    public SearchResult() {}
 }

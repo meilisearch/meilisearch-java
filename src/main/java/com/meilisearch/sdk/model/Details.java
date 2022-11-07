@@ -18,4 +18,6 @@ public class Details {
     protected Map<String, String[]> synonyms;
     protected String distinctAttribute;
     protected TypoTolerance typoTolerance;
+
+    public Details() {}
 }

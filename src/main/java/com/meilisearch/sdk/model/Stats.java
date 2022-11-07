@@ -20,4 +20,6 @@ public class Stats {
         this.lastUpdate = lastUpdate;
         this.indexes = indexes;
     }
+
+    public Stats() {}
 }

@@ -9,6 +9,8 @@ public class IndexStats {
     protected boolean isIndexing;
     protected Map<String, Integer> fieldDistribution;
 
+    public IndexStats() {}
+
     public IndexStats(
             long numberOfDocuments, boolean isIndexing, Map<String, Integer> fieldDistribution) {
         this.numberOfDocuments = numberOfDocuments;
