@@ -256,62 +256,6 @@ Config config = new Config("http://localhost:7700", "masterKey", new myJsonHandl
 Client client = new Client(config);
 ```
 
-### Custom Client <!-- omit in toc -->
-
-To create a custom `Client` handler, create an object of `Client` and set the required parameters.
-
-A `Config` object should be passed, containing your host URL and your API key.
-
-```java
-Config config = new Config("http://localhost:7700", "masterKey");
-return new Client(config);
-```
-
-The `Client(config)` constructor sets the config instance to the member variable. It also sets the 4 other instances namely `gson()`, `IndexesHandler(config)`, `TasksHandler(config)` and `KeysHandler(config)`.
-
-Using the custom `Client`:
-
-```java
-Config config = new Config("http://localhost:7700", "masterKey");
-HttpAsyncClient client = HttpAsyncClients.createDefault();
-ApacheHttpClient customClient = new ApacheHttpClient(config, client);
-customClient.index("movies").search("American ninja");
-```
-
-#### Custom Http Request <!-- omit in toc -->
-
-To create a custom HTTP request, create an object of `BasicHttpRequest` and set the required parameters.
-
-The supported options are as follows:
-
-1. HTTP method: a `String` that can be set as following values: `HEAD`, `GET`, `POST`, `PUT`, or `DELETE`.
-2. Path: a `String` corresponding to the endpoint of the API.
-3. Headers: a `Map<String,String>` containing the header parameters in the form of key-value pair.
-4. Content: the `String` of your content.
-
-```java
-return new BasicHttpRequest(
-                    method,
-                    path,
-                    headers,
-                    content == null ? null : this.jsonHandler.encode(content));
-```
-
-Alternatively, there is an interface `RequestFactory` which has a method `create`.<br>
-In order to call this method, create an object of `RequestFactory` and call the method by passing the required parameters.
-
-Using the custom Http Request:
-
-```java
-public interface RequestFactory {
-    <T> HttpRequest<?> create(
-            HttpMethod method, String path, Map<String, String> headers, T content);
- }
-
-private final RequestFactory requestFactory;
-requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), {"id":"3"});
-```
-
 ## 🤖 Compatibility with Meilisearch
 
 This package only guarantees compatibility with the [version v0.27.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.27.0).

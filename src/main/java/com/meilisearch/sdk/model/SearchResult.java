@@ -9,7 +9,7 @@ import lombok.ToString;
 /**
  * Data Structure Result of `search`
  *
- * <p>Refer https://docs.meilisearch.com/references/search.html
+ * <p>https://docs.meilisearch.com/references/search.html
  */
 @Getter
 @ToString

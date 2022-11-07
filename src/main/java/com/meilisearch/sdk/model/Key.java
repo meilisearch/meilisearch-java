@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 /**
  * Data structure of Meilisearch response for a Key
  *
- * <p>Refer https://docs.meilisearch.com/reference/api/keys.html
+ * <p>https://docs.meilisearch.com/reference/api/keys.html
  */
 @Getter
 public class Key {

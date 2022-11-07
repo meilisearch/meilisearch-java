@@ -17,12 +17,12 @@ import java.util.TimeZone;
 
 /** Meilisearch client */
 public class Client {
-    public Config config;
-    public IndexesHandler indexesHandler;
-    public InstanceHandler instanceHandler;
-    public TasksHandler tasksHandler;
-    public KeysHandler keysHandler;
-    public JsonHandler jsonHandler;
+    private Config config;
+    private IndexesHandler indexesHandler;
+    private InstanceHandler instanceHandler;
+    private TasksHandler tasksHandler;
+    private KeysHandler keysHandler;
+    private JsonHandler jsonHandler;
 
     /**
      * Calls instance for Meilisearch client
@@ -39,7 +39,7 @@ public class Client {
     }
 
     /**
-     * Creates an index with a unique identifier Refer
+     * Creates an index with a unique identifier
      * https://docs.meilisearch.com/reference/api/indexes.html#create-an-index
      *
      * @param uid Unique identifier for the index to create
@@ -51,7 +51,7 @@ public class Client {
     }
 
     /**
-     * Creates an index with a unique identifier Refer
+     * Creates an index with a unique identifier
      * https://docs.meilisearch.com/reference/api/indexes.html#create-an-index
      *
      * @param uid Unique identifier for the index to create
@@ -64,28 +64,28 @@ public class Client {
     }
 
     /**
-     * Gets all indexes in the current Meilisearch instance Refer
+     * Gets all indexes in the current Meilisearch instance
      * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
-     * @return List of indexes in the Meilisearch client
+     * @return Array of indexes in the Meilisearch client
      * @throws MeilisearchException if an error occurs
      */
     public Index[] getIndexes() throws MeilisearchException {
-        Index[] meiliSearchIndexList = jsonHandler.decode(getRawIndexList(), Index[].class);
-        for (Index indexes : meiliSearchIndexList) {
+        Index[] meiliSearchIndexes = jsonHandler.decode(getRawIndexes(), Index[].class);
+        for (Index indexes : meiliSearchIndexes) {
             indexes.setConfig(this.config);
         }
-        return meiliSearchIndexList;
+        return meiliSearchIndexes;
     }
 
     /**
-     * Gets all indexes in the current Meilisearch instance Refer
+     * Gets all indexes in the current Meilisearch instance
      * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
      * @return Meilisearch API response as String
      * @throws MeilisearchException if an error occurs
      */
-    public String getRawIndexList() throws MeilisearchException {
+    public String getRawIndexes() throws MeilisearchException {
         return this.indexesHandler.getAll();
     }
 
@@ -106,7 +106,7 @@ public class Client {
     }
 
     /**
-     * Gets single index by its unique identifier Refer
+     * Gets single index by its unique identifier
      * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
      *
      * @param uid Unique identifier of the index to get
@@ -120,7 +120,7 @@ public class Client {
     }
 
     /**
-     * Gets single index by its unique identifier Refer
+     * Gets single index by its unique identifier
      * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
      *
      * @param uid Unique identifier of the index to get
@@ -132,7 +132,7 @@ public class Client {
     }
 
     /**
-     * Updates the primary key of an index in the Meilisearch instance Refer
+     * Updates the primary key of an index in the Meilisearch instance
      * https://docs.meilisearch.com/reference/api/indexes.html#update-an-index
      *
      * @param uid Unique identifier of the index to update
@@ -145,7 +145,7 @@ public class Client {
     }
 
     /**
-     * Deletes single index by its unique identifier Refer
+     * Deletes single index by its unique identifier
      * https://docs.meilisearch.com/reference/api/indexes.html#delete-one-index
      *
      * @param uid Unique identifier of the index to delete
@@ -158,7 +158,7 @@ public class Client {
 
     // TODO createDump will return a Task in v0.28
     // /**
-    //  * Triggers the creation of a Meilisearch dump. Refer
+    //  * Triggers the creation of a Meilisearch dump.
     //  * https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
     //  *
     //  * @return Dump instance
@@ -168,7 +168,7 @@ public class Client {
     //     return this.dumpHandler.createDump();
     // }
     // /**
-    //  * Creates a dump Refer https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
+    //  * Creates a dump https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
     //  *
     //  * @return Dump object with Meilisearch API response
     //  * @throws MeilisearchException if an error occurs
@@ -190,7 +190,7 @@ public class Client {
     }
 
     /**
-     * Gets the status and availability of a Meilisearch instance Refer
+     * Gets the status and availability of a Meilisearch instance
      * https://docs.meilisearch.com/reference/api/health.html#health
      *
      * @return True if the Meilisearch instance is available or false if it is not
@@ -201,7 +201,7 @@ public class Client {
     }
 
     /**
-     * Gets extended information and metrics about indexes and the Meilisearch database Refer
+     * Gets extended information and metrics about indexes and the Meilisearch database
      * https://docs.meilisearch.com/reference/api/stats.html#stats-object
      *
      * @return Stats instance from Meilisearch API response
@@ -212,7 +212,7 @@ public class Client {
     }
 
     /**
-     * Gets the version of Meilisearch instance Refer
+     * Gets the version of Meilisearch instance
      * https://docs.meilisearch.com/reference/api/version.html#version
      *
      * @return Meilisearch API response
@@ -223,7 +223,7 @@ public class Client {
     }
 
     /**
-     * Retrieves a task with the specified uid Refer
+     * Retrieves a task with the specified uid
      * https://docs.meilisearch.com/reference/api/tasks.html#get-one-task
      *
      * @param uid Identifier of the requested Task
@@ -235,7 +235,7 @@ public class Client {
     }
 
     /**
-     * Retrieves list of tasks Refer https://docs.meilisearch.com/reference/api/tasks.html#get-tasks
+     * Retrieves list of tasks https://docs.meilisearch.com/reference/api/tasks.html#get-tasks
      *
      * @return List of tasks in the Meilisearch client
      * @throws MeilisearchException if an error occurs
@@ -255,7 +255,7 @@ public class Client {
     }
 
     /**
-     * Retrieves the key with the specified uid Refer
+     * Retrieves the key with the specified uid
      * https://docs.meilisearch.com/reference/api/keys.html#get-one-key
      *
      * @param uid Identifier of the requested Key
@@ -267,8 +267,7 @@ public class Client {
     }
 
     /**
-     * Retrieves list of keys Refer
-     * https://docs.meilisearch.com/reference/api/keys.html#get-all-keys
+     * Retrieves list of keys https://docs.meilisearch.com/reference/api/keys.html#get-all-keys
      *
      * @return List of keys in the Meilisearch client
      * @throws MeilisearchException if an error occurs
@@ -278,7 +277,7 @@ public class Client {
     }
 
     /**
-     * Creates a key Refer https://docs.meilisearch.com/reference/api/keys.html#create-a-key
+     * Creates a key https://docs.meilisearch.com/reference/api/keys.html#create-a-key
      *
      * @param options Key containing the options of the key
      * @return Key Instance
@@ -289,7 +288,7 @@ public class Client {
     }
 
     /**
-     * Updates a key Refer https://docs.meilisearch.com/reference/api/keys.html#update-a-key
+     * Updates a key https://docs.meilisearch.com/reference/api/keys.html#update-a-key
      *
      * @param key String containing the key
      * @param options String containing the options to update
@@ -301,7 +300,7 @@ public class Client {
     }
 
     /**
-     * Deletes a key Refer https://docs.meilisearch.com/reference/api/keys.html#delete-a-key
+     * Deletes a key https://docs.meilisearch.com/reference/api/keys.html#delete-a-key
      *
      * @param key String containing the key
      * @throws MeilisearchException if an error occurs
@@ -315,7 +314,7 @@ public class Client {
     }
 
     /**
-     * Generate a tenant token Refer
+     * Generate a tenant token
      * https://docs.meilisearch.com/learn/security/tenant_tokens.html#multitenancy-and-tenant-tokens
      *
      * @param searchRules A Map of string, object which contains the rules to be enforced at search
