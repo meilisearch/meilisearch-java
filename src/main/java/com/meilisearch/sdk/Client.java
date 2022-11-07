@@ -71,11 +71,11 @@ public class Client {
      * @throws MeilisearchException if an error occurs
      */
     public Index[] getIndexes() throws MeilisearchException {
-        Index[] meiliSearchIndexes = jsonHandler.decode(getRawIndexes(), Index[].class);
-        for (Index indexes : meiliSearchIndexes) {
-            indexes.setConfig(this.config);
+        Index[] indexes = jsonHandler.decode(getRawIndexes(), Index[].class);
+        for (Index index : indexes) {
+            index.setConfig(this.config);
         }
-        return meiliSearchIndexes;
+        return indexes;
     }
 
     /**
