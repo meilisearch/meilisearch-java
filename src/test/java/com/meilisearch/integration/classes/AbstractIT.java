@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.Client;
 import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.json.JacksonJsonHandler;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.Result;
 import com.meilisearch.sdk.model.Task;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractIT {
     protected Client client;
+    protected Client clientJackson;
     protected final Gson gson = new Gson();
 
     private final Map<String, TestData<?>> testData = new HashMap<>();
@@ -36,6 +38,14 @@ public abstract class AbstractIT {
 
     public void setUp() {
         if (client == null) client = new Client(new Config(getMeilisearchHost(), "masterKey"));
+    }
+
+    public void setUpJacksonClient() {
+        if (clientJackson == null)
+            clientJackson =
+                    new Client(
+                            new Config(
+                                    getMeilisearchHost(), "masterKey", new JacksonJsonHandler()));
     }
 
     public static void cleanup() {

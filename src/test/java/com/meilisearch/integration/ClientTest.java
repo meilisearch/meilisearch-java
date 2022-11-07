@@ -26,6 +26,7 @@ public class ClientTest extends AbstractIT {
     @BeforeEach
     public void initialize() {
         setUp();
+        setUpJacksonClient();
         if (testData == null) testData = this.getTestData(MOVIES_INDEX, Movie.class);
     }
 
@@ -46,6 +47,20 @@ public class ClientTest extends AbstractIT {
         client.deleteIndex(index.getUid());
     }
 
+    /** Test Index creation without PrimaryKey with Jackson Json Handler */
+    @Test
+    public void testCreateIndexWithoutPrimaryKeyWithJacksonJsonHandler() throws Exception {
+        String indexUid = "CreateIndexWithoutPrimaryKeyWithJacksonJsonHandler";
+        Task task = clientJackson.createIndex(indexUid);
+        clientJackson.waitForTask(task.getUid());
+        Index index = clientJackson.getIndex(indexUid);
+
+        assertEquals(index.getUid(), indexUid);
+        assertNull(index.getPrimaryKey());
+
+        clientJackson.deleteIndex(index.getUid());
+    }
+
     /** Test Index creation with PrimaryKey */
     @Test
     public void testCreateIndexWithPrimaryKey() throws Exception {
@@ -56,6 +71,20 @@ public class ClientTest extends AbstractIT {
         assertEquals(index.getPrimaryKey(), this.primaryKey);
 
         client.deleteIndex(index.getUid());
+    }
+
+    /** Test Index creation with PrimaryKey with Jackson Json Handler */
+    @Test
+    public void testCreateIndexWithPrimaryKeyWithJacksonJsonHandler() throws Exception {
+        String indexUid = "CreateIndexWithPrimaryKeyWithJacksonJsonHandler";
+        Task task = clientJackson.createIndex(indexUid, this.primaryKey);
+        clientJackson.waitForTask(task.getUid());
+        Index index = clientJackson.getIndex(indexUid);
+
+        assertEquals(index.getUid(), indexUid);
+        assertEquals(index.getPrimaryKey(), this.primaryKey);
+
+        clientJackson.deleteIndex(index.getUid());
     }
 
     /** Test Index creation twice doesn't throw an error: already exists */
@@ -70,7 +99,9 @@ public class ClientTest extends AbstractIT {
         Index indexDuplicate = createEmptyIndex(indexUid, this.primaryKey);
 
         assertEquals(index.getUid(), indexUid);
+        assertEquals(indexDuplicate.getUid(), indexUid);
         assertEquals(index.getPrimaryKey(), this.primaryKey);
+        assertEquals(indexDuplicate.getPrimaryKey(), this.primaryKey);
 
         client.deleteIndex(index.getUid());
     }
@@ -122,12 +153,12 @@ public class ClientTest extends AbstractIT {
         client.deleteIndex(index.getUid());
     }
 
-    /** Test getIndexList */
+    /** Test getIndexes */
     @Test
-    public void testGetIndexList() throws Exception {
-        String[] indexUids = {"GetIndexList", "GetIndexList2"};
-        Index index1 = createEmptyIndex(indexUids[0]);
-        Index index2 = createEmptyIndex(indexUids[1], this.primaryKey);
+    public void testGetIndexes() throws Exception {
+        String[] indexUids = {"GetIndexes", "GetIndexes2"};
+        createEmptyIndex(indexUids[0]);
+        createEmptyIndex(indexUids[1], this.primaryKey);
         Index[] indexes = client.getIndexes();
 
         assertEquals(2, indexes.length);
@@ -138,17 +169,17 @@ public class ClientTest extends AbstractIT {
         client.deleteIndex(indexUids[1]);
     }
 
-    /** Test getRawIndexList */
+    /** Test getRawIndexes */
     @Test
-    public void testGetRawIndexList() throws Exception {
-        String[] indexUids = {"GetRawIndexList", "GetRawIndexList2"};
-        Index index1 = createEmptyIndex(indexUids[0]);
-        Index index2 = createEmptyIndex(indexUids[1], this.primaryKey);
+    public void testGetRawIndexes() throws Exception {
+        String[] indexUids = {"GetRawIndexes", "GetRawIndexes2"};
+        createEmptyIndex(indexUids[0]);
+        createEmptyIndex(indexUids[1], this.primaryKey);
 
-        String indexes = client.getRawIndexList();
+        String indexes = client.getRawIndexes();
         JsonArray jsonIndexArray = JsonParser.parseString(indexes).getAsJsonArray();
 
-        assertEquals(jsonIndexArray.size(), 2);
+        assertEquals(4, jsonIndexArray.size());
         assert (Arrays.asList(indexUids)
                 .contains(jsonIndexArray.get(0).getAsJsonObject().get("uid").getAsString()));
         assert (Arrays.asList(indexUids)
