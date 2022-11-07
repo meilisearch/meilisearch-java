@@ -27,6 +27,7 @@ public class DocumentsTest extends AbstractIT {
     @BeforeEach
     public void initialize() {
         this.setUp();
+        this.setUpJacksonClient();
     }
 
     @AfterAll
@@ -105,6 +106,26 @@ public class DocumentsTest extends AbstractIT {
 
         String indexUid = "AddDocumentsMultiple";
         Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        Task task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getUid());
+        Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        for (int i = 0; i < movies.length; i++) {
+            Movie movie =
+                    this.gson.fromJson(
+                            index.getDocument(testData.getData().get(i).getId()), Movie.class);
+            assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
+        }
+    }
+
+    /** Test Add multiple documents with Jackson Json Handler */
+    @Test
+    public void testAddDocumentsMultipleWithJacksonJsonHandler() throws Exception {
+
+        String indexUid = "AddDocumentsMultipleWithJacksonJsonHandler";
+        Index index = clientJackson.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         Task task = index.addDocuments(testData.getRaw());

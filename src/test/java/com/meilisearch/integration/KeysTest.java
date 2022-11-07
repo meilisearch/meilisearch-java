@@ -18,6 +18,7 @@ public class KeysTest extends AbstractIT {
     @BeforeEach
     public void initialize() {
         this.setUp();
+        this.setUpJacksonClient();
     }
 
     @AfterAll
@@ -40,6 +41,23 @@ public class KeysTest extends AbstractIT {
             assertNotNull(key.getIndexes());
             assertNotNull(key.getDescription());
             assertNull(key.getExpiresAt());
+            assertNotNull(key.getCreatedAt());
+            assertNotNull(key.getUpdatedAt());
+        }
+    }
+
+    /** Test Get Keys with Jackson Json Handler */
+    @Test
+    public void testClientGetKeysWithJacksonJsonHandler() throws Exception {
+        Result<Key> result = clientJackson.getKeys();
+        Key[] keys = result.getResults();
+
+        assertEquals(5, keys.length);
+
+        for (Key key : keys) {
+            assertNotNull(key.getKey());
+            assertNotNull(key.getActions());
+            assertNotNull(key.getIndexes());
             assertNotNull(key.getCreatedAt());
             assertNotNull(key.getUpdatedAt());
         }

@@ -38,7 +38,7 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     Task create(String uid, String primaryKey) throws MeilisearchException {
-        HashMap<String, Object> index = new HashMap<String, Object>();
+        HashMap<String, String> index = new HashMap<String, String>();
         index.put("uid", uid);
         index.put("primaryKey", primaryKey);
 
@@ -76,7 +76,7 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     Task updatePrimaryKey(String uid, String primaryKey) throws MeilisearchException {
-        HashMap<String, Object> index = new HashMap<String, Object>();
+        HashMap<String, String> index = new HashMap<String, String>();
         index.put("primaryKey", primaryKey);
 
         String requestQuery = "/indexes/" + uid;
