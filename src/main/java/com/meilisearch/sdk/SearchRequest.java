@@ -334,8 +334,8 @@ public class SearchRequest {
      *
      * @param q Query String
      */
-    public void setQuery(String q) {
-        setQ(q);
+    public SearchRequest setQuery(String q) {
+        return setQ(q);
     }
 
     /**
