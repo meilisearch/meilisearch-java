@@ -225,7 +225,7 @@ index.search(
 
 #### Default JSON `GsonJsonHandler` <!-- omit in toc -->
 
-The default JSON library used in the Meilisearch-Java SDK is `Gson`. You can easily use another library with the help of the ready-to-use `JsonHandler` Class.
+The default JSON library is `Gson`. You can however use another library with the `JsonHandler` Class.
 
 *Notes*: We strongly recommend using the `Gson` library.
 
