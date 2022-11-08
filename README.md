@@ -231,7 +231,7 @@ The default JSON library is `Gson`. You can however use another library with the
 
 #### Using `JacksonJsonHandler` <!-- omit in toc -->
 
-Set up your client by initializing your `Config` with a new `JacksonJsonHandler` object.
+Set up your client by initializing `Config` with a new `JacksonJsonHandler` object.
 
 ```java
 import com.meilisearch.sdk.json.JacksonJsonHandler;
