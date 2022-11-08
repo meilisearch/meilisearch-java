@@ -231,8 +231,7 @@ The default JSON library is `Gson`. You can however use another library with the
 
 #### Use a Custom `JacksonJsonHandler` <!-- omit in toc -->
 
-Using the `jackson json` Library:
-Just create a `JacksonJsonHandler` object and send it through the `Config` object to the parameterized client.
+Create a `JacksonJsonHandler` object and send it through the `Config` object to the parameterized client.
 
 ```java
 import com.meilisearch.sdk.json.JacksonJsonHandler;
