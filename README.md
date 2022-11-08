@@ -242,7 +242,7 @@ Client client = new Client(config);
 
 #### Use a Custom `JsonHandler` <!-- omit in toc -->
 
-To create your own `JsonHandler`, you will need to make it implement the two methods of the `JsonHandler` class. Then pass it to the `Client`.
+To create your own `JsonHandler`, it has to implement the two methods of the `JsonHandler` class. Then pass it to the `Client`.
 
 ```java
     String encode(Object o) throws Exception;
