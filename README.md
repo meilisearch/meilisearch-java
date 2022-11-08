@@ -229,7 +229,7 @@ The default JSON library is `Gson`. You can however use another library with the
 
 *Notes*: We strongly recommend using the `Gson` library.
 
-#### Use a Custom `JacksonJsonHandler` <!-- omit in toc -->
+#### Using `JacksonJsonHandler` <!-- omit in toc -->
 
 Create a `JacksonJsonHandler` object and send it through the `Config` object to the parameterized client.
 
