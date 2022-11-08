@@ -20,7 +20,7 @@ public class Task {
     protected Date startedAt = null;
     protected Date finishedAt = null;
     protected TaskError error = null;
-    protected Details details = null;
+    protected TaskDetails details = null;
 
     public Task() {}
 }

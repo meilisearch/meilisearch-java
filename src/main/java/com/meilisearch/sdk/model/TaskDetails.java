@@ -4,7 +4,7 @@ import java.util.Map;
 import lombok.Getter;
 
 @Getter
-public class Details {
+public class TaskDetails {
     protected int receivedDocuments;
     protected int indexedDocuments;
     protected int deletedDocuments;
@@ -19,5 +19,5 @@ public class Details {
     protected String distinctAttribute;
     protected TypoTolerance typoTolerance;
 
-    public Details() {}
+    public TaskDetails() {}
 }
