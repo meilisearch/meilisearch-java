@@ -333,6 +333,7 @@ public class SearchRequest {
      * <p>This method is an alias of setQ()
      *
      * @param q Query String
+     * @return SearchRequest
      */
     public SearchRequest setQuery(String q) {
         return setQ(q);

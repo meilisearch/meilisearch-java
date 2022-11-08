@@ -3,14 +3,16 @@ package com.meilisearch.sdk;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.json.JsonHandler;
 import lombok.Getter;
+import lombok.Setter;
 
 /** Meilisearch configuration */
 @Getter
+@Setter
 public class Config {
     protected final String hostUrl;
     protected final String apiKey;
-    protected final JsonHandler jsonHandler;
     protected final HttpClient httpClient;
+    protected JsonHandler jsonHandler;
 
     /**
      * Creates a configuration without an API key
@@ -18,20 +20,7 @@ public class Config {
      * @param hostUrl URL of the Meilisearch instance
      */
     public Config(String hostUrl) {
-        this(hostUrl, "", new GsonJsonHandler());
-    }
-
-    /**
-     * Creates a configuration without an API key and with a JsonHandler
-     *
-     * @param hostUrl URL of the Meilisearch instance
-     * @param jsonHandler Json handler to serialize and deserialize Java objects to JSON
-     */
-    public Config(String hostUrl, JsonHandler jsonHandler) {
-        this.hostUrl = hostUrl;
-        this.apiKey = "";
-        this.jsonHandler = jsonHandler;
-        this.httpClient = new HttpClient(this);
+        this(hostUrl, "");
     }
 
     /**
@@ -44,20 +33,6 @@ public class Config {
         this.hostUrl = hostUrl;
         this.apiKey = apiKey;
         this.jsonHandler = new GsonJsonHandler();
-        this.httpClient = new HttpClient(this);
-    }
-
-    /**
-     * Creates a configuration with an API key and a JsonHandler
-     *
-     * @param hostUrl URL of the Meilisearch instance
-     * @param apiKey API key to pass to the header of requests sent to Meilisearch
-     * @param jsonHandler Json handler to serialize and deserialize Java objects to JSON
-     */
-    public Config(String hostUrl, String apiKey, JsonHandler jsonHandler) {
-        this.hostUrl = hostUrl;
-        this.apiKey = apiKey;
-        this.jsonHandler = jsonHandler;
         this.httpClient = new HttpClient(this);
     }
 

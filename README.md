@@ -231,12 +231,14 @@ The default JSON library is `Gson`. You can however use another library with the
 
 #### Using `JacksonJsonHandler` <!-- omit in toc -->
 
-Set up your client by initializing `Config` with a new `JacksonJsonHandler` object.
+Initialize your `Config` and assign it a new `JacksonJsonHandler` object as `JsonHandler`.
+Set up your `Client` with it.
 
 ```java
 import com.meilisearch.sdk.json.JacksonJsonHandler;
 
-Config config = new Config("http://localhost:7700", "masterKey", new JacksonJsonHandler());
+Config config = new Config("http://localhost:7700", "masterKey");
+config.setJsonHandler(new JacksonJsonHandler());
 Client client = new Client(config);
 ```
 
@@ -253,7 +255,8 @@ To create your own JSON handler, you must conform to the `JsonHandler` interface
  Then create your client by initializing your `Config` with your new handler.
 
 ```java
-Config config = new Config("http://localhost:7700", "masterKey", new myJsonHandler());
+Config config = new Config("http://localhost:7700", "masterKey");
+config.setJsonHandler(new myJsonHandler());
 Client client = new Client(config);
 ```
 
