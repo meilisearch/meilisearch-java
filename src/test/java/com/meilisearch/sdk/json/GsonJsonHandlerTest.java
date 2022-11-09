@@ -9,6 +9,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import com.google.gson.Gson;
+import com.meilisearch.sdk.exceptions.JsonEncodingException;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,7 @@ class GsonJsonHandlerTest {
     void serialize() throws Exception {
         assertEquals("test", classToTest.encode("test"));
         when(mapper.toJson(any(Movie.class))).thenThrow(new RuntimeException("Oh boy!"));
-        assertThrows(RuntimeException.class, () -> classToTest.encode(new Movie()));
+        assertThrows(JsonEncodingException.class, () -> classToTest.encode(new Movie()));
     }
 
     @Test
