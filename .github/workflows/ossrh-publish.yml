@@ -23,7 +23,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
       - name: Archive test report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: Test report
