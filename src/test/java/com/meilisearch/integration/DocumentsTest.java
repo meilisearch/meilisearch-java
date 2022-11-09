@@ -7,8 +7,8 @@ import com.google.gson.JsonObject;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.Task;
-import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+import com.meilisearch.sdk.exceptions.MeilisearchApiException;
+import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,10 +27,11 @@ public class DocumentsTest extends AbstractIT {
     @BeforeEach
     public void initialize() {
         this.setUp();
+        this.setUpJacksonClient();
     }
 
     @AfterAll
-    static void cleanMeiliSearch() {
+    static void cleanMeilisearch() {
         cleanup();
     }
 
@@ -105,6 +106,26 @@ public class DocumentsTest extends AbstractIT {
 
         String indexUid = "AddDocumentsMultiple";
         Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        Task task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getUid());
+        Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        for (int i = 0; i < movies.length; i++) {
+            Movie movie =
+                    this.gson.fromJson(
+                            index.getDocument(testData.getData().get(i).getId()), Movie.class);
+            assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
+        }
+    }
+
+    /** Test Add multiple documents with Jackson Json Handler */
+    @Test
+    public void testAddDocumentsMultipleWithJacksonJsonHandler() throws Exception {
+
+        String indexUid = "AddDocumentsMultipleWithJacksonJsonHandler";
+        Index index = clientJackson.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         Task task = index.addDocuments(testData.getRaw());
@@ -466,7 +487,7 @@ public class DocumentsTest extends AbstractIT {
         task = index.deleteDocument(toDelete.getId());
         index.waitForTask(task.getUid());
 
-        assertThrows(MeiliSearchApiException.class, () -> index.getDocument(toDelete.getId()));
+        assertThrows(MeilisearchApiException.class, () -> index.getDocument(toDelete.getId()));
     }
 
     /** Test deleteDocuments */
