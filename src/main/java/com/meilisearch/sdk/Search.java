@@ -1,12 +1,11 @@
 package com.meilisearch.sdk;
 
-import com.meilisearch.sdk.json.GsonJsonHandler;
+import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.SearchResult;
 
 /** Search Object for searching on indexes */
 public class Search {
-    private final MeiliSearchHttpRequest meilisearchHttpRequest;
-    private GsonJsonHandler jsonGson = new GsonJsonHandler();
+    private final HttpClient httpClient;
 
     /**
      * Constructor for the Meilisearch Search object
@@ -14,7 +13,7 @@ public class Search {
      * @param config Meilisearch configuration
      */
     protected Search(Config config) {
-        meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+        httpClient = config.httpClient;
     }
 
     /**
@@ -23,12 +22,12 @@ public class Search {
      * @param uid Index identifier
      * @param q Query to search on index
      * @return search results, as raw data
-     * @throws Exception Search Exception or Client Error
+     * @throws MeilisearchException Search Exception or Client Error
      */
-    String rawSearch(String uid, String q) throws Exception {
+    String rawSearch(String uid, String q) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/search";
         SearchRequest sr = new SearchRequest(q);
-        return meilisearchHttpRequest.post(requestQuery, sr.getQuery());
+        return httpClient.post(requestQuery, sr, String.class);
     }
 
     /**
@@ -52,7 +51,7 @@ public class Search {
      * @param facetsDistribution Facets for which to retrieve the matching count
      * @param sort Sort queries by an attribute value
      * @return search results, as raw data
-     * @throws Exception Search Exception or Client Error
+     * @throws MeilisearchException Search Exception or Client Error
      */
     String rawSearch(
             String uid,
@@ -70,7 +69,7 @@ public class Search {
             boolean matches,
             String[] facetsDistribution,
             String[] sort)
-            throws Exception {
+            throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/search";
         SearchRequest sr =
                 new SearchRequest(
@@ -88,7 +87,7 @@ public class Search {
                         matches,
                         facetsDistribution,
                         sort);
-        return meilisearchHttpRequest.post(requestQuery, sr.getQuery());
+        return httpClient.post(requestQuery, sr, String.class);
     }
 
     /**
@@ -97,11 +96,11 @@ public class Search {
      * @param uid Index identifier
      * @param sr SearchRequest to search on index
      * @return search results, as raw data
-     * @throws Exception Search Exception or Client Error
+     * @throws MeilisearchException Search Exception or Client Error
      */
-    String rawSearch(String uid, SearchRequest sr) throws Exception {
+    String rawSearch(String uid, SearchRequest sr) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/search";
-        return meilisearchHttpRequest.post(requestQuery, sr.getQuery());
+        return httpClient.post(requestQuery, sr, String.class);
     }
 
     /**
@@ -110,10 +109,10 @@ public class Search {
      * @param uid Index identifier
      * @param q Query to search on index
      * @return search results
-     * @throws Exception Search Exception or Client Error
+     * @throws MeilisearchException Search Exception or Client Error
      */
-    SearchResult search(String uid, String q) throws Exception {
-        return jsonGson.decode(rawSearch(uid, q), SearchResult.class);
+    SearchResult search(String uid, String q) throws MeilisearchException {
+        return httpClient.jsonHandler.decode(rawSearch(uid, q), SearchResult.class);
     }
 
     /**
@@ -137,7 +136,7 @@ public class Search {
      * @param facetsDistribution Facets for which to retrieve the matching count
      * @param sort Sort queries by an attribute value
      * @return search results
-     * @throws Exception Search Exception or Client Error
+     * @throws MeilisearchException Search Exception or Client Error
      */
     SearchResult search(
             String uid,
@@ -155,8 +154,8 @@ public class Search {
             boolean matches,
             String[] facetsDistribution,
             String[] sort)
-            throws Exception {
-        return jsonGson.decode(
+            throws MeilisearchException {
+        return httpClient.jsonHandler.decode(
                 rawSearch(
                         uid,
                         q,
@@ -182,9 +181,9 @@ public class Search {
      * @param uid Index identifier
      * @param sr SearchRequest to search on index
      * @return search results
-     * @throws Exception Search Exception or Client Error
+     * @throws MeilisearchException Search Exception or Client Error
      */
-    SearchResult search(String uid, SearchRequest sr) throws Exception {
-        return jsonGson.decode(rawSearch(uid, sr), SearchResult.class);
+    SearchResult search(String uid, SearchRequest sr) throws MeilisearchException {
+        return httpClient.jsonHandler.decode(rawSearch(uid, sr), SearchResult.class);
     }
 }
