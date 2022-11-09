@@ -8,10 +8,10 @@ import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.SearchRequest;
-import com.meilisearch.sdk.Settings;
-import com.meilisearch.sdk.Task;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.model.SearchResult;
+import com.meilisearch.sdk.model.Settings;
+import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +40,7 @@ public class SearchTest extends AbstractIT {
     }
 
     @AfterAll
-    static void cleanMeiliSearch() {
+    static void cleanMeilisearch() {
         cleanup();
     }
 
@@ -51,7 +51,6 @@ public class SearchTest extends AbstractIT {
     public void testBasicSearch() throws Exception {
         String indexUid = "BasicSearch";
         Index index = client.index(indexUid);
-        GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         Task task = index.addDocuments(testData.getRaw());
@@ -72,7 +71,6 @@ public class SearchTest extends AbstractIT {
     public void testSearchOffset() throws Exception {
         String indexUid = "SearchOffset";
         Index index = client.index(indexUid);
-        GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         Task task = index.addDocuments(testData.getRaw());
@@ -91,7 +89,6 @@ public class SearchTest extends AbstractIT {
     public void testSearchLimit() throws Exception {
         String indexUid = "SearchLimit";
         Index index = client.index(indexUid);
-        GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         Task task = index.addDocuments(testData.getRaw());
@@ -308,7 +305,6 @@ public class SearchTest extends AbstractIT {
     public void testSearchFacetsDistribution() throws Exception {
         String indexUid = "SearchFacetsDistribution";
         Index index = client.index(indexUid);
-        GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         Task task = index.addDocuments(testData.getRaw());
@@ -452,7 +448,6 @@ public class SearchTest extends AbstractIT {
     public void testSearchMatches() throws Exception {
         String indexUid = "SearchMatches";
         Index index = client.index(indexUid);
-        GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         Task task = index.addDocuments(testData.getRaw());
@@ -469,7 +464,6 @@ public class SearchTest extends AbstractIT {
     public void testPlaceHolder() throws Exception {
         String indexUid = "placeHolder";
         Index index = client.index(indexUid);
-        GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         Task task = index.addDocuments(testData.getRaw());
@@ -485,7 +479,6 @@ public class SearchTest extends AbstractIT {
     public void testPlaceHolderWithLimit() throws Exception {
         String indexUid = "placeHolderWithLimit";
         Index index = client.index(indexUid);
-        GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         Task task = index.addDocuments(testData.getRaw());

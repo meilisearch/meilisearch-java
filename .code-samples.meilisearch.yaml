@@ -8,7 +8,7 @@ getting_started_typo_tolerance: |-
 get_one_index_1: |-
   client.getIndex("movies");
 list_all_indexes_1: |-
-  client.getAllIndexes();
+  client.getIndexes();
 create_an_index_1: |-
   client.createIndex("movies", "id");
 update_an_index_1: |-

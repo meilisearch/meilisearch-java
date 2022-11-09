@@ -1,7 +1,12 @@
 package com.meilisearch.sdk;
 
-import com.google.gson.Gson;
+import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.model.IndexStats;
+import com.meilisearch.sdk.model.Result;
 import com.meilisearch.sdk.model.SearchResult;
+import com.meilisearch.sdk.model.Settings;
+import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TypoTolerance;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,25 +18,16 @@ import org.json.JSONArray;
 /** Meilisearch index */
 @ToString
 public class Index implements Serializable {
-    @Getter String uid;
-
-    @Getter String primaryKey;
-
-    @Getter String createdAt;
-
-    @Getter @ToString.Exclude String updatedAt;
-
-    @Getter @ToString.Exclude Config config;
-
-    @ToString.Exclude Documents documents;
-
-    @ToString.Exclude TasksHandler tasksHandler;
-
-    @ToString.Exclude Search search;
-
-    @ToString.Exclude SettingsHandler settingsHandler;
-
-    Gson gson = new Gson();
+    @Getter protected String uid;
+    @Getter protected String primaryKey;
+    @Getter protected String createdAt;
+    @Getter @ToString.Exclude protected String updatedAt;
+    @Getter @ToString.Exclude protected Config config;
+    @ToString.Exclude protected Documents documents;
+    @ToString.Exclude protected TasksHandler tasksHandler;
+    @ToString.Exclude protected Search search;
+    @ToString.Exclude protected SettingsHandler settingsHandler;
+    @ToString.Exclude protected InstanceHandler instanceHandler;
 
     /**
      * Sets the Meilisearch configuration for the index
@@ -44,100 +40,109 @@ public class Index implements Serializable {
         this.tasksHandler = new TasksHandler(config);
         this.search = new Search(config);
         this.settingsHandler = new SettingsHandler(config);
+        this.instanceHandler = new InstanceHandler(config);
     }
 
     /**
-     * Gets a document in the index
+     * Gets a documents with the specified uid Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-one-document
      *
      * @param identifier Identifier of the document to get
      * @return Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String getDocument(String identifier) throws Exception {
+    public String getDocument(String identifier) throws MeilisearchException {
         return this.documents.getDocument(this.uid, identifier);
     }
 
     /**
-     * Gets documents in the index
+     * Gets documenta at the specified index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
      *
      * @return Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String getDocuments() throws Exception {
+    public String getDocuments() throws MeilisearchException {
         return this.documents.getDocuments(this.uid);
     }
 
     /**
-     * Gets documents in the index and limit the number of documents returned
+     * Gets documents at the specified index and limit the number of documents returned Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
      *
      * @param limits Maximum amount of documents to return
      * @return Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String getDocuments(int limits) throws Exception {
+    public String getDocuments(int limits) throws MeilisearchException {
         return this.documents.getDocuments(this.uid, limits);
     }
 
     /**
-     * Gets documents in the index and limit the number of documents returned
+     * Gets documents at the specified index and limit the number of documents returned Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
      *
      * @param limits Maximum amount of documents to return
      * @param offset Number of documents to skip
      * @return Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String getDocuments(int limits, int offset) throws Exception {
+    public String getDocuments(int limits, int offset) throws MeilisearchException {
         return this.documents.getDocuments(this.uid, limits, offset);
     }
 
     /**
-     * Gets documents in the index and limit the number of documents returned
+     * Gets documents at the specified index and limit the number of documents returned Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
      *
      * @param limits Maximum amount of documents to return
      * @param offset Number of documents to skip
      * @param attributesToRetrieve Document attributes to show
      * @return Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
     public String getDocuments(int limits, int offset, List<String> attributesToRetrieve)
-            throws Exception {
+            throws MeilisearchException {
         return this.documents.getDocuments(this.uid, limits, offset, attributesToRetrieve);
     }
 
     /**
-     * Adds a document in the index
+     * Adds/Replaces documents in the index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-replace-documents
      *
      * @param document Document to add in JSON string format
      * @return Task Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task addDocuments(String document) throws Exception {
+    public Task addDocuments(String document) throws MeilisearchException {
         return this.documents.addDocuments(this.uid, document, null);
     }
 
     /**
-     * Adds a document in the index
+     * Adds/Replaces documents in the index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-replace-documents
      *
      * @param document Document to add in JSON string format
      * @param primaryKey PrimaryKey of the document to add
      * @return Task Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task addDocuments(String document, String primaryKey) throws Exception {
+    public Task addDocuments(String document, String primaryKey) throws MeilisearchException {
         return this.documents.addDocuments(this.uid, document, primaryKey);
     }
 
     /**
-     * Adds a document in the index in batches
+     * Adds/Replaces documents in the index in batches Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-replace-documents
      *
      * @param batchSize size of the batch of documents
      * @param document Document to add in JSON string format
      * @param primaryKey PrimaryKey of the document to add
      * @return Task Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
     public Task[] addDocumentsInBatches(String document, Integer batchSize, String primaryKey)
-            throws Exception {
+            throws MeilisearchException {
 
         JSONArray jsonDocumentsArray = new JSONArray(document);
         JSONArray jsonSubArray = new JSONArray();
@@ -157,50 +162,54 @@ public class Index implements Serializable {
     }
 
     /**
-     * Add Documents in Index in Batches
+     * Adds/Replaces documents in index in batches Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-replace-documents
      *
      * @param document Document to add in JSON string format
      * @return Task Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task[] addDocumentsInBatches(String document) throws Exception {
+    public Task[] addDocumentsInBatches(String document) throws MeilisearchException {
         return this.addDocumentsInBatches(document, 1000, null);
     }
 
     /**
-     * Updates a document in the index
+     * Updates documents in the index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-update-documents
      *
      * @param document Document to update in JSON string format
      * @return Task Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task updateDocuments(String document) throws Exception {
+    public Task updateDocuments(String document) throws MeilisearchException {
         return this.documents.updateDocuments(this.uid, document, null);
     }
 
     /**
-     * Updates a document in the index
+     * Updates documents in the index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-update-documents
      *
      * @param document Document to update in JSON string format
      * @param primaryKey PrimaryKey of the document
      * @return Task Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task updateDocuments(String document, String primaryKey) throws Exception {
+    public Task updateDocuments(String document, String primaryKey) throws MeilisearchException {
         return this.documents.updateDocuments(this.uid, document, primaryKey);
     }
 
     /**
-     * Update Documents in Index in Batches
+     * Updates documents in index in batches Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-update-documents
      *
      * @param document Document to add in JSON string format
      * @param batchSize size of the batch of documents
      * @param primaryKey PrimaryKey of the document to add
      * @return Task Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
     public Task[] updateDocumentsInBatches(String document, Integer batchSize, String primaryKey)
-            throws Exception {
+            throws MeilisearchException {
 
         JSONArray jsonDocumentsArray = new JSONArray(document);
         JSONArray jsonSubArray = new JSONArray();
@@ -220,75 +229,81 @@ public class Index implements Serializable {
     }
 
     /**
-     * Update Documents in Index in Batches
+     * Updates documents in index in batches Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#add-or-update-documents
      *
      * @param document Document to add in JSON string format
      * @return Task Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task[] updateDocumentsInBatches(String document) throws Exception {
+    public Task[] updateDocumentsInBatches(String document) throws MeilisearchException {
         return this.updateDocumentsInBatches(document, 1000, null);
     }
 
     /**
-     * Deletes a document from the index
+     * Deletes a document from the index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#delete-one-document
      *
      * @param identifier Identifier of the document to delete
      * @return Task Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task deleteDocument(String identifier) throws Exception {
+    public Task deleteDocument(String identifier) throws MeilisearchException {
         return this.documents.deleteDocument(this.uid, identifier);
     }
 
     /**
-     * Deletes list of documents from the index
+     * Deletes list of documents from the index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#delete-documents-by-batch
      *
      * @param documentsIdentifiers list of identifiers of documents to delete
      * @return Task Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task deleteDocuments(List<String> documentsIdentifiers) throws Exception {
+    public Task deleteDocuments(List<String> documentsIdentifiers) throws MeilisearchException {
         return this.documents.deleteDocuments(this.uid, documentsIdentifiers);
     }
 
     /**
-     * Deletes all documents in the index
+     * Deletes all documents in the index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#delete-all-documents
      *
      * @return List of tasks Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task deleteAllDocuments() throws Exception {
+    public Task deleteAllDocuments() throws MeilisearchException {
         return this.documents.deleteAllDocuments(this.uid);
     }
 
     /**
-     * Searches documents in index
+     * Searches documents in the index Refer
+     * https://docs.meilisearch.com/reference/api/search.html#search-in-an-index-with-post-route
      *
      * @param q Query string
      * @return Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public SearchResult search(String q) throws Exception {
+    public SearchResult search(String q) throws MeilisearchException {
         return this.search.search(this.uid, q);
     }
 
     /**
-     * Searches documents in index
+     * Searches documents in the index Refer
+     * https://docs.meilisearch.com/reference/api/search.html#search-in-an-index-with-post-route
      *
      * @param searchRequest SearchRequest SearchRequest
      * @return Meilisearch API response
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public SearchResult search(SearchRequest searchRequest) throws Exception {
+    public SearchResult search(SearchRequest searchRequest) throws MeilisearchException {
         return this.search.search(this.uid, searchRequest);
     }
 
-    public String rawSearch(String query) throws Exception {
+    public String rawSearch(String query) throws MeilisearchException {
         return this.search.rawSearch(this.uid, query);
     }
 
-    public String rawSearch(SearchRequest searchRequest) throws Exception {
+    public String rawSearch(SearchRequest searchRequest) throws MeilisearchException {
         return this.search.rawSearch(this.uid, searchRequest);
     }
 
@@ -297,9 +312,9 @@ public class Index implements Serializable {
      * https://docs.meilisearch.com/reference/api/settings.html#get-settings
      *
      * @return settings of a given uid as String
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Settings getSettings() throws Exception {
+    public Settings getSettings() throws MeilisearchException {
         return this.settingsHandler.getSettings(this.uid);
     }
 
@@ -309,9 +324,9 @@ public class Index implements Serializable {
      *
      * @param settings the object that contains the data with the new settings
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task updateSettings(Settings settings) throws Exception {
+    public Task updateSettings(Settings settings) throws MeilisearchException {
         return this.settingsHandler.updateSettings(this.uid, settings);
     }
 
@@ -320,9 +335,9 @@ public class Index implements Serializable {
      * https://docs.meilisearch.com/reference/api/settings.html#reset-settings
      *
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetSettings() throws Exception {
+    public Task resetSettings() throws MeilisearchException {
         return this.settingsHandler.resetSettings(this.uid);
     }
 
@@ -331,9 +346,9 @@ public class Index implements Serializable {
      * https://docs.meilisearch.com/reference/api/settings.html#get-settings
      *
      * @return ranking rules of a given uid as String
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String[] getRankingRuleSettings() throws Exception {
+    public String[] getRankingRuleSettings() throws MeilisearchException {
         return this.settingsHandler.getRankingRuleSettings(this.uid);
     }
 
@@ -343,9 +358,9 @@ public class Index implements Serializable {
      *
      * @param rankingRules array that contain the data with the new ranking rules
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task updateRankingRuleSettings(String[] rankingRules) throws Exception {
+    public Task updateRankingRuleSettings(String[] rankingRules) throws MeilisearchException {
         return this.settingsHandler.updateRankingRuleSettings(this.uid, rankingRules);
     }
 
@@ -354,20 +369,20 @@ public class Index implements Serializable {
      * https://docs.meilisearch.com/reference/api/settings.html#reset-settings
      *
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetRankingRuleSettings() throws Exception {
+    public Task resetRankingRuleSettings() throws MeilisearchException {
         return this.settingsHandler.resetRankingRulesSettings(this.uid);
     }
 
     /**
      * Gets the synonyms settings of the index Refer
-     * https://docs.meilisearch.com/reference/api/settings.html#get-settings
+     * https://docs.meilisearch.com/reference/api/synonyms.html#get-synonyms
      *
      * @return synonyms of a given uid as String
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Map<String, String[]> getSynonymsSettings() throws Exception {
+    public Map<String, String[]> getSynonymsSettings() throws MeilisearchException {
         return this.settingsHandler.getSynonymsSettings(this.uid);
     }
 
@@ -377,9 +392,9 @@ public class Index implements Serializable {
      *
      * @param synonyms key (String) value (array) pair of synonyms
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task updateSynonymsSettings(Map<String, String[]> synonyms) throws Exception {
+    public Task updateSynonymsSettings(Map<String, String[]> synonyms) throws MeilisearchException {
         return this.settingsHandler.updateSynonymsSettings(this.uid, synonyms);
     }
 
@@ -388,9 +403,9 @@ public class Index implements Serializable {
      * https://docs.meilisearch.com/reference/api/synonyms.html#reset-synonyms
      *
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetSynonymsSettings() throws Exception {
+    public Task resetSynonymsSettings() throws MeilisearchException {
         return this.settingsHandler.resetSynonymsSettings(this.uid);
     }
 
@@ -399,9 +414,9 @@ public class Index implements Serializable {
      * https://docs.meilisearch.com/reference/api/stop_words.html#get-stop-words
      *
      * @return stop-words of a given uid as String
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String[] getStopWordsSettings() throws Exception {
+    public String[] getStopWordsSettings() throws MeilisearchException {
         return this.settingsHandler.getStopWordsSettings(this.uid);
     }
 
@@ -411,9 +426,9 @@ public class Index implements Serializable {
      *
      * @param stopWords An array of strings that contains the stop-words.
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task updateStopWordsSettings(String[] stopWords) throws Exception {
+    public Task updateStopWordsSettings(String[] stopWords) throws MeilisearchException {
         return this.settingsHandler.updateStopWordsSettings(this.uid, stopWords);
     }
 
@@ -422,238 +437,259 @@ public class Index implements Serializable {
      * https://docs.meilisearch.com/reference/api/stop_words.html#reset-stop-words
      *
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetStopWordsSettings() throws Exception {
+    public Task resetStopWordsSettings() throws MeilisearchException {
         return this.settingsHandler.resetStopWordsSettings(this.uid);
     }
 
     /**
-     * Get the searchable attributes of an index.
+     * Gets the searchable attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/searchable_attributes.html#get-searchable-attributes
      *
      * @return searchable attributes of a given uid as String
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String[] getSearchableAttributesSettings() throws Exception {
+    public String[] getSearchableAttributesSettings() throws MeilisearchException {
         return this.settingsHandler.getSearchableAttributesSettings(this.uid);
     }
 
     /**
-     * Updates the searchable attributes an index Refer
+     * Updates the searchable attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/searchable_attributes.html#update-searchable-attributes
      *
      * @param searchableAttributes An array of strings that contains the searchable attributes.
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task updateSearchableAttributesSettings(String[] searchableAttributes) throws Exception {
+    public Task updateSearchableAttributesSettings(String[] searchableAttributes)
+            throws MeilisearchException {
         return this.settingsHandler.updateSearchableAttributesSettings(
                 this.uid, searchableAttributes);
     }
 
     /**
-     * Reset the searchable attributes of the index to the default value.
+     * Resets the searchable attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/searchable_attributes.html#reset-searchable-attributes
      *
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetSearchableAttributesSettings() throws Exception {
+    public Task resetSearchableAttributesSettings() throws MeilisearchException {
         return this.settingsHandler.resetSearchableAttributesSettings(this.uid);
     }
 
     /**
-     * Get the display attributes of an index.
+     * Gets the display attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/displayed_attributes.html#get-displayed-attributes
      *
      * @return display attributes of a given uid as String
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String[] getDisplayedAttributesSettings() throws Exception {
+    public String[] getDisplayedAttributesSettings() throws MeilisearchException {
         return this.settingsHandler.getDisplayedAttributesSettings(this.uid);
     }
 
     /**
-     * Updates the display attributes of an index Refer
+     * Updates the display attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/displayed_attributes.html#update-displayed-attributes
      *
      * @param displayAttributes An array of strings that contains attributes of an index to display
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task updateDisplayedAttributesSettings(String[] displayAttributes) throws Exception {
+    public Task updateDisplayedAttributesSettings(String[] displayAttributes)
+            throws MeilisearchException {
         return this.settingsHandler.updateDisplayedAttributesSettings(this.uid, displayAttributes);
     }
 
     /**
-     * Reset the displayed attributes of the index to the default value.
+     * Resets the displayed attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/displayed_attributes.html#reset-displayed-attributes
      *
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetDisplayedAttributesSettings() throws Exception {
+    public Task resetDisplayedAttributesSettings() throws MeilisearchException {
         return this.settingsHandler.resetDisplayedAttributesSettings(this.uid);
     }
 
     /**
-     * Get an index's filterable attributes.
+     * Gets the filterable attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/filterable_attributes.html#get-filterable-attributes
      *
      * @return filterable attributes of a given uid as String
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String[] getFilterableAttributesSettings() throws Exception {
+    public String[] getFilterableAttributesSettings() throws MeilisearchException {
         return this.settingsHandler.getFilterableAttributesSettings(this.uid);
     }
 
     /**
-     * Update an index's filterable attributes list. This will re-index all documents in the index.
+     * Updates the filterable attributes of the index. This will re-index all documents in the index
+     * Refer
      * https://docs.meilisearch.com/reference/api/filterable_attributes.html#update-filterable-attributes
      *
      * @param filterableAttributes An array of strings containing the attributes that can be used as
      *     filters at query time.
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task updateFilterableAttributesSettings(String[] filterableAttributes) throws Exception {
+    public Task updateFilterableAttributesSettings(String[] filterableAttributes)
+            throws MeilisearchException {
         return this.settingsHandler.updateFilterableAttributesSettings(
                 this.uid, filterableAttributes);
     }
 
     /**
-     * Reset an index's filterable attributes list back to its default value.
+     * Resets the filterable attributes of the index Refer
      * https://docs.meilisearch.com/reference/api/filterable_attributes.html#reset-filterable-attributes
      *
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetFilterableAttributesSettings() throws Exception {
+    public Task resetFilterableAttributesSettings() throws MeilisearchException {
         return this.settingsHandler.resetFilterableAttributesSettings(this.uid);
     }
 
     /**
-     * Get the distinct attribute field of an index.
+     * Gets the distinct attribute field of the index Refer
      * https://docs.meilisearch.com/reference/api/distinct_attribute.html#get-distinct-attribute
      *
      * @return distinct attribute field of a given uid as String
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public String getDistinctAttributeSettings() throws Exception {
+    public String getDistinctAttributeSettings() throws MeilisearchException {
         return this.settingsHandler.getDistinctAttributeSettings(this.uid);
     }
 
     /**
-     * Update the distinct attribute field of an index.
+     * Updates the distinct attribute field of the index Refer
      * https://docs.meilisearch.com/reference/api/distinct_attribute.html#update-distinct-attribute
      *
      * @param distinctAttribute A String: the field name.
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task updateDistinctAttributeSettings(String distinctAttribute) throws Exception {
+    public Task updateDistinctAttributeSettings(String distinctAttribute)
+            throws MeilisearchException {
         return this.settingsHandler.updateDistinctAttributeSettings(this.uid, distinctAttribute);
     }
 
     /**
-     * Reset the distinct attribute field of an index to its default value.
+     * Resets the distinct attribute field of the index Refer
      * https://docs.meilisearch.com/reference/api/distinct_attribute.html#reset-distinct-attribute
      *
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetDistinctAttributeSettings() throws Exception {
+    public Task resetDistinctAttributeSettings() throws MeilisearchException {
         return this.settingsHandler.resetDistinctAttributeSettings(this.uid);
     }
 
     /**
-     * Get the typo tolerance field of an index.
+     * Gets the typo tolerance field of the index Refer
      * https://docs.meilisearch.com/reference/api/typo_tolerance.html#get-typo-tolerance
      *
      * @return TypoTolerance instance from Index
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public TypoTolerance getTypoToleranceSettings() throws Exception {
+    public TypoTolerance getTypoToleranceSettings() throws MeilisearchException {
         return this.settingsHandler.getTypoToleranceSettings(this.uid);
     }
 
     /**
-     * Update the typo tolerance field of an index.
+     * Updates the typo tolerance field of the index Refer
      * https://docs.meilisearch.com/reference/api/typo_tolerance.html#update-typo-tolerance
      *
      * @param typoTolerance A TypoTolerance instance
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task updateTypoToleranceSettings(TypoTolerance typoTolerance) throws Exception {
+    public Task updateTypoToleranceSettings(TypoTolerance typoTolerance)
+            throws MeilisearchException {
         return this.settingsHandler.updateTypoToleranceSettings(this.uid, typoTolerance);
     }
 
     /**
-     * Reset the typo tolerance field of an index to its default value.
+     * Resets the typo tolerance field of the index Refer
      * https://docs.meilisearch.com/reference/api/typo_tolerance.html#reset-typo-tolerance
      *
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task resetTypoToleranceSettings() throws Exception {
+    public Task resetTypoToleranceSettings() throws MeilisearchException {
         return this.settingsHandler.resetTypoToleranceSettings(this.uid);
     }
 
     /**
-     * Retrieves an index tasks by its ID
+     * Gets extended information and metrics about indexes and the Meilisearch database Refer
+     * https://docs.meilisearch.com/reference/api/stats.html#stats-object
+     *
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     */
+    public IndexStats getStats() throws MeilisearchException {
+        return this.instanceHandler.getIndexStats(this.uid);
+    }
+
+    /**
+     * Retrieves an index tasks by its uid Refer
+     * https://docs.meilisearch.com/reference/api/tasks.html#get-one-task
      *
      * @param taskId Identifier of the requested index task
      * @return Task instance
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public Task getTask(int taskId) throws Exception {
+    public Task getTask(int taskId) throws MeilisearchException {
         return this.tasksHandler.getTask(this.uid, taskId);
     }
 
     /**
-     * Retrieves list of tasks of the index
+     * Retrieves list of tasks of the index Refer
+     * https://docs.meilisearch.com/reference/api/tasks.html#get-tasks
      *
-     * @return List of tasks in the MeiliSearch index
-     * @throws Exception if an error occurs
+     * @return List of tasks in the Meilisearch index
+     * @throws MeilisearchException if an error occurs
      */
-    public Task[] getTasks() throws Exception {
+    public Result<Task> getTasks() throws MeilisearchException {
         return this.tasksHandler.getTasks(this.uid);
     }
 
     /**
-     * Waits for a task to be processed
+     * Waits for a task to be processed Refer
+     * https://docs.meilisearch.com/reference/api/tasks.html#task-object
      *
      * @param taskId Identifier of the requested Task
-     * @throws Exception if an error occurs or if timeout is reached
+     * @throws MeilisearchException if an error occurs or if timeout is reached
      */
-    public void waitForTask(int taskId) throws Exception {
+    public void waitForTask(int taskId) throws MeilisearchException {
         this.tasksHandler.waitForTask(taskId, 5000, 50);
     }
 
     /**
-     * Waits for a task to be processed
+     * Waits for a task to be processed Refer
+     * https://docs.meilisearch.com/reference/api/tasks.html#task-object
      *
      * @param taskId ID of the index update
      * @param timeoutInMs number of milliseconds before throwing an Exception
      * @param intervalInMs number of milliseconds before requesting the status again
-     * @throws Exception if an error occurs or if timeout is reached
+     * @throws MeilisearchException if an error occurs or if timeout is reached
      */
-    public void waitForTask(int taskId, int timeoutInMs, int intervalInMs) throws Exception {
+    public void waitForTask(int taskId, int timeoutInMs, int intervalInMs)
+            throws MeilisearchException {
         this.tasksHandler.waitForTask(taskId, timeoutInMs, intervalInMs);
     }
 
     /**
      * Fetches the primary key of the index in the Meilisearch instance
      *
-     * @throws Exception if an error occurs
+     * @throws MeilisearchException if an error occurs
      */
-    public void fetchPrimaryKey() throws Exception {
+    public void fetchPrimaryKey() throws MeilisearchException {
         String requestQuery = "/indexes/" + this.uid;
-        MeiliSearchHttpRequest meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
-        Index retrievedIndex =
-                new Gson().fromJson(meilisearchHttpRequest.get(requestQuery), Index.class);
+        HttpClient httpClient = config.httpClient;
+        Index retrievedIndex = httpClient.get(requestQuery, Index.class);
         this.primaryKey = retrievedIndex.getPrimaryKey();
     }
 }
