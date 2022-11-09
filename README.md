@@ -24,21 +24,24 @@
 
 **Meilisearch Java** is the Meilisearch API client for Java developers.
 
-**Meilisearch** is an open-source search engine. [Discover what Meilisearch is!](https://github.com/meilisearch/meilisearch)
+**Meilisearch** is an open-source search engine. [Learn more about Meilisearch.](https://github.com/meilisearch/meilisearch)
 
 ## Table of Contents <!-- omit in toc -->
 
 - [📖 Documentation](#-documentation)
 - [🔧 Installation](#-installation)
-- [🚀 Getting Started](#-getting-started)
+- [🚀 Getting started](#-getting-started)
 - [🛠 Customization](#-customization)
 - [🤖 Compatibility with Meilisearch](#-compatibility-with-meilisearch)
-- [💡 Learn More](#-learn-more)
-- [⚙️ Development Workflow and Contributing](#️-development-workflow-and-contributing)
+- [💡 Learn more](#-learn-more)
+- [⚙️ Contributing](#️-contributing)
 
 ## 📖 Documentation
 
-See our [Documentation](https://docs.meilisearch.com/learn/tutorials/getting_started.html) or our [API References](https://docs.meilisearch.com/reference/api/).
+This readme contains all the documentation you need to start using this Meilisearch SDK.
+
+For general information on how to use Meilisearch—such as our API reference, tutorials, guides, and in-depth articles—refer to our [main documentation website](https://docs.meilisearch.com/).
+
 
 
 ## 🔧 Installation
@@ -82,7 +85,7 @@ For example, using the `curl` command in [your Terminal](https://itconnect.uw.ed
 
 NB: you can also download Meilisearch from **Homebrew** or **APT** or even run it using **Docker**.
 
-## 🚀 Getting Started
+## 🚀 Getting started
 
 #### Add documents <!-- omit in toc -->
 
@@ -223,125 +226,57 @@ index.search(
 
 ### JSON <!-- omit in toc -->
 
-#### Basic JSON <!-- omit in toc -->
+#### Default JSON `GsonJsonHandler` <!-- omit in toc -->
 
-The default JSON can be created by calling the default constructor of `JsonbJsonHandler` class which will create a config of type `JsonbConfig` and using this config. It will initialize the mapper variable by calling the create method of `JsonbBuilder` class.
+The default JSON library is `Gson`. You can however use another library with the `JsonHandler` Class.
 
-#### Creating a Custom `GsonJsonHandler` <!-- omit in toc -->
+*Notes*: We strongly recommend using the `Gson` library.
 
-To create a custom JSON handler, create an object of GsonJsonHandler and send the GSON object in the parameterized constructor.<br>
+#### Using `JacksonJsonHandler` <!-- omit in toc -->
+
+Initialize your `Config` and assign it a new `JacksonJsonHandler` object as `JsonHandler`.
+Set up your `Client` with it.
 
 ```java
-Gson gson = new GsonBuilder()
-             .disableHtmlEscaping()
-             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-             .setPrettyPrinting()
-             .serializeNulls()
-             .create();
-private GsonJsonHandler jsonGson = new GsonJsonHandler(gson);
-jsonGson.encode("your_data");
+import com.meilisearch.sdk.json.JacksonJsonHandler;
+
+Config config = new Config("http://localhost:7700", "masterKey");
+config.setJsonHandler(new JacksonJsonHandler());
+Client client = new Client(config);
 ```
 
-#### Creating a Custom `JacksonJsonHandler` <!-- omit in toc -->
+#### Use a Custom `JsonHandler` <!-- omit in toc -->
 
-Another method is to create an object of `JacksonJsonHandler` and set the required parameters. The supported option is an object of `ObjectMapper`. It's passed as a parameter to the `JacksonJsonHandler`’s parameterized constructor. This is used to initialize the mapper variable.
+To create your own JSON handler, you must conform to the `JsonHandler` interface by implementing its two methods.
 
-The mapper variable is responsible for the encoding and decoding of the JSON.
+```java
+    String encode(Object o) throws Exception;
 
-Using the custom JSON:
+    <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters) throws Exception;
+```
+
+ Then create your client by initializing your `Config` with your new handler.
 
 ```java
 Config config = new Config("http://localhost:7700", "masterKey");
-HttpAsyncClient client = HttpAsyncClients.createDefault();
-ApacheHttpClient client = new ApacheHttpClient(config, client);
-private final JsonHandler jsonHandler = new JacksonJsonHandler(new ObjectMapper());
-private final RequestFactory requestFactory = new BasicRequestFactory(jsonHandler);
-private final GenericServiceTemplate serviceTemplate = new GenericServiceTemplate(client, jsonHandler, requestFactory);
-
-private final ServiceTemplate serviceTemplate;
-serviceTemplate.getProcessor().encode("your_data");
-```
-
-### Creating a Custom `JsonbJsonHandler <!-- omit in toc -->
-
-Another method of creating a JSON handler is to create an object of `JsonbJsonHandler` and send the `Jsonb` object to the parameterized constructor.
-
-```java
-Jsonb jsonb = JsonbBuilder.create();
-private JsonbJsonHandler jsonbHandler = new JsonbJsonHandler(jsonb);
-jsonbHandler.encode("your_data");
-```
-
-### Custom Client <!-- omit in toc -->
-
-To create a custom `Client` handler, create an object of `Client` and set the required parameters.
-
-A `Config` object should be passed, containing your host URL and your API key.
-
-```java
-Config config = new Config("http://localhost:7700", "masterKey");
-return new Client(config);
-```
-
-The `Client(config)` constructor sets the config instance to the member variable. It also sets the 3 other instances namely `gson()`, `IndexesHandler(config)` and `DumpHandler(config)`.
-
-Using the custom `Client`:
-
-```java
-Config config = new Config("http://localhost:7700", "masterKey");
-HttpAsyncClient client = HttpAsyncClients.createDefault();
-ApacheHttpClient customClient = new ApacheHttpClient(config, client);
-customClient.index("movies").search("American ninja");
-```
-
-#### Custom Http Request <!-- omit in toc -->
-
-To create a custom HTTP request, create an object of `BasicHttpRequest` and set the required parameters.
-
-The supported options are as follows:
-
-1. HTTP method: a `String` that can be set as following values: `HEAD`, `GET`, `POST`, `PUT`, or `DELETE`.
-2. Path: a `String` corresponding to the endpoint of the API.
-3. Headers: a `Map<String,String>` containing the header parameters in the form of key-value pair.
-4. Content: the `String` of your content.
-
-```java
-return new BasicHttpRequest(
-                    method,
-                    path,
-                    headers,
-                    content == null ? null : this.jsonHandler.encode(content));
-```
-
-Alternatively, there is an interface `RequestFactory` which has a method `create`.<br>
-In order to call this method, create an object of `RequestFactory` and call the method by passing the required parameters.
-
-Using the custom Http Request:
-
-```java
-public interface RequestFactory {
-    <T> HttpRequest<?> create(
-            HttpMethod method, String path, Map<String, String> headers, T content);
- }
-
-private final RequestFactory requestFactory;
-requestFactory.create(HttpMethod.GET, "/health", Collections.emptyMap(), {"id":"3"});
+config.setJsonHandler(new myJsonHandler());
+Client client = new Client(config);
 ```
 
 ## 🤖 Compatibility with Meilisearch
 
 This package only guarantees compatibility with the [version v0.27.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.27.0).
 
-## 💡 Learn More
+## 💡 Learn more
 
-The following sections may interest you:
+The following sections in our main documentation website may interest you:
 
 - **Manipulate documents**: see the [API references](https://docs.meilisearch.com/reference/api/documents.html) or read more about [documents](https://docs.meilisearch.com/learn/core_concepts/documents.html).
 - **Search**: see the [API references](https://docs.meilisearch.com/reference/api/search.html) or follow our guide on [search parameters](https://docs.meilisearch.com/reference/features/search_parameters.html).
 - **Manage the indexes**: see the [API references](https://docs.meilisearch.com/reference/api/indexes.html) or read more about [indexes](https://docs.meilisearch.com/learn/core_concepts/indexes.html).
 - **Configure the index settings**: see the [API references](https://docs.meilisearch.com/reference/api/settings.html) or follow our guide on [settings parameters](https://docs.meilisearch.com/reference/features/settings.html).
 
-## ⚙️ Development Workflow and Contributing
+## ⚙️ Contributing
 
 Any new contribution is more than welcome in this project!
 
