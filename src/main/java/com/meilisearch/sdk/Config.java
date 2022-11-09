@@ -1,12 +1,18 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.json.GsonJsonHandler;
+import com.meilisearch.sdk.json.JsonHandler;
 import lombok.Getter;
+import lombok.Setter;
 
 /** Meilisearch configuration */
 @Getter
+@Setter
 public class Config {
-    String hostUrl;
-    String apiKey;
+    protected final String hostUrl;
+    protected final String apiKey;
+    protected final HttpClient httpClient;
+    protected JsonHandler jsonHandler;
 
     /**
      * Creates a configuration without an API key
@@ -26,6 +32,8 @@ public class Config {
     public Config(String hostUrl, String apiKey) {
         this.hostUrl = hostUrl;
         this.apiKey = apiKey;
+        this.jsonHandler = new GsonJsonHandler();
+        this.httpClient = new HttpClient(this);
     }
 
     /**
