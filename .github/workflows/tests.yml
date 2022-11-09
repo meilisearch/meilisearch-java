@@ -26,8 +26,8 @@ jobs:
         cache: gradle
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Meilisearch (latest version) setup with Docker
-      run: docker run -d -p 7700:7700 getmeili/meilisearch:latest meilisearch --no-analytics --master-key='masterKey'
+    - name: Meilisearch (v0.27.2 version) setup with Docker
+      run: docker run -d -p 7700:7700 getmeili/meilisearch:v0.27.2 meilisearch --no-analytics --master-key='masterKey'
     - name: Build and run unit and integration tests
       run: ./gradlew build integrationTest
     - name: Archive test report

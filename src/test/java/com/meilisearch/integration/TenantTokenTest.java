@@ -7,12 +7,12 @@ import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Client;
 import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.Key;
-import com.meilisearch.sdk.Settings;
-import com.meilisearch.sdk.Task;
 import com.meilisearch.sdk.TenantTokenOptions;
-import com.meilisearch.sdk.exceptions.MeiliSearchException;
+import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.SearchResult;
+import com.meilisearch.sdk.model.Settings;
+import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,15 +26,13 @@ import org.junit.jupiter.api.Test;
 @Tag("integration")
 public class TenantTokenTest extends AbstractIT {
 
-    private TestData<Movie> testData;
-
     @BeforeEach
     public void initialize() {
         this.setUp();
     }
 
     @AfterAll
-    static void cleanMeiliSearch() {
+    static void cleanMeilisearch() {
         cleanup();
     }
 
@@ -42,7 +40,7 @@ public class TenantTokenTest extends AbstractIT {
     @Test
     public void testGenerateTenantTokenWithOnlySearchRules() throws Exception {
         String indexUid = "BasicGenerateToken";
-        Index index = createEmptyIndex(indexUid);
+        createEmptyIndex(indexUid);
         Key key = getPrivateKey();
 
         Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
@@ -61,7 +59,7 @@ public class TenantTokenTest extends AbstractIT {
     @Test
     public void testGenerateTenantTokenOnOneIndex() throws Exception {
         String indexUid = "GenerateTokenOnOneIndex";
-        Index index = createEmptyIndex(indexUid);
+        createEmptyIndex(indexUid);
         Key key = getPrivateKey();
 
         Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
@@ -113,7 +111,7 @@ public class TenantTokenTest extends AbstractIT {
     @Test
     public void testGenerateTenantTokenWithExpiresAt() throws Exception {
         String indexUid = "GenerateTokenWithExpiresAt";
-        Index index = createEmptyIndex(indexUid);
+        createEmptyIndex(indexUid);
         Key key = getPrivateKey();
 
         Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
@@ -138,7 +136,7 @@ public class TenantTokenTest extends AbstractIT {
     @Test
     public void testGenerateTenantTokenWithApiKey() throws Exception {
         String indexUid = "GenerateTokenWithApiKey";
-        Index index = createEmptyIndex(indexUid);
+        createEmptyIndex(indexUid);
         Key key = getPrivateKey();
 
         Map<String, Object> rules = new HashMap<String, Object>();
@@ -158,7 +156,7 @@ public class TenantTokenTest extends AbstractIT {
     @Test
     public void testGenerateTenantTokenWithAllOptions() throws Exception {
         String indexUid = "GenerateTokenWithAllOptions";
-        Index index = createEmptyIndex(indexUid);
+        createEmptyIndex(indexUid);
         Key key = getPrivateKey();
 
         Map<String, Object> rules = new HashMap<String, Object>();
@@ -181,18 +179,16 @@ public class TenantTokenTest extends AbstractIT {
     /** Test Create Tenant Token with no search rules */
     @Test
     public void testGenerateTenantTokenWithNoSearchRules() throws Exception {
-        String indexUid = "GenerateTokenWithNoSearchRules";
         Key key = getPrivateKey();
 
         Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
 
-        assertThrows(MeiliSearchException.class, () -> privateClient.generateTenantToken(null));
+        assertThrows(MeilisearchException.class, () -> privateClient.generateTenantToken(null));
     }
 
     /** Test Create Tenant Token with bad expireation date */
     @Test
     public void testGenerateTenantTokenWithBadExpiresAt() throws Exception {
-        String indexUid = "GenerateTenantTokenWithBadExpiresAt";
         Key key = getPrivateKey();
 
         Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
@@ -208,15 +204,13 @@ public class TenantTokenTest extends AbstractIT {
         options.setExpiresAt(yesterday);
 
         assertThrows(
-                MeiliSearchException.class,
+                MeilisearchException.class,
                 () -> privateClient.generateTenantToken(rules, options));
     }
 
     /** Test Create Tenant Token with empty api key */
     @Test
     public void testGenerateTenantTokenWithEmptyApiKey() throws Exception {
-        String indexUid = "GenerateTenantTokenWithEmptyApiKey";
-
         Client privateClient = new Client(new Config(getMeilisearchHost()));
 
         Map<String, Object> rules = new HashMap<String, Object>();
@@ -225,7 +219,7 @@ public class TenantTokenTest extends AbstractIT {
         options.setApiKey("");
 
         assertThrows(
-                MeiliSearchException.class,
+                MeilisearchException.class,
                 () -> privateClient.generateTenantToken(rules, options));
     }
 }
