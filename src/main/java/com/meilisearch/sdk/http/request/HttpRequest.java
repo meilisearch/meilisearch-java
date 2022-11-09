@@ -1,23 +1,33 @@
 package com.meilisearch.sdk.http.request;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface HttpRequest<T> {
-    HttpMethod getMethod();
+@Getter
+@Setter
+public class HttpRequest {
+    @Setter private HttpMethod method;
+    @Setter private String path;
+    @Setter private Map<String, String> headers;
+    private String content;
 
-    void setMethod(HttpMethod method);
+    public HttpRequest() {}
 
-    String getPath();
+    public HttpRequest(
+            HttpMethod method, String path, Map<String, String> headers, String content) {
+        this.method = method;
+        this.path = path;
+        this.headers = headers;
+        this.content = content;
+    }
 
-    void setPath(String path);
+    public boolean hasContent() {
+        return content != null;
+    }
 
-    Map<String, String> getHeaders();
-
-    void setHeaders(Map<String, String> headers);
-
-    boolean hasContent();
-
-    T getContent();
-
-    byte[] getContentAsBytes();
+    public byte[] getContentAsBytes() {
+        return content.getBytes(StandardCharsets.UTF_8);
+    }
 }
