@@ -11,10 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.Settings;
-import com.meilisearch.sdk.Task;
-import com.meilisearch.sdk.TypoTolerance;
-import com.meilisearch.sdk.json.GsonJsonHandler;
+import com.meilisearch.sdk.model.Settings;
+import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TypoTolerance;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,7 +28,6 @@ import org.junit.jupiter.api.Test;
 public class SettingsTest extends AbstractIT {
 
     private TestData<Movie> testData;
-    private final GsonJsonHandler jsonGson = new GsonJsonHandler();
 
     @BeforeEach
     public void initialize() {
@@ -38,7 +36,7 @@ public class SettingsTest extends AbstractIT {
     }
 
     @AfterAll
-    static void cleanMeiliSearch() {
+    static void cleanMeilisearch() {
         cleanup();
     }
 
@@ -123,6 +121,50 @@ public class SettingsTest extends AbstractIT {
         assertEquals(1, newSettings.getTypoTolerance().getDisableOnWords().length);
         assertEquals(1, newSettings.getTypoTolerance().getDisableOnAttributes().length);
         assertTrue(newSettings.getTypoTolerance().isEnabled());
+    }
+
+    @Test
+    @DisplayName("Test update multiple settings in a row")
+    public void testUpdateMultipleSettingsInARow() throws Exception {
+        Index index = createIndex("updateMultipleSettingsInARow");
+        Settings settingsDisplayedAttr = new Settings();
+        settingsDisplayedAttr.setDisplayedAttributes(
+                new String[] {"title", "overview", "genres", "release_date"});
+        index.waitForTask(index.updateSettings(settingsDisplayedAttr).getUid());
+        Settings newSettingsDisplayedAttr = index.getSettings();
+
+        Settings settingsRankingRules = new Settings();
+        settingsRankingRules.setRankingRules(
+                new String[] {
+                    "typo",
+                    "words",
+                    "sort",
+                    "proximity",
+                    "attribute",
+                    "exactness",
+                    "release_date:desc",
+                    "rank:desc"
+                });
+        index.waitForTask(index.updateSettings(settingsRankingRules).getUid());
+        Settings newSettingsRankingRules = index.getSettings();
+
+        Settings settingsSynonyms = new Settings();
+        HashMap<String, String[]> synonyms = new HashMap<>();
+        synonyms.put("wolverine", new String[] {"xmen", "logan"});
+        synonyms.put("logan", new String[] {"wolverine"});
+        settingsSynonyms.setSynonyms(synonyms);
+        index.waitForTask(index.updateSettings(settingsSynonyms).getUid());
+        Settings newSettingsSynonyms = index.getSettings();
+
+        assertEquals(4, newSettingsDisplayedAttr.getDisplayedAttributes().length);
+        assertEquals(6, newSettingsDisplayedAttr.getRankingRules().length);
+        assertEquals(0, newSettingsDisplayedAttr.getSynonyms().size());
+        assertEquals(4, newSettingsRankingRules.getDisplayedAttributes().length);
+        assertEquals(8, newSettingsRankingRules.getRankingRules().length);
+        assertEquals(0, newSettingsRankingRules.getSynonyms().size());
+        assertEquals(4, newSettingsSynonyms.getDisplayedAttributes().length);
+        assertEquals(2, newSettingsSynonyms.getSynonyms().size());
+        assertEquals(8, newSettingsSynonyms.getRankingRules().length);
     }
 
     @Test
@@ -548,7 +590,6 @@ public class SettingsTest extends AbstractIT {
     @DisplayName("Test update typo tolerance settings")
     public void testUpdateTypoTolerance() throws Exception {
         Index index = createIndex("testUpdateTypoTolerance");
-        TypoTolerance initialTypoTolerance = index.getTypoToleranceSettings();
         TypoTolerance newTypoTolerance = new TypoTolerance();
         newTypoTolerance.setEnabled(true);
         newTypoTolerance.setDisableOnWords(new String[] {"and"});
@@ -584,7 +625,6 @@ public class SettingsTest extends AbstractIT {
     @DisplayName("Test update typo tolerance settings")
     public void testPartialUpdateTypoTolerance() throws Exception {
         Index index = createIndex("testUpdateTypoTolerance");
-        TypoTolerance initialTypoTolerance = index.getTypoToleranceSettings();
         TypoTolerance newTypoTolerance = new TypoTolerance();
         newTypoTolerance.setDisableOnWords(new String[] {"the"});
         newTypoTolerance.setDisableOnAttributes(new String[] {"title"});

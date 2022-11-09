@@ -1,15 +1,21 @@
 package com.meilisearch.sdk.http.response;
 
 import java.util.Map;
+import lombok.Getter;
 
-public interface HttpResponse<B> {
-    Map<String, String> getHeaders();
+@Getter
+public class HttpResponse<T> {
+    private final Map<String, String> headers;
+    private final int statusCode;
+    private final T content;
 
-    int getStatusCode();
+    public HttpResponse(Map<String, String> headers, int statusCode, T content) {
+        this.headers = headers;
+        this.statusCode = statusCode;
+        this.content = content;
+    }
 
-    boolean hasContent();
-
-    B getContent();
-
-    byte[] getContentAsBytes();
+    public boolean hasContent() {
+        return content != null;
+    }
 }
