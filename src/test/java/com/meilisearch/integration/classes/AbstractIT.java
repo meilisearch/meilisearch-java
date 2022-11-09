@@ -5,8 +5,10 @@ import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.Client;
 import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.Key;
-import com.meilisearch.sdk.Task;
+import com.meilisearch.sdk.json.JacksonJsonHandler;
+import com.meilisearch.sdk.model.Key;
+import com.meilisearch.sdk.model.Result;
+import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.utils.Movie;
 import java.io.*;
 import java.net.URL;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractIT {
     protected Client client;
+    protected Client clientJackson;
     protected final Gson gson = new Gson();
 
     private final Map<String, TestData<?>> testData = new HashMap<>();
@@ -35,6 +38,12 @@ public abstract class AbstractIT {
 
     public void setUp() {
         if (client == null) client = new Client(new Config(getMeilisearchHost(), "masterKey"));
+    }
+
+    public void setUpJacksonClient() {
+        Config config = new Config(getMeilisearchHost(), "masterKey");
+        config.setJsonHandler(new JacksonJsonHandler());
+        if (clientJackson == null) clientJackson = new Client(config);
     }
 
     public static void cleanup() {
@@ -80,7 +89,8 @@ public abstract class AbstractIT {
     }
 
     public Key getPrivateKey() throws Exception {
-        Key[] keys = client.getKeys();
+        Result<Key> result = client.getKeys();
+        Key[] keys = result.getResults();
         for (Key key : keys) {
             if ((key.getDescription() == null)
                     || (key.getDescription().contains("Default Admin API"))) {
@@ -93,7 +103,7 @@ public abstract class AbstractIT {
     public static void deleteAllIndexes() {
         try {
             Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"));
-            Index[] indexes = ms.getIndexList();
+            Index[] indexes = ms.getIndexes();
             for (Index index : indexes) {
                 ms.deleteIndex(index.getUid());
             }
@@ -105,7 +115,8 @@ public abstract class AbstractIT {
     public static void deleteAllKeys() {
         try {
             Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"));
-            Key[] keys = ms.getKeys();
+            Result<Key> result = ms.getKeys();
+            Key[] keys = result.getResults();
             for (Key key : keys) {
                 if ((key.getDescription() == null) || (key.getDescription().contains("test"))) {
                     ms.deleteKey(key.getKey());

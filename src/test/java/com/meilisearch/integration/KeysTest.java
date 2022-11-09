@@ -3,7 +3,8 @@ package com.meilisearch.integration;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.meilisearch.integration.classes.AbstractIT;
-import com.meilisearch.sdk.Key;
+import com.meilisearch.sdk.model.Key;
+import com.meilisearch.sdk.model.Result;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.junit.jupiter.api.AfterAll;
@@ -17,10 +18,11 @@ public class KeysTest extends AbstractIT {
     @BeforeEach
     public void initialize() {
         this.setUp();
+        this.setUpJacksonClient();
     }
 
     @AfterAll
-    static void cleanMeiliSearch() {
+    static void cleanMeilisearch() {
         cleanup();
         deleteAllKeys();
     }
@@ -28,7 +30,8 @@ public class KeysTest extends AbstractIT {
     /** Test Get Keys */
     @Test
     public void testClientGetKeys() throws Exception {
-        Key[] keys = client.getKeys();
+        Result<Key> result = client.getKeys();
+        Key[] keys = result.getResults();
 
         assertEquals(2, keys.length);
 
@@ -38,6 +41,23 @@ public class KeysTest extends AbstractIT {
             assertNotNull(key.getIndexes());
             assertNotNull(key.getDescription());
             assertNull(key.getExpiresAt());
+            assertNotNull(key.getCreatedAt());
+            assertNotNull(key.getUpdatedAt());
+        }
+    }
+
+    /** Test Get Keys with Jackson Json Handler */
+    @Test
+    public void testClientGetKeysWithJacksonJsonHandler() throws Exception {
+        Result<Key> result = clientJackson.getKeys();
+        Key[] keys = result.getResults();
+
+        assertEquals(5, keys.length);
+
+        for (Key key : keys) {
+            assertNotNull(key.getKey());
+            assertNotNull(key.getActions());
+            assertNotNull(key.getIndexes());
             assertNotNull(key.getCreatedAt());
             assertNotNull(key.getUpdatedAt());
         }
@@ -126,6 +146,37 @@ public class KeysTest extends AbstractIT {
         assertEquals("2042-01-30", format.format(key.getExpiresAt()));
         assertNotNull(key.getCreatedAt());
         assertNotNull(key.getUpdatedAt());
+    }
+
+    /** Test Update an API Key */
+    @Test
+    public void testClientUpdateKey() throws Exception {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date dateParsed = format.parse("2042-01-30T00:00:00Z");
+
+        Key keyInfo = new Key();
+        keyInfo.setIndexes(new String[] {"*"});
+        keyInfo.setActions(new String[] {"*"});
+
+        Key keyChanges = new Key();
+        keyChanges.setIndexes(new String[] {"testUpdateKey"});
+        keyChanges.setActions(new String[] {"search"});
+        keyChanges.setExpiresAt(dateParsed);
+
+        Key createKey = client.createKey(keyInfo);
+        Key updateKey = client.updateKey(createKey.getKey(), keyChanges);
+
+        assertTrue(createKey instanceof Key);
+        assertTrue(updateKey instanceof Key);
+        assertNotNull(updateKey.getKey());
+        assertEquals("*", createKey.getActions()[0]);
+        assertEquals("search", updateKey.getActions()[0]);
+        assertEquals("*", createKey.getIndexes()[0]);
+        assertEquals("testUpdateKey", updateKey.getIndexes()[0]);
+        assertNull(createKey.getExpiresAt());
+        assertEquals(dateParsed, updateKey.getExpiresAt());
+        assertNotNull(updateKey.getCreatedAt());
+        assertNotNull(updateKey.getUpdatedAt());
     }
 
     /** Test Delete an API Key */

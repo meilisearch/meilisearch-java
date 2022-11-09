@@ -1,18 +1,18 @@
 package com.meilisearch.sdk;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.exceptions.MeilisearchTimeoutException;
+import com.meilisearch.sdk.model.Result;
+import com.meilisearch.sdk.model.Task;
 import java.util.Date;
 
 /**
- * Wrapper around MeilisearchHttpRequest class to use for MeiliSearch tasks
+ * Wrapper around HttpClient class to use for MeiliSearch tasks
  *
  * <p>Refer https://docs.meilisearch.com/reference/api/tasks.html
  */
 public class TasksHandler {
-    private final MeiliSearchHttpRequest meilisearchHttpRequest;
-    private final Gson gson = new Gson();
+    private final HttpClient httpClient;
     public static final String SUCCEEDED = "succeeded";
     public static final String FAILED = "failed";
 
@@ -21,71 +21,69 @@ public class TasksHandler {
      *
      * @param config MeiliSearch configuration
      */
-    public TasksHandler(Config config) {
-        this.meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+    TasksHandler(Config config) {
+        this.httpClient = config.httpClient;
     }
 
     /**
-     * Retrieves the Task at the specified indexUid with the specified taskUid
+     * Retrieves the task at the specified index uid with the specified task uid
      *
      * @param indexUid Index identifier to the requested Task
      * @param taskUid Identifier of the requested Task
      * @return Task instance
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    public Task getTask(String indexUid, int taskUid) throws Exception {
+    Task getTask(String indexUid, int taskUid) throws MeilisearchException {
         String urlPath = "/indexes/" + indexUid + "/tasks/" + taskUid;
-        return this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Task.class);
+        return httpClient.get(urlPath, Task.class);
     }
 
     /**
-     * Retrieves all TasksHandler at the specified iud
+     * Retrieves all TasksHandler at the specified index uid
      *
      * @param indexUid Index identifier to the requested Tasks
      * @return List of task instance
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    public Task[] getTasks(String indexUid) throws Exception {
+    Result<Task> getTasks(String indexUid) throws MeilisearchException {
         String urlPath = "/indexes/" + indexUid + "/tasks";
-        return this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Task[].class);
+
+        Result<Task> result = httpClient.get(urlPath, Result.class, Task.class);
+        return result;
     }
 
     /**
-     * Retrieves the Task at the specified iud with the specified taskUid
+     * Retrieves the task with the specified task uid
      *
      * @param taskUid Identifier of the requested Task
      * @return Task instance
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    public Task getTask(int taskUid) throws Exception, MeiliSearchApiException {
+    Task getTask(int taskUid) throws MeilisearchException {
         String urlPath = "/tasks/" + taskUid;
-        return this.gson.fromJson(this.meilisearchHttpRequest.get(urlPath), Task.class);
+        return httpClient.get(urlPath, Task.class);
     }
 
     /**
-     * Retrieves Tasks from the client
+     * Retrieves tasks from the client
      *
      * @return List of task instance
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    public Task[] getTasks() throws Exception {
+    Result<Task> getTasks() throws MeilisearchException {
         String urlPath = "/tasks";
 
-        Result<Task> result =
-                this.gson.fromJson(
-                        this.meilisearchHttpRequest.get(urlPath),
-                        new TypeToken<Result<Task>>() {}.getType());
-
-        return result.getResults();
+        Result<Task> result = httpClient.get(urlPath, Result.class, Task.class);
+        return result;
     }
 
     /**
      * Waits for a task to be processed
      *
      * @param taskUid Identifier of the Task
-     * @throws Exception if timeout is reached
+     * @throws MeilisearchException if timeout is reached
      */
-    public void waitForTask(int taskUid) throws Exception {
+    void waitForTask(int taskUid) throws MeilisearchException {
         this.waitForTask(taskUid, 5000, 50);
     }
 
@@ -95,9 +93,9 @@ public class TasksHandler {
      * @param taskUid Identifier of the Task
      * @param timeoutInMs number of milliseconds before throwing an Exception
      * @param intervalInMs number of milliseconds before requesting the status again
-     * @throws Exception if timeout is reached
+     * @throws MeilisearchException if timeout is reached
      */
-    public void waitForTask(int taskUid, int timeoutInMs, int intervalInMs) throws Exception {
+    void waitForTask(int taskUid, int timeoutInMs, int intervalInMs) throws MeilisearchException {
         Task task;
         String status = "";
         long startTime = new Date().getTime();
@@ -105,11 +103,15 @@ public class TasksHandler {
 
         while (!status.equals(SUCCEEDED) && !status.equals(FAILED)) {
             if (elapsedTime >= timeoutInMs) {
-                throw new Exception();
+                throw new MeilisearchTimeoutException();
             }
             task = this.getTask(taskUid);
             status = task.getStatus();
-            Thread.sleep(intervalInMs);
+            try {
+                Thread.sleep(intervalInMs);
+            } catch (Exception e) {
+                throw new MeilisearchTimeoutException();
+            }
             elapsedTime = new Date().getTime() - startTime;
         }
     }
