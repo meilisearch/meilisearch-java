@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 /**
- * Data Structure Result of `search`
+ * Data Structure of Meilisearch response for Result of Search
  *
  * <p>https://docs.meilisearch.com/references/search.html
  */

@@ -5,7 +5,7 @@ import java.util.Map;
 import lombok.Getter;
 
 /**
- * Data structure for the stats
+ * Data structure of Meilisearch response for the Stats
  *
  * <p>https://docs.meilisearch.com/reference/api/stats.html
  */

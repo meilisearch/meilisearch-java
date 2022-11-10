@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Settings Handler for manipulation of an Index {@link Settings}
  *
- * <p>Refer https://docs.meilisearch.com/reference/api/settings.html
+ * <p>https://docs.meilisearch.com/reference/api/settings.html
  */
 public class SettingsHandler {
     private final HttpClient httpClient;
