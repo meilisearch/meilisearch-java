@@ -3,7 +3,7 @@ package com.meilisearch.sdk.exceptions;
 import lombok.Getter;
 import lombok.Setter;
 
-/** This class wraps MeilisearchExceptions dealing with Timeout errors */
+/** Wrapper around MeilisearchExceptions dealing with Timeout errors */
 @Getter
 @Setter
 public class MeilisearchTimeoutException extends MeilisearchException {
