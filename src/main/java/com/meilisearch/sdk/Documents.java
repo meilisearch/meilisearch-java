@@ -6,7 +6,11 @@ import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.Task;
 import java.util.List;
 
-/** Wrapper around HttpClient class to use for Meilisearch documents */
+/**
+ * Wrapper around HttpClient class to use for Meilisearch documents
+ *
+ * <p>https://docs.meilisearch.com/reference/api/documents.html
+ */
 class Documents {
     private final HttpClient httpClient;
 

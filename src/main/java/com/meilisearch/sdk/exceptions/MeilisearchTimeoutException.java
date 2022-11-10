@@ -3,9 +3,9 @@ package com.meilisearch.sdk.exceptions;
 import lombok.Getter;
 import lombok.Setter;
 
+/** This class wraps MeilisearchExceptions dealing with Timeout errors */
 @Getter
 @Setter
-/** This class wraps MeilisearchExceptions dealing with Timeout errors */
 public class MeilisearchTimeoutException extends MeilisearchException {
 
     String error;

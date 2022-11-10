@@ -7,7 +7,7 @@ import com.meilisearch.sdk.model.Result;
 /**
  * Wrapper around HttpClient class to use for Meilisearch keys
  *
- * <p>Refer https://docs.meilisearch.com/reference/api/keys.html
+ * <p>https://docs.meilisearch.com/reference/api/keys.html
  */
 public class KeysHandler {
     private final HttpClient httpClient;

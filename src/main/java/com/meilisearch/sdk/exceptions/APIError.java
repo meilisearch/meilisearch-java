@@ -5,10 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+/** This class wraps errors sent by Meilisearch API */
 @Getter
 @Setter
 @Accessors(chain = true)
-/** This class wraps errors sent by Meilisearch API */
 public class APIError implements Serializable {
     private static final long serialVersionUID = 900737636809105793L;
 
