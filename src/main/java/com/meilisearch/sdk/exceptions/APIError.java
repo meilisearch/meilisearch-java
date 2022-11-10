@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-/** This class wraps errors sent by Meilisearch API */
+/** Wrapper around Meilisearch API errors */
 @Getter
 @Setter
 @Accessors(chain = true)
