@@ -7,7 +7,7 @@ import com.meilisearch.sdk.model.Task;
 import java.util.List;
 
 /**
- * Wrapper around HttpClient class to use for Meilisearch documents
+ * Documents class covering all the methods related to documents
  *
  * <p>https://docs.meilisearch.com/reference/api/documents.html
  */

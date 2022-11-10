@@ -5,7 +5,7 @@ import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.Result;
 
 /**
- * Wrapper around HttpClient class to use for Meilisearch keys
+ * Keys class covering all the methods related to keys
  *
  * <p>https://docs.meilisearch.com/reference/api/keys.html
  */
