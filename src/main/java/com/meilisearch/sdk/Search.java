@@ -4,7 +4,7 @@ import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.SearchResult;
 
 /**
- * Wrapper around HttpClient class to use for Meilisearch search
+ * Search Object for searching on indexes
  *
  * <p>https://docs.meilisearch.com/reference/api/search.html
  */
