@@ -3,7 +3,7 @@ package com.meilisearch.sdk.exceptions;
 import lombok.Getter;
 import lombok.Setter;
 
-/** This class wraps MeilisearchExceptions dealing with Communication errors */
+/** Wrapper arround MeilisearchExceptions dealing with Communication errors */
 @Getter
 @Setter
 public class MeilisearchCommunicationException extends MeilisearchException {
