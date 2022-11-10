@@ -44,10 +44,8 @@ public class Search {
      * @param attributesToCrop Attributes whose values have been cropped
      * @param cropLength Length used to crop field values
      * @param cropMarker String to add before and/or after the cropped text, default value: …
-     * @param highlightPreTag String to customize highlight tag before every highlighted query
-     *     terms, default value: <em>
-     * @param highlightPostTag String to customize highlight tag after every highlighted query
-     *     terms, default value: </em>
+     * @param highlightPreTag String to customize highlight tag before every highlighted query terms
+     * @param highlightPostTag String to customize highlight tag after every highlighted query terms
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
      * @param filter Filter queries by an attribute value
      * @param matches Defines whether an object that contains information about the matches should
@@ -129,10 +127,8 @@ public class Search {
      * @param attributesToCrop Attributes whose values have been cropped
      * @param cropLength Length used to crop field values
      * @param cropMarker String to customize default crop marker, default value: …
-     * @param highlightPreTag String to customize highlight tag before every highlighted query
-     *     terms, default value: <em>
-     * @param highlightPostTag String to customize highlight tag after every highlighted query
-     *     terms, default value: </em>
+     * @param highlightPreTag String to customize highlight tag before every highlighted query terms
+     * @param highlightPostTag String to customize highlight tag after every highlighted query terms
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
      * @param filter Filter queries by an attribute value
      * @param matches Defines whether an object that contains information about the matches should
