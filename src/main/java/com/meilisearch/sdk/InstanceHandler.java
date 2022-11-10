@@ -5,7 +5,7 @@ import com.meilisearch.sdk.model.IndexStats;
 import com.meilisearch.sdk.model.Stats;
 
 /**
- * Wrapper around HttpClient class to use for Meilisearch
+ * Wrapper around HttpClient class to get Meilisearch instance information
  *
  * <p>https://docs.meilisearch.com/reference/api/keys.html
  */
