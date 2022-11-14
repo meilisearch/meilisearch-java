@@ -4,7 +4,7 @@ import java.util.Map;
 import lombok.Getter;
 
 /**
- * Data structure of Meilisearch response for the Stats of an Index
+ * Stats data structure of a Meilisearch Index
  *
  * <p>https://docs.meilisearch.com/reference/api/stats.html#get-stats-of-an-index
  */
