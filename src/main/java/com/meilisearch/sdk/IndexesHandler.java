@@ -5,7 +5,7 @@ import com.meilisearch.sdk.model.Task;
 import java.util.HashMap;
 
 /**
- * IndexesHandler class covering all the methods related to an index
+ * Class covering the Meilisearch Index API.
  *
  * <p>https://docs.meilisearch.com/reference/api/indexes.html
  */
