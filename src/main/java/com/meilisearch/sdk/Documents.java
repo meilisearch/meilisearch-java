@@ -7,7 +7,7 @@ import com.meilisearch.sdk.model.Task;
 import java.util.List;
 
 /**
- * Documents class covering all the methods related to documents
+ * Class covering the Meilisearch Document API
  *
  * <p>https://docs.meilisearch.com/reference/api/documents.html
  */
