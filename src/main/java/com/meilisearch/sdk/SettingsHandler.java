@@ -7,7 +7,7 @@ import com.meilisearch.sdk.model.TypoTolerance;
 import java.util.Map;
 
 /**
- * Settings Handler for manipulation of an Index {@link Settings}
+ * Class covering the Meilisearch Settings API {@link Settings}
  *
  * <p>https://docs.meilisearch.com/reference/api/settings.html
  */
