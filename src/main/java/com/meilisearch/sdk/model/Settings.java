@@ -6,7 +6,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
- * Data Structure of Meilisearch response for the Settings
+ * Meilisearch settings data structure
  *
  * <p>Refer https://docs.meilisearch.com/reference/api/settings.html
  */
