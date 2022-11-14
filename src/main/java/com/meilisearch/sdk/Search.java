@@ -4,7 +4,7 @@ import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.SearchResult;
 
 /**
- * Search Object for searching on indexes
+ * Class used for searching on Meilisearch indexes
  *
  * <p>https://docs.meilisearch.com/reference/api/search.html
  */
