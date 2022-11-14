@@ -13,7 +13,7 @@ import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.json.JsonHandler;
 import java.util.Collections;
 
-/** The HTTP requests for the different functions to be done through Meilisearch */
+/** HTTP client used for API calls to Meilisearch */
 public class HttpClient {
     private final CustomOkHttpClient client;
     private final BasicRequest request;

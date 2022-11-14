@@ -4,7 +4,11 @@ import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.Task;
 import java.util.HashMap;
 
-/** Wrapper around the HttpClient class to ease usage for Meilisearch indexes */
+/**
+ * Class covering the Meilisearch Index API.
+ *
+ * <p>https://docs.meilisearch.com/reference/api/indexes.html
+ */
 class IndexesHandler {
     HttpClient httpClient;
 
