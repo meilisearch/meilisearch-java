@@ -3,6 +3,7 @@ package com.meilisearch.sdk.http.response;
 import java.util.Map;
 import lombok.Getter;
 
+/** HttpResponse for Meilisearch Client */
 @Getter
 public class HttpResponse<T> {
     private final Map<String, String> headers;
