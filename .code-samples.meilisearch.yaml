@@ -6,7 +6,7 @@
 get_one_index_1: |-
   client.getIndex("movies");
 list_all_indexes_1: |-
-  client.getAllIndexes();
+  client.getIndexes();
 create_an_index_1: |-
   client.createIndex("movies", "id");
 update_an_index_1: |-
@@ -401,7 +401,7 @@ getting_started_add_documents_md: |-
   <dependency>
     <groupId>com.meilisearch.sdk</groupId>
     <artifactId>meilisearch-java</artifactId>
-    <version>0.7.2</version>
+    <version>0.8.0</version>
     <type>pom</type>
   </dependency>
   ```
@@ -409,7 +409,7 @@ getting_started_add_documents_md: |-
   **Gradle**
   Add the following line to the `dependencies` section of your `build.gradle`:
   ```groovy
-  implementation 'com.meilisearch.sdk:meilisearch-java:0.7.2'
+  implementation 'com.meilisearch.sdk:meilisearch-java:0.8.0'
   ```
 
   ```java
