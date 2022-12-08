@@ -7,9 +7,9 @@ import com.meilisearch.sdk.model.Task;
 import java.util.Date;
 
 /**
- * Wrapper around HttpClient class to use for MeiliSearch tasks
+ * Class covering the Meilisearch Task API
  *
- * <p>Refer https://docs.meilisearch.com/reference/api/tasks.html
+ * <p>https://docs.meilisearch.com/reference/api/tasks.html
  */
 public class TasksHandler {
     private final HttpClient httpClient;

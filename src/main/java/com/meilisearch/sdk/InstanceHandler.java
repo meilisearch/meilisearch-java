@@ -4,6 +4,11 @@ import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.IndexStats;
 import com.meilisearch.sdk.model.Stats;
 
+/**
+ * Class providing information on the Meilisearch instance
+ *
+ * <p>https://docs.meilisearch.com/reference/api/keys.html
+ */
 public class InstanceHandler {
     HttpClient httpClient;
 

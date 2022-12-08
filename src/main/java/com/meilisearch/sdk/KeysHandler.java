@@ -5,9 +5,9 @@ import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.Result;
 
 /**
- * Wrapper around HttpClient class to use for Meilisearch keys
+ * Class covering the Meilisearch Key API
  *
- * <p>Refer https://docs.meilisearch.com/reference/api/keys.html
+ * <p>https://docs.meilisearch.com/reference/api/keys.html
  */
 public class KeysHandler {
     private final HttpClient httpClient;

@@ -18,7 +18,7 @@ plugins {
 
 group = 'com.meilisearch.sdk'
 archivesBaseName = 'meilisearch-java'
-version = '0.7.2'
+version = '0.8.0'
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_1_8
@@ -41,7 +41,6 @@ configurations {
 
 dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
-	implementation 'com.google.guava:guava:31.1-jre'
 	implementation 'com.google.code.gson:gson:2.10'
 	implementation 'org.json:json:20220924'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
