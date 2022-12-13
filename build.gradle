@@ -13,7 +13,7 @@ plugins {
 	id 'signing'
 	id 'jacoco'
 	id 'io.codearte.nexus-staging' version '0.30.0'
-	id "com.diffplug.spotless" version "6.11.0"
+	id "com.diffplug.spotless" version "6.12.0"
 }
 
 group = 'com.meilisearch.sdk'
@@ -50,11 +50,11 @@ dependencies {
 	testImplementation(platform('org.junit:junit-bom:5.9.1'))
 	testImplementation('org.junit.jupiter:junit-jupiter:5.9.1')
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
-	testImplementation 'org.mockito:mockito-core:4.8.1'
+	testImplementation 'org.mockito:mockito-core:4.9.0'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.0'
+	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.1'
 
 	// Lombok
 	compileOnly 'org.projectlombok:lombok:1.18.24'
@@ -83,6 +83,10 @@ test {
 	finalizedBy jacocoTestReport
 	useJUnitPlatform {
 		excludeTags('integration')
+
+		reports {
+			html.destination = file("$projectDir/tmp/test-reports")
+		}
 	}
 	testLogging {
 		events 'passed', 'skipped', 'failed'
@@ -99,6 +103,7 @@ task integrationTest(type: Test) {
 	}
 	testLogging {
 		events 'passed', 'skipped', 'failed'
+		showStandardStreams = System.getenv('DEBUG') != null
 	}
 }
 

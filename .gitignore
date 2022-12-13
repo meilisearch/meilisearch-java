@@ -64,3 +64,6 @@ secring*
 
 # coverage output
 tmp/coverage
+
+# test reports
+tmp/test-reports
