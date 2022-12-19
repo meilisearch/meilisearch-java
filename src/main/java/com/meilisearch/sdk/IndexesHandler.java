@@ -84,7 +84,7 @@ class IndexesHandler {
         index.put("primaryKey", primaryKey);
 
         String requestQuery = "/indexes/" + uid;
-        return httpClient.put(requestQuery, index, Task.class);
+        return httpClient.patch(requestQuery, index, Task.class);
     }
 
     /**
