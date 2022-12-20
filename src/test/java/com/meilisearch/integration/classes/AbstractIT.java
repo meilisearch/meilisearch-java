@@ -7,7 +7,7 @@ import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.json.JacksonJsonHandler;
 import com.meilisearch.sdk.model.Key;
-import com.meilisearch.sdk.model.Result;
+import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.utils.Movie;
 import java.io.*;
@@ -89,7 +89,7 @@ public abstract class AbstractIT {
     }
 
     public Key getPrivateKey() throws Exception {
-        Result<Key> result = client.getKeys();
+        Results<Key> result = client.getKeys();
         Key[] keys = result.getResults();
         for (Key key : keys) {
             if ((key.getDescription() == null)
@@ -103,8 +103,8 @@ public abstract class AbstractIT {
     public static void deleteAllIndexes() {
         try {
             Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"));
-            Index[] indexes = ms.getIndexes();
-            for (Index index : indexes) {
+            Results<Index> indexes = ms.getIndexes();
+            for (Index index : indexes.getResults()) {
                 ms.deleteIndex(index.getUid());
             }
         } catch (Exception e) {
@@ -115,7 +115,7 @@ public abstract class AbstractIT {
     public static void deleteAllKeys() {
         try {
             Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"));
-            Result<Key> result = ms.getKeys();
+            Results<Key> result = ms.getKeys();
             Key[] keys = result.getResults();
             for (Key key : keys) {
                 if ((key.getDescription() == null) || (key.getDescription().contains("test"))) {

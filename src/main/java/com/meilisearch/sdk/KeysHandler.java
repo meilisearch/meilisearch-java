@@ -2,7 +2,7 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.Key;
-import com.meilisearch.sdk.model.Result;
+import com.meilisearch.sdk.model.Results;
 
 /**
  * Class covering the Meilisearch Key API
@@ -39,9 +39,9 @@ public class KeysHandler {
      * @return List of key instance
      * @throws MeilisearchException if client request causes an error
      */
-    Result<Key> getKeys() throws MeilisearchException {
+    Results<Key> getKeys() throws MeilisearchException {
         String urlPath = "/keys";
-        Result<Key> result = httpClient.get(urlPath, Result.class, Key.class);
+        Results<Key> result = httpClient.get(urlPath, Results.class, Key.class);
         return result;
     }
 

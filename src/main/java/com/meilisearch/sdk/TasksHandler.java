@@ -2,7 +2,7 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.exceptions.MeilisearchTimeoutException;
-import com.meilisearch.sdk.model.Result;
+import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.Task;
 import java.util.Date;
 
@@ -45,10 +45,9 @@ public class TasksHandler {
      * @return List of task instance
      * @throws MeilisearchException if client request causes an error
      */
-    Result<Task> getTasks(String indexUid) throws MeilisearchException {
-        String urlPath = "/indexes/" + indexUid + "/tasks";
+    Results<Task> getTasks(String indexUid) throws MeilisearchException {
 
-        Result<Task> result = httpClient.get(urlPath, Result.class, Task.class);
+        Results<Task> result = httpClient.get(urlPath, Results.class, Task.class);
         return result;
     }
 
@@ -70,10 +69,10 @@ public class TasksHandler {
      * @return List of task instance
      * @throws MeilisearchException if client request causes an error
      */
-    Result<Task> getTasks() throws MeilisearchException {
+    Results<Task> getTasks() throws MeilisearchException {
         String urlPath = "/tasks";
 
-        Result<Task> result = httpClient.get(urlPath, Result.class, Task.class);
+        Results<Task> result = httpClient.get(urlPath, Results.class, Task.class);
         return result;
     }
 

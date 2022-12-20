@@ -2,7 +2,7 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.IndexStats;
-import com.meilisearch.sdk.model.Result;
+import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.Task;
@@ -652,7 +652,7 @@ public class Index implements Serializable {
      * @return List of tasks in the Meilisearch index
      * @throws MeilisearchException if an error occurs
      */
-    public Result<Task> getTasks() throws MeilisearchException {
+    public Results<Task> getTasks() throws MeilisearchException {
         return this.tasksHandler.getTasks(this.uid);
     }
 

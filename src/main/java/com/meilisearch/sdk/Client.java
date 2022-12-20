@@ -8,7 +8,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.json.JsonHandler;
 import com.meilisearch.sdk.model.Key;
-import com.meilisearch.sdk.model.Result;
+import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.Stats;
 import com.meilisearch.sdk.model.Task;
 import java.util.Date;
@@ -240,7 +240,7 @@ public class Client {
      * @return List of tasks in the Meilisearch client
      * @throws MeilisearchException if an error occurs
      */
-    public Result<Task> getTasks() throws MeilisearchException {
+    public Results<Task> getTasks() throws MeilisearchException {
         return this.tasksHandler.getTasks();
     }
 
@@ -272,7 +272,7 @@ public class Client {
      * @return List of keys in the Meilisearch client
      * @throws MeilisearchException if an error occurs
      */
-    public Result<Key> getKeys() throws MeilisearchException {
+    public Results<Key> getKeys() throws MeilisearchException {
         return this.keysHandler.getKeys();
     }
 
