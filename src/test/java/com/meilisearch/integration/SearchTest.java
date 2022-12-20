@@ -27,8 +27,7 @@ public class SearchTest extends AbstractIT {
         Movie[] hits;
         int offset;
         int limit;
-        int nbHits;
-        boolean exhaustiveNbHits;
+        int estimatedTotalHits;
         int processingTimeMs;
         String query;
     }
@@ -59,11 +58,11 @@ public class SearchTest extends AbstractIT {
 
         SearchResult searchResult = index.search("batman");
 
-        assertNull(searchResult.getFacetsDistribution());
+        assertNull(searchResult.getFacetDistribution());
         assertEquals(1, searchResult.getHits().size());
         assertEquals(0, searchResult.getOffset());
         assertEquals(20, searchResult.getLimit());
-        assertEquals(1, searchResult.getNbHits());
+        assertEquals(1, searchResult.getEstimatedTotalHits());
     }
 
     /** Test search offset */
@@ -81,7 +80,7 @@ public class SearchTest extends AbstractIT {
         SearchResult searchResult = index.search(searchRequest);
 
         assertEquals(10, searchResult.getHits().size());
-        assertEquals(30, searchResult.getNbHits());
+        assertEquals(30, searchResult.getEstimatedTotalHits());
     }
 
     /** Test search limit */
@@ -99,7 +98,7 @@ public class SearchTest extends AbstractIT {
         SearchResult searchResult = index.search(searchRequest);
 
         assertEquals(2, searchResult.getHits().size());
-        assertEquals(30, searchResult.getNbHits());
+        assertEquals(30, searchResult.getEstimatedTotalHits());
     }
 
     /** Test search attributesToRetrieve */
@@ -316,13 +315,12 @@ public class SearchTest extends AbstractIT {
         settings.setFilterableAttributes(new String[] {"title"});
         index.waitForTask(index.updateSettings(settings).getUid());
 
-        SearchRequest searchRequest =
-                new SearchRequest("knight").setFacetsDistribution(new String[] {"*"});
+        SearchRequest searchRequest = new SearchRequest("knight").setFacets(new String[] {"*"});
 
         SearchResult searchResult = index.search(searchRequest);
 
         assertEquals(1, searchResult.getHits().size());
-        assertNotNull(searchResult.getFacetsDistribution());
+        assertNotNull(searchResult.getFacetDistribution());
     }
 
     /** Test search sort */
@@ -454,7 +452,7 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getUid());
 
-        SearchRequest searchRequest = new SearchRequest("and").setMatches(true);
+        SearchRequest searchRequest = new SearchRequest("and").setShowMatchesPosition(true);
         SearchResult searchResult = index.search(searchRequest);
 
         assertEquals(20, searchResult.getHits().size());

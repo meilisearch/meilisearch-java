@@ -24,7 +24,6 @@ public class SearchNestedTest extends AbstractIT {
         int offset;
         int limit;
         int nbHits;
-        boolean exhaustiveNbHits;
         int processingTimeMs;
         String query;
     }
