@@ -45,7 +45,7 @@ public class SettingsHandler {
      */
     Task updateSettings(String uid, Settings settings) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings";
-        return httpClient.post(urlPath, settings, Task.class);
+        return httpClient.patch(urlPath, settings, Task.class);
     }
 
     /**
@@ -82,7 +82,7 @@ public class SettingsHandler {
      */
     Task updateRankingRuleSettings(String uid, String[] rankingRules) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/ranking-rules";
-        return httpClient.post(
+        return httpClient.put(
                 urlPath,
                 rankingRules == null ? httpClient.jsonHandler.encode(rankingRules) : rankingRules,
                 Task.class);
@@ -123,7 +123,7 @@ public class SettingsHandler {
     Task updateSynonymsSettings(String uid, Map<String, String[]> synonyms)
             throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/synonyms";
-        return httpClient.post(
+        return httpClient.put(
                 urlPath,
                 synonyms == null ? httpClient.jsonHandler.encode(synonyms) : synonyms,
                 Task.class);
@@ -163,7 +163,7 @@ public class SettingsHandler {
      */
     Task updateStopWordsSettings(String uid, String[] stopWords) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/stop-words";
-        return httpClient.post(
+        return httpClient.put(
                 urlPath,
                 stopWords == null ? httpClient.jsonHandler.encode(stopWords) : stopWords,
                 Task.class);
@@ -205,7 +205,7 @@ public class SettingsHandler {
     Task updateSearchableAttributesSettings(String uid, String[] searchableAttributes)
             throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/searchable-attributes";
-        return httpClient.post(
+        return httpClient.put(
                 urlPath,
                 searchableAttributes == null
                         ? httpClient.jsonHandler.encode(searchableAttributes)
@@ -249,7 +249,7 @@ public class SettingsHandler {
     Task updateDisplayedAttributesSettings(String uid, String[] displayAttributes)
             throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/displayed-attributes";
-        return httpClient.post(
+        return httpClient.put(
                 urlPath,
                 displayAttributes == null
                         ? httpClient.jsonHandler.encode(displayAttributes)
@@ -293,7 +293,7 @@ public class SettingsHandler {
     Task updateFilterableAttributesSettings(String uid, String[] filterableAttributes)
             throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/filterable-attributes";
-        return httpClient.post(
+        return httpClient.put(
                 urlPath,
                 filterableAttributes == null
                         ? httpClient.jsonHandler.encode(filterableAttributes)
@@ -337,7 +337,7 @@ public class SettingsHandler {
     Task updateDistinctAttributeSettings(String uid, String distinctAttribute)
             throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/distinct-attribute";
-        return httpClient.post(
+        return httpClient.put(
                 urlPath,
                 distinctAttribute == null
                         ? httpClient.jsonHandler.encode(distinctAttribute)
@@ -380,7 +380,7 @@ public class SettingsHandler {
     Task updateTypoToleranceSettings(String uid, TypoTolerance typoTolerance)
             throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/typo-tolerance";
-        return httpClient.post(
+        return httpClient.patch(
                 urlPath,
                 typoTolerance == null
                         ? httpClient.jsonHandler.encode(typoTolerance)
