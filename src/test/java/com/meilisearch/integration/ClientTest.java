@@ -9,7 +9,8 @@ import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
-import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.Results;
+import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Arrays;
 import org.junit.jupiter.api.AfterAll;
@@ -51,8 +52,8 @@ public class ClientTest extends AbstractIT {
     @Test
     public void testCreateIndexWithoutPrimaryKeyWithJacksonJsonHandler() throws Exception {
         String indexUid = "CreateIndexWithoutPrimaryKeyWithJacksonJsonHandler";
-        Task task = clientJackson.createIndex(indexUid);
-        clientJackson.waitForTask(task.getUid());
+        TaskInfo task = clientJackson.createIndex(indexUid);
+        clientJackson.waitForTask(task.getTaskUid());
         Index index = clientJackson.getIndex(indexUid);
 
         assertEquals(index.getUid(), indexUid);
@@ -77,8 +78,8 @@ public class ClientTest extends AbstractIT {
     @Test
     public void testCreateIndexWithPrimaryKeyWithJacksonJsonHandler() throws Exception {
         String indexUid = "CreateIndexWithPrimaryKeyWithJacksonJsonHandler";
-        Task task = clientJackson.createIndex(indexUid, this.primaryKey);
-        clientJackson.waitForTask(task.getUid());
+        TaskInfo task = clientJackson.createIndex(indexUid, this.primaryKey);
+        clientJackson.waitForTask(task.getTaskUid());
         Index index = clientJackson.getIndex(indexUid);
 
         assertEquals(index.getUid(), indexUid);
@@ -115,8 +116,8 @@ public class ClientTest extends AbstractIT {
         assertEquals(index.getUid(), indexUid);
         assertNull(index.getPrimaryKey());
 
-        Task task = client.updateIndex(indexUid, this.primaryKey);
-        client.waitForTask(task.getUid());
+        TaskInfo task = client.updateIndex(indexUid, this.primaryKey);
+        client.waitForTask(task.getTaskUid());
         index = client.getIndex(indexUid);
 
         assertTrue(index instanceof Index);
@@ -194,8 +195,8 @@ public class ClientTest extends AbstractIT {
     public void testDeleteIndex() throws Exception {
         String indexUid = "DeleteIndex";
         Index index = createEmptyIndex(indexUid);
-        Task task = client.deleteIndex(index.getUid());
-        client.waitForTask(task.getUid());
+        TaskInfo task = client.deleteIndex(index.getUid());
+        client.waitForTask(task.getTaskUid());
 
         assertThrows(MeilisearchApiException.class, () -> client.getIndex(indexUid));
     }

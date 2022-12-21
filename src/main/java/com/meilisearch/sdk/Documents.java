@@ -3,7 +3,7 @@ package com.meilisearch.sdk;
 import static java.util.Collections.singletonList;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
-import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TaskInfo;
 import java.util.List;
 
 /**
@@ -106,15 +106,16 @@ class Documents {
      * @param uid Partial index identifier for the document
      * @param document String containing the document to add
      * @param primaryKey PrimaryKey of the document
-     * @return Meilisearch's Task API response
+     * @return Meilisearch's TaskInfo API response
      * @throws MeilisearchException if the client request causes an error
      */
-    Task addDocuments(String uid, String document, String primaryKey) throws MeilisearchException {
+    TaskInfo addDocuments(String uid, String document, String primaryKey)
+            throws MeilisearchException {
         String urlQuery = "/indexes/" + uid + "/documents";
         if (primaryKey != null) {
             urlQuery += "?primaryKey=" + primaryKey;
         }
-        return httpClient.post(urlQuery, document, Task.class);
+        return httpClient.post(urlQuery, document, TaskInfo.class);
     }
 
     /**
@@ -123,16 +124,16 @@ class Documents {
      * @param uid Partial index identifier for the document
      * @param document String containing the document to replace the existing document
      * @param primaryKey PrimaryKey of the document
-     * @return Meilisearch's Task API response
+     * @return Meilisearch's TaskInfo API response
      * @throws MeilisearchException if the client request causes an error
      */
-    Task updateDocuments(String uid, String document, String primaryKey)
+    TaskInfo updateDocuments(String uid, String document, String primaryKey)
             throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/documents";
         if (primaryKey != null) {
             urlPath += "?primaryKey=" + primaryKey;
         }
-        return httpClient.put(urlPath, document, Task.class);
+        return httpClient.put(urlPath, document, TaskInfo.class);
     }
 
     /**
@@ -140,12 +141,12 @@ class Documents {
      *
      * @param uid Partial index identifier for the requested document
      * @param identifier ID of the document
-     * @return Meilisearch's Task API response
+     * @return Meilisearch's TaskInfo API response
      * @throws MeilisearchException if the client request causes an error
      */
-    Task deleteDocument(String uid, String identifier) throws MeilisearchException {
+    TaskInfo deleteDocument(String uid, String identifier) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/documents/" + identifier;
-        return httpClient.delete(urlPath, Task.class);
+        return httpClient.delete(urlPath, TaskInfo.class);
     }
 
     /**
@@ -153,23 +154,23 @@ class Documents {
      *
      * @param uid Partial index identifier for the requested documents
      * @param identifiers ID of documents to delete
-     * @return Meilisearch's Task API response
+     * @return Meilisearch's TaskInfo API response
      * @throws MeilisearchException if the client request causes an error
      */
-    Task deleteDocuments(String uid, List<String> identifiers) throws MeilisearchException {
+    TaskInfo deleteDocuments(String uid, List<String> identifiers) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/documents/" + "delete-batch";
-        return httpClient.post(urlPath, identifiers, Task.class);
+        return httpClient.post(urlPath, identifiers, TaskInfo.class);
     }
 
     /**
      * Deletes all documents at the specified index uid
      *
      * @param uid Partial index identifier for the requested documents
-     * @return Meilisearch's Task API response
+     * @return Meilisearch's TaskInfo API response
      * @throws MeilisearchException if the client request causes an error
      */
-    Task deleteAllDocuments(String uid) throws MeilisearchException {
+    TaskInfo deleteAllDocuments(String uid) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/documents";
-        return httpClient.delete(urlPath, Task.class);
+        return httpClient.delete(urlPath, TaskInfo.class);
     }
 }

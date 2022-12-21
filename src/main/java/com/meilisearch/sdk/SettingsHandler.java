@@ -2,7 +2,7 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.Settings;
-import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.model.TypoTolerance;
 import java.util.Map;
 
@@ -40,24 +40,24 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param settings the data that contains the new settings
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task updateSettings(String uid, Settings settings) throws MeilisearchException {
+    TaskInfo updateSettings(String uid, Settings settings) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings";
-        return httpClient.patch(urlPath, settings, Task.class);
+        return httpClient.patch(urlPath, settings, TaskInfo.class);
     }
 
     /**
      * Resets the settings of the index
      *
      * @param uid Index identifier
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task resetSettings(String uid) throws MeilisearchException {
+    TaskInfo resetSettings(String uid) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings";
-        return httpClient.delete(urlPath, Task.class);
+        return httpClient.delete(urlPath, TaskInfo.class);
     }
 
     /**
@@ -77,27 +77,28 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param rankingRules the data that contains the new settings
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task updateRankingRuleSettings(String uid, String[] rankingRules) throws MeilisearchException {
+    TaskInfo updateRankingRuleSettings(String uid, String[] rankingRules)
+            throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/ranking-rules";
         return httpClient.put(
                 urlPath,
                 rankingRules == null ? httpClient.jsonHandler.encode(rankingRules) : rankingRules,
-                Task.class);
+                TaskInfo.class);
     }
 
     /**
      * Resets the ranking rules settings of the index
      *
      * @param uid Index identifier
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task resetRankingRulesSettings(String uid) throws MeilisearchException {
+    TaskInfo resetRankingRulesSettings(String uid) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/ranking-rules";
-        return httpClient.delete(urlPath, Task.class);
+        return httpClient.delete(urlPath, TaskInfo.class);
     }
 
     /**
@@ -117,28 +118,28 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param synonyms a Map that contains the new synonyms settings
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task updateSynonymsSettings(String uid, Map<String, String[]> synonyms)
+    TaskInfo updateSynonymsSettings(String uid, Map<String, String[]> synonyms)
             throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/synonyms";
         return httpClient.put(
                 urlPath,
                 synonyms == null ? httpClient.jsonHandler.encode(synonyms) : synonyms,
-                Task.class);
+                TaskInfo.class);
     }
 
     /**
      * Resets the synonyms settings of the index
      *
      * @param uid Index identifier
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task resetSynonymsSettings(String uid) throws MeilisearchException {
+    TaskInfo resetSynonymsSettings(String uid) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/synonyms";
-        return httpClient.delete(urlPath, Task.class);
+        return httpClient.delete(urlPath, TaskInfo.class);
     }
 
     /**
@@ -158,27 +159,27 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param stopWords an array of strings that contains the new stop-words settings
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task updateStopWordsSettings(String uid, String[] stopWords) throws MeilisearchException {
+    TaskInfo updateStopWordsSettings(String uid, String[] stopWords) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/stop-words";
         return httpClient.put(
                 urlPath,
                 stopWords == null ? httpClient.jsonHandler.encode(stopWords) : stopWords,
-                Task.class);
+                TaskInfo.class);
     }
 
     /**
      * Resets the stop-words settings of the index
      *
      * @param uid Index identifier
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task resetStopWordsSettings(String uid) throws MeilisearchException {
+    TaskInfo resetStopWordsSettings(String uid) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/stop-words";
-        return httpClient.delete(urlPath, Task.class);
+        return httpClient.delete(urlPath, TaskInfo.class);
     }
 
     /**
@@ -199,10 +200,10 @@ public class SettingsHandler {
      * @param uid Index identifier
      * @param searchableAttributes an array of strings that contains the new searchable attributes
      *     settings
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task updateSearchableAttributesSettings(String uid, String[] searchableAttributes)
+    TaskInfo updateSearchableAttributesSettings(String uid, String[] searchableAttributes)
             throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/searchable-attributes";
         return httpClient.put(
@@ -210,19 +211,19 @@ public class SettingsHandler {
                 searchableAttributes == null
                         ? httpClient.jsonHandler.encode(searchableAttributes)
                         : searchableAttributes,
-                Task.class);
+                TaskInfo.class);
     }
 
     /**
      * Resets the searchable attributes of the index
      *
      * @param uid Index identifier
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task resetSearchableAttributesSettings(String uid) throws MeilisearchException {
+    TaskInfo resetSearchableAttributesSettings(String uid) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/searchable-attributes";
-        return httpClient.delete(urlPath, Task.class);
+        return httpClient.delete(urlPath, TaskInfo.class);
     }
 
     /**
@@ -243,10 +244,10 @@ public class SettingsHandler {
      * @param uid Index identifier
      * @param displayAttributes an array of strings that contains the new displayed attributes
      *     settings
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task updateDisplayedAttributesSettings(String uid, String[] displayAttributes)
+    TaskInfo updateDisplayedAttributesSettings(String uid, String[] displayAttributes)
             throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/displayed-attributes";
         return httpClient.put(
@@ -254,19 +255,19 @@ public class SettingsHandler {
                 displayAttributes == null
                         ? httpClient.jsonHandler.encode(displayAttributes)
                         : displayAttributes,
-                Task.class);
+                TaskInfo.class);
     }
 
     /**
      * Resets the displayed attributes of the index
      *
      * @param uid Index identifier
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task resetDisplayedAttributesSettings(String uid) throws MeilisearchException {
+    TaskInfo resetDisplayedAttributesSettings(String uid) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/displayed-attributes";
-        return httpClient.delete(urlPath, Task.class);
+        return httpClient.delete(urlPath, TaskInfo.class);
     }
 
     /**
@@ -287,10 +288,10 @@ public class SettingsHandler {
      * @param uid Index identifier
      * @param filterableAttributes an array of strings that contains the new filterable attributes
      *     settings
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task updateFilterableAttributesSettings(String uid, String[] filterableAttributes)
+    TaskInfo updateFilterableAttributesSettings(String uid, String[] filterableAttributes)
             throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/filterable-attributes";
         return httpClient.put(
@@ -298,19 +299,19 @@ public class SettingsHandler {
                 filterableAttributes == null
                         ? httpClient.jsonHandler.encode(filterableAttributes)
                         : filterableAttributes,
-                Task.class);
+                TaskInfo.class);
     }
 
     /**
      * Resets the filterable attributes of the index
      *
      * @param uid Index identifier
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task resetFilterableAttributesSettings(String uid) throws MeilisearchException {
+    TaskInfo resetFilterableAttributesSettings(String uid) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/filterable-attributes";
-        return httpClient.delete(urlPath, Task.class);
+        return httpClient.delete(urlPath, TaskInfo.class);
     }
 
     /**
@@ -331,10 +332,10 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param distinctAttribute a String that contains the new distinct attributes settings
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task updateDistinctAttributeSettings(String uid, String distinctAttribute)
+    TaskInfo updateDistinctAttributeSettings(String uid, String distinctAttribute)
             throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/distinct-attribute";
         return httpClient.put(
@@ -342,19 +343,19 @@ public class SettingsHandler {
                 distinctAttribute == null
                         ? httpClient.jsonHandler.encode(distinctAttribute)
                         : "\"" + distinctAttribute + "\"",
-                Task.class);
+                TaskInfo.class);
     }
 
     /**
      * Resets the distinct attribute field of the index
      *
      * @param uid Index identifier
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task resetDistinctAttributeSettings(String uid) throws MeilisearchException {
+    TaskInfo resetDistinctAttributeSettings(String uid) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/distinct-attribute";
-        return httpClient.delete(urlPath, Task.class);
+        return httpClient.delete(urlPath, TaskInfo.class);
     }
 
     /**
@@ -374,10 +375,10 @@ public class SettingsHandler {
      *
      * @param uid Index identifier
      * @param typoTolerance a TypoTolerance instance that contains the new typo tolerance settings
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task updateTypoToleranceSettings(String uid, TypoTolerance typoTolerance)
+    TaskInfo updateTypoToleranceSettings(String uid, TypoTolerance typoTolerance)
             throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/typo-tolerance";
         return httpClient.patch(
@@ -385,18 +386,18 @@ public class SettingsHandler {
                 typoTolerance == null
                         ? httpClient.jsonHandler.encode(typoTolerance)
                         : typoTolerance,
-                Task.class);
+                TaskInfo.class);
     }
 
     /**
      * Resets the typo tolerance settings of the index
      *
      * @param uid Index identifier
-     * @return Task instance
+     * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    Task resetTypoToleranceSettings(String uid) throws MeilisearchException {
+    TaskInfo resetTypoToleranceSettings(String uid) throws MeilisearchException {
         String urlPath = "/indexes/" + uid + "/settings/typo-tolerance";
-        return httpClient.delete(urlPath, Task.class);
+        return httpClient.delete(urlPath, TaskInfo.class);
     }
 }
