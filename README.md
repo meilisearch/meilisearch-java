@@ -265,7 +265,7 @@ Client client = new Client(config);
 
 ## 🤖 Compatibility with Meilisearch
 
-This package only guarantees compatibility with the [version v0.27.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.27.0).
+This package only guarantees compatibility with the [version v1.0.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v1.0.0).
 
 ## 💡 Learn more
 
