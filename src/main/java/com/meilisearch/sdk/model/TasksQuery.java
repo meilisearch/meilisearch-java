@@ -1,5 +1,6 @@
 package com.meilisearch.sdk.model;
 
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -9,6 +10,7 @@ import lombok.experimental.Accessors;
  * <p>https://docs.meilisearch.com/reference/api/tasks.html#query-parameters
  */
 @Setter
+@Getter
 @Accessors(chain = true)
 public class TasksQuery {
     private int limit = -1;

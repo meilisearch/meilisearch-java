@@ -35,7 +35,9 @@ public class TasksHandler {
      * @throws MeilisearchException if client request causes an error
      */
     Task getTask(int taskUid) throws MeilisearchException {
-        String urlPath = "/tasks/" + taskUid;
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("tasks").addSubroute(Integer.toString(taskUid));
+        String urlPath = urlb.getURL();
         return httpClient.get(urlPath, Task.class);
     }
 
@@ -76,7 +78,7 @@ public class TasksHandler {
     /**
      * Retrieves all tasks from specified index uid
      *
-     * @param indexUid Index identifier to the requested Tasks
+     * @param indexUid Index identifier to index of the requested Tasks
      * @return List of task instance
      * @throws MeilisearchException if client request causes an error
      */
@@ -92,7 +94,7 @@ public class TasksHandler {
     /**
      * Retrieves all tasks from specified index uid
      *
-     * @param indexUid Index identifier to the requested Tasks
+     * @param indexUid Index identifier to index of the requested Tasks
      * @param param accept by the tasks route
      * @return List of task instance
      * @throws MeilisearchException if client request causes an error
