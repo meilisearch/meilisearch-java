@@ -65,22 +65,6 @@ public class URLBuilderTest {
     }
 
     @Test
-    void addSeparator() {
-        classToTest.addSeparator();
-        assertEquals("?", classToTest.getParams().toString());
-
-        classToTest.addSeparator();
-        assertEquals("?&", classToTest.getParams().toString());
-    }
-
-    @Test
-    void formatArrayParameters() {
-        assertEquals(
-                "test1,test2,test3",
-                classToTest.formatArrayParameters(new String[] {"test1", "test2", "test3"}));
-    }
-
-    @Test
     void getURL() {
         assertEquals("", classToTest.getURL());
 

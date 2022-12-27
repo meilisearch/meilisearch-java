@@ -47,7 +47,7 @@ public class URLBuilder {
         return this;
     }
 
-    URLBuilder addSeparator() {
+    private URLBuilder addSeparator() {
         if (params.length() > 0) {
             params.append("&");
         } else {
@@ -56,7 +56,7 @@ public class URLBuilder {
         return this;
     }
 
-    String formatArrayParameters(String[] fields) {
+    private String formatArrayParameters(String[] fields) {
         return String.join(",", fields);
     }
 
