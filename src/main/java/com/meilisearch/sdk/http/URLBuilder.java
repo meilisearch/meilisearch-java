@@ -10,6 +10,11 @@ public class URLBuilder {
         routes = new StringBuilder();
         params = new StringBuilder();
     }
+    
+    public URLBuilder(String rootRoute) {
+        routes = new StringBuilder(rootRoute);
+        params = new StringBuilder();
+    }
 
     public URLBuilder addSubroute(String route) {
         routes.append("/");
