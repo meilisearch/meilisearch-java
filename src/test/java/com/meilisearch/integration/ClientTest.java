@@ -9,7 +9,6 @@ import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
-import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Arrays;

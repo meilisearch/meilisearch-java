@@ -7,7 +7,6 @@ import lombok.Getter;
  *
  * <p>https://docs.meilisearch.com/reference/api/tasks.html#response
  */
-
 @Getter
 public class TasksResults {
     protected Task[] results = null;

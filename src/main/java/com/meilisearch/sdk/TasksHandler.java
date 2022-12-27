@@ -28,7 +28,7 @@ public class TasksHandler {
     }
 
     /**
-     * Retrieves the task with the specified task uid
+     * Retrieves one task with the specified task uid
      *
      * @param taskUid Identifier of the requested Task
      * @return Task instance
@@ -40,7 +40,7 @@ public class TasksHandler {
     }
 
     /**
-     * Retrieves tasks from the client
+     * Retrieves all tasks from the client
      *
      * @return List of task instance
      * @throws MeilisearchException if client request causes an error
@@ -53,7 +53,7 @@ public class TasksHandler {
     }
 
     /**
-     * Retrieves tasks from the client
+     * Retrieves all tasks from the client
      *
      * @param param accept by the tasks route
      * @return List of task instance
@@ -61,12 +61,12 @@ public class TasksHandler {
      */
     TasksResults getTasks(TasksQuery param) throws MeilisearchException {
         URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("tasks");
-        urlb.addParameter("limit", param.getLimit());
-        urlb.addParameter("from", param.getFrom());
-        urlb.addParameter("status", param.getStatus());
-        urlb.addParameter("type", param.getType());
-        urlb.addParameter("indexUid", param.getIndexUid());
+        urlb.addSubroute("tasks")
+                .addParameter("limit", param.getLimit())
+                .addParameter("from", param.getFrom())
+                .addParameter("status", param.getStatus())
+                .addParameter("type", param.getType())
+                .addParameter("indexUid", param.getIndexUid());
         String urlQuery = urlb.getURL();
 
         TasksResults result = httpClient.get(urlQuery, TasksResults.class);
@@ -74,7 +74,7 @@ public class TasksHandler {
     }
 
     /**
-     * Retrieves all TasksHandler at the specified index uid
+     * Retrieves all tasks from specified index uid
      *
      * @param indexUid Index identifier to the requested Tasks
      * @return List of task instance
@@ -82,8 +82,7 @@ public class TasksHandler {
      */
     TasksResults getTasks(String indexUid) throws MeilisearchException {
         URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("tasks");
-        urlb.addParameter("indexUid", indexUid);
+        urlb.addSubroute("tasks").addParameter("indexUid", indexUid);
         String urlQuery = urlb.getURL();
 
         TasksResults result = httpClient.get(urlQuery, TasksResults.class);
@@ -91,7 +90,7 @@ public class TasksHandler {
     }
 
     /**
-     * Retrieves all TasksHandler at the specified index uid
+     * Retrieves all tasks from specified index uid
      *
      * @param indexUid Index identifier to the requested Tasks
      * @param param accept by the tasks route
@@ -106,12 +105,12 @@ public class TasksHandler {
             newIndexUid[param.getIndexUid().length] = indexUid;
         }
         URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("tasks");
-        urlb.addParameter("limit", param.getLimit());
-        urlb.addParameter("from", param.getFrom());
-        urlb.addParameter("status", param.getStatus());
-        urlb.addParameter("type", param.getType());
-        urlb.addParameter("indexUid", newIndexUid);
+        urlb.addSubroute("tasks")
+                .addParameter("limit", param.getLimit())
+                .addParameter("from", param.getFrom())
+                .addParameter("status", param.getStatus())
+                .addParameter("type", param.getType())
+                .addParameter("indexUid", newIndexUid);
         String urlQuery = urlb.getURL();
 
         TasksResults result = httpClient.get(urlQuery, TasksResults.class);
