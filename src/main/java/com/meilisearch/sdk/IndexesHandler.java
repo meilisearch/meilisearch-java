@@ -1,6 +1,9 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.http.URLBuilder;
+import com.meilisearch.sdk.model.IndexesQuery;
+import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.TaskInfo;
 import java.util.HashMap;
 
@@ -29,8 +32,8 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    TaskInfo create(String uid) throws MeilisearchException {
-        return this.create(uid, null);
+    TaskInfo createIndex(String uid) throws MeilisearchException {
+        return this.createIndex(uid, null);
     }
 
     /**
@@ -41,7 +44,7 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    TaskInfo create(String uid, String primaryKey) throws MeilisearchException {
+    TaskInfo createIndex(String uid, String primaryKey) throws MeilisearchException {
         HashMap<String, String> index = new HashMap<String, String>();
         index.put("uid", uid);
         index.put("primaryKey", primaryKey);
@@ -56,9 +59,11 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    String get(String uid) throws MeilisearchException {
-        String requestQuery = "/indexes/" + uid;
-        return httpClient.get(requestQuery, String.class);
+    Index getIndex(String uid) throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes").addSubroute(uid);
+        String urlPath = urlb.getURL();
+        return httpClient.get(urlPath, Index.class);
     }
 
     /**
@@ -67,7 +72,33 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    String getAll() throws MeilisearchException {
+    Results<Index> getIndexes() throws MeilisearchException {
+        return httpClient.get("/indexes", Results.class, Index.class);
+    }
+
+    /**
+     * Gets indexes in the current Meilisearch instance
+     *
+     * @param param accept by the indexes route
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     */
+    Results<Index> getIndexes(IndexesQuery param) throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes")
+                .addParameter("limit", param.getLimit())
+                .addParameter("offset", param.getOffset());
+        String urlQuery = urlb.getURL();
+        return httpClient.get(urlQuery, Results.class, Index.class);
+    }
+
+    /**
+     * Gets all indexes in the current Meilisearch instance
+     *
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     */
+    String getRawIndexes() throws MeilisearchException {
         return httpClient.get("/indexes", String.class);
     }
 
@@ -83,8 +114,10 @@ class IndexesHandler {
         HashMap<String, String> index = new HashMap<String, String>();
         index.put("primaryKey", primaryKey);
 
-        String requestQuery = "/indexes/" + uid;
-        return httpClient.patch(requestQuery, index, TaskInfo.class);
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes").addSubroute(uid);
+        String urlPath = urlb.getURL();
+        return httpClient.patch(urlPath, index, TaskInfo.class);
     }
 
     /**
@@ -94,8 +127,10 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    TaskInfo delete(String uid) throws MeilisearchException {
-        String requestQuery = "/indexes/" + uid;
-        return httpClient.delete(requestQuery, TaskInfo.class);
+    TaskInfo deleteIndex(String uid) throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes").addSubroute(uid);
+        String urlPath = urlb.getURL();
+        return httpClient.delete(urlPath, TaskInfo.class);
     }
 }

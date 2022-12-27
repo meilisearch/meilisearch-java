@@ -105,7 +105,8 @@ public abstract class AbstractIT {
             Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"));
             Results<Index> indexes = ms.getIndexes();
             for (Index index : indexes.getResults()) {
-                ms.deleteIndex(index.getUid());
+                TaskInfo task = ms.deleteIndex(index.getUid());
+                ms.waitForTask(task.getTaskUid());
             }
         } catch (Exception e) {
             e.printStackTrace();

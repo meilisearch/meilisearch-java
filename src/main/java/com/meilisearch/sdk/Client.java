@@ -7,6 +7,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.json.JsonHandler;
+import com.meilisearch.sdk.model.IndexesQuery;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.Stats;
@@ -63,7 +64,7 @@ public class Client {
      * @throws MeilisearchException if an error occurs
      */
     public TaskInfo createIndex(String uid, String primaryKey) throws MeilisearchException {
-        return this.indexesHandler.create(uid, primaryKey);
+        return this.indexesHandler.createIndex(uid, primaryKey);
     }
 
     /**
@@ -73,9 +74,25 @@ public class Client {
      * @return Array of indexes in the Meilisearch client
      * @throws MeilisearchException if an error occurs
      */
-    public Index[] getIndexes() throws MeilisearchException {
-        Index[] indexes = jsonHandler.decode(getRawIndexes(), Index[].class);
-        for (Index index : indexes) {
+    public Results<Index> getIndexes() throws MeilisearchException {
+        Results<Index> indexes = this.indexesHandler.getIndexes();
+        for (Index index : indexes.getResults()) {
+            index.setConfig(this.config);
+        }
+        return indexes;
+    }
+
+    /**
+     * Gets indexes in the current Meilisearch instance
+     * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     *
+     * @param param accept by the indexes route
+     * @return Array of indexes in the Meilisearch client
+     * @throws MeilisearchException if an error occurs
+     */
+    public Results<Index> getIndexes(IndexesQuery param) throws MeilisearchException {
+        Results<Index> indexes = this.indexesHandler.getIndexes(param);
+        for (Index index : indexes.getResults()) {
             index.setConfig(this.config);
         }
         return indexes;
@@ -89,7 +106,7 @@ public class Client {
      * @throws MeilisearchException if an error occurs
      */
     public String getRawIndexes() throws MeilisearchException {
-        return this.indexesHandler.getAll();
+        return this.indexesHandler.getRawIndexes();
     }
 
     /**
@@ -117,21 +134,9 @@ public class Client {
      * @throws MeilisearchException if an error occurs
      */
     public Index getIndex(String uid) throws MeilisearchException {
-        Index index = jsonHandler.decode(getRawIndex(uid), Index.class);
+        Index index = this.indexesHandler.getIndex(uid);
         index.setConfig(this.config);
         return index;
-    }
-
-    /**
-     * Gets single index by its unique identifier
-     * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
-     *
-     * @param uid Unique identifier of the index to get
-     * @return Meilisearch API response as String
-     * @throws MeilisearchException if an error occurs
-     */
-    public String getRawIndex(String uid) throws MeilisearchException {
-        return this.indexesHandler.get(uid);
     }
 
     /**
@@ -156,7 +161,7 @@ public class Client {
      * @throws MeilisearchException if an error occurs
      */
     public TaskInfo deleteIndex(String uid) throws MeilisearchException {
-        return this.indexesHandler.delete(uid);
+        return this.indexesHandler.deleteIndex(uid);
     }
 
     /**
