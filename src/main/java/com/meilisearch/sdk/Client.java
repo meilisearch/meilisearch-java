@@ -159,26 +159,16 @@ public class Client {
         return this.indexesHandler.delete(uid);
     }
 
-    // TODO createDump will return a Task in v0.28
-    // /**
-    //  * Triggers the creation of a Meilisearch dump.
-    //  * https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
-    //  *
-    //  * @return Dump instance
-    //  * @throws MeilisearchException if an error occurs
-    //  */
-    // public Dump createDump() throws MeilisearchException {
-    //     return this.dumpHandler.createDump();
-    // }
-    // /**
-    //  * Creates a dump https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
-    //  *
-    //  * @return Dump object with Meilisearch API response
-    //  * @throws MeilisearchException if an error occurs
-    //  */
-    // public Dump createDump() throws MeilisearchException {
-    //     return this.meiliSearchHttpRequest.post("/dumps", "", Dump.class);
-    // }
+    /**
+     * Triggers the creation of a Meilisearch dump.
+     * https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
+     *
+     * @return Meilisearch API response as TaskInfo
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo createDump() throws MeilisearchException {
+        return config.httpClient.post("/dumps", "", TaskInfo.class);
+    }
 
     /**
      * Gets the status and availability of a Meilisearch instance

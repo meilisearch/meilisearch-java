@@ -237,24 +237,14 @@ public class ClientTest extends AbstractIT {
         assertEquals(primaryKey, index.getPrimaryKey());
     }
 
-    // /** Test call to create dump */
-    // TODO rewrite Dump test
-    // @Test
-    // public void testCreateDump() throws Exception {
-    //     Dump dump = client.createDump();
-    //     String status = dump.getStatus();
+    /** Test call to create dump */
+    @Test
+    public void testCreateDump() throws Exception {
+        TaskInfo task = client.createDump();
+        client.waitForTask(task.getTaskUid());
+        Task dump = client.getTask(task.getTaskUid());
 
-    //     assertEquals(status, "in_progress");
-    // }
-
-    // /** Test call to get dump status by uid */
-    // @Test
-    // public void testGetDumpStatus() throws Exception {
-    //     Dump dump = client.createDump();
-    //     String uid = dump.getUid();
-    //     String status = client.getDumpStatus(uid);
-
-    //     assertNotNull(status);
-    //     assertNotNull(uid);
-    // }
+        assertEquals(task.getStatus(), "enqueued");
+        assertEquals("dumpCreation", dump.getType());
+    }
 }
