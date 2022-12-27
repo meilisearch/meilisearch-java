@@ -1,5 +1,8 @@
 package com.meilisearch.sdk.http;
 
+import lombok.Getter;
+
+@Getter
 public class URLBuilder {
     private StringBuilder routes, params;
 
@@ -8,46 +11,49 @@ public class URLBuilder {
         params = new StringBuilder();
     }
 
-    URLBuilder(String host) {}
-
-    public void addSubroute(String route) {
+    public URLBuilder addSubroute(String route) {
         routes.append("/");
         routes.append(route);
+        return this;
     }
 
-    public void addParameter(String parameter, String value) {
+    public URLBuilder addParameter(String parameter, String value) {
         if (value != "") {
             addSeparator();
             params.append(parameter);
             params.append("=");
             params.append(value);
         }
+        return this;
     }
 
-    public void addParameter(String parameter, int value) {
+    public URLBuilder addParameter(String parameter, int value) {
         if (value > -1) {
             addSeparator();
             params.append(parameter);
             params.append("=");
             params.append(value);
         }
+        return this;
     }
 
-    public void addParameter(String parameter, String[] value) {
+    public URLBuilder addParameter(String parameter, String[] value) {
         if (value != null && value.length > 0) {
             addSeparator();
             params.append(parameter);
             params.append("=");
             params.append(formatArrayParameters(value));
         }
+        return this;
     }
 
-    void addSeparator() {
+    URLBuilder addSeparator() {
         if (params.length() > 0) {
             params.append("&");
         } else {
             params.append("?");
         }
+        return this;
     }
 
     String formatArrayParameters(String[] fields) {
