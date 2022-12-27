@@ -8,7 +8,7 @@ import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.json.JacksonJsonHandler;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.Results;
-import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
 import java.io.*;
 import java.net.URL;
@@ -59,14 +59,14 @@ public abstract class AbstractIT {
     }
 
     public Index createEmptyIndex(String indexUid) throws Exception {
-        Task task = client.createIndex(indexUid);
-        client.waitForTask(task.getUid());
+        TaskInfo task = client.createIndex(indexUid);
+        client.waitForTask(task.getTaskUid());
         return client.getIndex(indexUid);
     }
 
     public Index createEmptyIndex(String indexUid, String primaryKey) throws Exception {
-        Task task = client.createIndex(indexUid, primaryKey);
-        client.waitForTask(task.getUid());
+        TaskInfo task = client.createIndex(indexUid, primaryKey);
+        client.waitForTask(task.getTaskUid());
         return client.getIndex(indexUid);
     }
 

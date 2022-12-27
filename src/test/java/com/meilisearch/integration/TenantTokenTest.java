@@ -12,7 +12,7 @@ import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.model.Settings;
-import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Date;
 import java.util.HashMap;
@@ -93,18 +93,18 @@ public class TenantTokenTest extends AbstractIT {
 
         Index index = client.index(indexUid);
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
-        index.waitForTask(task.getUid());
+        TaskInfo task = index.addDocuments(testData.getRaw());
+        index.waitForTask(task.getTaskUid());
 
         Settings settings = index.getSettings();
         settings.setFilterableAttributes(new String[] {"id"});
-        index.waitForTask(index.updateSettings(settings).getUid());
+        index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchResult searchResult = tokenClient.index(indexUid).search("");
 
         assertEquals(20, searchResult.getHits().size());
         assertEquals(20, searchResult.getLimit());
-        assertEquals(30, searchResult.getNbHits());
+        assertEquals(30, searchResult.getEstimatedTotalHits());
     }
 
     /** Test Create Tenant Token with expiration date */

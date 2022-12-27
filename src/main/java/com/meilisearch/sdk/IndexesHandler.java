@@ -1,7 +1,7 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
-import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TaskInfo;
 import java.util.HashMap;
 
 /**
@@ -29,7 +29,7 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    Task create(String uid) throws MeilisearchException {
+    TaskInfo create(String uid) throws MeilisearchException {
         return this.create(uid, null);
     }
 
@@ -41,12 +41,12 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    Task create(String uid, String primaryKey) throws MeilisearchException {
+    TaskInfo create(String uid, String primaryKey) throws MeilisearchException {
         HashMap<String, String> index = new HashMap<String, String>();
         index.put("uid", uid);
         index.put("primaryKey", primaryKey);
 
-        return httpClient.post("/indexes", index, Task.class);
+        return httpClient.post("/indexes", index, TaskInfo.class);
     }
 
     /**
@@ -79,12 +79,12 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    Task updatePrimaryKey(String uid, String primaryKey) throws MeilisearchException {
+    TaskInfo updatePrimaryKey(String uid, String primaryKey) throws MeilisearchException {
         HashMap<String, String> index = new HashMap<String, String>();
         index.put("primaryKey", primaryKey);
 
         String requestQuery = "/indexes/" + uid;
-        return httpClient.patch(requestQuery, index, Task.class);
+        return httpClient.patch(requestQuery, index, TaskInfo.class);
     }
 
     /**
@@ -94,8 +94,8 @@ class IndexesHandler {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    Task delete(String uid) throws MeilisearchException {
+    TaskInfo delete(String uid) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid;
-        return httpClient.delete(requestQuery, Task.class);
+        return httpClient.delete(requestQuery, TaskInfo.class);
     }
 }

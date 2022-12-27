@@ -11,6 +11,9 @@ import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.Stats;
 import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TaskInfo;
+import com.meilisearch.sdk.model.TasksQuery;
+import com.meilisearch.sdk.model.TasksResults;
 import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
@@ -43,10 +46,10 @@ public class Client {
      * https://docs.meilisearch.com/reference/api/indexes.html#create-an-index
      *
      * @param uid Unique identifier for the index to create
-     * @return Meilisearch API response as Task
+     * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      */
-    public Task createIndex(String uid) throws MeilisearchException {
+    public TaskInfo createIndex(String uid) throws MeilisearchException {
         return this.createIndex(uid, null);
     }
 
@@ -56,10 +59,10 @@ public class Client {
      *
      * @param uid Unique identifier for the index to create
      * @param primaryKey The primary key of the documents in that index
-     * @return Meilisearch API response as Task
+     * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      */
-    public Task createIndex(String uid, String primaryKey) throws MeilisearchException {
+    public TaskInfo createIndex(String uid, String primaryKey) throws MeilisearchException {
         return this.indexesHandler.create(uid, primaryKey);
     }
 
@@ -137,10 +140,10 @@ public class Client {
      *
      * @param uid Unique identifier of the index to update
      * @param primaryKey Primary key of the documents in the index
-     * @return Meilisearch API response as Task
+     * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      */
-    public Task updateIndex(String uid, String primaryKey) throws MeilisearchException {
+    public TaskInfo updateIndex(String uid, String primaryKey) throws MeilisearchException {
         return this.indexesHandler.updatePrimaryKey(uid, primaryKey);
     }
 
@@ -149,10 +152,10 @@ public class Client {
      * https://docs.meilisearch.com/reference/api/indexes.html#delete-one-index
      *
      * @param uid Unique identifier of the index to delete
-     * @return Meilisearch API response as Task
+     * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      */
-    public Task deleteIndex(String uid) throws MeilisearchException {
+    public TaskInfo deleteIndex(String uid) throws MeilisearchException {
         return this.indexesHandler.delete(uid);
     }
 
@@ -240,8 +243,19 @@ public class Client {
      * @return List of tasks in the Meilisearch client
      * @throws MeilisearchException if an error occurs
      */
-    public Results<Task> getTasks() throws MeilisearchException {
+    public TasksResults getTasks() throws MeilisearchException {
         return this.tasksHandler.getTasks();
+    }
+
+    /**
+     * Retrieves list of tasks https://docs.meilisearch.com/reference/api/tasks.html#get-tasks
+     *
+     * @param param accept by the tasks route
+     * @return List of tasks in the Meilisearch client
+     * @throws MeilisearchException if an error occurs
+     */
+    public TasksResults getTasks(TasksQuery param) throws MeilisearchException {
+        return this.tasksHandler.getTasks(param);
     }
 
     /**
