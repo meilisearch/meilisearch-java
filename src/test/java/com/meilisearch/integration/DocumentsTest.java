@@ -1,6 +1,5 @@
 package com.meilisearch.integration;
 
-import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.gson.JsonObject;
@@ -8,19 +7,18 @@ import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
+import com.meilisearch.sdk.model.DocumentsQuery;
+import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 @Tag("integration")
 public class DocumentsTest extends AbstractIT {
@@ -47,6 +45,8 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo task = index.addDocuments("[" + singleDocument + "]");
 
         index.waitForTask(task.getTaskUid());
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
 
         assertEquals(1, movies.length);
         assertEquals("419704", movies[0].getId());
@@ -85,7 +85,8 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo firstTask = index.addDocuments("[" + firstDocument + "]", "language");
         index.waitForTask(firstTask.getTaskUid());
 
-        Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
         assertEquals(1, movies.length);
         assertEquals("419704", movies[0].getId());
         assertEquals("Ad Astra", movies[0].getTitle());
@@ -93,7 +94,7 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo secondTask = index.addDocuments("[" + secondDocument + "]", "language");
         index.waitForTask(secondTask.getTaskUid());
 
-        movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        movies = (Movie[]) index.getDocuments(Movie.class).getResults();
         assertEquals(1, movies.length);
         assertEquals("574982", movies[0].getId());
         assertEquals("The Blackout", movies[0].getTitle());
@@ -110,10 +111,10 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
         for (int i = 0; i < movies.length; i++) {
-            Movie movie =
-                    this.gson.fromJson(
-                            index.getDocument(testData.getData().get(i).getId()), Movie.class);
+            Movie movie = index.<Movie>getDocument(testData.getData().get(i).getId(), Movie.class);
             assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
         }
     }
@@ -129,10 +130,10 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
         for (int i = 0; i < movies.length; i++) {
-            Movie movie =
-                    this.gson.fromJson(
-                            index.getDocument(testData.getData().get(i).getId()), Movie.class);
+            Movie movie = index.<Movie>getDocument(testData.getData().get(i).getId(), Movie.class);
             assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
         }
     }
@@ -184,6 +185,8 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
         Movie toUpdate = movies[0];
         toUpdate.setTitle("The Perks of Being a Wallflower");
         toUpdate.setOverview("The best movie I've ever seen");
@@ -191,7 +194,7 @@ public class DocumentsTest extends AbstractIT {
         task = index.updateDocuments("[" + this.gson.toJson(toUpdate) + "]");
 
         index.waitForTask(task.getTaskUid());
-        Movie responseUpdate = this.gson.fromJson(index.getDocument(toUpdate.getId()), Movie.class);
+        Movie responseUpdate = index.<Movie>getDocument(toUpdate.getId(), Movie.class);
 
         assertEquals(toUpdate.getTitle(), responseUpdate.getTitle());
         assertEquals(toUpdate.getOverview(), responseUpdate.getOverview());
@@ -219,7 +222,8 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo firstTask = index.updateDocuments("[" + firstDocument + "]", "language");
         index.waitForTask(firstTask.getTaskUid());
 
-        Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
         assertEquals(1, movies.length);
         assertEquals("419704", movies[0].getId());
         assertEquals("Ad Astra", movies[0].getTitle());
@@ -243,6 +247,8 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
         List<Movie> toUpdate = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             movies[i].setTitle("Star wars episode: " + i);
@@ -254,8 +260,7 @@ public class DocumentsTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
         for (int j = 0; j < 5; j++) {
-            Movie responseUpdate =
-                    this.gson.fromJson(index.getDocument(toUpdate.get(j).getId()), Movie.class);
+            Movie responseUpdate = index.<Movie>getDocument(toUpdate.get(j).getId(), Movie.class);
             assertEquals(toUpdate.get(j).getTitle(), responseUpdate.getTitle());
             assertEquals(toUpdate.get(j).getOverview(), responseUpdate.getOverview());
         }
@@ -272,6 +277,8 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo taskIndex = index.addDocuments(testData.getRaw());
 
         index.waitForTask(taskIndex.getTaskUid());
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
         List<Movie> toUpdate = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             movies[i].setTitle("Star wars episode: " + i);
@@ -298,6 +305,8 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo taskIndex = index.addDocuments(testData.getRaw());
 
         index.waitForTask(taskIndex.getTaskUid());
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
         List<Movie> toUpdate = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             movies[i].setTitle("Star wars episode: " + i);
@@ -324,9 +333,24 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
+        Movie movie = index.<Movie>getDocument(testData.getData().get(0).getId(), Movie.class);
+        assertEquals(movie.getTitle(), testData.getData().get(0).getTitle());
+    }
+
+    /** Test default GetRawDocuments */
+    @Test
+    public void testGetRawDocument() throws Exception {
+
+        String indexUid = "GetRawDocument";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
         Movie movie =
                 this.gson.fromJson(
-                        index.getDocument(testData.getData().get(0).getId()), Movie.class);
+                        index.getRawDocument(testData.getData().get(0).getId()), Movie.class);
         assertEquals(movie.getTitle(), testData.getData().get(0).getTitle());
     }
 
@@ -341,11 +365,20 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
+
         assertEquals(20, movies.length);
         for (int i = 0; i < movies.length; i++) {
-            Movie movie =
-                    this.gson.fromJson(
-                            index.getDocument(testData.getData().get(i).getId()), Movie.class);
+            assertEquals(movies[i].getTitle(), testData.getData().get(i).getTitle());
+            String[] expectedGenres = testData.getData().get(i).getGenres();
+            String[] foundGenres = movies[i].getGenres();
+            for (int x = 0; x < expectedGenres.length; x++) {
+                assertEquals(expectedGenres[x], foundGenres[x]);
+            }
+        }
+        for (int i = 0; i < movies.length; i++) {
+            Movie movie = index.<Movie>getDocument(testData.getData().get(i).getId(), Movie.class);
             assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
             String[] expectedGenres = testData.getData().get(i).getGenres();
             String[] foundGenres = movie.getGenres();
@@ -361,17 +394,18 @@ public class DocumentsTest extends AbstractIT {
 
         String indexUid = "GetDocumentsLimit";
         int limit = 24;
+        DocumentsQuery query = new DocumentsQuery().setLimit(limit);
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
+        Results<Movie> result = index.getDocuments(query, Movie.class);
+        Movie[] movies = result.getResults();
         assertEquals(limit, movies.length);
         for (int i = 0; i < movies.length; i++) {
-            Movie movie =
-                    this.gson.fromJson(
-                            index.getDocument(testData.getData().get(i).getId()), Movie.class);
+            Movie movie = index.<Movie>getDocument(testData.getData().get(i).getId(), Movie.class);
             assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
         }
     }
@@ -383,12 +417,18 @@ public class DocumentsTest extends AbstractIT {
         int limit = 2;
         int offset = 2;
         int secondOffset = 5;
+        DocumentsQuery query = new DocumentsQuery().setLimit(limit).setOffset(offset);
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
+        Results<Movie> result = index.getDocuments(query, Movie.class);
+        Movie[] movies = result.getResults();
+        Results<Movie> secondResults =
+                index.getDocuments(query.setOffset(secondOffset), Movie.class);
+        Movie[] secondMovies = secondResults.getResults();
 
         assertEquals(limit, movies.length);
         assertEquals(limit, secondMovies.length);
@@ -399,17 +439,24 @@ public class DocumentsTest extends AbstractIT {
 
     /** Test GetDocuments with limit, offset and specified fields */
     @Test
-    public void testGetDocumentsLimitAndOffsetAndSpecifiedAttributesToRetrieve() throws Exception {
-        String indexUid = "GetDocumentsLimit";
+    public void testGetDocumentsLimitAndOffsetAndSpecifiedFields() throws Exception {
+        String indexUid = "GetDocumentsLimitAndOffsetAndSpecifiedFields";
         int limit = 2;
         int offset = 2;
-        List<String> attributesToRetrieve = Arrays.asList("id", "title");
+        List<String> fields = Arrays.asList("id", "title");
+        DocumentsQuery query =
+                new DocumentsQuery()
+                        .setLimit(limit)
+                        .setOffset(offset)
+                        .setFields(fields.toArray(new String[0]));
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
+        Results<Movie> result = index.getDocuments(query, Movie.class);
+        Movie[] movies = result.getResults();
 
         assertEquals(limit, movies.length);
 
@@ -467,12 +514,15 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
         index.waitForTask(task.getTaskUid());
 
-        Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
         Movie toDelete = movies[0];
         task = index.deleteDocument(toDelete.getId());
         index.waitForTask(task.getTaskUid());
 
-        assertThrows(MeilisearchApiException.class, () -> index.getDocument(toDelete.getId()));
+        assertThrows(
+                MeilisearchApiException.class,
+                () -> index.<Movie>getDocument(toDelete.getId(), Movie.class));
     }
 
     /** Test deleteDocuments */
@@ -486,7 +536,8 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
         index.waitForTask(task.getTaskUid());
 
-        Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
         assertEquals(20, movies.length);
 
         List<String> identifiersToDelete = getIdentifiersToDelete(movies);
@@ -494,7 +545,7 @@ public class DocumentsTest extends AbstractIT {
         task = index.deleteDocuments(identifiersToDelete);
         index.waitForTask(task.getTaskUid());
 
-        movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        movies = (Movie[]) index.getDocuments(Movie.class).getResults();
 
         boolean containsDeletedMovie =
                 Arrays.stream(movies)
@@ -519,7 +570,8 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo taskIndex = index.addDocuments(testData.getRaw());
         index.waitForTask(taskIndex.getTaskUid());
 
-        Movie[] movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
         assertEquals(20, movies.length);
 
         TaskInfo task = index.deleteAllDocuments();
@@ -529,7 +581,7 @@ public class DocumentsTest extends AbstractIT {
         assertEquals(task.getType(), "documentDeletion");
         assertNotNull(task.getEnqueuedAt());
 
-        movies = this.gson.fromJson(index.getDocuments(), Movie[].class);
+        movies = (Movie[]) index.getDocuments(Movie.class).getResults();
         assertEquals(0, movies.length);
     }
 }

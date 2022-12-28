@@ -1,8 +1,9 @@
 package com.meilisearch.sdk;
 
-import static java.util.Collections.singletonList;
-
 import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.http.URLBuilder;
+import com.meilisearch.sdk.model.DocumentsQuery;
+import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.TaskInfo;
 import java.util.List;
 
@@ -21,82 +22,162 @@ class Documents {
     /**
      * Retrieves the document at the specified index uid with the specified identifier
      *
+     * @param <T> Type of the document returned
+     * @param uid Partial index identifier for the requested documents
+     * @param identifier ID of the document
+     * @param targetClass Class of the document returned
+     * @return Object containing the requested document
+     * @throws MeilisearchException if the client request causes an error
+     */
+    <T> T getDocument(String uid, String identifier, Class<T> targetClass)
+            throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes")
+                .addSubroute(uid)
+                .addSubroute("documents")
+                .addSubroute(identifier);
+        String urlPath = urlb.getURL();
+        return httpClient.<T>get(urlPath, targetClass);
+    }
+
+    /**
+     * Retrieves the document at the specified index uid with the specified identifier
+     *
+     * @param uid Partial index identifier for the requested documents
+     * @param identifier ID of the document
+     * @param param accept by the documents route
+     * @param targetClass Class of the document returned
+     * @return Object containing the requested document
+     * @throws MeilisearchException if client request causes an error
+     */
+    <T> T getDocument(String uid, String identifier, DocumentsQuery param, Class<T> targetClass)
+            throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes")
+                .addSubroute(uid)
+                .addSubroute("documents")
+                .addSubroute(identifier)
+                .addParameter("limit", param.getLimit())
+                .addParameter("offset", param.getOffset())
+                .addParameter("fields", param.getFields());
+        String urlQuery = urlb.getURL();
+        return httpClient.<T>get(urlQuery, targetClass);
+    }
+
+    /**
+     * Retrieves the document at the specified index uid with the specified identifier
+     *
      * @param uid Partial index identifier for the requested documents
      * @param identifier ID of the document
      * @return String containing the requested document
      * @throws MeilisearchException if client request causes an error
      */
-    String getDocument(String uid, String identifier) throws MeilisearchException {
-        String urlPath = "/indexes/" + uid + "/documents/" + identifier;
+    String getRawDocument(String uid, String identifier) throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes")
+                .addSubroute(uid)
+                .addSubroute("documents")
+                .addSubroute(identifier);
+        String urlPath = urlb.getURL();
         return httpClient.get(urlPath, String.class);
     }
 
     /**
-     * Retrieves the document at the specified index
+     * Retrieves the document at the specified index uid with the specified identifier
      *
      * @param uid Partial index identifier for the requested documents
+     * @param identifier ID of the document
+     * @param param accept by the documents route
      * @return String containing the requested document
-     * @throws MeilisearchException if the client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    String getDocuments(String uid) throws MeilisearchException {
-        String urlPath = "/indexes/" + uid + "/documents";
-        return httpClient.get(urlPath, String.class);
-    }
-
-    /**
-     * Retrieves the document at the specified index
-     *
-     * @param uid Partial index identifier for the requested documents
-     * @param limit Limit on the requested documents to be returned
-     * @return String containing the requested document
-     * @throws MeilisearchException if the client request causes an error
-     */
-    String getDocuments(String uid, int limit) throws MeilisearchException {
-        String urlQuery = "/indexes/" + uid + "/documents?limit=" + limit;
-        return httpClient.get(urlQuery, String.class);
-    }
-
-    /**
-     * Retrieves the document at the specified index
-     *
-     * @param uid Partial index identifier for the requested documents
-     * @param limit Limit on the requested documents to be returned
-     * @param offset Specify the offset of the first hit to return
-     * @return String containing the requested document
-     * @throws MeilisearchException if the client request causes an error
-     */
-    String getDocuments(String uid, int limit, int offset) throws MeilisearchException {
-        String urlQuery = "/indexes/" + uid + "/documents?limit=" + limit + "&offset=" + offset;
-        return httpClient.get(urlQuery, String.class);
-    }
-
-    /**
-     * Retrieves the document at the specified index
-     *
-     * @param uid Partial index identifier for the requested documents
-     * @param limit Limit on the requested documents to be returned
-     * @param offset Specify the offset of the first hit to return
-     * @param attributesToRetrieve Document attributes to show
-     * @return String containing the requested document
-     * @throws MeilisearchException if the client request causes an error
-     */
-    String getDocuments(String uid, int limit, int offset, List<String> attributesToRetrieve)
+    String getRawDocument(String uid, String identifier, DocumentsQuery param)
             throws MeilisearchException {
-        if (attributesToRetrieve == null || attributesToRetrieve.size() == 0) {
-            attributesToRetrieve = singletonList("*");
-        }
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes")
+                .addSubroute(uid)
+                .addSubroute("documents")
+                .addSubroute(identifier)
+                .addParameter("limit", param.getLimit())
+                .addParameter("offset", param.getOffset())
+                .addParameter("fields", param.getFields());
+        String urlQuery = urlb.getURL();
+        return httpClient.get(urlQuery, String.class);
+    }
 
-        String attributesToRetrieveCommaSeparated = String.join(",", attributesToRetrieve);
-        String urlQuery =
-                "/indexes/"
-                        + uid
-                        + "/documents?limit="
-                        + limit
-                        + "&offset="
-                        + offset
-                        + "&attributesToRetrieve="
-                        + attributesToRetrieveCommaSeparated;
+    /**
+     * Retrieves the document at the specified index
+     *
+     * @param <T> Type of documents returned
+     * @param uid Partial index identifier for the requested documents
+     * @param targetClass Class of documents returned
+     * @return Object containing the requested document
+     * @throws MeilisearchException if the client request causes an error
+     */
+    <T> Results<T> getDocuments(String uid, Class<T> targetClass) throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes").addSubroute(uid).addSubroute("documents");
+        String urlPath = urlb.getURL();
+        Results<T> documents = httpClient.<Results>get(urlPath, Results.class, targetClass);
+        return documents;
+    }
 
+    /**
+     * Retrieves the document at the specified index
+     *
+     * @param <T> Type of documents returned
+     * @param uid Partial index identifier for the requested documents
+     * @param param accept by the documents route
+     * @param targetClass Class of documents returned
+     * @return Object containing the requested document
+     * @throws MeilisearchException if the client request causes an error
+     */
+    <T> Results<T> getDocuments(String uid, DocumentsQuery param, Class<T> targetClass)
+            throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes")
+                .addSubroute(uid)
+                .addSubroute("documents")
+                .addParameter("limit", param.getLimit())
+                .addParameter("offset", param.getOffset())
+                .addParameter("fields", param.getFields());
+        String urlQuery = urlb.getURL();
+
+        Results<T> documents = httpClient.<Results>get(urlQuery, Results.class, targetClass);
+        return documents;
+    }
+
+    /**
+     * Retrieves the document as String at the specified index
+     *
+     * @param uid Partial index identifier for the requested documents
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     */
+    String getRawDocuments(String uid) throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes").addSubroute(uid).addSubroute("documents");
+        String urlPath = urlb.getURL();
+        return httpClient.get(urlPath, String.class);
+    }
+
+    /**
+     * Retrieves the document as String at the specified index
+     *
+     * @param uid Partial index identifier for the requested documents
+     * @param param accept by the documents route
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     */
+    String getRawDocuments(String uid, DocumentsQuery param) throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes")
+                .addSubroute(uid)
+                .addSubroute("documents")
+                .addParameter("limit", param.getLimit())
+                .addParameter("offset", param.getOffset())
+                .addParameter("fields", param.getFields());
+        String urlQuery = urlb.getURL();
         return httpClient.get(urlQuery, String.class);
     }
 
@@ -111,10 +192,12 @@ class Documents {
      */
     TaskInfo addDocuments(String uid, String document, String primaryKey)
             throws MeilisearchException {
-        String urlQuery = "/indexes/" + uid + "/documents";
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes").addSubroute(uid).addSubroute("documents");
         if (primaryKey != null) {
-            urlQuery += "?primaryKey=" + primaryKey;
+            urlb.addParameter("primaryKey", primaryKey);
         }
+        String urlQuery = urlb.getURL();
         return httpClient.post(urlQuery, document, TaskInfo.class);
     }
 
@@ -129,10 +212,12 @@ class Documents {
      */
     TaskInfo updateDocuments(String uid, String document, String primaryKey)
             throws MeilisearchException {
-        String urlPath = "/indexes/" + uid + "/documents";
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes").addSubroute(uid).addSubroute("documents");
         if (primaryKey != null) {
-            urlPath += "?primaryKey=" + primaryKey;
+            urlb.addParameter("primaryKey", primaryKey);
         }
+        String urlPath = urlb.getURL();
         return httpClient.put(urlPath, document, TaskInfo.class);
     }
 
@@ -145,7 +230,12 @@ class Documents {
      * @throws MeilisearchException if the client request causes an error
      */
     TaskInfo deleteDocument(String uid, String identifier) throws MeilisearchException {
-        String urlPath = "/indexes/" + uid + "/documents/" + identifier;
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes")
+                .addSubroute(uid)
+                .addSubroute("documents")
+                .addSubroute(identifier);
+        String urlPath = urlb.getURL();
         return httpClient.delete(urlPath, TaskInfo.class);
     }
 
@@ -158,7 +248,12 @@ class Documents {
      * @throws MeilisearchException if the client request causes an error
      */
     TaskInfo deleteDocuments(String uid, List<String> identifiers) throws MeilisearchException {
-        String urlPath = "/indexes/" + uid + "/documents/" + "delete-batch";
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes")
+                .addSubroute(uid)
+                .addSubroute("documents")
+                .addSubroute("delete-batch");
+        String urlPath = urlb.getURL();
         return httpClient.post(urlPath, identifiers, TaskInfo.class);
     }
 
@@ -170,7 +265,9 @@ class Documents {
      * @throws MeilisearchException if the client request causes an error
      */
     TaskInfo deleteAllDocuments(String uid) throws MeilisearchException {
-        String urlPath = "/indexes/" + uid + "/documents";
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes").addSubroute(uid).addSubroute("documents");
+        String urlPath = urlb.getURL();
         return httpClient.delete(urlPath, TaskInfo.class);
     }
 }

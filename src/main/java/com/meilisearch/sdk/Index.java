@@ -1,7 +1,9 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.model.DocumentsQuery;
 import com.meilisearch.sdk.model.IndexStats;
+import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.Task;
@@ -49,63 +51,107 @@ public class Index implements Serializable {
      * Gets a documents with the specified uid Refer
      * https://docs.meilisearch.com/reference/api/documents.html#get-one-document
      *
+     * @param <T> Type of documents returned
+     * @param identifier Identifier of the document to get
+     * @param targetClass Class of the document returned
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     */
+    public <T> T getDocument(String identifier, Class<T> targetClass) throws MeilisearchException {
+        return this.documents.<T>getDocument(this.uid, identifier, targetClass);
+    }
+
+    /**
+     * Gets a documents with the specified uid Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-one-document
+     *
+     * @param <T> Type of documents returned
+     * @param identifier Identifier of the document to get
+     * @param param accept by the documents route
+     * @param targetClass Class of documents returned
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     */
+    public <T> T getDocument(String identifier, DocumentsQuery param, Class<T> targetClass)
+            throws MeilisearchException {
+        return this.documents.<T>getDocument(this.uid, identifier, param, targetClass);
+    }
+
+    /**
+     * Gets a documents with the specified uid Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-one-document
+     *
      * @param identifier Identifier of the document to get
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    public String getDocument(String identifier) throws MeilisearchException {
-        return this.documents.getDocument(this.uid, identifier);
+    public String getRawDocument(String identifier) throws MeilisearchException {
+        return this.documents.getRawDocument(this.uid, identifier);
     }
 
     /**
-     * Gets documenta at the specified index Refer
-     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
+     * Gets a documents with the specified uid Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-one-document
      *
+     * @param identifier Identifier of the document to get
+     * @param param accept by the documents route
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    public String getDocuments() throws MeilisearchException {
-        return this.documents.getDocuments(this.uid);
-    }
-
-    /**
-     * Gets documents at the specified index and limit the number of documents returned Refer
-     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
-     *
-     * @param limits Maximum amount of documents to return
-     * @return Meilisearch API response
-     * @throws MeilisearchException if an error occurs
-     */
-    public String getDocuments(int limits) throws MeilisearchException {
-        return this.documents.getDocuments(this.uid, limits);
-    }
-
-    /**
-     * Gets documents at the specified index and limit the number of documents returned Refer
-     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
-     *
-     * @param limits Maximum amount of documents to return
-     * @param offset Number of documents to skip
-     * @return Meilisearch API response
-     * @throws MeilisearchException if an error occurs
-     */
-    public String getDocuments(int limits, int offset) throws MeilisearchException {
-        return this.documents.getDocuments(this.uid, limits, offset);
-    }
-
-    /**
-     * Gets documents at the specified index and limit the number of documents returned Refer
-     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
-     *
-     * @param limits Maximum amount of documents to return
-     * @param offset Number of documents to skip
-     * @param attributesToRetrieve Document attributes to show
-     * @return Meilisearch API response
-     * @throws MeilisearchException if an error occurs
-     */
-    public String getDocuments(int limits, int offset, List<String> attributesToRetrieve)
+    public String getRawDocument(String identifier, DocumentsQuery param)
             throws MeilisearchException {
-        return this.documents.getDocuments(this.uid, limits, offset, attributesToRetrieve);
+        return this.documents.getRawDocument(this.uid, identifier, param);
+    }
+
+    /**
+     * Gets documents at the specified index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
+     *
+     * @param <T> Type of documents returned
+     * @param targetClass Class of documents returned
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     */
+    public <T> Results<T> getDocuments(Class<T> targetClass) throws MeilisearchException {
+        return this.documents.getDocuments(this.uid, targetClass);
+    }
+
+    /**
+     * Gets documents at the specified index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
+     *
+     * @param <T> Type of documents returned
+     * @param param accept by the documents route
+     * @param targetClass Class of documents returned
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     */
+    public <T> Results<T> getDocuments(DocumentsQuery param, Class<T> targetClass)
+            throws MeilisearchException {
+        return this.documents.getDocuments(this.uid, param, targetClass);
+    }
+
+    /**
+     * Gets documents as String at the specified index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
+     *
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     */
+    public String getRawDocuments() throws MeilisearchException {
+        return this.documents.getRawDocuments(this.uid);
+    }
+
+    /**
+     * Gets documents as String at the specified index Refer
+     * https://docs.meilisearch.com/reference/api/documents.html#get-documents
+     *
+     * @param param accept by the documents route
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     */
+    public String getRawDocuments(DocumentsQuery param) throws MeilisearchException {
+        return this.documents.getRawDocuments(this.uid, param);
     }
 
     /**
