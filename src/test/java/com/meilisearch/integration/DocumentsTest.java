@@ -470,37 +470,97 @@ public class DocumentsTest extends AbstractIT {
         assertNull(movies[0].getRelease_date());
     }
 
-    /** Test GetDocuments with limit, offset and attributesToRetrieve */
-    @ParameterizedTest
-    @MethodSource("attributesToRetrieve")
-    public void testGetDocumentsLimitAndOffsetAndAttributesToRetrieve(
-            List<String> attributesToRetrieve) throws Exception {
-        String indexUid = "GetDocumentsLimit";
-        int limit = 2;
-        int offset = 2;
+    /** Test default GetRawDocuments */
+    @Test
+    public void testGetRawDocuments() throws Exception {
+        String indexUid = "GetRawDocuments";
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
-        Movie[] movies =
-                this.gson.fromJson(
-                        index.getDocuments(limit, offset, attributesToRetrieve), Movie[].class);
+        index.waitForTask(task.getTaskUid());
+        String results = index.getRawDocuments();
 
-        assertEquals(limit, movies.length);
-
-        assertNotNull(movies[0].getId());
-        assertNotNull(movies[0].getTitle());
-        assertNotNull(movies[0].getGenres());
-        assertNotNull(movies[0].getLanguage());
-        assertNotNull(movies[0].getOverview());
-        assertNotNull(movies[0].getPoster());
-        assertNotNull(movies[0].getRelease_date());
+        assertTrue(results.contains("results"));
+        assertTrue(results.contains(testData.getData().get(0).getId()));
+        assertTrue(results.contains(testData.getData().get(0).getTitle()));
+        assertTrue(results.contains(testData.getData().get(0).getGenres()[0]));
+        assertTrue(results.contains(testData.getData().get(0).getLanguage()));
+        assertTrue(results.contains(testData.getData().get(0).getOverview()));
+        assertTrue(results.contains(testData.getData().get(0).getPoster()));
+        assertTrue(results.contains(testData.getData().get(0).getRelease_date()));
     }
 
-    private static Stream<List<Object>> attributesToRetrieve() {
-        return Stream.of(emptyList(), null);
+    /** Test GetRawDocuments with limit */
+    @Test
+    public void testGetRawDocumentsLimit() throws Exception {
+
+        String indexUid = "GetRawDocumentsLimit";
+        int limit = 24;
+        DocumentsQuery query = new DocumentsQuery().setLimit(limit);
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+        String results = index.getRawDocuments(query);
+
+        assertTrue(results.contains("results"));
+        assertTrue(results.contains("\"limit\":24"));
+    }
+
+    /** Test GetRawDocuments with limit and offset */
+    @Test
+    public void testGetRawDocumentsLimitAndOffset() throws Exception {
+        String indexUid = "GetRawDocumentsLimitAndOffset";
+        int limit = 2;
+        int offset = 2;
+        int secondOffset = 5;
+        DocumentsQuery query = new DocumentsQuery().setLimit(limit).setOffset(offset);
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+        String results = index.getRawDocuments(query);
+
+        assertTrue(results.contains("results"));
+        assertTrue(results.contains("\"limit\":2"));
+        assertTrue(results.contains("\"offset\":2"));
+    }
+
+    /** Test GetRawDocuments with limit, offset and specified fields */
+    @Test
+    public void testGetRawDocumentsLimitAndOffsetAndSpecifiedFields() throws Exception {
+        String indexUid = "GetRawDocumentsLimitAndOffsetAndSpecifiedFields";
+        int limit = 2;
+        int offset = 2;
+        List<String> fields = Arrays.asList("id", "title");
+        DocumentsQuery query =
+                new DocumentsQuery()
+                        .setLimit(limit)
+                        .setOffset(offset)
+                        .setFields(fields.toArray(new String[0]));
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+        String results = index.getRawDocuments(query);
+
+        assertTrue(results.contains("results"));
+        assertTrue(results.contains("\"limit\":2"));
+        assertTrue(results.contains("\"offset\":2"));
+        assertTrue(results.contains("id"));
+        assertTrue(results.contains("title"));
+        assertFalse(results.contains("genres"));
+        assertFalse(results.contains("langage"));
+        assertFalse(results.contains("poster"));
+        assertFalse(results.contains("release_date"));
     }
 
     /** Test deleteDocument */
