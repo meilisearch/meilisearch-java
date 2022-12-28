@@ -1,7 +1,10 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.http.URLBuilder;
 import com.meilisearch.sdk.model.Key;
+import com.meilisearch.sdk.model.KeyUpdate;
+import com.meilisearch.sdk.model.KeysQuery;
 import com.meilisearch.sdk.model.Results;
 
 /**
@@ -29,7 +32,9 @@ public class KeysHandler {
      * @throws MeilisearchException if client request causes an error
      */
     Key getKey(String uid) throws MeilisearchException {
-        String urlPath = "/keys/" + uid;
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("keys").addSubroute(uid);
+        String urlPath = urlb.getURL();
         return httpClient.get(urlPath, Key.class);
     }
 
@@ -42,6 +47,23 @@ public class KeysHandler {
     Results<Key> getKeys() throws MeilisearchException {
         String urlPath = "/keys";
         Results<Key> result = httpClient.get(urlPath, Results.class, Key.class);
+        return result;
+    }
+
+    /**
+     * Retrieves keys from the client
+     *
+     * @param param accept by the keys route
+     * @return List of key instance
+     * @throws MeilisearchException if client request causes an error
+     */
+    Results<Key> getKeys(KeysQuery param) throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("keys")
+                .addParameter("limit", param.getLimit())
+                .addParameter("offset", param.getOffset());
+        String urlQuery = urlb.getURL();
+        Results<Key> result = httpClient.get(urlQuery, Results.class, Key.class);
         return result;
     }
 
@@ -63,10 +85,12 @@ public class KeysHandler {
      * @param key String containing the key
      * @param options String containing the options of the key
      * @return Key Instance
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    Key updateKey(String key, Key options) throws Exception {
-        String urlPath = "/keys/" + key;
+    Key updateKey(String key, KeyUpdate options) throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("keys").addSubroute(key);
+        String urlPath = urlb.getURL();
         return httpClient.patch(urlPath, options, Key.class);
     }
 
@@ -77,7 +101,9 @@ public class KeysHandler {
      * @throws MeilisearchException if client request causes an error
      */
     void deleteKey(String key) throws MeilisearchException {
-        String urlPath = "/keys/" + key;
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("keys").addSubroute(key);
+        String urlPath = urlb.getURL();
         httpClient.delete(urlPath, String.class);
     }
 }

@@ -8,6 +8,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.json.JsonHandler;
 import com.meilisearch.sdk.model.Key;
+import com.meilisearch.sdk.model.KeyUpdate;
+import com.meilisearch.sdk.model.KeysQuery;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.Stats;
 import com.meilisearch.sdk.model.Task;
@@ -281,6 +283,17 @@ public class Client {
     }
 
     /**
+     * Retrieves list of keys https://docs.meilisearch.com/reference/api/keys.html#get-all-keys
+     *
+     * @param param accept by the keys route
+     * @return List of keys in the Meilisearch client
+     * @throws MeilisearchException if an error occurs
+     */
+    public Results<Key> getKeys(KeysQuery param) throws MeilisearchException {
+        return this.keysHandler.getKeys(param);
+    }
+
+    /**
      * Creates a key https://docs.meilisearch.com/reference/api/keys.html#create-a-key
      *
      * @param options Key containing the options of the key
@@ -297,9 +310,9 @@ public class Client {
      * @param key String containing the key
      * @param options String containing the options to update
      * @return Key Instance
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    public Key updateKey(String key, Key options) throws Exception {
+    public Key updateKey(String key, KeyUpdate options) throws MeilisearchException {
         return this.keysHandler.updateKey(key, options);
     }
 
