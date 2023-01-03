@@ -84,12 +84,7 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     Results<Index> getIndexes(IndexesQuery param) throws MeilisearchException {
-        URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("indexes")
-                .addParameter("limit", param.getLimit())
-                .addParameter("offset", param.getOffset());
-        String urlQuery = urlb.getURL();
-        return httpClient.get(urlQuery, Results.class, Index.class);
+        return httpClient.get(param.toQuery(param), Results.class, Index.class);
     }
 
     /**

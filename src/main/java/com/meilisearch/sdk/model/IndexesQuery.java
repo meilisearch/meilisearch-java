@@ -1,5 +1,6 @@
 package com.meilisearch.sdk.model;
 
+import com.meilisearch.sdk.http.URLBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -17,4 +18,12 @@ public class IndexesQuery {
     private int limit = -1;
 
     public IndexesQuery() {}
+
+    public String toQuery(IndexesQuery param) {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes")
+                .addParameter("limit", param.getLimit())
+                .addParameter("offset", param.getOffset());
+        return urlb.getURL();
+    }
 }
