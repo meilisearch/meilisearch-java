@@ -37,25 +37,23 @@ public class KeysHandler {
     /**
      * Retrieves keys from the client
      *
-     * @return List of key instance
+     * @return Results containing a list of Key instance
      * @throws MeilisearchException if client request causes an error
      */
     Results<Key> getKeys() throws MeilisearchException {
         String urlPath = "/keys";
-        Results<Key> result = httpClient.get(urlPath, Results.class, Key.class);
-        return result;
+        return httpClient.get(urlPath, Results.class, Key.class);
     }
 
     /**
      * Retrieves keys from the client
      *
-     * @param param accept by the keys route
-     * @return List of key instance
+     * @param params accept by the keys route
+     * @return Results containing a list of Key instance
      * @throws MeilisearchException if client request causes an error
      */
-    Results<Key> getKeys(KeysQuery param) throws MeilisearchException {
-        Results<Key> result = httpClient.get(param.toQuery(param), Results.class, Key.class);
-        return result;
+    Results<Key> getKeys(KeysQuery params) throws MeilisearchException {
+        return httpClient.get(params.toQuery(params), Results.class, Key.class);
     }
 
     /**

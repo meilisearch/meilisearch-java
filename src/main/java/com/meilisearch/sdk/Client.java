@@ -265,7 +265,7 @@ public class Client {
      * https://docs.meilisearch.com/reference/api/keys.html#get-one-key
      *
      * @param uid Identifier of the requested Key
-     * @return Key Instance
+     * @return Meilisearch API response as Key Instance
      * @throws MeilisearchException if an error occurs
      */
     public Key getKey(String uid) throws MeilisearchException {
@@ -275,7 +275,7 @@ public class Client {
     /**
      * Retrieves list of keys https://docs.meilisearch.com/reference/api/keys.html#get-all-keys
      *
-     * @return List of keys in the Meilisearch client
+     * @return Results containing a list of Key from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      */
     public Results<Key> getKeys() throws MeilisearchException {
@@ -285,19 +285,19 @@ public class Client {
     /**
      * Get list of all API keys https://docs.meilisearch.com/reference/api/keys.html#get-all-keys
      *
-     * @param query parameters accepted by the get keys route
-     * @return List of keys in the Meilisearch client
+     * @param params query parameters accepted by the get keys route
+     * @return Results containing a list of Key from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      */
-    public Results<Key> getKeys(KeysQuery param) throws MeilisearchException {
-        return this.keysHandler.getKeys(param);
+    public Results<Key> getKeys(KeysQuery params) throws MeilisearchException {
+        return this.keysHandler.getKeys(params);
     }
 
     /**
      * Creates a key https://docs.meilisearch.com/reference/api/keys.html#create-a-key
      *
      * @param options Key containing the options of the key
-     * @return Key Instance
+     * @return Meilisearch API response as Key Instance
      * @throws MeilisearchException if an error occurs
      */
     public Key createKey(Key options) throws MeilisearchException {
@@ -309,8 +309,8 @@ public class Client {
      *
      * @param key String containing the key
      * @param options String containing the options to update
-     * @return Key Instance
-     * @throws MeilisearchException if client request causes an error
+     * @return Meilisearch API response as Key Instance
+     * @throws MeilisearchException if an error occurs
      */
     public Key updateKey(String key, KeyUpdate options) throws MeilisearchException {
         return this.keysHandler.updateKey(key, options);
