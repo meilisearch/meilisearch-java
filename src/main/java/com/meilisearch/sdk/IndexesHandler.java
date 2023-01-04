@@ -29,7 +29,7 @@ class IndexesHandler {
      * Creates an index with a unique identifier
      *
      * @param uid Unique identifier to create the index with
-     * @return Meilisearch API response
+     * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      */
     TaskInfo createIndex(String uid) throws MeilisearchException {
@@ -41,7 +41,7 @@ class IndexesHandler {
      *
      * @param uid Unique identifier to create the index with
      * @param primaryKey Field to use as the primary key for documents in that index
-     * @return Meilisearch API response
+     * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      */
     TaskInfo createIndex(String uid, String primaryKey) throws MeilisearchException {
@@ -56,7 +56,7 @@ class IndexesHandler {
      * Gets an index from its uid
      *
      * @param uid Unique identifier of the index to get
-     * @return Meilisearch API response
+     * @return Meilisearch API response as Index instance
      * @throws MeilisearchException if an error occurs
      */
     Index getIndex(String uid) throws MeilisearchException {
@@ -69,7 +69,7 @@ class IndexesHandler {
     /**
      * Gets all indexes in the current Meilisearch instance
      *
-     * @return Meilisearch API response
+     * @return Results containing a list of indexes
      * @throws MeilisearchException if an error occurs
      */
     Results<Index> getIndexes() throws MeilisearchException {
@@ -79,8 +79,8 @@ class IndexesHandler {
     /**
      * Gets indexes in the current Meilisearch instance
      *
-     * @param param accept by the indexes route
-     * @return Meilisearch API response
+     * @param query parameters accepted by the indexes route
+     * @return Results containing a list of indexes
      * @throws MeilisearchException if an error occurs
      */
     Results<Index> getIndexes(IndexesQuery param) throws MeilisearchException {
@@ -90,7 +90,7 @@ class IndexesHandler {
     /**
      * Gets all indexes in the current Meilisearch instance
      *
-     * @return Meilisearch API response
+     * @return List of indexes as String
      * @throws MeilisearchException if an error occurs
      */
     String getRawIndexes() throws MeilisearchException {
@@ -102,7 +102,7 @@ class IndexesHandler {
      *
      * @param uid Unique identifier of the index to update
      * @param primaryKey New primary key field to use for documents in that index
-     * @return Meilisearch API response
+     * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      */
     TaskInfo updatePrimaryKey(String uid, String primaryKey) throws MeilisearchException {
@@ -119,7 +119,7 @@ class IndexesHandler {
      * Deletes an index in the Meilisearch instance
      *
      * @param uid Unique identifier of the index to delete
-     * @return Meilisearch API response
+     * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      */
     TaskInfo deleteIndex(String uid) throws MeilisearchException {

@@ -71,7 +71,7 @@ public class Client {
      * Gets all indexes in the current Meilisearch instance
      * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
-     * @return Array of indexes in the Meilisearch client
+     * @return Results containing a list of indexes from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      */
     public Results<Index> getIndexes() throws MeilisearchException {
@@ -86,8 +86,8 @@ public class Client {
      * Gets indexes in the current Meilisearch instance
      * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
-     * @param param accept by the indexes route
-     * @return Array of indexes in the Meilisearch client
+     * @param query parameters accepted by the get indexes route
+     * @return Results containing a list of indexes from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      */
     public Results<Index> getIndexes(IndexesQuery param) throws MeilisearchException {
@@ -102,7 +102,7 @@ public class Client {
      * Gets all indexes in the current Meilisearch instance
      * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
-     * @return Meilisearch API response as String
+     * @return List of indexes from the Meilisearch API as String
      * @throws MeilisearchException if an error occurs
      */
     public String getRawIndexes() throws MeilisearchException {
@@ -115,7 +115,7 @@ public class Client {
      * methods in the Index class.
      *
      * @param uid Unique identifier of the index
-     * @return Index instance
+     * @return Meilisearch API response as Index instance
      * @throws MeilisearchException if an error occurs
      */
     public Index index(String uid) throws MeilisearchException {
@@ -130,7 +130,7 @@ public class Client {
      * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
      *
      * @param uid Unique identifier of the index to get
-     * @return Meilisearch API response
+     * @return Meilisearch API response as Index instance
      * @throws MeilisearchException if an error occurs
      */
     public Index getIndex(String uid) throws MeilisearchException {
@@ -225,7 +225,7 @@ public class Client {
      * https://docs.meilisearch.com/reference/api/tasks.html#get-one-task
      *
      * @param uid Identifier of the requested Task
-     * @return Task Instance
+     * @return Meilisearch API response as Task Instance
      * @throws MeilisearchException if an error occurs
      */
     public Task getTask(int uid) throws MeilisearchException {
@@ -235,7 +235,7 @@ public class Client {
     /**
      * Retrieves list of tasks https://docs.meilisearch.com/reference/api/tasks.html#get-tasks
      *
-     * @return List of tasks in the Meilisearch client
+     * @return TasksResults containing a list of tasks from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      */
     public TasksResults getTasks() throws MeilisearchException {
@@ -246,7 +246,7 @@ public class Client {
      * Retrieves list of tasks https://docs.meilisearch.com/reference/api/tasks.html#get-tasks
      *
      * @param param accept by the tasks route
-     * @return List of tasks in the Meilisearch client
+     * @return TasksResults containing a list of tasks from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      */
     public TasksResults getTasks(TasksQuery param) throws MeilisearchException {
@@ -268,7 +268,7 @@ public class Client {
      * https://docs.meilisearch.com/reference/api/keys.html#get-one-key
      *
      * @param uid Identifier of the requested Key
-     * @return Key Instance
+     * @return Meilisearch API response as Key Instance
      * @throws MeilisearchException if an error occurs
      */
     public Key getKey(String uid) throws MeilisearchException {
