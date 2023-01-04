@@ -268,7 +268,7 @@ public class Client {
      * https://docs.meilisearch.com/reference/api/keys.html#get-one-key
      *
      * @param uid Identifier of the requested Key
-     * @return Meilisearch API response as Key Instance
+     * @return Key Instance
      * @throws MeilisearchException if an error occurs
      */
     public Key getKey(String uid) throws MeilisearchException {
