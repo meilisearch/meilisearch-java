@@ -285,7 +285,7 @@ public class Client {
     /**
      * Get list of all API keys https://docs.meilisearch.com/reference/api/keys.html#get-all-keys
      *
-     * @param param accept by the keys route
+     * @param query parameters accepted by the get keys route
      * @return List of keys in the Meilisearch client
      * @throws MeilisearchException if an error occurs
      */
