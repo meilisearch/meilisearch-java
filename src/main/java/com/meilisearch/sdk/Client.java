@@ -68,7 +68,7 @@ public class Client {
     }
 
     /**
-     * Gets all indexes in the current Meilisearch instance
+     * Gets all indexes
      * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
      * @return Results containing a list of indexes from the Meilisearch API
@@ -83,7 +83,7 @@ public class Client {
     }
 
     /**
-     * Gets indexes in the current Meilisearch instance
+     * Gets indexes
      * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
      * @param query parameters accepted by the get indexes route
@@ -99,7 +99,7 @@ public class Client {
     }
 
     /**
-     * Gets all indexes in the current Meilisearch instance
+     * Gets all indexes
      * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
      * @return List of indexes from the Meilisearch API as String
@@ -140,7 +140,7 @@ public class Client {
     }
 
     /**
-     * Updates the primary key of an index in the Meilisearch instance
+     * Updates the primary key of an index
      * https://docs.meilisearch.com/reference/api/indexes.html#update-an-index
      *
      * @param uid Unique identifier of the index to update
