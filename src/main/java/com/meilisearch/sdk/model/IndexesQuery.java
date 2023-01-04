@@ -19,6 +19,12 @@ public class IndexesQuery {
 
     public IndexesQuery() {}
 
+    public String toQuery(String uid) {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes").addSubroute(uid);
+        return urlb.getURL();
+    }
+
     public String toQuery(IndexesQuery param) {
         URLBuilder urlb = new URLBuilder();
         urlb.addSubroute("indexes")

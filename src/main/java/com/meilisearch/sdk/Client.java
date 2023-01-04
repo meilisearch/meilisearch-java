@@ -68,8 +68,7 @@ public class Client {
     }
 
     /**
-     * Gets all indexes
-     * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     * Gets all indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
      * @return Results containing a list of indexes from the Meilisearch API
      * @throws MeilisearchException if an error occurs
@@ -83,10 +82,9 @@ public class Client {
     }
 
     /**
-     * Gets indexes
-     * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     * Gets indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
-     * @param query parameters accepted by the get indexes route
+     * @param params query parameters accepted by the get indexes route
      * @return Results containing a list of indexes from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      */
@@ -99,8 +97,7 @@ public class Client {
     }
 
     /**
-     * Gets all indexes
-     * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     * Gets all indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
      * @return List of indexes from the Meilisearch API as String
      * @throws MeilisearchException if an error occurs

@@ -15,6 +15,7 @@ import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Arrays;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,11 @@ public class ClientTest extends AbstractIT {
         setUp();
         setUpJacksonClient();
         if (testData == null) testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        cleanup();
+    }
+
+    @AfterAll
+    static void cleanMeilisearch() {
         cleanup();
     }
 

@@ -1,7 +1,6 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
-import com.meilisearch.sdk.http.URLBuilder;
 import com.meilisearch.sdk.model.IndexesQuery;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.TaskInfo;
@@ -60,10 +59,7 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     Index getIndex(String uid) throws MeilisearchException {
-        URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("indexes").addSubroute(uid);
-        String urlPath = urlb.getURL();
-        return httpClient.get(urlPath, Index.class);
+        return httpClient.get(new IndexesQuery().toQuery(uid), Index.class);
     }
 
     /**
@@ -84,7 +80,7 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     Results<Index> getIndexes(IndexesQuery params) throws MeilisearchException {
-        return httpClient.get(param.toQuery(params), Results.class, Index.class);
+        return httpClient.get(params.toQuery(params), Results.class, Index.class);
     }
 
     /**
@@ -109,10 +105,7 @@ class IndexesHandler {
         HashMap<String, String> index = new HashMap<String, String>();
         index.put("primaryKey", primaryKey);
 
-        URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("indexes").addSubroute(uid);
-        String urlPath = urlb.getURL();
-        return httpClient.patch(urlPath, index, TaskInfo.class);
+        return httpClient.patch(new IndexesQuery().toQuery(uid), index, TaskInfo.class);
     }
 
     /**
@@ -123,9 +116,6 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     TaskInfo deleteIndex(String uid) throws MeilisearchException {
-        URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("indexes").addSubroute(uid);
-        String urlPath = urlb.getURL();
-        return httpClient.delete(urlPath, TaskInfo.class);
+        return httpClient.delete(new IndexesQuery().toQuery(uid), TaskInfo.class);
     }
 }
