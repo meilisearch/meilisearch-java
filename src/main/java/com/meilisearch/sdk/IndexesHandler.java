@@ -28,7 +28,7 @@ class IndexesHandler {
     /**
      * Creates an index with a unique identifier
      *
-     * @param uid Unique identifier to create the index with
+     * @param uid Unique identifier of the index
      * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      */
