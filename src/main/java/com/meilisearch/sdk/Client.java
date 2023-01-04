@@ -90,8 +90,8 @@ public class Client {
      * @return Results containing a list of indexes from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      */
-    public Results<Index> getIndexes(IndexesQuery param) throws MeilisearchException {
-        Results<Index> indexes = this.indexesHandler.getIndexes(param);
+    public Results<Index> getIndexes(IndexesQuery params) throws MeilisearchException {
+        Results<Index> indexes = this.indexesHandler.getIndexes(params);
         for (Index index : indexes.getResults()) {
             index.setConfig(this.config);
         }
