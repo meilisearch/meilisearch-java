@@ -48,7 +48,7 @@ public class TenantTokenTest extends AbstractIT {
         Map<String, Object> rules = new HashMap<String, Object>();
         rules.put("*", new HashMap<String, Object>());
 
-        String jwtToken = privateClient.generateTenantToken(rules);
+        String jwtToken = privateClient.generateTenantToken(getPrivateKey().getUid(), rules);
 
         Client tokenClient = new Client(new Config(getMeilisearchHost(), jwtToken));
 
@@ -67,7 +67,7 @@ public class TenantTokenTest extends AbstractIT {
         Map<String, Object> rules = new HashMap<String, Object>();
         rules.put(indexUid, new HashMap<String, Object>());
 
-        String jwtToken = privateClient.generateTenantToken(rules);
+        String jwtToken = privateClient.generateTenantToken(getPrivateKey().getUid(), rules);
 
         Client tokenClient = new Client(new Config(getMeilisearchHost(), jwtToken));
 
@@ -87,7 +87,7 @@ public class TenantTokenTest extends AbstractIT {
         Map<String, Object> rules = new HashMap<String, Object>();
         rules.put("GenerateTokenwithFilter", filters);
 
-        String jwtToken = privateClient.generateTenantToken(rules);
+        String jwtToken = privateClient.generateTenantToken(getPrivateKey().getUid(), rules);
 
         Client tokenClient = new Client(new Config(getMeilisearchHost(), jwtToken));
 
@@ -125,7 +125,8 @@ public class TenantTokenTest extends AbstractIT {
         TenantTokenOptions options = new TenantTokenOptions();
         options.setExpiresAt(tomorrow);
 
-        String jwtToken = privateClient.generateTenantToken(rules, options);
+        String jwtToken =
+                privateClient.generateTenantToken(getPrivateKey().getUid(), rules, options);
 
         Client tokenClient = new Client(new Config(getMeilisearchHost(), jwtToken));
 
@@ -145,7 +146,7 @@ public class TenantTokenTest extends AbstractIT {
         TenantTokenOptions options = new TenantTokenOptions();
         options.setApiKey(key.getKey());
 
-        String jwtToken = client.generateTenantToken(rules, options);
+        String jwtToken = client.generateTenantToken(getPrivateKey().getUid(), rules, options);
 
         Client tokenClient = new Client(new Config(getMeilisearchHost(), jwtToken));
 
@@ -169,7 +170,7 @@ public class TenantTokenTest extends AbstractIT {
         options.setApiKey(key.getKey());
         options.setExpiresAt(tomorrow);
 
-        String jwtToken = client.generateTenantToken(rules, options);
+        String jwtToken = client.generateTenantToken(getPrivateKey().getUid(), rules, options);
 
         Client tokenClient = new Client(new Config(getMeilisearchHost(), jwtToken));
 
@@ -183,7 +184,23 @@ public class TenantTokenTest extends AbstractIT {
 
         Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
 
-        assertThrows(MeilisearchException.class, () -> privateClient.generateTenantToken(null));
+        assertThrows(
+                MeilisearchException.class,
+                () -> privateClient.generateTenantToken(getPrivateKey().getUid(), null));
+    }
+
+    /** Test Create Tenant Token with no api key uid */
+    @Test
+    public void testGenerateTenantTokenWithNoApiKeyUid() throws Exception {
+        Key key = getPrivateKey();
+
+        Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
+
+        Map<String, Object> rules = new HashMap<String, Object>();
+        rules.put("*", new HashMap<String, Object>());
+
+        assertThrows(
+                MeilisearchException.class, () -> privateClient.generateTenantToken(null, rules));
     }
 
     /** Test Create Tenant Token with bad expireation date */
@@ -205,7 +222,7 @@ public class TenantTokenTest extends AbstractIT {
 
         assertThrows(
                 MeilisearchException.class,
-                () -> privateClient.generateTenantToken(rules, options));
+                () -> privateClient.generateTenantToken(getPrivateKey().getUid(), rules, options));
     }
 
     /** Test Create Tenant Token with empty api key */
@@ -220,6 +237,6 @@ public class TenantTokenTest extends AbstractIT {
 
         assertThrows(
                 MeilisearchException.class,
-                () -> privateClient.generateTenantToken(rules, options));
+                () -> privateClient.generateTenantToken(getPrivateKey().getUid(), rules, options));
     }
 }
