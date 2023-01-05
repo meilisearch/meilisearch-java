@@ -7,10 +7,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
-import com.meilisearch.sdk.Dump;
 import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.Task;
-import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+import com.meilisearch.sdk.exceptions.MeilisearchApiException;
+import com.meilisearch.sdk.model.IndexesQuery;
+import com.meilisearch.sdk.model.Results;
+import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Arrays;
 import org.junit.jupiter.api.AfterAll;
@@ -27,11 +29,13 @@ public class ClientTest extends AbstractIT {
     @BeforeEach
     public void initialize() {
         setUp();
+        setUpJacksonClient();
         if (testData == null) testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        cleanup();
     }
 
     @AfterAll
-    static void cleanMeiliSearch() {
+    static void cleanMeilisearch() {
         cleanup();
     }
 
@@ -43,8 +47,18 @@ public class ClientTest extends AbstractIT {
 
         assertEquals(index.getUid(), indexUid);
         assertNull(index.getPrimaryKey());
+    }
 
-        client.deleteIndex(index.getUid());
+    /** Test Index creation without PrimaryKey with Jackson Json Handler */
+    @Test
+    public void testCreateIndexWithoutPrimaryKeyWithJacksonJsonHandler() throws Exception {
+        String indexUid = "CreateIndexWithoutPrimaryKeyWithJacksonJsonHandler";
+        TaskInfo task = clientJackson.createIndex(indexUid);
+        clientJackson.waitForTask(task.getTaskUid());
+        Index index = clientJackson.getIndex(indexUid);
+
+        assertEquals(index.getUid(), indexUid);
+        assertNull(index.getPrimaryKey());
     }
 
     /** Test Index creation with PrimaryKey */
@@ -55,8 +69,18 @@ public class ClientTest extends AbstractIT {
 
         assertEquals(index.getUid(), indexUid);
         assertEquals(index.getPrimaryKey(), this.primaryKey);
+    }
 
-        client.deleteIndex(index.getUid());
+    /** Test Index creation with PrimaryKey with Jackson Json Handler */
+    @Test
+    public void testCreateIndexWithPrimaryKeyWithJacksonJsonHandler() throws Exception {
+        String indexUid = "CreateIndexWithPrimaryKeyWithJacksonJsonHandler";
+        TaskInfo task = clientJackson.createIndex(indexUid, this.primaryKey);
+        clientJackson.waitForTask(task.getTaskUid());
+        Index index = clientJackson.getIndex(indexUid);
+
+        assertEquals(index.getUid(), indexUid);
+        assertEquals(index.getPrimaryKey(), this.primaryKey);
     }
 
     /** Test Index creation twice doesn't throw an error: already exists */
@@ -71,9 +95,9 @@ public class ClientTest extends AbstractIT {
         Index indexDuplicate = createEmptyIndex(indexUid, this.primaryKey);
 
         assertEquals(index.getUid(), indexUid);
+        assertEquals(indexDuplicate.getUid(), indexUid);
         assertEquals(index.getPrimaryKey(), this.primaryKey);
-
-        client.deleteIndex(index.getUid());
+        assertEquals(indexDuplicate.getPrimaryKey(), this.primaryKey);
     }
 
     /** Test update Index PrimaryKey */
@@ -85,15 +109,13 @@ public class ClientTest extends AbstractIT {
         assertEquals(index.getUid(), indexUid);
         assertNull(index.getPrimaryKey());
 
-        Task task = client.updateIndex(indexUid, this.primaryKey);
-        client.waitForTask(task.getUid());
+        TaskInfo task = client.updateIndex(indexUid, this.primaryKey);
+        client.waitForTask(task.getTaskUid());
         index = client.getIndex(indexUid);
 
         assertTrue(index instanceof Index);
         assertEquals(index.getUid(), indexUid);
         assertEquals(index.getPrimaryKey(), this.primaryKey);
-
-        client.deleteIndex(index.getUid());
     }
 
     /** Test getIndex */
@@ -105,58 +127,67 @@ public class ClientTest extends AbstractIT {
 
         assertEquals(index.getUid(), getIndex.getUid());
         assertEquals(index.getPrimaryKey(), getIndex.getPrimaryKey());
-
-        client.deleteIndex(index.getUid());
     }
 
-    /** Test getRawIndex */
+    /** Test getIndexes */
     @Test
-    public void testGetRawIndex() throws Exception {
-        String indexUid = "GetRawIndex";
-        Index index = createEmptyIndex(indexUid, this.primaryKey);
-        String getIndex = client.getRawIndex(indexUid);
-        JsonObject indexJson = JsonParser.parseString(getIndex).getAsJsonObject();
+    public void testGetIndexes() throws Exception {
+        String[] indexUids = {"GetIndexes", "GetIndexes2"};
+        createEmptyIndex(indexUids[0]);
+        createEmptyIndex(indexUids[1], this.primaryKey);
+        Results<Index> indexes = client.getIndexes();
 
-        assertEquals(index.getUid(), indexJson.get("uid").getAsString());
-        assertEquals(index.getPrimaryKey(), indexJson.get("primaryKey").getAsString());
-
-        client.deleteIndex(index.getUid());
-    }
-
-    /** Test getIndexList */
-    @Test
-    public void testGetIndexList() throws Exception {
-        String[] indexUids = {"GetIndexList", "GetIndexList2"};
-        Index index1 = createEmptyIndex(indexUids[0]);
-        Index index2 = createEmptyIndex(indexUids[1], this.primaryKey);
-        Index[] indexes = client.getIndexList();
-
-        assertEquals(2, indexes.length);
+        assertEquals(2, indexes.getResults().length);
         assert (Arrays.asList(indexUids).contains(indexUids[0]));
         assert (Arrays.asList(indexUids).contains(indexUids[1]));
-
-        client.deleteIndex(indexUids[0]);
-        client.deleteIndex(indexUids[1]);
     }
 
-    /** Test getRawIndexList */
+    /** Test getIndexes with limit */
     @Test
-    public void testGetRawIndexList() throws Exception {
-        String[] indexUids = {"GetRawIndexList", "GetRawIndexList2"};
-        Index index1 = createEmptyIndex(indexUids[0]);
-        Index index2 = createEmptyIndex(indexUids[1], this.primaryKey);
+    public void testGetIndexesLimit() throws Exception {
+        int limit = 1;
+        String[] indexUids = {"GetIndexesLimit", "GetIndexesLimit2"};
+        IndexesQuery query = new IndexesQuery().setLimit(limit);
+        createEmptyIndex(indexUids[0]);
+        createEmptyIndex(indexUids[1], this.primaryKey);
+        Results<Index> indexes = client.getIndexes(query);
 
-        String indexes = client.getRawIndexList();
-        JsonArray jsonIndexArray = JsonParser.parseString(indexes).getAsJsonArray();
+        assertEquals(limit, indexes.getResults().length);
+        assertEquals(limit, indexes.getLimit());
+    }
 
-        assertEquals(jsonIndexArray.size(), 2);
+    /** Test getIndexes with limit and offset */
+    @Test
+    public void testGetIndexesLimitAndOffset() throws Exception {
+        int limit = 1;
+        int offset = 1;
+        String[] indexUids = {"GetIndexesLimitOffset", "GetIndexesLimitOffset2"};
+        IndexesQuery query = new IndexesQuery().setLimit(limit).setOffset(offset);
+        createEmptyIndex(indexUids[0]);
+        createEmptyIndex(indexUids[1], this.primaryKey);
+        Results<Index> indexes = client.getIndexes(query);
+
+        assertEquals(limit, indexes.getResults().length);
+        assertEquals(limit, indexes.getLimit());
+        assertEquals(offset, indexes.getOffset());
+    }
+
+    /** Test getRawIndexes */
+    @Test
+    public void testGetRawIndexes() throws Exception {
+        String[] indexUids = {"GetRawIndexes", "GetRawIndexes2"};
+        createEmptyIndex(indexUids[0]);
+        createEmptyIndex(indexUids[1], this.primaryKey);
+
+        String indexes = client.getRawIndexes();
+        JsonObject jsonIndexObject = JsonParser.parseString(indexes).getAsJsonObject();
+        JsonArray jsonIndexArray = jsonIndexObject.getAsJsonArray("results");
+
+        assertEquals(2, jsonIndexArray.size());
         assert (Arrays.asList(indexUids)
                 .contains(jsonIndexArray.get(0).getAsJsonObject().get("uid").getAsString()));
         assert (Arrays.asList(indexUids)
                 .contains(jsonIndexArray.get(1).getAsJsonObject().get("uid").getAsString()));
-
-        client.deleteIndex(indexUids[0]);
-        client.deleteIndex(indexUids[1]);
     }
 
     /** Test deleteIndex */
@@ -164,10 +195,10 @@ public class ClientTest extends AbstractIT {
     public void testDeleteIndex() throws Exception {
         String indexUid = "DeleteIndex";
         Index index = createEmptyIndex(indexUid);
-        Task task = client.deleteIndex(index.getUid());
-        client.waitForTask(task.getUid());
+        TaskInfo task = client.deleteIndex(index.getUid());
+        client.waitForTask(task.getTaskUid());
 
-        assertThrows(MeiliSearchApiException.class, () -> client.getIndex(indexUid));
+        assertThrows(MeilisearchApiException.class, () -> client.getIndex(indexUid));
     }
 
     /** Test call to index method with an inexistent index */
@@ -177,7 +208,7 @@ public class ClientTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         assertEquals(indexUid, index.getUid());
-        assertThrows(MeiliSearchApiException.class, () -> client.getIndex(indexUid));
+        assertThrows(MeilisearchApiException.class, () -> client.getIndex(indexUid));
     }
 
     /** Test call to index method with an existing index */
@@ -210,20 +241,11 @@ public class ClientTest extends AbstractIT {
     /** Test call to create dump */
     @Test
     public void testCreateDump() throws Exception {
-        Dump dump = client.createDump();
-        String status = dump.getStatus();
+        TaskInfo task = client.createDump();
+        client.waitForTask(task.getTaskUid());
+        Task dump = client.getTask(task.getTaskUid());
 
-        assertEquals(status, "in_progress");
-    }
-
-    /** Test call to get dump status by uid */
-    @Test
-    public void testGetDumpStatus() throws Exception {
-        Dump dump = client.createDump();
-        String uid = dump.getUid();
-        String status = client.getDumpStatus(uid);
-
-        assertNotNull(status);
-        assertNotNull(uid);
+        assertEquals(task.getStatus(), "enqueued");
+        assertEquals("dumpCreation", dump.getType());
     }
 }

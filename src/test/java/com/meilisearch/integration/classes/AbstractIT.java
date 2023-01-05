@@ -5,8 +5,10 @@ import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.Client;
 import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.Key;
-import com.meilisearch.sdk.Task;
+import com.meilisearch.sdk.json.JacksonJsonHandler;
+import com.meilisearch.sdk.model.Key;
+import com.meilisearch.sdk.model.Results;
+import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
 import java.io.*;
 import java.net.URL;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractIT {
     protected Client client;
+    protected Client clientJackson;
     protected final Gson gson = new Gson();
 
     private final Map<String, TestData<?>> testData = new HashMap<>();
@@ -34,22 +37,36 @@ public abstract class AbstractIT {
     }
 
     public void setUp() {
-        if (client == null) client = new Client(new Config("http://localhost:7700", "masterKey"));
+        if (client == null) client = new Client(new Config(getMeilisearchHost(), "masterKey"));
+    }
+
+    public void setUpJacksonClient() {
+        Config config = new Config(getMeilisearchHost(), "masterKey");
+        config.setJsonHandler(new JacksonJsonHandler());
+        if (clientJackson == null) clientJackson = new Client(config);
     }
 
     public static void cleanup() {
         deleteAllIndexes();
     }
 
+    public static String getMeilisearchHost() {
+        String meilisearchHost = System.getenv("MEILISEARCH_HOST");
+        if (meilisearchHost != null) {
+            return meilisearchHost;
+        }
+        return "http://localhost:7700";
+    }
+
     public Index createEmptyIndex(String indexUid) throws Exception {
-        Task task = client.createIndex(indexUid);
-        client.waitForTask(task.getUid());
+        TaskInfo task = client.createIndex(indexUid);
+        client.waitForTask(task.getTaskUid());
         return client.getIndex(indexUid);
     }
 
     public Index createEmptyIndex(String indexUid, String primaryKey) throws Exception {
-        Task task = client.createIndex(indexUid, primaryKey);
-        client.waitForTask(task.getUid());
+        TaskInfo task = client.createIndex(indexUid, primaryKey);
+        client.waitForTask(task.getTaskUid());
         return client.getIndex(indexUid);
     }
 
@@ -72,10 +89,10 @@ public abstract class AbstractIT {
     }
 
     public Key getPrivateKey() throws Exception {
-        Key[] keys = client.getKeys();
+        Results<Key> result = client.getKeys();
+        Key[] keys = result.getResults();
         for (Key key : keys) {
-            if ((key.getDescription() == null)
-                    || (key.getDescription().contains("Default Admin API"))) {
+            if ((key.getName() == null) || (key.getName().contains("Default Admin API"))) {
                 return key;
             }
         }
@@ -84,10 +101,11 @@ public abstract class AbstractIT {
 
     public static void deleteAllIndexes() {
         try {
-            Client ms = new Client(new Config("http://localhost:7700", "masterKey"));
-            Index[] indexes = ms.getIndexList();
-            for (Index index : indexes) {
-                ms.deleteIndex(index.getUid());
+            Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"));
+            Results<Index> indexes = ms.getIndexes();
+            for (Index index : indexes.getResults()) {
+                TaskInfo task = ms.deleteIndex(index.getUid());
+                ms.waitForTask(task.getTaskUid());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,8 +114,9 @@ public abstract class AbstractIT {
 
     public static void deleteAllKeys() {
         try {
-            Client ms = new Client(new Config("http://localhost:7700", "masterKey"));
-            Key[] keys = ms.getKeys();
+            Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"));
+            Results<Key> result = ms.getKeys();
+            Key[] keys = result.getResults();
             for (Key key : keys) {
                 if ((key.getDescription() == null) || (key.getDescription().contains("test"))) {
                     ms.deleteKey(key.getKey());

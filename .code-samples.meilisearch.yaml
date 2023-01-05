@@ -15,11 +15,11 @@ update_faceting_settings_1: |-
 reset_faceting_settings_1: |-
 settings_guide_faceting_1: |-
 settings_guide_pagination_1: |-
-
 get_one_index_1: |-
   client.getIndex("movies");
 PLEASE_UPDATE_ME>>>>>>>>>>>>>list_all_indexes_1: |-
-  client.getAllIndexes();
+  client.getIndexes();
+  getting_started_typo_tolerance: |-
 create_an_index_1: |-
   client.createIndex("movies", "id");
 update_an_index_1: |-
@@ -414,7 +414,7 @@ getting_started_add_documents_md: |-
   <dependency>
     <groupId>com.meilisearch.sdk</groupId>
     <artifactId>meilisearch-java</artifactId>
-    <version>0.7.2</version>
+    <version>0.8.0</version>
     <type>pom</type>
   </dependency>
   ```
@@ -422,7 +422,7 @@ getting_started_add_documents_md: |-
   **Gradle**
   Add the following line to the `dependencies` section of your `build.gradle`:
   ```groovy
-  implementation 'com.meilisearch.sdk:meilisearch-java:0.7.2'
+  implementation 'com.meilisearch.sdk:meilisearch-java:0.8.0'
   ```
 
   ```java
@@ -432,7 +432,7 @@ getting_started_add_documents_md: |-
 
   Path fileName = Path.of("movies.json");
   String moviesJson = Files.readString(fileName);
-  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+  Client client = new Client(new Config("http://localhost:7700", "masterKey"));
   Index index = client.index("movies");
   index.addDocuments(moviesJson);
   ```
@@ -454,7 +454,7 @@ getting_started_add_meteorites: |-
   
   Path fileName = Path.of("meteorites.json");
   String meteoritesJson = Files.readString(fileName);
-  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+  Client client = new Client(new Config("http://localhost:7700", "masterKey"));
 
   client.index("meteorites").addDocuments(meteoritesJson);
 getting_started_update_ranking_rules: |-
@@ -523,7 +523,7 @@ getting_started_configure_settings: |-
   settings.setSortableAttributes(new String[] {"mass", "_geo"});
   client.index("meteorites").updateSettings(settings);
 getting_started_communicating_with_a_protected_instance: |-
-  Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
+  Client client = new Client(new Config("http://localhost:7700", "apiKey"));
   
   client.index("movies").search(new SearchRequest(""));
 faceted_search_PLEASE_UPDATE_ME>>>>>>>>>>>>>update_settings_1: |-
@@ -556,11 +556,11 @@ add_movies_json_1: |-
 
   Path fileName = Path.of("movies.json");
   String moviesJson = Files.readString(fileName);
-  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+  Client client = new Client(new Config("http://localhost:7700", "masterKey"));
   Index index = client.index("movies");
   index.addDocuments(moviesJson);
 landing_getting_started_1: |-
-  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+  Client client = new Client(new Config("http://localhost:7700", "masterKey"));
 
   client.index("movies").addDocuments("["
     + "{\"id\": 1, \"title\": \"Carol\"},"
@@ -651,12 +651,12 @@ primary_field_guide_add_document_primary_key: |-
     + "}]"
   , "reference_number");
 security_guide_search_key_1: |-
-  Client client = new Client(new Config("http://127.0.0.1:7700", "apiKey"));
+  Client client = new Client(new Config("http://localhost:7700", "apiKey"));
   client.index("patient_medical_records").search();
 PLEASE_UPDATE_ME>>>>>>>>>>>>>security_guide_update_key_1: |-
   //Not yet implemented
 security_guide_create_key_1: |-
-  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+  Client client = new Client(new Config("http://localhost:7700", "masterKey"));
 
   SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
   Date dateParsed = format.parse("2023-01-01T00:00:00Z");
@@ -670,13 +670,13 @@ security_guide_create_key_1: |-
 
   client.createKey(keyInfo);
 security_guide_list_keys_1: |-
-  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+  Client client = new Client(new Config("http://localhost:7700", "masterKey"));
   client.getKeys();
 PLEASE_UPDATE_ME>>>>>>>>>>>>>security_guide_delete_key_1: |-
-  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+  Client client = new Client(new Config("http://localhost:7700", "masterKey"));
   client.deleteKey("d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4");
 authorization_header_1: |-
-  Client client = new Client(new Config("http://127.0.0.1:7700", "masterKey"));
+  Client client = new Client(new Config("http://localhost:7700", "masterKey"));
   client.getKeys();
 tenant_token_guide_generate_sdk_1: |-
   Map<String, Object> filters = new HashMap<String, Object>();

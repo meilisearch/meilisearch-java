@@ -3,9 +3,12 @@ package com.meilisearch.integration;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.meilisearch.integration.classes.AbstractIT;
+import com.meilisearch.sdk.Client;
+import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.TaskError;
 import com.meilisearch.sdk.exceptions.APIError;
-import com.meilisearch.sdk.exceptions.MeiliSearchApiException;
+import com.meilisearch.sdk.exceptions.MeilisearchApiException;
+import com.meilisearch.sdk.exceptions.MeilisearchCommunicationException;
 import org.junit.jupiter.api.*;
 
 @Tag("integration")
@@ -17,11 +20,19 @@ public class ExceptionsTest extends AbstractIT {
     }
 
     @AfterAll
-    static void cleanMeiliSearch() {
+    static void cleanMeilisearch() {
         cleanup();
     }
 
-    /** Test MeiliSearchApiException serialization and getters */
+    @Test
+    public void testMeilisearchCommunicationException() throws Exception {
+        String indexUid = "MeilisearchCommunicationException";
+        Client wrongClient = new Client(new Config("http://wrongurl:1234", "masterKey"));
+
+        assertThrows(MeilisearchCommunicationException.class, () -> wrongClient.getIndex(indexUid));
+    }
+
+    /** Test MeilisearchApiException serialization and getters */
     @Test
     public void testErrorSerializeAndGetters() {
         String message = "You must have an authorization token";
@@ -29,12 +40,12 @@ public class ExceptionsTest extends AbstractIT {
         String type = "authentication_error";
         String link = "https://docs.meilisearch.com/errors#missing_authorization_header";
         try {
-            throw new MeiliSearchApiException(new APIError(message, code, type, link));
-        } catch (MeiliSearchApiException e) {
+            throw new MeilisearchApiException(new APIError(message, code, type, link));
+        } catch (MeilisearchApiException e) {
             assertEquals(message, e.getMessage());
-            assertEquals(code, e.getErrorCode());
-            assertEquals(type, e.getErrorType());
-            assertEquals(link, e.getErrorLink());
+            assertEquals(code, e.getCode());
+            assertEquals(type, e.getType());
+            assertEquals(link, e.getLink());
         }
     }
 
@@ -46,15 +57,15 @@ public class ExceptionsTest extends AbstractIT {
         assertEquals("wrong field", error.getTaskErrorCode());
     }
 
-    /** Test MeiliSearchApiException is thrown on Meilisearch bad request */
+    /** Test MeilisearchApiException is thrown on Meilisearch bad request */
     @Test
-    public void testMeiliSearchApiExceptionBadRequest() throws Exception {
-        String indexUid = "MeiliSearchApiExceptionBadRequest";
-        assertThrows(MeiliSearchApiException.class, () -> client.getIndex(indexUid));
+    public void testMeilisearchApiExceptionBadRequest() throws Exception {
+        String indexUid = "MeilisearchApiExceptionBadRequest";
+        assertThrows(MeilisearchApiException.class, () -> client.getIndex(indexUid));
         try {
             client.getIndex(indexUid);
-        } catch (MeiliSearchApiException e) {
-            assertEquals("index_not_found", e.getErrorCode());
+        } catch (MeilisearchApiException e) {
+            assertEquals("index_not_found", e.getCode());
         }
     }
 }

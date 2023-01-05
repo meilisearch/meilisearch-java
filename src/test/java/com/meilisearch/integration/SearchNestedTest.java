@@ -6,9 +6,9 @@ import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.SearchRequest;
-import com.meilisearch.sdk.Settings;
-import com.meilisearch.sdk.Task;
 import com.meilisearch.sdk.json.GsonJsonHandler;
+import com.meilisearch.sdk.model.Settings;
+import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -24,7 +24,6 @@ public class SearchNestedTest extends AbstractIT {
         int offset;
         int limit;
         int nbHits;
-        boolean exhaustiveNbHits;
         int processingTimeMs;
         String query;
     }
@@ -44,8 +43,8 @@ public class SearchNestedTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(NESTED_MOVIES, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
-        index.waitForTask(task.getUid());
+        TaskInfo task = index.addDocuments(testData.getRaw());
+        index.waitForTask(task.getTaskUid());
         Results searchResultGson = jsonGson.decode(index.rawSearch("An awesome"), Results.class);
 
         assertEquals(1, searchResultGson.hits.length);
@@ -61,12 +60,12 @@ public class SearchNestedTest extends AbstractIT {
         String[] newSearchableAttributes = {"title", "info.comment"};
 
         TestData<Movie> testData = this.getTestData(NESTED_MOVIES, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         index.waitForTask(
-                index.updateSearchableAttributesSettings(newSearchableAttributes).getUid());
+                index.updateSearchableAttributesSettings(newSearchableAttributes).getTaskUid());
 
         Results searchResultGson = jsonGson.decode(index.rawSearch("An awesome"), Results.class);
 
@@ -84,9 +83,9 @@ public class SearchNestedTest extends AbstractIT {
         newSettings.setSortableAttributes(new String[] {"info.reviewNb"});
 
         TestData<Movie> testData = this.getTestData(NESTED_MOVIES, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
-        index.waitForTask(task.getUid());
-        index.waitForTask(index.updateSettings(newSettings).getUid());
+        TaskInfo task = index.addDocuments(testData.getRaw());
+        index.waitForTask(task.getTaskUid());
+        index.waitForTask(index.updateSettings(newSettings).getTaskUid());
         SearchRequest searchRequest =
                 new SearchRequest("An Awesome").setSort(new String[] {"info.reviewNb:desc"});
 
@@ -107,9 +106,9 @@ public class SearchNestedTest extends AbstractIT {
         newSettings.setSortableAttributes(new String[] {"info.reviewNb"});
 
         TestData<Movie> testData = this.getTestData(NESTED_MOVIES, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
-        index.waitForTask(task.getUid());
-        index.waitForTask(index.updateSettings(newSettings).getUid());
+        TaskInfo task = index.addDocuments(testData.getRaw());
+        index.waitForTask(task.getTaskUid());
+        index.waitForTask(index.updateSettings(newSettings).getTaskUid());
         SearchRequest searchRequest =
                 new SearchRequest("An Awesome").setSort(new String[] {"info.reviewNb:desc"});
         Results searchResultGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);

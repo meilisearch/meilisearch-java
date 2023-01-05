@@ -6,26 +6,21 @@ import java.util.HashMap;
 import lombok.Getter;
 import lombok.ToString;
 
-/** Result of `search` API Refer https://docs.meilisearch.com/references/search.html */
+/**
+ * Meilisearch search response data structure
+ *
+ * <p>https://docs.meilisearch.com/references/search.html
+ */
 @Getter
 @ToString
 public class SearchResult implements Serializable {
+    protected ArrayList<HashMap<String, Object>> hits;
+    protected int offset;
+    protected int limit;
+    protected int estimatedTotalHits;
+    protected Object facetDistribution;
+    protected int processingTimeMs;
+    protected String query;
 
-    ArrayList<HashMap<String, Object>> hits;
-
-    int offset;
-
-    int limit;
-
-    int nbHits;
-
-    boolean exhaustiveNbHits;
-
-    Object facetsDistribution;
-
-    boolean exhaustiveFacetsCount;
-
-    int processingTimeMs;
-
-    String query;
+    public SearchResult() {}
 }

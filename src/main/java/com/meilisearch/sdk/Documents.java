@@ -1,186 +1,211 @@
 package com.meilisearch.sdk;
 
-import static java.util.Collections.singletonList;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
+import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.http.URLBuilder;
+import com.meilisearch.sdk.model.DocumentsQuery;
+import com.meilisearch.sdk.model.Results;
+import com.meilisearch.sdk.model.TaskInfo;
 import java.util.List;
 
-/** Wrapper around MeiliSearchHttpRequest class to use for Meilisearch documents */
+/**
+ * Class covering the Meilisearch Document API
+ *
+ * <p>https://docs.meilisearch.com/reference/api/documents.html
+ */
 class Documents {
-    private final MeiliSearchHttpRequest meilisearchHttpRequest;
-
-    Gson gson = new Gson();
+    private final HttpClient httpClient;
 
     protected Documents(Config config) {
-        meilisearchHttpRequest = new MeiliSearchHttpRequest(config);
+        httpClient = config.httpClient;
     }
 
     /**
-     * Retrieves the document at the specified uid with the specified identifier
+     * Retrieves the document from the specified index uid with the specified identifier
+     *
+     * @param <T> Type of the document returned
+     * @param uid Partial index identifier for the requested documents
+     * @param identifier ID of the document
+     * @param targetClass Class of the document returned
+     * @return Object containing the requested document
+     * @throws MeilisearchException if the client request causes an error
+     */
+    <T> T getDocument(String uid, String identifier, Class<T> targetClass)
+            throws MeilisearchException {
+        return httpClient.<T>get(new DocumentsQuery().toQuery(uid, identifier), targetClass);
+    }
+
+    /**
+     * Retrieves the document from the specified index uid with the specified identifier
+     *
+     * @param uid Partial index identifier for the requested documents
+     * @param identifier ID of the document
+     * @param param accepted by the get document route
+     * @param targetClass Class of the document returned
+     * @return Object containing the requested document
+     * @throws MeilisearchException if client request causes an error
+     */
+    <T> T getDocument(String uid, String identifier, DocumentsQuery param, Class<T> targetClass)
+            throws MeilisearchException {
+        return httpClient.<T>get(param.toQuery(uid, identifier, param), targetClass);
+    }
+
+    /**
+     * Retrieves the document from the specified index uid with the specified identifier
      *
      * @param uid Partial index identifier for the requested documents
      * @param identifier ID of the document
      * @return String containing the requested document
-     * @throws Exception if client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    String getDocument(String uid, String identifier) throws Exception {
-        String urlPath = "/indexes/" + uid + "/documents/" + identifier;
-        return meilisearchHttpRequest.get(urlPath);
+    String getRawDocument(String uid, String identifier) throws MeilisearchException {
+        return httpClient.<String>get(new DocumentsQuery().toQuery(uid, identifier), String.class);
     }
 
     /**
-     * Retrieves the documents at the specified uid
+     * Retrieves the document from the specified index uid with the specified identifier
      *
      * @param uid Partial index identifier for the requested documents
+     * @param identifier ID of the document
+     * @param param accept by the documents route
      * @return String containing the requested document
-     * @throws Exception if the client request causes an error
+     * @throws MeilisearchException if client request causes an error
      */
-    String getDocuments(String uid) throws Exception {
-        String urlPath = "/indexes/" + uid + "/documents";
-        return meilisearchHttpRequest.get(urlPath);
+    String getRawDocument(String uid, String identifier, DocumentsQuery param)
+            throws MeilisearchException {
+        return httpClient.<String>get(param.toQuery(uid, identifier, param), String.class);
     }
 
     /**
-     * Retrieves the documents at the specified uid
+     * Retrieves the document from the specified index
+     *
+     * @param <T> Type of documents returned
+     * @param uid Partial index identifier for the requested documents
+     * @param targetClass Class of documents returned
+     * @return Results containing a list of Object containing the requested document
+     * @throws MeilisearchException if the client request causes an error
+     */
+    <T> Results<T> getDocuments(String uid, Class<T> targetClass) throws MeilisearchException {
+        return httpClient.<Results>get(
+                new DocumentsQuery().toQuery(uid), Results.class, targetClass);
+    }
+
+    /**
+     * Retrieves the document from the specified index
+     *
+     * @param <T> Type of documents returned
+     * @param uid Partial index identifier for the requested documents
+     * @param param accepted by the get documents route
+     * @param targetClass Class of documents returned
+     * @return Results containing a list of Object containing the requested document
+     * @throws MeilisearchException if the client request causes an error
+     */
+    <T> Results<T> getDocuments(String uid, DocumentsQuery param, Class<T> targetClass)
+            throws MeilisearchException {
+        return httpClient.<Results>get(param.toQuery(uid, param), Results.class, targetClass);
+    }
+
+    /**
+     * Retrieves the document as a string from the specified index
      *
      * @param uid Partial index identifier for the requested documents
-     * @param limit Limit on the requested documents to be returned
-     * @return String containing the requested document
-     * @throws Exception if the client request causes an error
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
      */
-    String getDocuments(String uid, int limit) throws Exception {
-        String urlQuery = "/indexes/" + uid + "/documents?limit=" + limit;
-        return meilisearchHttpRequest.get(urlQuery);
+    String getRawDocuments(String uid) throws MeilisearchException {
+        return httpClient.get(new DocumentsQuery().toQuery(uid), String.class);
     }
 
     /**
-     * Retrieves the documents at the specified uid
+     * Retrieves the document as String from the specified index
      *
      * @param uid Partial index identifier for the requested documents
-     * @param limit Limit on the requested documents to be returned
-     * @param offset Specify the offset of the first hit to return
-     * @return String containing the requested document
-     * @throws Exception if the client request causes an error
+     * @param param accepted by the documents route
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
      */
-    String getDocuments(String uid, int limit, int offset) throws Exception {
-        String urlQuery = "/indexes/" + uid + "/documents?limit=" + limit + "&offset=" + offset;
-        return meilisearchHttpRequest.get(urlQuery);
+    String getRawDocuments(String uid, DocumentsQuery param) throws MeilisearchException {
+        return httpClient.<String>get(param.toQuery(uid, param), String.class);
     }
 
     /**
-     * Retrieves the documents at the specified uid
-     *
-     * @param uid Partial index identifier for the requested documents
-     * @param limit Limit on the requested documents to be returned
-     * @param offset Specify the offset of the first hit to return
-     * @param attributesToRetrieve Document attributes to show
-     * @return String containing the requested document
-     * @throws Exception if the client request causes an error
-     */
-    String getDocuments(String uid, int limit, int offset, List<String> attributesToRetrieve)
-            throws Exception {
-        if (attributesToRetrieve == null || attributesToRetrieve.size() == 0) {
-            attributesToRetrieve = singletonList("*");
-        }
-
-        String attributesToRetrieveCommaSeparated = String.join(",", attributesToRetrieve);
-        String urlQuery =
-                "/indexes/"
-                        + uid
-                        + "/documents?limit="
-                        + limit
-                        + "&offset="
-                        + offset
-                        + "&attributesToRetrieve="
-                        + attributesToRetrieveCommaSeparated;
-
-        return meilisearchHttpRequest.get(urlQuery);
-    }
-
-    /**
-     * Adds/Replaces a document at the specified uid
+     * Adds/Replaces a document at the specified index uid
      *
      * @param uid Partial index identifier for the document
      * @param document String containing the document to add
      * @param primaryKey PrimaryKey of the document
-     * @return Meilisearch's Task API response
-     * @throws Exception if the client request causes an error
+     * @return Meilisearch's TaskInfo API response
+     * @throws MeilisearchException if the client request causes an error
      */
-    Task addDocuments(String uid, String document, String primaryKey) throws Exception {
-        String urlQuery = "/indexes/" + uid + "/documents";
+    TaskInfo addDocuments(String uid, String document, String primaryKey)
+            throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes").addSubroute(uid).addSubroute("documents");
         if (primaryKey != null) {
-            urlQuery += "?primaryKey=" + primaryKey;
+            urlb.addParameter("primaryKey", primaryKey);
         }
-
-        Task task = gson.fromJson(meilisearchHttpRequest.post(urlQuery, document), Task.class);
-        return task;
+        String urlQuery = urlb.getURL();
+        return httpClient.post(urlQuery, document, TaskInfo.class);
     }
 
     /**
-     * Replaces a document at the specified uid
+     * Replaces a document at the specified index uid
      *
      * @param uid Partial index identifier for the document
      * @param document String containing the document to replace the existing document
      * @param primaryKey PrimaryKey of the document
-     * @return Meilisearch's Task API response
-     * @throws Exception if the client request causes an error
+     * @return Meilisearch's TaskInfo API response
+     * @throws MeilisearchException if the client request causes an error
      */
-    Task updateDocuments(String uid, String document, String primaryKey) throws Exception {
-        String urlPath = "/indexes/" + uid + "/documents";
+    TaskInfo updateDocuments(String uid, String document, String primaryKey)
+            throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes").addSubroute(uid).addSubroute("documents");
         if (primaryKey != null) {
-            urlPath += "?primaryKey=" + primaryKey;
+            urlb.addParameter("primaryKey", primaryKey);
         }
-
-        Task task = gson.fromJson(meilisearchHttpRequest.put(urlPath, document), Task.class);
-        return task;
+        String urlPath = urlb.getURL();
+        return httpClient.put(urlPath, document, TaskInfo.class);
     }
 
     /**
-     * Deletes the document at the specified uid with the specified identifier
+     * Deletes the document from the specified index uid with the specified identifier
      *
      * @param uid Partial index identifier for the requested document
      * @param identifier ID of the document
-     * @return Meilisearch's Task API response
-     * @throws Exception if the client request causes an error
+     * @return Meilisearch's TaskInfo API response
+     * @throws MeilisearchException if the client request causes an error
      */
-    Task deleteDocument(String uid, String identifier) throws Exception {
-        String urlPath = "/indexes/" + uid + "/documents/" + identifier;
-
-        Task task = gson.fromJson(meilisearchHttpRequest.delete(urlPath), Task.class);
-        return task;
+    TaskInfo deleteDocument(String uid, String identifier) throws MeilisearchException {
+        return httpClient.<TaskInfo>delete(
+                new DocumentsQuery().toQuery(uid, identifier), TaskInfo.class);
     }
 
     /**
-     * Deletes the documents at the specified uid with the specified identifiers
+     * Deletes the documents at the specified index uid with the specified identifiers
      *
      * @param uid Partial index identifier for the requested documents
      * @param identifiers ID of documents to delete
-     * @return Meilisearch's Task API response
-     * @throws Exception if the client request causes an error
+     * @return Meilisearch's TaskInfo API response
+     * @throws MeilisearchException if the client request causes an error
      */
-    Task deleteDocuments(String uid, List<String> identifiers) throws Exception {
-        String urlPath = "/indexes/" + uid + "/documents/" + "delete-batch";
-        JsonArray requestData = new JsonArray(identifiers.size());
-        identifiers.forEach(requestData::add);
-
-        Task task =
-                gson.fromJson(
-                        meilisearchHttpRequest.post(urlPath, requestData.toString()), Task.class);
-        return task;
+    TaskInfo deleteDocuments(String uid, List<String> identifiers) throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("indexes")
+                .addSubroute(uid)
+                .addSubroute("documents")
+                .addSubroute("delete-batch");
+        String urlPath = urlb.getURL();
+        return httpClient.post(urlPath, identifiers, TaskInfo.class);
     }
 
     /**
-     * Deletes all documents at the specified uid
+     * Deletes all documents at the specified index uid
      *
      * @param uid Partial index identifier for the requested documents
-     * @return Meilisearch's Task API response
-     * @throws Exception if the client request causes an error
+     * @return Meilisearch's TaskInfo API response
+     * @throws MeilisearchException if the client request causes an error
      */
-    Task deleteAllDocuments(String uid) throws Exception {
-        String urlPath = "/indexes/" + uid + "/documents";
-
-        Task task = gson.fromJson(meilisearchHttpRequest.delete(urlPath), Task.class);
-        return task;
+    TaskInfo deleteAllDocuments(String uid) throws MeilisearchException {
+        return httpClient.<TaskInfo>delete(new DocumentsQuery().toQuery(uid), TaskInfo.class);
     }
 }

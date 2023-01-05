@@ -26,6 +26,22 @@ First of all, thank you for contributing to Meilisearch! The goal of this docume
 
 ## Development Workflow
 
+### Setup <!-- omit in TOC -->
+
+You can set up your local environment natively or using `docker`, check out the [`docker-compose.yml`](/docker-compose.yml).
+
+Example of running all the checks with docker:
+```bash
+docker-compose run --rm package bash -c "./gradlew build && ./gradlew build integrationTest"
+```
+
+To install dependencies:
+
+```bash
+./gradlew build
+```
+
+
 ### Tests <!-- omit in TOC -->
 
 Integration and unit tests will be run in your PR to check everything is OK. Each PR should pass all the tests to be accepted.
@@ -79,7 +95,7 @@ Some notes on GitHub PRs:
 - All PRs must be reviewed and approved by at least one maintainer.
 - The PR title should be accurate and descriptive of the changes. The title of the PR will be indeed automatically added to the next [release changelogs](https://github.com/meilisearch/meilisearch-java/releases/).
 
-## Release Process (for internal team only)
+## Release Process (for the internal team only)
 
 Meilisearch tools follow the [Semantic Versioning Convention](https://semver.org/).
 
@@ -121,7 +137,7 @@ implementation 'com.meilisearch.sdk:meilisearch-java:X.X.X'
 implementation 'com.meilisearch.sdk:meilisearch-java:X.X.X'
 ```
 
-Once the changes are merged on `main`, you can publish the current draft release via the [GitHub interface](https://github.com/meilisearch/meilisearch-java/releases): on this page, click on `Edit` (related to the draft release) > update the description (be sure you apply [these recommandations](https://github.com/meilisearch/integration-guides/blob/main/resources/integration-release.md#writting-the-release-description)) > when you are ready, click on `Publish release`.
+Once the changes are merged on `main`, you can publish the current draft release via the [GitHub interface](https://github.com/meilisearch/meilisearch-java/releases): on this page, click on `Edit` (related to the draft release) > update the description (be sure you apply [these recommendations](https://github.com/meilisearch/integration-guides/blob/main/resources/integration-release.md#writting-the-release-description)) > when you are ready, click on `Publish release`.
 
 A GitHub Action will be triggered and publish a new release to Maven repository.
 
@@ -219,4 +235,4 @@ base64 -d $SIGNING_SECRET_KEY_RING_FILE > secring.gpg
 
 <hr>
 
-Thank you again for reading this through, we can not wait to begin to work with you if you made your way through this contributing guide ❤️
+Thank you again for reading this through. We can not wait to begin to work with you if you make your way through this contributing guide ❤️
