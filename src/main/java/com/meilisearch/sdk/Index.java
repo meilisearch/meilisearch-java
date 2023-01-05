@@ -54,7 +54,7 @@ public class Index implements Serializable {
      * @param <T> Type of documents returned
      * @param identifier Identifier of the document to get
      * @param targetClass Class of the document returned
-     * @return Meilisearch API response
+     * @return Object containing the requested document
      * @throws MeilisearchException if an error occurs
      */
     public <T> T getDocument(String identifier, Class<T> targetClass) throws MeilisearchException {
@@ -69,7 +69,7 @@ public class Index implements Serializable {
      * @param identifier Identifier of the document to get
      * @param param accepted by the get document route
      * @param targetClass Class of documents returned
-     * @return Meilisearch API response
+     * @return Object containing the requested document
      * @throws MeilisearchException if an error occurs
      */
     public <T> T getDocument(String identifier, DocumentsQuery param, Class<T> targetClass)
@@ -82,7 +82,7 @@ public class Index implements Serializable {
      * https://docs.meilisearch.com/reference/api/documents.html#get-one-document
      *
      * @param identifier Identifier of the document to get
-     * @return Meilisearch API response
+     * @return String containing the requested document
      * @throws MeilisearchException if an error occurs
      */
     public String getRawDocument(String identifier) throws MeilisearchException {
@@ -95,7 +95,7 @@ public class Index implements Serializable {
      *
      * @param identifier Identifier of the document to get
      * @param param accept by the documents route
-     * @return Meilisearch API response
+     * @return String containing the requested document
      * @throws MeilisearchException if an error occurs
      */
     public String getRawDocument(String identifier, DocumentsQuery param)
@@ -109,7 +109,7 @@ public class Index implements Serializable {
      *
      * @param <T> Type of documents returned
      * @param targetClass Class of documents returned
-     * @return Meilisearch API response
+     * @return Results containing a list of Object containing the requested document
      * @throws MeilisearchException if an error occurs
      */
     public <T> Results<T> getDocuments(Class<T> targetClass) throws MeilisearchException {
@@ -123,7 +123,7 @@ public class Index implements Serializable {
      * @param <T> Type of documents returned
      * @param param accept by the documents route
      * @param targetClass Class of documents returned
-     * @return Meilisearch API response
+     * @return Results containing a list of Object containing the requested document
      * @throws MeilisearchException if an error occurs
      */
     public <T> Results<T> getDocuments(DocumentsQuery param, Class<T> targetClass)
@@ -135,7 +135,7 @@ public class Index implements Serializable {
      * Gets documents as String at the specified index Refer
      * https://docs.meilisearch.com/reference/api/documents.html#get-documents
      *
-     * @return Meilisearch API response
+     * @return String containing a list of documents
      * @throws MeilisearchException if an error occurs
      */
     public String getRawDocuments() throws MeilisearchException {
@@ -147,7 +147,7 @@ public class Index implements Serializable {
      * https://docs.meilisearch.com/reference/api/documents.html#get-documents
      *
      * @param param accept by the documents route
-     * @return Meilisearch API response
+     * @return String containing a list of documents
      * @throws MeilisearchException if an error occurs
      */
     public String getRawDocuments(DocumentsQuery param) throws MeilisearchException {

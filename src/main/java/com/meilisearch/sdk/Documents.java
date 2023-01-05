@@ -20,7 +20,7 @@ class Documents {
     }
 
     /**
-     * Retrieves the document at the specified index uid with the specified identifier
+     * Retrieves the document from the specified index uid with the specified identifier
      *
      * @param <T> Type of the document returned
      * @param uid Partial index identifier for the requested documents
@@ -50,7 +50,7 @@ class Documents {
     }
 
     /**
-     * Retrieves the document at the specified index uid with the specified identifier
+     * Retrieves the document from the specified index uid with the specified identifier
      *
      * @param uid Partial index identifier for the requested documents
      * @param identifier ID of the document
@@ -62,7 +62,7 @@ class Documents {
     }
 
     /**
-     * Retrieves the document at the specified index uid with the specified identifier
+     * Retrieves the document from the specified index uid with the specified identifier
      *
      * @param uid Partial index identifier for the requested documents
      * @param identifier ID of the document
@@ -76,12 +76,12 @@ class Documents {
     }
 
     /**
-     * Retrieves the document at the specified index
+     * Retrieves the document from the specified index
      *
      * @param <T> Type of documents returned
      * @param uid Partial index identifier for the requested documents
      * @param targetClass Class of documents returned
-     * @return Object containing the requested document
+     * @return Results containing a list of Object containing the requested document
      * @throws MeilisearchException if the client request causes an error
      */
     <T> Results<T> getDocuments(String uid, Class<T> targetClass) throws MeilisearchException {
@@ -92,13 +92,13 @@ class Documents {
     }
 
     /**
-     * Gets the document from the specified index
+     * Retrieves the document from the specified index
      *
      * @param <T> Type of documents returned
      * @param uid Partial index identifier for the requested documents
      * @param param accepted by the get documents route
      * @param targetClass Class of documents returned
-     * @return Object containing the requested document
+     * @return Results containing a list of Object containing the requested document
      * @throws MeilisearchException if the client request causes an error
      */
     <T> Results<T> getDocuments(String uid, DocumentsQuery param, Class<T> targetClass)
@@ -109,7 +109,7 @@ class Documents {
     }
 
     /**
-     * Retrieves the document as String at the specified index
+     * Retrieves the document as a string from the specified index
      *
      * @param uid Partial index identifier for the requested documents
      * @return Meilisearch API response
@@ -172,7 +172,7 @@ class Documents {
     }
 
     /**
-     * Deletes the document at the specified index uid with the specified identifier
+     * Deletes the document from the specified index uid with the specified identifier
      *
      * @param uid Partial index identifier for the requested document
      * @param identifier ID of the document
