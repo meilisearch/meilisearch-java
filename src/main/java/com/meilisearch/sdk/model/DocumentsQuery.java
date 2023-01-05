@@ -6,7 +6,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
- * Data structure of a query parameter for documents route
+ * Data structure of the query parameters of the documents route
  *
  * <p>https://docs.meilisearch.com/reference/api/documents.html#query-parameters
  */
