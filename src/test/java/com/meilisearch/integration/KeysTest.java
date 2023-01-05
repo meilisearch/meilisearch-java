@@ -125,7 +125,7 @@ public class KeysTest extends AbstractIT {
         assertNotNull(key.getUpdatedAt());
     }
 
-    /** Test Get Key */
+    /** Test Get Key when the key does not exist*/
     @Test
     public void testClientGetKeyDoesNotExist() throws Exception {
         assertThrows(MeilisearchApiException.class, () -> client.getKey("KeyDoesNotExist"));
