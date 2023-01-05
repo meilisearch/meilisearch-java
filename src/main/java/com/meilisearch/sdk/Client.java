@@ -7,6 +7,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.json.JsonHandler;
+import com.meilisearch.sdk.model.IndexesQuery;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.Stats;
@@ -63,33 +64,46 @@ public class Client {
      * @throws MeilisearchException if an error occurs
      */
     public TaskInfo createIndex(String uid, String primaryKey) throws MeilisearchException {
-        return this.indexesHandler.create(uid, primaryKey);
+        return this.indexesHandler.createIndex(uid, primaryKey);
     }
 
     /**
-     * Gets all indexes in the current Meilisearch instance
-     * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     * Gets indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
-     * @return Array of indexes in the Meilisearch client
+     * @return Results containing a list of indexes from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      */
-    public Index[] getIndexes() throws MeilisearchException {
-        Index[] indexes = jsonHandler.decode(getRawIndexes(), Index[].class);
-        for (Index index : indexes) {
+    public Results<Index> getIndexes() throws MeilisearchException {
+        Results<Index> indexes = this.indexesHandler.getIndexes();
+        for (Index index : indexes.getResults()) {
             index.setConfig(this.config);
         }
         return indexes;
     }
 
     /**
-     * Gets all indexes in the current Meilisearch instance
-     * https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     * Gets indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
      *
-     * @return Meilisearch API response as String
+     * @param params query parameters accepted by the get indexes route
+     * @return Results containing a list of indexes from the Meilisearch API
+     * @throws MeilisearchException if an error occurs
+     */
+    public Results<Index> getIndexes(IndexesQuery params) throws MeilisearchException {
+        Results<Index> indexes = this.indexesHandler.getIndexes(params);
+        for (Index index : indexes.getResults()) {
+            index.setConfig(this.config);
+        }
+        return indexes;
+    }
+
+    /**
+     * Gets all indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     *
+     * @return List of indexes from the Meilisearch API as String
      * @throws MeilisearchException if an error occurs
      */
     public String getRawIndexes() throws MeilisearchException {
-        return this.indexesHandler.getAll();
+        return this.indexesHandler.getRawIndexes();
     }
 
     /**
@@ -98,7 +112,7 @@ public class Client {
      * methods in the Index class.
      *
      * @param uid Unique identifier of the index
-     * @return Index instance
+     * @return Meilisearch API response as Index instance
      * @throws MeilisearchException if an error occurs
      */
     public Index index(String uid) throws MeilisearchException {
@@ -113,29 +127,17 @@ public class Client {
      * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
      *
      * @param uid Unique identifier of the index to get
-     * @return Meilisearch API response
+     * @return Meilisearch API response as Index instance
      * @throws MeilisearchException if an error occurs
      */
     public Index getIndex(String uid) throws MeilisearchException {
-        Index index = jsonHandler.decode(getRawIndex(uid), Index.class);
+        Index index = this.indexesHandler.getIndex(uid);
         index.setConfig(this.config);
         return index;
     }
 
     /**
-     * Gets single index by its unique identifier
-     * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
-     *
-     * @param uid Unique identifier of the index to get
-     * @return Meilisearch API response as String
-     * @throws MeilisearchException if an error occurs
-     */
-    public String getRawIndex(String uid) throws MeilisearchException {
-        return this.indexesHandler.get(uid);
-    }
-
-    /**
-     * Updates the primary key of an index in the Meilisearch instance
+     * Updates the primary key of an index
      * https://docs.meilisearch.com/reference/api/indexes.html#update-an-index
      *
      * @param uid Unique identifier of the index to update
@@ -156,7 +158,7 @@ public class Client {
      * @throws MeilisearchException if an error occurs
      */
     public TaskInfo deleteIndex(String uid) throws MeilisearchException {
-        return this.indexesHandler.delete(uid);
+        return this.indexesHandler.deleteIndex(uid);
     }
 
     /**
@@ -220,7 +222,7 @@ public class Client {
      * https://docs.meilisearch.com/reference/api/tasks.html#get-one-task
      *
      * @param uid Identifier of the requested Task
-     * @return Task Instance
+     * @return Meilisearch API response as Task Instance
      * @throws MeilisearchException if an error occurs
      */
     public Task getTask(int uid) throws MeilisearchException {
@@ -230,7 +232,7 @@ public class Client {
     /**
      * Retrieves list of tasks https://docs.meilisearch.com/reference/api/tasks.html#get-tasks
      *
-     * @return List of tasks in the Meilisearch client
+     * @return TasksResults containing a list of tasks from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      */
     public TasksResults getTasks() throws MeilisearchException {
@@ -241,7 +243,7 @@ public class Client {
      * Retrieves list of tasks https://docs.meilisearch.com/reference/api/tasks.html#get-tasks
      *
      * @param param accept by the tasks route
-     * @return List of tasks in the Meilisearch client
+     * @return TasksResults containing a list of tasks from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      */
     public TasksResults getTasks(TasksQuery param) throws MeilisearchException {

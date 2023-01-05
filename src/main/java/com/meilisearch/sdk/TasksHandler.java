@@ -44,7 +44,7 @@ public class TasksHandler {
     /**
      * Retrieves all tasks from the client
      *
-     * @return List of task instance
+     * @return TasksResults containing a list of task instance
      * @throws MeilisearchException if client request causes an error
      */
     TasksResults getTasks() throws MeilisearchException {
@@ -58,7 +58,7 @@ public class TasksHandler {
      * Retrieves all tasks from the client
      *
      * @param param accept by the tasks route
-     * @return List of task instance
+     * @return TasksResults containing a list of task instance
      * @throws MeilisearchException if client request causes an error
      */
     TasksResults getTasks(TasksQuery param) throws MeilisearchException {
@@ -79,7 +79,7 @@ public class TasksHandler {
      * Retrieves all tasks from specified index uid
      *
      * @param indexUid Index identifier to index of the requested Tasks
-     * @return List of task instance
+     * @return TasksResults containing a list of task instance
      * @throws MeilisearchException if client request causes an error
      */
     TasksResults getTasks(String indexUid) throws MeilisearchException {
@@ -96,7 +96,7 @@ public class TasksHandler {
      *
      * @param indexUid Index identifier to index of the requested Tasks
      * @param param accept by the tasks route
-     * @return List of task instance
+     * @return TasksResults containing a list of task instance
      * @throws MeilisearchException if client request causes an error
      */
     TasksResults getTasks(String indexUid, TasksQuery param) throws MeilisearchException {

@@ -9,6 +9,9 @@ import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
+import com.meilisearch.sdk.model.IndexesQuery;
+import com.meilisearch.sdk.model.Results;
+import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Arrays;
@@ -28,6 +31,7 @@ public class ClientTest extends AbstractIT {
         setUp();
         setUpJacksonClient();
         if (testData == null) testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        cleanup();
     }
 
     @AfterAll
@@ -43,8 +47,6 @@ public class ClientTest extends AbstractIT {
 
         assertEquals(index.getUid(), indexUid);
         assertNull(index.getPrimaryKey());
-
-        client.deleteIndex(index.getUid());
     }
 
     /** Test Index creation without PrimaryKey with Jackson Json Handler */
@@ -57,8 +59,6 @@ public class ClientTest extends AbstractIT {
 
         assertEquals(index.getUid(), indexUid);
         assertNull(index.getPrimaryKey());
-
-        clientJackson.deleteIndex(index.getUid());
     }
 
     /** Test Index creation with PrimaryKey */
@@ -69,8 +69,6 @@ public class ClientTest extends AbstractIT {
 
         assertEquals(index.getUid(), indexUid);
         assertEquals(index.getPrimaryKey(), this.primaryKey);
-
-        client.deleteIndex(index.getUid());
     }
 
     /** Test Index creation with PrimaryKey with Jackson Json Handler */
@@ -83,8 +81,6 @@ public class ClientTest extends AbstractIT {
 
         assertEquals(index.getUid(), indexUid);
         assertEquals(index.getPrimaryKey(), this.primaryKey);
-
-        clientJackson.deleteIndex(index.getUid());
     }
 
     /** Test Index creation twice doesn't throw an error: already exists */
@@ -102,8 +98,6 @@ public class ClientTest extends AbstractIT {
         assertEquals(indexDuplicate.getUid(), indexUid);
         assertEquals(index.getPrimaryKey(), this.primaryKey);
         assertEquals(indexDuplicate.getPrimaryKey(), this.primaryKey);
-
-        client.deleteIndex(index.getUid());
     }
 
     /** Test update Index PrimaryKey */
@@ -122,8 +116,6 @@ public class ClientTest extends AbstractIT {
         assertTrue(index instanceof Index);
         assertEquals(index.getUid(), indexUid);
         assertEquals(index.getPrimaryKey(), this.primaryKey);
-
-        client.deleteIndex(index.getUid());
     }
 
     /** Test getIndex */
@@ -135,22 +127,6 @@ public class ClientTest extends AbstractIT {
 
         assertEquals(index.getUid(), getIndex.getUid());
         assertEquals(index.getPrimaryKey(), getIndex.getPrimaryKey());
-
-        client.deleteIndex(index.getUid());
-    }
-
-    /** Test getRawIndex */
-    @Test
-    public void testGetRawIndex() throws Exception {
-        String indexUid = "GetRawIndex";
-        Index index = createEmptyIndex(indexUid, this.primaryKey);
-        String getIndex = client.getRawIndex(indexUid);
-        JsonObject indexJson = JsonParser.parseString(getIndex).getAsJsonObject();
-
-        assertEquals(index.getUid(), indexJson.get("uid").getAsString());
-        assertEquals(index.getPrimaryKey(), indexJson.get("primaryKey").getAsString());
-
-        client.deleteIndex(index.getUid());
     }
 
     /** Test getIndexes */
@@ -159,14 +135,41 @@ public class ClientTest extends AbstractIT {
         String[] indexUids = {"GetIndexes", "GetIndexes2"};
         createEmptyIndex(indexUids[0]);
         createEmptyIndex(indexUids[1], this.primaryKey);
-        Index[] indexes = client.getIndexes();
+        Results<Index> indexes = client.getIndexes();
 
-        assertEquals(2, indexes.length);
+        assertEquals(2, indexes.getResults().length);
         assert (Arrays.asList(indexUids).contains(indexUids[0]));
         assert (Arrays.asList(indexUids).contains(indexUids[1]));
+    }
 
-        client.deleteIndex(indexUids[0]);
-        client.deleteIndex(indexUids[1]);
+    /** Test getIndexes with limit */
+    @Test
+    public void testGetIndexesLimit() throws Exception {
+        int limit = 1;
+        String[] indexUids = {"GetIndexesLimit", "GetIndexesLimit2"};
+        IndexesQuery query = new IndexesQuery().setLimit(limit);
+        createEmptyIndex(indexUids[0]);
+        createEmptyIndex(indexUids[1], this.primaryKey);
+        Results<Index> indexes = client.getIndexes(query);
+
+        assertEquals(limit, indexes.getResults().length);
+        assertEquals(limit, indexes.getLimit());
+    }
+
+    /** Test getIndexes with limit and offset */
+    @Test
+    public void testGetIndexesLimitAndOffset() throws Exception {
+        int limit = 1;
+        int offset = 1;
+        String[] indexUids = {"GetIndexesLimitOffset", "GetIndexesLimitOffset2"};
+        IndexesQuery query = new IndexesQuery().setLimit(limit).setOffset(offset);
+        createEmptyIndex(indexUids[0]);
+        createEmptyIndex(indexUids[1], this.primaryKey);
+        Results<Index> indexes = client.getIndexes(query);
+
+        assertEquals(limit, indexes.getResults().length);
+        assertEquals(limit, indexes.getLimit());
+        assertEquals(offset, indexes.getOffset());
     }
 
     /** Test getRawIndexes */
@@ -177,16 +180,14 @@ public class ClientTest extends AbstractIT {
         createEmptyIndex(indexUids[1], this.primaryKey);
 
         String indexes = client.getRawIndexes();
-        JsonArray jsonIndexArray = JsonParser.parseString(indexes).getAsJsonArray();
+        JsonObject jsonIndexObject = JsonParser.parseString(indexes).getAsJsonObject();
+        JsonArray jsonIndexArray = jsonIndexObject.getAsJsonArray("results");
 
-        assertEquals(4, jsonIndexArray.size());
+        assertEquals(2, jsonIndexArray.size());
         assert (Arrays.asList(indexUids)
                 .contains(jsonIndexArray.get(0).getAsJsonObject().get("uid").getAsString()));
         assert (Arrays.asList(indexUids)
                 .contains(jsonIndexArray.get(1).getAsJsonObject().get("uid").getAsString()));
-
-        client.deleteIndex(indexUids[0]);
-        client.deleteIndex(indexUids[1]);
     }
 
     /** Test deleteIndex */

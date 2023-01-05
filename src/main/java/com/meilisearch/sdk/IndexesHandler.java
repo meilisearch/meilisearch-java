@@ -1,6 +1,8 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.model.IndexesQuery;
+import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.TaskInfo;
 import java.util.HashMap;
 
@@ -25,23 +27,23 @@ class IndexesHandler {
     /**
      * Creates an index with a unique identifier
      *
-     * @param uid Unique identifier to create the index with
-     * @return Meilisearch API response
+     * @param uid Unique identifier of the index
+     * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      */
-    TaskInfo create(String uid) throws MeilisearchException {
-        return this.create(uid, null);
+    TaskInfo createIndex(String uid) throws MeilisearchException {
+        return this.createIndex(uid, null);
     }
 
     /**
      * Creates an index with a unique identifier
      *
-     * @param uid Unique identifier to create the index with
+     * @param uid Unique identifier of the index
      * @param primaryKey Field to use as the primary key for documents in that index
-     * @return Meilisearch API response
+     * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      */
-    TaskInfo create(String uid, String primaryKey) throws MeilisearchException {
+    TaskInfo createIndex(String uid, String primaryKey) throws MeilisearchException {
         HashMap<String, String> index = new HashMap<String, String>();
         index.put("uid", uid);
         index.put("primaryKey", primaryKey);
@@ -53,21 +55,41 @@ class IndexesHandler {
      * Gets an index from its uid
      *
      * @param uid Unique identifier of the index to get
-     * @return Meilisearch API response
+     * @return Meilisearch API response as Index instance
      * @throws MeilisearchException if an error occurs
      */
-    String get(String uid) throws MeilisearchException {
-        String requestQuery = "/indexes/" + uid;
-        return httpClient.get(requestQuery, String.class);
+    Index getIndex(String uid) throws MeilisearchException {
+        return httpClient.get(new IndexesQuery().toQuery(uid), Index.class);
     }
 
     /**
-     * Gets all indexes in the current Meilisearch instance
+     * Gets indexes in the current Meilisearch instance
      *
-     * @return Meilisearch API response
+     * @return Results containing a list of indexes
      * @throws MeilisearchException if an error occurs
      */
-    String getAll() throws MeilisearchException {
+    Results<Index> getIndexes() throws MeilisearchException {
+        return httpClient.get("/indexes", Results.class, Index.class);
+    }
+
+    /**
+     * Gets indexes in the current Meilisearch instance
+     *
+     * @param query parameters accepted by the indexes route
+     * @return Results containing a list of indexes
+     * @throws MeilisearchException if an error occurs
+     */
+    Results<Index> getIndexes(IndexesQuery params) throws MeilisearchException {
+        return httpClient.get(params.toQuery(params), Results.class, Index.class);
+    }
+
+    /**
+     * Gets indexes in the current Meilisearch instance
+     *
+     * @return List of indexes as String
+     * @throws MeilisearchException if an error occurs
+     */
+    String getRawIndexes() throws MeilisearchException {
         return httpClient.get("/indexes", String.class);
     }
 
@@ -76,26 +98,24 @@ class IndexesHandler {
      *
      * @param uid Unique identifier of the index to update
      * @param primaryKey New primary key field to use for documents in that index
-     * @return Meilisearch API response
+     * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      */
     TaskInfo updatePrimaryKey(String uid, String primaryKey) throws MeilisearchException {
         HashMap<String, String> index = new HashMap<String, String>();
         index.put("primaryKey", primaryKey);
 
-        String requestQuery = "/indexes/" + uid;
-        return httpClient.patch(requestQuery, index, TaskInfo.class);
+        return httpClient.patch(new IndexesQuery().toQuery(uid), index, TaskInfo.class);
     }
 
     /**
      * Deletes an index in the Meilisearch instance
      *
      * @param uid Unique identifier of the index to delete
-     * @return Meilisearch API response
+     * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      */
-    TaskInfo delete(String uid) throws MeilisearchException {
-        String requestQuery = "/indexes/" + uid;
-        return httpClient.delete(requestQuery, TaskInfo.class);
+    TaskInfo deleteIndex(String uid) throws MeilisearchException {
+        return httpClient.delete(new IndexesQuery().toQuery(uid), TaskInfo.class);
     }
 }
