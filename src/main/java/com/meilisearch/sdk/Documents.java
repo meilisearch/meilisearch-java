@@ -123,7 +123,7 @@ class Documents {
      * Retrieves the document as String at the specified index
      *
      * @param uid Partial index identifier for the requested documents
-     * @param param accept by the documents route
+     * @param param accepted by the documents route
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
