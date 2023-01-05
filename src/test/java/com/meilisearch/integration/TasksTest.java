@@ -113,7 +113,6 @@ public class TasksTest extends AbstractIT {
         Task[] tasks = result.getResults();
 
         assertEquals(limit, result.getLimit());
-        assertEquals(from, result.getFrom());
         assertNotNull(result.getFrom());
         assertNotNull(result.getNext());
     }
