@@ -6,7 +6,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
- * Data structure of a query parameter for keys route
+ * Data structure of the query parameters for the keys routes
  *
  * <p>https://docs.meilisearch.com/reference/api/keys.html#query-parameters
  */
