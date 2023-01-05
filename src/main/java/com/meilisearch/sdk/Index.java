@@ -90,7 +90,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Gets a documents with the specified uid Refer
+     * Gets a document with the specified uid and parameters
      * https://docs.meilisearch.com/reference/api/documents.html#get-one-document
      *
      * @param identifier Identifier of the document to get
