@@ -35,7 +35,7 @@ class Documents {
     }
 
     /**
-     * Retrieves the document at the specified index uid with the specified identifier
+     * Retrieves the document from the specified index uid with the specified identifier
      *
      * @param uid Partial index identifier for the requested documents
      * @param identifier ID of the document
