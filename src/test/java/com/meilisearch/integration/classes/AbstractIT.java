@@ -92,8 +92,7 @@ public abstract class AbstractIT {
         Results<Key> result = client.getKeys();
         Key[] keys = result.getResults();
         for (Key key : keys) {
-            if ((key.getDescription() == null)
-                    || (key.getDescription().contains("Default Admin API"))) {
+            if ((key.getName() == null) || (key.getName().contains("Default Admin API"))) {
                 return key;
             }
         }

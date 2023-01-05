@@ -20,6 +20,7 @@ import com.meilisearch.sdk.model.TasksResults;
 import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.UUID;
 
 /** Meilisearch client */
 public class Client {
@@ -328,14 +329,16 @@ public class Client {
         this.keysHandler.deleteKey(key);
     }
 
-    public String generateTenantToken(Map<String, Object> searchRules) throws MeilisearchException {
-        return this.generateTenantToken(searchRules, new TenantTokenOptions());
+    public String generateTenantToken(String apiKeyUid, Map<String, Object> searchRules)
+            throws MeilisearchException {
+        return this.generateTenantToken(apiKeyUid, searchRules, new TenantTokenOptions());
     }
 
     /**
      * Generate a tenant token
      * https://docs.meilisearch.com/learn/security/tenant_tokens.html#multitenancy-and-tenant-tokens
      *
+     * @param apiKeyUid Uid of a signing API key.
      * @param searchRules A Map of string, object which contains the rules to be enforced at search
      *     time for all or specific accessible indexes for the signing API Key.
      * @param options A TenantTokenOptions, the following fileds are accepted: - apiKey: String
@@ -345,7 +348,8 @@ public class Client {
      * @return String containing the tenant token
      * @throws MeilisearchException if an error occurs
      */
-    public String generateTenantToken(Map<String, Object> searchRules, TenantTokenOptions options)
+    public String generateTenantToken(
+            String apiKeyUid, Map<String, Object> searchRules, TenantTokenOptions options)
             throws MeilisearchException {
         // Validate all fields
         Date now = new Date();
@@ -368,6 +372,10 @@ public class Client {
             throw new MeilisearchException(
                     "The searchRules field is mandatory and should be defined.");
         }
+        if (apiKeyUid == "" || apiKeyUid == null || !isValidUUID(apiKeyUid)) {
+            throw new MeilisearchException(
+                    "The uid used for the token generation must exist and comply to uuid4 format");
+        }
 
         // Encrypt the key
         Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -376,10 +384,19 @@ public class Client {
         String jwtToken =
                 JWT.create()
                         .withClaim("searchRules", searchRules)
-                        .withClaim("apiKeyPrefix", secret.substring(0, 8))
+                        .withClaim("apiKeyUid", apiKeyUid)
                         .withExpiresAt(options.getExpiresAt())
                         .sign(algorithm);
 
         return jwtToken;
+    }
+
+    private Boolean isValidUUID(String apiKeyUid) {
+        try {
+            UUID uuid = UUID.fromString(apiKeyUid);
+        } catch (IllegalArgumentException exception) {
+            return false;
+        }
+        return true;
     }
 }
