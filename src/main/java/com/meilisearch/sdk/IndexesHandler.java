@@ -84,7 +84,7 @@ class IndexesHandler {
     }
 
     /**
-     * Gets all indexes in the current Meilisearch instance
+     * Gets indexes in the current Meilisearch instance
      *
      * @return List of indexes as String
      * @throws MeilisearchException if an error occurs
