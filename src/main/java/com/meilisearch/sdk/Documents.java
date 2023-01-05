@@ -92,7 +92,7 @@ class Documents {
     }
 
     /**
-     * Retrieves the document at the specified index
+     * Gets the document from the specified index
      *
      * @param <T> Type of documents returned
      * @param uid Partial index identifier for the requested documents
