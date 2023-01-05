@@ -85,10 +85,8 @@ class Documents {
      * @throws MeilisearchException if the client request causes an error
      */
     <T> Results<T> getDocuments(String uid, Class<T> targetClass) throws MeilisearchException {
-        Results<T> documents =
-                httpClient.<Results>get(
-                        new DocumentsQuery().toQuery(uid), Results.class, targetClass);
-        return documents;
+        return httpClient.<Results>get(
+                new DocumentsQuery().toQuery(uid), Results.class, targetClass);
     }
 
     /**
@@ -103,9 +101,7 @@ class Documents {
      */
     <T> Results<T> getDocuments(String uid, DocumentsQuery param, Class<T> targetClass)
             throws MeilisearchException {
-        Results<T> documents =
-                httpClient.<Results>get(param.toQuery(uid, param), Results.class, targetClass);
-        return documents;
+        return httpClient.<Results>get(param.toQuery(uid, param), Results.class, targetClass);
     }
 
     /**
