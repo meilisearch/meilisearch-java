@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
- * Data structure of Meilisearch response for a Key
+ * Data structure for updating a Key
  *
  * <p>https://docs.meilisearch.com/reference/api/keys.html
  */
