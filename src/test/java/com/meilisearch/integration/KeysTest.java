@@ -10,6 +10,7 @@ import com.meilisearch.sdk.model.KeysQuery;
 import com.meilisearch.sdk.model.Results;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,12 @@ public class KeysTest extends AbstractIT {
     public void initialize() {
         this.setUp();
         this.setUpJacksonClient();
+        cleanup();
+        deleteAllKeys();
+    }
+
+    @AfterAll
+    static void cleanMeilisearch() {
         cleanup();
         deleteAllKeys();
     }
@@ -125,7 +132,7 @@ public class KeysTest extends AbstractIT {
         assertNotNull(key.getUpdatedAt());
     }
 
-    /** Test Get Key when the key does not exist*/
+    /** Test Get Key when the key does not exist */
     @Test
     public void testClientGetKeyDoesNotExist() throws Exception {
         assertThrows(MeilisearchApiException.class, () -> client.getKey("KeyDoesNotExist"));
