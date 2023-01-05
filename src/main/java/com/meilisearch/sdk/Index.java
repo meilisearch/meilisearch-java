@@ -67,7 +67,7 @@ public class Index implements Serializable {
      *
      * @param <T> Type of documents returned
      * @param identifier Identifier of the document to get
-     * @param param accept by the documents route
+     * @param param accepted by the get document route
      * @param targetClass Class of documents returned
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
