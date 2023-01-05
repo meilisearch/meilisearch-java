@@ -116,7 +116,7 @@ class Documents {
     }
 
     /**
-     * Retrieves the document as String at the specified index
+     * Retrieves the document as String from the specified index
      *
      * @param uid Partial index identifier for the requested documents
      * @param param accepted by the documents route
