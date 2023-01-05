@@ -39,7 +39,7 @@ class Documents {
      *
      * @param uid Partial index identifier for the requested documents
      * @param identifier ID of the document
-     * @param param accept by the documents route
+     * @param param accepted by the get document route
      * @param targetClass Class of the document returned
      * @return Object containing the requested document
      * @throws MeilisearchException if client request causes an error
