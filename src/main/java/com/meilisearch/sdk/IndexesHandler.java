@@ -63,7 +63,7 @@ class IndexesHandler {
     }
 
     /**
-     * Gets all indexes in the current Meilisearch instance
+     * Gets indexes in the current Meilisearch instance
      *
      * @return Results containing a list of indexes
      * @throws MeilisearchException if an error occurs
