@@ -1,5 +1,6 @@
 package com.meilisearch.sdk.model;
 
+import com.meilisearch.sdk.http.URLBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -20,4 +21,15 @@ public class TasksQuery {
     private String[] indexUid;
 
     public TasksQuery() {}
+
+    public String toQuery() {
+        URLBuilder urlb =
+                new URLBuilder()
+                        .addParameter("limit", this.getLimit())
+                        .addParameter("from", this.getFrom())
+                        .addParameter("status", this.getStatus())
+                        .addParameter("type", this.getType())
+                        .addParameter("indexUid", this.getIndexUid());
+        return urlb.getURL();
+    }
 }

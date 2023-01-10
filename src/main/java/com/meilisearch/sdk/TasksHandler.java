@@ -23,7 +23,7 @@ public class TasksHandler {
      *
      * @param config MeiliSearch configuration
      */
-    TasksHandler(Config config) {
+    protected TasksHandler(Config config) {
         this.httpClient = config.httpClient;
     }
 
@@ -48,9 +48,7 @@ public class TasksHandler {
      * @throws MeilisearchException if client request causes an error
      */
     TasksResults getTasks() throws MeilisearchException {
-        String urlPath = "/tasks";
-
-        TasksResults result = httpClient.get(urlPath, TasksResults.class);
+        TasksResults result = httpClient.get(tasksPath().getURL(), TasksResults.class);
         return result;
     }
 
@@ -62,16 +60,8 @@ public class TasksHandler {
      * @throws MeilisearchException if client request causes an error
      */
     TasksResults getTasks(TasksQuery param) throws MeilisearchException {
-        URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("tasks")
-                .addParameter("limit", param.getLimit())
-                .addParameter("from", param.getFrom())
-                .addParameter("status", param.getStatus())
-                .addParameter("type", param.getType())
-                .addParameter("indexUid", param.getIndexUid());
-        String urlQuery = urlb.getURL();
-
-        TasksResults result = httpClient.get(urlQuery, TasksResults.class);
+        TasksResults result =
+                httpClient.get(tasksPath().addQuery(param.toQuery()).getURL(), TasksResults.class);
         return result;
     }
 
@@ -83,11 +73,9 @@ public class TasksHandler {
      * @throws MeilisearchException if client request causes an error
      */
     TasksResults getTasks(String indexUid) throws MeilisearchException {
-        URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("tasks").addParameter("indexUid", indexUid);
-        String urlQuery = urlb.getURL();
+        URLBuilder urlb = tasksPath().addParameter("indexUid", indexUid);
 
-        TasksResults result = httpClient.get(urlQuery, TasksResults.class);
+        TasksResults result = httpClient.get(urlb.getURL(), TasksResults.class);
         return result;
     }
 
@@ -106,16 +94,9 @@ public class TasksHandler {
                 newIndexUid[i] = param.getIndexUid()[i];
             newIndexUid[param.getIndexUid().length] = indexUid;
         }
-        URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("tasks")
-                .addParameter("limit", param.getLimit())
-                .addParameter("from", param.getFrom())
-                .addParameter("status", param.getStatus())
-                .addParameter("type", param.getType())
-                .addParameter("indexUid", newIndexUid);
-        String urlQuery = urlb.getURL();
 
-        TasksResults result = httpClient.get(urlQuery, TasksResults.class);
+        TasksResults result =
+                httpClient.get(tasksPath().addQuery(param.toQuery()).getURL(), TasksResults.class);
         return result;
     }
 
@@ -156,5 +137,10 @@ public class TasksHandler {
             }
             elapsedTime = new Date().getTime() - startTime;
         }
+    }
+
+    /** Creates an URLBuilder for the constant route tasks */
+    private URLBuilder tasksPath() {
+        return new URLBuilder("/tasks");
     }
 }

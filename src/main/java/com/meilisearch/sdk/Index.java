@@ -1,6 +1,7 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.model.DocumentQuery;
 import com.meilisearch.sdk.model.DocumentsQuery;
 import com.meilisearch.sdk.model.IndexStats;
 import com.meilisearch.sdk.model.Results;
@@ -72,7 +73,7 @@ public class Index implements Serializable {
      * @return Object containing the requested document
      * @throws MeilisearchException if an error occurs
      */
-    public <T> T getDocument(String identifier, DocumentsQuery param, Class<T> targetClass)
+    public <T> T getDocument(String identifier, DocumentQuery param, Class<T> targetClass)
             throws MeilisearchException {
         return this.documents.<T>getDocument(this.uid, identifier, param, targetClass);
     }
@@ -98,7 +99,7 @@ public class Index implements Serializable {
      * @return String containing the requested document
      * @throws MeilisearchException if an error occurs
      */
-    public String getRawDocument(String identifier, DocumentsQuery param)
+    public String getRawDocument(String identifier, DocumentQuery param)
             throws MeilisearchException {
         return this.documents.getRawDocument(this.uid, identifier, param);
     }

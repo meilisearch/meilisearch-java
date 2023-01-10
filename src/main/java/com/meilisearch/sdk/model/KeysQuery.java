@@ -19,17 +19,11 @@ public class KeysQuery {
 
     public KeysQuery() {}
 
-    public String toQuery(String key) {
-        URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("keys").addSubroute(key);
-        return urlb.getURL();
-    }
-
-    public String toQuery(KeysQuery param) {
-        URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("keys")
-                .addParameter("limit", param.getLimit())
-                .addParameter("offset", param.getOffset());
+    public String toQuery() {
+        URLBuilder urlb =
+                new URLBuilder()
+                        .addParameter("limit", this.getLimit())
+                        .addParameter("offset", this.getOffset());
         return urlb.getURL();
     }
 }
