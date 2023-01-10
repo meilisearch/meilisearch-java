@@ -61,7 +61,7 @@ public class TasksHandler {
      */
     TasksResults getTasks(TasksQuery param) throws MeilisearchException {
         TasksResults result =
-                httpClient.get(tasksPath().addQuery(param.toQuery()), TasksResults.class);
+                httpClient.get(tasksPath().addQuery(param.toQuery()).getURL(), TasksResults.class);
         return result;
     }
 
@@ -96,7 +96,7 @@ public class TasksHandler {
         }
 
         TasksResults result =
-                httpClient.get(tasksPath().addQuery(param.toQuery()), TasksResults.class);
+                httpClient.get(tasksPath().addQuery(param.toQuery()).getURL(), TasksResults.class);
         return result;
     }
 

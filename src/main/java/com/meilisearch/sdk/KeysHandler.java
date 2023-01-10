@@ -53,7 +53,8 @@ public class KeysHandler {
      * @throws MeilisearchException if client request causes an error
      */
     Results<Key> getKeys(KeysQuery params) throws MeilisearchException {
-        return httpClient.get(keysPath().addQuery(params.toQuery()), Results.class, Key.class);
+        return httpClient.get(
+                keysPath().addQuery(params.toQuery()).getURL(), Results.class, Key.class);
     }
 
     /**

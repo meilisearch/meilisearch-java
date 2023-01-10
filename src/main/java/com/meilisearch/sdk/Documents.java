@@ -54,7 +54,7 @@ class Documents {
     <T> T getDocument(String uid, String identifier, DocumentQuery param, Class<T> targetClass)
             throws MeilisearchException {
         return httpClient.<T>get(
-                documentPath(uid, identifier).addQuery(param.toQuery()), targetClass);
+                documentPath(uid, identifier).addQuery(param.toQuery()).getURL(), targetClass);
     }
 
     /**
@@ -81,7 +81,7 @@ class Documents {
     String getRawDocument(String uid, String identifier, DocumentQuery param)
             throws MeilisearchException {
         return httpClient.<String>get(
-                documentPath(uid, identifier).addQuery(param.toQuery()), String.class);
+                documentPath(uid, identifier).addQuery(param.toQuery()).getURL(), String.class);
     }
 
     /**
@@ -110,7 +110,7 @@ class Documents {
     <T> Results<T> getDocuments(String uid, DocumentsQuery param, Class<T> targetClass)
             throws MeilisearchException {
         return httpClient.<Results>get(
-                documentPath(uid).addQuery(param.toQuery()), Results.class, targetClass);
+                documentPath(uid).addQuery(param.toQuery()).getURL(), Results.class, targetClass);
     }
 
     /**
@@ -133,7 +133,8 @@ class Documents {
      * @throws MeilisearchException if an error occurs
      */
     String getRawDocuments(String uid, DocumentsQuery param) throws MeilisearchException {
-        return httpClient.<String>get(documentPath(uid).addQuery(param.toQuery()), String.class);
+        return httpClient.<String>get(
+                documentPath(uid).addQuery(param.toQuery()).getURL(), String.class);
     }
 
     /**

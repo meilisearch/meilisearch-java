@@ -52,8 +52,9 @@ public class URLBuilder {
         return this;
     }
 
-    public String addQuery(String query) {
-        return routes.toString() + params.toString() + query;
+    public URLBuilder addQuery(String query) {
+        this.params.append(query);
+        return this;
     }
 
     private URLBuilder addSeparator() {

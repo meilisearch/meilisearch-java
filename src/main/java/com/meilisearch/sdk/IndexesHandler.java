@@ -81,7 +81,8 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     Results<Index> getIndexes(IndexesQuery params) throws MeilisearchException {
-        return httpClient.get(indexesPath().addQuery(params.toQuery()), Results.class, Index.class);
+        return httpClient.get(
+                indexesPath().addQuery(params.toQuery()).getURL(), Results.class, Index.class);
     }
 
     /**
