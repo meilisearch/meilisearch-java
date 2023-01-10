@@ -19,17 +19,11 @@ public class IndexesQuery {
 
     public IndexesQuery() {}
 
-    public String toQuery(String uid) {
-        URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("indexes").addSubroute(uid);
-        return urlb.getURL();
-    }
-
-    public String toQuery(IndexesQuery param) {
-        URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("indexes")
-                .addParameter("limit", param.getLimit())
-                .addParameter("offset", param.getOffset());
+    public String toQuery() {
+        URLBuilder urlb =
+                new URLBuilder()
+                        .addParameter("limit", this.getLimit())
+                        .addParameter("offset", this.getOffset());
         return urlb.getURL();
     }
 }

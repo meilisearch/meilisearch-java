@@ -52,6 +52,10 @@ public class URLBuilder {
         return this;
     }
 
+    public String addQuery(String query) {
+        return routes.toString() + params.toString() + query;
+    }
+
     private URLBuilder addSeparator() {
         if (params.length() > 0) {
             params.append("&");

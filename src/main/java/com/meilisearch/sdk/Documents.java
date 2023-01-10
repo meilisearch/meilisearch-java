@@ -2,6 +2,7 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.URLBuilder;
+import com.meilisearch.sdk.model.DocumentQuery;
 import com.meilisearch.sdk.model.DocumentsQuery;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.TaskInfo;
@@ -15,8 +16,14 @@ import java.util.List;
 class Documents {
     private final HttpClient httpClient;
 
+    /**
+     * Creates and sets up an instance of Documents to simplify Meilisearch API calls to manage
+     * documents
+     *
+     * @param config Meilisearch configuration
+     */
     protected Documents(Config config) {
-        httpClient = config.httpClient;
+        this.httpClient = config.httpClient;
     }
 
     /**
@@ -31,7 +38,7 @@ class Documents {
      */
     <T> T getDocument(String uid, String identifier, Class<T> targetClass)
             throws MeilisearchException {
-        return httpClient.<T>get(new DocumentsQuery().toQuery(uid, identifier), targetClass);
+        return httpClient.<T>get(documentPath(uid, identifier).getURL(), targetClass);
     }
 
     /**
@@ -44,9 +51,10 @@ class Documents {
      * @return Object containing the requested document
      * @throws MeilisearchException if client request causes an error
      */
-    <T> T getDocument(String uid, String identifier, DocumentsQuery param, Class<T> targetClass)
+    <T> T getDocument(String uid, String identifier, DocumentQuery param, Class<T> targetClass)
             throws MeilisearchException {
-        return httpClient.<T>get(param.toQuery(uid, identifier, param), targetClass);
+        return httpClient.<T>get(
+                documentPath(uid, identifier).addQuery(param.toQuery()), targetClass);
     }
 
     /**
@@ -58,7 +66,7 @@ class Documents {
      * @throws MeilisearchException if client request causes an error
      */
     String getRawDocument(String uid, String identifier) throws MeilisearchException {
-        return httpClient.<String>get(new DocumentsQuery().toQuery(uid, identifier), String.class);
+        return httpClient.<String>get(documentPath(uid, identifier).getURL(), String.class);
     }
 
     /**
@@ -70,9 +78,10 @@ class Documents {
      * @return String containing the requested document
      * @throws MeilisearchException if client request causes an error
      */
-    String getRawDocument(String uid, String identifier, DocumentsQuery param)
+    String getRawDocument(String uid, String identifier, DocumentQuery param)
             throws MeilisearchException {
-        return httpClient.<String>get(param.toQuery(uid, identifier, param), String.class);
+        return httpClient.<String>get(
+                documentPath(uid, identifier).addQuery(param.toQuery()), String.class);
     }
 
     /**
@@ -85,8 +94,7 @@ class Documents {
      * @throws MeilisearchException if the client request causes an error
      */
     <T> Results<T> getDocuments(String uid, Class<T> targetClass) throws MeilisearchException {
-        return httpClient.<Results>get(
-                new DocumentsQuery().toQuery(uid), Results.class, targetClass);
+        return httpClient.<Results>get(documentPath(uid).getURL(), Results.class, targetClass);
     }
 
     /**
@@ -101,7 +109,8 @@ class Documents {
      */
     <T> Results<T> getDocuments(String uid, DocumentsQuery param, Class<T> targetClass)
             throws MeilisearchException {
-        return httpClient.<Results>get(param.toQuery(uid, param), Results.class, targetClass);
+        return httpClient.<Results>get(
+                documentPath(uid).addQuery(param.toQuery()), Results.class, targetClass);
     }
 
     /**
@@ -112,7 +121,7 @@ class Documents {
      * @throws MeilisearchException if an error occurs
      */
     String getRawDocuments(String uid) throws MeilisearchException {
-        return httpClient.get(new DocumentsQuery().toQuery(uid), String.class);
+        return httpClient.get(documentPath(uid).getURL(), String.class);
     }
 
     /**
@@ -124,7 +133,7 @@ class Documents {
      * @throws MeilisearchException if an error occurs
      */
     String getRawDocuments(String uid, DocumentsQuery param) throws MeilisearchException {
-        return httpClient.<String>get(param.toQuery(uid, param), String.class);
+        return httpClient.<String>get(documentPath(uid).addQuery(param.toQuery()), String.class);
     }
 
     /**
@@ -138,13 +147,11 @@ class Documents {
      */
     TaskInfo addDocuments(String uid, String document, String primaryKey)
             throws MeilisearchException {
-        URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("indexes").addSubroute(uid).addSubroute("documents");
+        URLBuilder urlb = documentPath(uid);
         if (primaryKey != null) {
             urlb.addParameter("primaryKey", primaryKey);
         }
-        String urlQuery = urlb.getURL();
-        return httpClient.post(urlQuery, document, TaskInfo.class);
+        return httpClient.post(urlb.getURL(), document, TaskInfo.class);
     }
 
     /**
@@ -158,13 +165,11 @@ class Documents {
      */
     TaskInfo updateDocuments(String uid, String document, String primaryKey)
             throws MeilisearchException {
-        URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("indexes").addSubroute(uid).addSubroute("documents");
+        URLBuilder urlb = documentPath(uid);
         if (primaryKey != null) {
             urlb.addParameter("primaryKey", primaryKey);
         }
-        String urlPath = urlb.getURL();
-        return httpClient.put(urlPath, document, TaskInfo.class);
+        return httpClient.put(urlb.getURL(), document, TaskInfo.class);
     }
 
     /**
@@ -176,8 +181,7 @@ class Documents {
      * @throws MeilisearchException if the client request causes an error
      */
     TaskInfo deleteDocument(String uid, String identifier) throws MeilisearchException {
-        return httpClient.<TaskInfo>delete(
-                new DocumentsQuery().toQuery(uid, identifier), TaskInfo.class);
+        return httpClient.<TaskInfo>delete(documentPath(uid, identifier).getURL(), TaskInfo.class);
     }
 
     /**
@@ -189,13 +193,8 @@ class Documents {
      * @throws MeilisearchException if the client request causes an error
      */
     TaskInfo deleteDocuments(String uid, List<String> identifiers) throws MeilisearchException {
-        URLBuilder urlb = new URLBuilder();
-        urlb.addSubroute("indexes")
-                .addSubroute(uid)
-                .addSubroute("documents")
-                .addSubroute("delete-batch");
-        String urlPath = urlb.getURL();
-        return httpClient.post(urlPath, identifiers, TaskInfo.class);
+        URLBuilder urlb = documentPath(uid).addSubroute("delete-batch");
+        return httpClient.post(urlb.getURL(), identifiers, TaskInfo.class);
     }
 
     /**
@@ -206,6 +205,20 @@ class Documents {
      * @throws MeilisearchException if the client request causes an error
      */
     TaskInfo deleteAllDocuments(String uid) throws MeilisearchException {
-        return httpClient.<TaskInfo>delete(new DocumentsQuery().toQuery(uid), TaskInfo.class);
+        return httpClient.<TaskInfo>delete(documentPath(uid).getURL(), TaskInfo.class);
+    }
+
+    /** Creates an URLBuilder for the constant route documents. */
+    private URLBuilder documentPath(String uid) {
+        return new URLBuilder().addSubroute("indexes").addSubroute(uid).addSubroute("documents");
+    }
+
+    /** Creates an URLBuilder for the constant route documents */
+    private URLBuilder documentPath(String uid, String identifier) {
+        return new URLBuilder()
+                .addSubroute("indexes")
+                .addSubroute(uid)
+                .addSubroute("documents")
+                .addSubroute(identifier);
     }
 }

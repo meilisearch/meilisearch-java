@@ -1,6 +1,7 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.http.URLBuilder;
 import com.meilisearch.sdk.model.IndexesQuery;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.TaskInfo;
@@ -12,7 +13,7 @@ import java.util.HashMap;
  * <p>https://docs.meilisearch.com/reference/api/indexes.html
  */
 class IndexesHandler {
-    HttpClient httpClient;
+    private final HttpClient httpClient;
 
     /**
      * Creates and sets up an instance of IndexesHandler to simplify Meilisearch API calls to manage
@@ -20,7 +21,7 @@ class IndexesHandler {
      *
      * @param config Meilisearch configuration
      */
-    IndexesHandler(Config config) {
+    protected IndexesHandler(Config config) {
         this.httpClient = config.httpClient;
     }
 
@@ -48,7 +49,7 @@ class IndexesHandler {
         index.put("uid", uid);
         index.put("primaryKey", primaryKey);
 
-        return httpClient.post("/indexes", index, TaskInfo.class);
+        return httpClient.post(indexesPath().getURL(), index, TaskInfo.class);
     }
 
     /**
@@ -59,7 +60,7 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     Index getIndex(String uid) throws MeilisearchException {
-        return httpClient.get(new IndexesQuery().toQuery(uid), Index.class);
+        return httpClient.get(indexesPath().addSubroute(uid).getURL(), Index.class);
     }
 
     /**
@@ -69,7 +70,7 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     Results<Index> getIndexes() throws MeilisearchException {
-        return httpClient.get("/indexes", Results.class, Index.class);
+        return httpClient.get(indexesPath().getURL(), Results.class, Index.class);
     }
 
     /**
@@ -80,7 +81,7 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     Results<Index> getIndexes(IndexesQuery params) throws MeilisearchException {
-        return httpClient.get(params.toQuery(params), Results.class, Index.class);
+        return httpClient.get(indexesPath().addQuery(params.toQuery()), Results.class, Index.class);
     }
 
     /**
@@ -90,7 +91,7 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     String getRawIndexes() throws MeilisearchException {
-        return httpClient.get("/indexes", String.class);
+        return httpClient.get(indexesPath().getURL(), String.class);
     }
 
     /**
@@ -105,7 +106,7 @@ class IndexesHandler {
         HashMap<String, String> index = new HashMap<String, String>();
         index.put("primaryKey", primaryKey);
 
-        return httpClient.patch(new IndexesQuery().toQuery(uid), index, TaskInfo.class);
+        return httpClient.patch(indexesPath().addSubroute(uid).getURL(), index, TaskInfo.class);
     }
 
     /**
@@ -116,6 +117,11 @@ class IndexesHandler {
      * @throws MeilisearchException if an error occurs
      */
     TaskInfo deleteIndex(String uid) throws MeilisearchException {
-        return httpClient.delete(new IndexesQuery().toQuery(uid), TaskInfo.class);
+        return httpClient.delete(indexesPath().addSubroute(uid).getURL(), TaskInfo.class);
+    }
+
+    /** Creates an URLBuilder for the constant route indexes */
+    private URLBuilder indexesPath() {
+        return new URLBuilder("/indexes");
     }
 }
