@@ -1,12 +1,14 @@
 package com.meilisearch.sdk.http;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.meilisearch.sdk.Config;
+import com.meilisearch.sdk.Version;
 import com.meilisearch.sdk.http.request.HttpMethod;
 import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.HttpResponse;
@@ -15,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 import okhttp3.*;
 import okhttp3.internal.connection.RealCall;
@@ -218,5 +222,34 @@ class CustomOkHttpClientTest {
         assertThat(
                 expectedRequest.url().toString(),
                 equalTo(this.config.getHostUrl() + request.getPath()));
+    }
+
+    @Test
+    void requestWithHeaders() throws Exception {
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("User-Agent", "Meilisearch (v1.2.3)");
+
+        HttpRequest request = new HttpRequest(HttpMethod.DELETE, "/test", headers, null);
+        HttpResponse<Object> response = classToTest.delete(request);
+
+        Request expectedRequest = requestQueue.poll();
+        assertThat(expectedRequest, notNullValue());
+        assertThat(expectedRequest.headers().toString(), containsString("Meilisearch (v1.2.3)"));
+    }
+
+    @Test
+    void defaultConfigHasAnalytics() throws Exception {
+        assertThat(
+                config.getHeaders().get("User-Agent").toString(),
+                containsString(Version.getQualifiedVersion()));
+    }
+
+    @Test
+    void customConfigWithCustomAnalyticsHasBoth() throws Exception {
+        Config newConfig = new Config("host", "key", new String[] {"MyApp v1.44"});
+
+        assertThat(
+                newConfig.getHeaders().get("User-Agent").toString(),
+                containsString(Version.getQualifiedVersion() + ";MyApp v1.44"));
     }
 }
