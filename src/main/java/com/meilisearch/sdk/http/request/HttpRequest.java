@@ -10,7 +10,7 @@ import lombok.Setter;
 public class HttpRequest {
     @Setter private HttpMethod method;
     @Setter private String path;
-    @Setter private Map<String, String> headers;
+    @Getter private Map<String, String> headers;
     private String content;
 
     public HttpRequest() {}
