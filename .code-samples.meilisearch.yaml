@@ -57,7 +57,7 @@ get_task_1: |-
 get_all_tasks_filtering_1: |-
   client.index("movies").getTasks();
 get_all_tasks_filtering_2: |-
-  new TasksQuery()
+  TasksQuery query = new TasksQuery()
         .setStatus(new String[] {"succeeded", "failed"})
         .setType(new String[] {documentAdditionOrUpdate});
 
@@ -260,17 +260,11 @@ update_typo_tolerance_1: |-
 reset_typo_tolerance_1: |-
   client.index("books").resetTypoToleranceSettings();
 get_pagination_settings_1:
-  // Not yet implemented
 update_pagination_settings_1: |-
-  // Not yet implemented
 reset_pagination_settings_1: |-
-  // Not yet implemented
 get_faceting_settings_1: |-
-  // Not yet implemented
 update_faceting_settings_1: |-
-  // Not yet implemented
 reset_faceting_settings_1: |-
-  // Not yet implemented
 get_index_stats_1: |-
   client.index("movies").getStats();
 get_indexes_stats_1: |-
@@ -411,9 +405,7 @@ settings_guide_sortable_1: |-
   });
   client.index("books").updateSettings(settings);
 settings_guide_faceting_1: |-
- // Not yet implemented
 settings_guide_pagination_1: |-
- // Not yet implemented
 settings_guide_typo_tolerance_1: |-
   TypoTolerance typoTolerance = new TypoTolerance();
   HashMap<String, Integer> minWordSizeTypos =
@@ -653,7 +645,6 @@ update_sortable_attributes_1: |-
   settings.setSortableAttributes(new String[] {"price", "author"});
   client.index("books").updateSettings(settings);
 reset_sortable_attributes_1: |-
-  //Not yet implemented
 search_parameter_guide_sort_1: |-
   SearchRequest searchRequest = new SearchRequest("science fiction").setSort(new String[] {"price:asc"});
   client.index("search_parameter_guide_sort_1").search(searchRequest);
