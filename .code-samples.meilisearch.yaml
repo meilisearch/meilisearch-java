@@ -63,7 +63,7 @@ get_all_tasks_filtering_2: |-
 
   client.index("movies").getTasks(query);
 get_all_tasks_paginating_1: |-
-  new TasksQuery()
+  TasksQuery query = new TasksQuery()
         .setLimit(2)
         .setFrom(10);
 
