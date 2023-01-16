@@ -41,13 +41,13 @@ configurations {
 
 dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
-	implementation 'com.google.code.gson:gson:2.10'
+	implementation 'com.google.code.gson:gson:2.10.1'
 	implementation 'org.json:json:20220924'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
 	compileOnly 'com.squareup.okhttp3:okhttp:4.10.0'
 
 	// Use JUnit test framework
-	testImplementation(platform('org.junit:junit-bom:5.9.1'))
+	testImplementation(platform('org.junit:junit-bom:5.9.2'))
 	testImplementation('org.junit.jupiter:junit-jupiter:5.9.1')
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:4.9.0'

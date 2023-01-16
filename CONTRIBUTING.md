@@ -115,6 +115,12 @@ _[Read more about this](https://github.com/meilisearch/integration-guides/blob/m
 
 Make a PR modifying the following files with the right version:
 
+- [`Version.java`](/src/main/java/com/meilisearch/sdk/Version.java)
+
+```java
+VERSION = "X.X.X";
+```
+
 - [`build.gradle`](/build.gradle)
 
 ```java

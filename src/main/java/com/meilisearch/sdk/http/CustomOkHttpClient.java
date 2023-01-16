@@ -55,8 +55,14 @@ public class CustomOkHttpClient {
         URL url = new URL(this.config.getHostUrl() + request.getPath());
         Request.Builder builder = new Request.Builder();
         builder.url(url);
+
         if (this.config.getApiKey() != null)
             builder.addHeader("Authorization", this.config.getBearerApiKey());
+
+        for (Map.Entry<String, String> entry : request.getHeaders().entrySet()) {
+            builder.addHeader(entry.getKey(), entry.getValue());
+        }
+
         switch (request.getMethod()) {
             case GET:
                 builder.get();
