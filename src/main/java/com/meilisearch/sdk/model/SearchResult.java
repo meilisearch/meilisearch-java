@@ -17,10 +17,8 @@ public class SearchResult implements Serializable {
     protected ArrayList<HashMap<String, Object>> hits;
     protected int offset;
     protected int limit;
-    protected int nbHits;
-    protected boolean exhaustiveNbHits;
-    protected Object facetsDistribution;
-    protected boolean exhaustiveFacetsCount;
+    protected int estimatedTotalHits;
+    protected Object facetDistribution;
     protected int processingTimeMs;
     protected String query;
 

@@ -48,9 +48,9 @@ public class Search {
      * @param highlightPostTag String to customize highlight tag after every highlighted query terms
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
      * @param filter Filter queries by an attribute value
-     * @param matches Defines whether an object that contains information about the matches should
-     *     be returned or not
-     * @param facetsDistribution Facets for which to retrieve the matching count
+     * @param showMatchesPosition Defines whether an object that contains information about the
+     *     matches should be returned or not
+     * @param facets Facets for which to retrieve the matching count
      * @param sort Sort queries by an attribute value
      * @return search results, as raw data
      * @throws MeilisearchException Search Exception or Client Error
@@ -68,8 +68,8 @@ public class Search {
             String highlightPostTag,
             String[] attributesToHighlight,
             String[] filter,
-            boolean matches,
-            String[] facetsDistribution,
+            boolean showMatchesPosition,
+            String[] facets,
             String[] sort)
             throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/search";
@@ -86,8 +86,8 @@ public class Search {
                         highlightPostTag,
                         attributesToHighlight,
                         filter,
-                        matches,
-                        facetsDistribution,
+                        showMatchesPosition,
+                        facets,
                         sort);
         return httpClient.post(requestQuery, sr, String.class);
     }
@@ -131,9 +131,9 @@ public class Search {
      * @param highlightPostTag String to customize highlight tag after every highlighted query terms
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
      * @param filter Filter queries by an attribute value
-     * @param matches Defines whether an object that contains information about the matches should
-     *     be returned or not
-     * @param facetsDistribution Facets for which to retrieve the matching count
+     * @param showMatchesPosition Defines whether an object that contains information about the
+     *     matches should be returned or not
+     * @param facets Facets for which to retrieve the matching count
      * @param sort Sort queries by an attribute value
      * @return search results
      * @throws MeilisearchException Search Exception or Client Error
@@ -151,8 +151,8 @@ public class Search {
             String highlightPostTag,
             String[] attributesToHighlight,
             String[] filter,
-            boolean matches,
-            String[] facetsDistribution,
+            boolean showMatchesPosition,
+            String[] facets,
             String[] sort)
             throws MeilisearchException {
         return httpClient.jsonHandler.decode(
@@ -169,8 +169,8 @@ public class Search {
                         highlightPostTag,
                         attributesToHighlight,
                         filter,
-                        matches,
-                        facetsDistribution,
+                        showMatchesPosition,
+                        facets,
                         sort),
                 SearchResult.class);
     }

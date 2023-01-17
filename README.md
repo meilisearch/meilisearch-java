@@ -118,7 +118,7 @@ class TestMeilisearch {
     Index index = client.index("movies");
 
     // If the index 'movies' does not exist, Meilisearch creates it when you first add the documents.
-    index.addDocuments(documents); // => { "uid": 0 }
+    index.addDocuments(documents); // => { "taskUid": 0 }
   }
 }
 ```
@@ -140,7 +140,7 @@ System.out.println(results);
 - Output:
 
 ```
-SearchResult(hits=[{id=1.0, title=Carol, genres:[Romance, Drama]}], offset=0, limit=20, nbHits=1, exhaustiveNbHits=false, facetsDistribution=null, exhaustiveFacetsCount=false, processingTimeMs=3, query=carlo)
+SearchResult(hits=[{id=1.0, title=Carol, genres:[Romance, Drama]}], offset=0, limit=20, estimatedTotalHits=1, facetDistribution=null, processingTimeMs=3, query=carlo)
 ```
 
 #### Custom Search <!-- omit in toc -->
@@ -155,7 +155,7 @@ import com.meilisearch.sdk.SearchRequest;
 
 SearchResult results = index.search(
   new SearchRequest("of")
-  .setMatches(true)
+  .setShowMatchesPosition(true)
   .setAttributesToHighlight(new String[]{"title"})
 );
 System.out.println(results.getHits());
@@ -173,10 +173,10 @@ System.out.println(results.getHits());
     "title":"Life <em>of</em> Pi",
     "genres":["Adventure","Drama"]
   },
-  "_matchesInfo":{
+  "_matchesPosition":{
     "title":[{
-      "start":5,
-      "length":2
+      "start":5.0,
+      "length":2.0
     }]
   }
 }]
@@ -217,7 +217,7 @@ index.search(
   ],
   "offset": 0,
   "limit": 20,
-  "nbHits": 1,
+  "estimatedTotalHits": 1,
   "processingTimeMs": 0,
   "query": "wonder"
 }
@@ -265,7 +265,7 @@ Client client = new Client(config);
 
 ## 🤖 Compatibility with Meilisearch
 
-This package only guarantees compatibility with the [version v0.27.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.27.0).
+This package only guarantees compatibility with the [version v0.28.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.28.0).
 
 ## 💡 Learn more
 

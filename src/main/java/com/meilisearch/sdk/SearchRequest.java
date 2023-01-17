@@ -22,8 +22,8 @@ public class SearchRequest {
     private String[] attributesToHighlight;
     private String[] filter;
     private String[][] filterArray;
-    private boolean matches;
-    private String[] facetsDistribution;
+    private boolean showMatchesPosition;
+    private String[] facets;
     private String[] sort;
 
     /** Empty SearchRequest constructor */
@@ -32,7 +32,7 @@ public class SearchRequest {
     /**
      * Constructor for SearchRequest for building search queries with the default values: offset: 0,
      * limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
-     * attributesToHighlight: null, filter: null, matches: false, facetsDistribution: null, sort:
+     * attributesToHighlight: null, filter: null, showMatchesPosition: false, facets: null, sort:
      * null
      *
      * @param q Query String
@@ -44,7 +44,7 @@ public class SearchRequest {
     /**
      * Constructor for SearchRequest for building search queries with the default values: limit: 20,
      * attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200, attributesToHighlight:
-     * null, filter: null, matches: false, facetsDistribution: null, sort: null
+     * null, filter: null, showMatchesPosition: false, facets: null, sort: null
      *
      * @param q Query String
      * @param offset Number of documents to skip
@@ -56,7 +56,7 @@ public class SearchRequest {
     /**
      * Constructor for SearchRequest for building search queries with the default values:
      * attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200, attributesToHighlight:
-     * null, filter: null, matches: false, facetsDistribution: null, sort: null
+     * null, filter: null, showMatchesPosition: false, facets: null, sort: null
      *
      * @param q Query String
      * @param offset Number of documents to skip
@@ -68,8 +68,8 @@ public class SearchRequest {
 
     /**
      * Constructor for SearchRequest for building search queries with the default values:
-     * attributesToCrop: null, cropLength: 200, attributesToHighlight: null, filter: null, matches:
-     * false, facetsDistribution: null, sort: null
+     * attributesToCrop: null, cropLength: 200, attributesToHighlight: null, filter: null,
+     * showMatchesPosition: false, facets: null, sort: null
      *
      * @param q Query String
      * @param offset Number of documents to skip
@@ -105,9 +105,9 @@ public class SearchRequest {
      * @param cropLength Length used to crop field values
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
      * @param filter Filter queries by an attribute value
-     * @param matches Defines whether an object that contains information about the matches should
-     *     be returned or not
-     * @param facetsDistribution Facets for which to retrieve the matching count
+     * @param showMatchesPosition Defines whether an object that contains information about the
+     *     matches should be returned or not
+     * @param facets Facets for which to retrieve the matching count
      * @param sort Sort queries by an attribute value
      */
     public SearchRequest(
@@ -119,8 +119,8 @@ public class SearchRequest {
             int cropLength,
             String[] attributesToHighlight,
             String[] filter,
-            boolean matches,
-            String[] facetsDistribution,
+            boolean showMatchesPosition,
+            String[] facets,
             String[] sort) {
         this(
                 q,
@@ -135,8 +135,8 @@ public class SearchRequest {
                 attributesToHighlight,
                 filter,
                 null,
-                matches,
-                facetsDistribution,
+                showMatchesPosition,
+                facets,
                 sort);
     }
 
@@ -154,9 +154,9 @@ public class SearchRequest {
      * @param highlightPostTag String to customize highlight tag after every highlighted query terms
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
      * @param filter Filter queries by an attribute value
-     * @param matches Defines whether an object that contains information about the matches should
-     *     be returned or not
-     * @param facetsDistribution Facets for which to retrieve the matching count
+     * @param showMatchesPosition Defines whether an object that contains information about the
+     *     matches should be returned or not
+     * @param facets Facets for which to retrieve the matching count
      * @param sort Sort queries by an attribute value
      */
     public SearchRequest(
@@ -171,8 +171,8 @@ public class SearchRequest {
             String highlightPostTag,
             String[] attributesToHighlight,
             String[] filter,
-            boolean matches,
-            String[] facetsDistribution,
+            boolean showMatchesPosition,
+            String[] facets,
             String[] sort) {
         this(
                 q,
@@ -187,8 +187,8 @@ public class SearchRequest {
                 attributesToHighlight,
                 filter,
                 null,
-                matches,
-                facetsDistribution,
+                showMatchesPosition,
+                facets,
                 sort);
     }
 
@@ -203,9 +203,9 @@ public class SearchRequest {
      * @param cropLength Length used to crop field values
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
      * @param filterArray String array that can take multiple nested filters
-     * @param matches Defines whether an object that contains information about the matches should
-     *     be returned or not
-     * @param facetsDistribution Facets for which to retrieve the matching count
+     * @param showMatchesPosition Defines whether an object that contains information about the
+     *     matches should be returned or not
+     * @param facets Facets for which to retrieve the matching count
      * @param sort Sort queries by an attribute value
      */
     public SearchRequest(
@@ -217,8 +217,8 @@ public class SearchRequest {
             int cropLength,
             String[] attributesToHighlight,
             String[][] filterArray,
-            boolean matches,
-            String[] facetsDistribution,
+            boolean showMatchesPosition,
+            String[] facets,
             String[] sort) {
         this(
                 q,
@@ -233,8 +233,8 @@ public class SearchRequest {
                 attributesToHighlight,
                 null,
                 filterArray,
-                matches,
-                facetsDistribution,
+                showMatchesPosition,
+                facets,
                 sort);
     }
 
@@ -252,9 +252,9 @@ public class SearchRequest {
      * @param highlightPostTag String to customize highlight tag after every highlighted query terms
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
      * @param filterArray String array that can take multiple nested filters
-     * @param matches Defines whether an object that contains information about the matches should
-     *     be returned or not
-     * @param facetsDistribution Facets for which to retrieve the matching count
+     * @param showMatchesPosition Defines whether an object that contains information about the
+     *     matches should be returned or not
+     * @param facets Facets for which to retrieve the matching count
      * @param sort Sort queries by an attribute value
      */
     public SearchRequest(
@@ -269,8 +269,8 @@ public class SearchRequest {
             String highlightPostTag,
             String[] attributesToHighlight,
             String[][] filterArray,
-            boolean matches,
-            String[] facetsDistribution,
+            boolean showMatchesPosition,
+            String[] facets,
             String[] sort) {
         this(
                 q,
@@ -285,8 +285,8 @@ public class SearchRequest {
                 attributesToHighlight,
                 null,
                 filterArray,
-                matches,
-                facetsDistribution,
+                showMatchesPosition,
+                facets,
                 sort);
     }
 
@@ -303,8 +303,8 @@ public class SearchRequest {
             String[] attributesToHighlight,
             String[] filter,
             String[][] filterArray,
-            boolean matches,
-            String[] facetsDistribution,
+            boolean showMatchesPosition,
+            String[] facets,
             String[] sort) {
         this.q = q;
         this.offset = offset;
@@ -318,8 +318,8 @@ public class SearchRequest {
         this.attributesToHighlight = attributesToHighlight;
         this.setFilter(filter);
         this.setFilterArray(filterArray);
-        this.matches = matches;
-        this.facetsDistribution = facetsDistribution;
+        this.showMatchesPosition = showMatchesPosition;
+        this.facets = facets;
         this.sort = sort;
     }
 
@@ -352,8 +352,8 @@ public class SearchRequest {
                         .put("cropMarker", this.cropMarker)
                         .put("highlightPreTag", this.highlightPreTag)
                         .put("highlightPostTag", this.highlightPostTag)
-                        .put("matches", this.matches)
-                        .put("facetsDistribution", this.facetsDistribution)
+                        .put("showMatchesPosition", this.showMatchesPosition)
+                        .put("facets", this.facets)
                         .put("sort", this.sort)
                         .putOpt("attributesToCrop", this.attributesToCrop)
                         .putOpt("attributesToHighlight", this.attributesToHighlight)

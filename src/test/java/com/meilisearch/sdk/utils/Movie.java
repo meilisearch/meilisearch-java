@@ -12,7 +12,7 @@ public class Movie {
     private String language;
     private String[] genres;
     private Movie _formatted;
-    private HashMap<String, List<Match>> _matchesInfo;
+    private HashMap<String, List<Match>> _matchesPosition;
 
     public class Match {
         public int start;
@@ -116,11 +116,11 @@ public class Movie {
     }
 
     public HashMap<String, List<Match>> getMatchesInfo() {
-        return _matchesInfo;
+        return _matchesPosition;
     }
 
-    public Movie setMatchesInfo(HashMap<String, List<Match>> _matchesInfo) {
-        this._matchesInfo = _matchesInfo;
+    public Movie setMatchesInfo(HashMap<String, List<Match>> _matchesPosition) {
+        this._matchesPosition = _matchesPosition;
         return this;
     }
 }

@@ -10,14 +10,14 @@ import com.meilisearch.sdk.model.Stats;
  * <p>https://docs.meilisearch.com/reference/api/keys.html
  */
 public class InstanceHandler {
-    HttpClient httpClient;
+    private final HttpClient httpClient;
 
     /**
      * Creates and sets up an instance of InstanceHandler
      *
      * @param config Meilisearch configuration
      */
-    InstanceHandler(Config config) {
+    protected InstanceHandler(Config config) {
         this.httpClient = config.httpClient;
     }
 
