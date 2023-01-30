@@ -49,7 +49,7 @@ public class DocumentsTest extends AbstractIT {
         Movie[] movies = result.getResults();
 
         assertEquals(1, movies.length);
-        assertEquals("419704", movies[0].getId());
+        assertEquals("41970", movies[0].getId());
         assertEquals("Ad Astra", movies[0].getTitle());
         assertEquals(
                 "https://image.tmdb.org/t/p/original/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg",
