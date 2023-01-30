@@ -9,9 +9,6 @@ on:
       - staging
       - main
 
-permissions:
-  contents: write
-
 jobs:
   tests:
     # Will not run if the event is a PR to bump-meilisearch-v* (so a pre-release PR)
@@ -45,6 +42,11 @@ jobs:
       if: failure()
       with:
         folder: build/reports/tests/integrationTest
+        token: ${{ secrets.GITHUB_TOKEN }}
+      # uses: peaceiris/actions-gh-pages@v3
+      # with:
+      #   github_token: ${{ secrets.GITHUB_TOKEN }}
+      #   publish_dir: ./build/reports/tests/integrationTest
 
   linter:
     runs-on: ubuntu-latest
