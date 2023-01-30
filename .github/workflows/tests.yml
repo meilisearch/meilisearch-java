@@ -9,6 +9,9 @@ on:
       - staging
       - main
 
+permissions:
+  contents: write
+
 jobs:
   tests:
     # Will not run if the event is a PR to bump-meilisearch-v* (so a pre-release PR)
@@ -37,6 +40,11 @@ jobs:
         name: Test report
         path: build/reports/tests/integrationTest
         if-no-files-found: ignore
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@v4
+      if: failure()
+      with:
+        folder: build/reports/tests/integrationTest
 
   linter:
     runs-on: ubuntu-latest
