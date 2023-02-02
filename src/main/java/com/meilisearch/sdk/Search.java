@@ -3,7 +3,11 @@ package com.meilisearch.sdk;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.SearchResult;
 
-/** Search Object for searching on indexes */
+/**
+ * Class used for searching on Meilisearch indexes
+ *
+ * <p>https://docs.meilisearch.com/reference/api/search.html
+ */
 public class Search {
     private final HttpClient httpClient;
 
@@ -40,15 +44,13 @@ public class Search {
      * @param attributesToCrop Attributes whose values have been cropped
      * @param cropLength Length used to crop field values
      * @param cropMarker String to add before and/or after the cropped text, default value: …
-     * @param highlightPreTag String to customize highlight tag before every highlighted query
-     *     terms, default value: <em>
-     * @param highlightPostTag String to customize highlight tag after every highlighted query
-     *     terms, default value: </em>
+     * @param highlightPreTag String to customize highlight tag before every highlighted query terms
+     * @param highlightPostTag String to customize highlight tag after every highlighted query terms
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
      * @param filter Filter queries by an attribute value
-     * @param matches Defines whether an object that contains information about the matches should
-     *     be returned or not
-     * @param facetsDistribution Facets for which to retrieve the matching count
+     * @param showMatchesPosition Defines whether an object that contains information about the
+     *     matches should be returned or not
+     * @param facets Facets for which to retrieve the matching count
      * @param sort Sort queries by an attribute value
      * @return search results, as raw data
      * @throws MeilisearchException Search Exception or Client Error
@@ -66,8 +68,8 @@ public class Search {
             String highlightPostTag,
             String[] attributesToHighlight,
             String[] filter,
-            boolean matches,
-            String[] facetsDistribution,
+            boolean showMatchesPosition,
+            String[] facets,
             String[] sort)
             throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/search";
@@ -84,8 +86,8 @@ public class Search {
                         highlightPostTag,
                         attributesToHighlight,
                         filter,
-                        matches,
-                        facetsDistribution,
+                        showMatchesPosition,
+                        facets,
                         sort);
         return httpClient.post(requestQuery, sr, String.class);
     }
@@ -125,15 +127,13 @@ public class Search {
      * @param attributesToCrop Attributes whose values have been cropped
      * @param cropLength Length used to crop field values
      * @param cropMarker String to customize default crop marker, default value: …
-     * @param highlightPreTag String to customize highlight tag before every highlighted query
-     *     terms, default value: <em>
-     * @param highlightPostTag String to customize highlight tag after every highlighted query
-     *     terms, default value: </em>
+     * @param highlightPreTag String to customize highlight tag before every highlighted query terms
+     * @param highlightPostTag String to customize highlight tag after every highlighted query terms
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
      * @param filter Filter queries by an attribute value
-     * @param matches Defines whether an object that contains information about the matches should
-     *     be returned or not
-     * @param facetsDistribution Facets for which to retrieve the matching count
+     * @param showMatchesPosition Defines whether an object that contains information about the
+     *     matches should be returned or not
+     * @param facets Facets for which to retrieve the matching count
      * @param sort Sort queries by an attribute value
      * @return search results
      * @throws MeilisearchException Search Exception or Client Error
@@ -151,8 +151,8 @@ public class Search {
             String highlightPostTag,
             String[] attributesToHighlight,
             String[] filter,
-            boolean matches,
-            String[] facetsDistribution,
+            boolean showMatchesPosition,
+            String[] facets,
             String[] sort)
             throws MeilisearchException {
         return httpClient.jsonHandler.decode(
@@ -169,8 +169,8 @@ public class Search {
                         highlightPostTag,
                         attributesToHighlight,
                         filter,
-                        matches,
-                        facetsDistribution,
+                        showMatchesPosition,
+                        facets,
                         sort),
                 SearchResult.class);
     }

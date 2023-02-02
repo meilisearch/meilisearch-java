@@ -3,9 +3,9 @@ package com.meilisearch.sdk.exceptions;
 import lombok.Getter;
 import lombok.Setter;
 
+/** Generic class for Meilisearch Exception handling */
 @Getter
 @Setter
-/** This is a generic class for Meilisearch Exception handling */
 public class MeilisearchException extends Exception {
 
     String error;

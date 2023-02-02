@@ -3,6 +3,11 @@ package com.meilisearch.sdk.model;
 import java.util.Map;
 import lombok.Getter;
 
+/**
+ * Stats data structure of a Meilisearch Index
+ *
+ * <p>https://docs.meilisearch.com/reference/api/stats.html#get-stats-of-an-index
+ */
 @Getter
 public class IndexStats {
     protected long numberOfDocuments;

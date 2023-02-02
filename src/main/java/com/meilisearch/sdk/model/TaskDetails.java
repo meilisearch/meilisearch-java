@@ -3,6 +3,7 @@ package com.meilisearch.sdk.model;
 import java.util.Map;
 import lombok.Getter;
 
+/** Task details data structure */
 @Getter
 public class TaskDetails {
     protected int receivedDocuments;

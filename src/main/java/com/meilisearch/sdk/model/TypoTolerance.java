@@ -6,7 +6,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
- * Data structure for the Typo tolerance setting
+ * Typo Tolerance setting data structure
  *
  * <p>https://docs.meilisearch.com/reference/api/typo_tolerance.html
  */
