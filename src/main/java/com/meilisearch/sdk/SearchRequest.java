@@ -19,6 +19,7 @@ public class SearchRequest {
     private String cropMarker;
     private String highlightPreTag;
     private String highlightPostTag;
+    private String matchingStrategy;
     private String[] attributesToHighlight;
     private String[] filter;
     private String[][] filterArray;
@@ -132,6 +133,7 @@ public class SearchRequest {
                 null,
                 null,
                 null,
+                null,
                 attributesToHighlight,
                 filter,
                 null,
@@ -184,6 +186,7 @@ public class SearchRequest {
                 cropMarker,
                 highlightPreTag,
                 highlightPostTag,
+                null,
                 attributesToHighlight,
                 filter,
                 null,
@@ -230,6 +233,7 @@ public class SearchRequest {
                 null,
                 null,
                 null,
+                null,
                 attributesToHighlight,
                 null,
                 filterArray,
@@ -250,6 +254,7 @@ public class SearchRequest {
      * @param cropMarker String to customize default crop marker, default value: …
      * @param highlightPreTag String to customize highlight tag before every highlighted query terms
      * @param highlightPostTag String to customize highlight tag after every highlighted query terms
+     * @param matchingStrategy String to defines the strategy used to match query terms in documents
      * @param attributesToHighlight Attributes whose values will contain highlighted matching terms
      * @param filterArray String array that can take multiple nested filters
      * @param showMatchesPosition Defines whether an object that contains information about the
@@ -267,6 +272,7 @@ public class SearchRequest {
             String cropMarker,
             String highlightPreTag,
             String highlightPostTag,
+            String matchingStrategy,
             String[] attributesToHighlight,
             String[][] filterArray,
             boolean showMatchesPosition,
@@ -282,6 +288,7 @@ public class SearchRequest {
                 cropMarker,
                 highlightPreTag,
                 highlightPostTag,
+                matchingStrategy,
                 attributesToHighlight,
                 null,
                 filterArray,
@@ -300,6 +307,7 @@ public class SearchRequest {
             String cropMarker,
             String highlightPreTag,
             String highlightPostTag,
+            String matchingStrategy,
             String[] attributesToHighlight,
             String[] filter,
             String[][] filterArray,
@@ -315,6 +323,7 @@ public class SearchRequest {
         this.cropMarker = cropMarker;
         this.highlightPreTag = highlightPreTag;
         this.highlightPostTag = highlightPostTag;
+        this.matchingStrategy = matchingStrategy;
         this.attributesToHighlight = attributesToHighlight;
         this.setFilter(filter);
         this.setFilterArray(filterArray);
@@ -352,6 +361,7 @@ public class SearchRequest {
                         .put("cropMarker", this.cropMarker)
                         .put("highlightPreTag", this.highlightPreTag)
                         .put("highlightPostTag", this.highlightPostTag)
+                        .put("matchingStrategy", this.matchingStrategy)
                         .put("showMatchesPosition", this.showMatchesPosition)
                         .put("facets", this.facets)
                         .put("sort", this.sort)

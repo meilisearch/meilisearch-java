@@ -92,6 +92,7 @@ class SearchRequestTest {
                         "123",
                         "abc",
                         "zyx",
+                        "789",
                         new String[] {"highlight"},
                         new String[][] {
                             new String[] {"test='test'"}, new String[] {"test1='test1'"}
@@ -117,7 +118,7 @@ class SearchRequestTest {
         assertEquals("sort", classToTest.getSort()[0]);
         assertEquals(900, classToTest.getCropLength());
         assertEquals(
-                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"attributesToCrop\":[\"crop\"]}",
+                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"matchingStrategy\":\"789\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"attributesToCrop\":[\"crop\"]}",
                 classToTest.toString());
     }
 }
