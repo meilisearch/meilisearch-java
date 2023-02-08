@@ -93,7 +93,7 @@ class SearchRequestTest {
                         "123",
                         "abc",
                         "zyx",
-                        MatchingStrategy.ALL.toString(),
+                        MatchingStrategy.ALL,
                         new String[] {"highlight"},
                         new String[][] {
                             new String[] {"test='test'"}, new String[] {"test1='test1'"}
@@ -107,7 +107,7 @@ class SearchRequestTest {
         assertEquals(900, classToTest.getLimit());
         assertEquals("123", classToTest.getCropMarker());
         assertEquals("abc", classToTest.getHighlightPreTag());
-        assertEquals(MatchingStrategy.ALL.toString(), classToTest.getMatchingStrategy());
+        assertEquals(MatchingStrategy.ALL, classToTest.getMatchingStrategy());
         assertEquals("zyx", classToTest.getHighlightPostTag());
         assertEquals("bubble", classToTest.getAttributesToRetrieve()[0]);
         assertEquals("highlight", classToTest.getAttributesToHighlight()[0]);

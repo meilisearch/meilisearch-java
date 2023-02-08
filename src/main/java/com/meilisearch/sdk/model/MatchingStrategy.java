@@ -2,7 +2,7 @@ package com.meilisearch.sdk.model;
 
 public enum MatchingStrategy {
     ALL("all"),
-    LAST("Last");
+    LAST("last");
 
     public final String matchingStrategy;
 
@@ -10,6 +10,7 @@ public enum MatchingStrategy {
         this.matchingStrategy = matchingStrategy;
     }
 
+    @Override
     public String toString() {
         return this.matchingStrategy;
     }

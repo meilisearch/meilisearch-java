@@ -500,7 +500,7 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
         SearchRequest searchRequest =
-                new SearchRequest("and").setMatchingStrategy(MatchingStrategy.ALL.toString());
+                new SearchRequest("and").setMatchingStrategy(MatchingStrategy.ALL);
         SearchResult searchResult = index.search(searchRequest);
 
         assertEquals(20, searchResult.getHits().size());
