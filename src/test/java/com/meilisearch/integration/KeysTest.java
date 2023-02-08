@@ -232,7 +232,6 @@ public class KeysTest extends AbstractIT {
 
         Key key = client.createKey(keyInfo);
 
-        assertTrue(key instanceof Key);
         assertNotNull(key.getKey());
         assertEquals("documents.*", key.getActions()[0]);
         assertEquals("*", key.getIndexes()[0]);
