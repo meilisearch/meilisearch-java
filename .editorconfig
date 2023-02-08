@@ -10,7 +10,7 @@ max_line_length = 120
 
 [*.java]
 max_line_length = 150
-indent_style = tab
+indent_style = space
 indent_size = 4
 tab_width = 4
 

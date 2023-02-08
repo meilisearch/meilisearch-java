@@ -12,12 +12,14 @@ import com.meilisearch.sdk.http.response.HttpResponse;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.json.JsonHandler;
 import java.util.Collections;
+import java.util.Map;
 
-/** The HTTP requests for the different functions to be done through Meilisearch */
+/** HTTP client used for API calls to Meilisearch */
 public class HttpClient {
     private final CustomOkHttpClient client;
     private final BasicRequest request;
     private final BasicResponse response;
+    private final Map<String, String> headers;
     protected final JsonHandler jsonHandler;
 
     /**
@@ -28,6 +30,7 @@ public class HttpClient {
     public HttpClient(Config config) {
         this.client = new CustomOkHttpClient(config);
         this.jsonHandler = config.jsonHandler;
+        this.headers = config.headers;
         this.request = new BasicRequest(jsonHandler);
         this.response = new BasicResponse(jsonHandler);
     }
@@ -41,6 +44,7 @@ public class HttpClient {
     public HttpClient(CustomOkHttpClient client, BasicRequest request) {
         this.client = client;
         this.request = request;
+        this.headers = Collections.<String, String>emptyMap();
         this.jsonHandler = new GsonJsonHandler();
         this.response = new BasicResponse(jsonHandler);
     }
@@ -67,8 +71,7 @@ public class HttpClient {
      */
     <T> T get(String api, String param, Class<T> targetClass, Class<?>... parameters)
             throws MeilisearchException {
-        HttpRequest requestConfig =
-                request.create(HttpMethod.GET, api + param, Collections.emptyMap(), null);
+        HttpRequest requestConfig = request.create(HttpMethod.GET, api + param, this.headers, null);
         HttpResponse<T> httpRequest = this.client.get(requestConfig);
         HttpResponse<T> httpResponse = response.create(httpRequest, targetClass, parameters);
 
@@ -88,8 +91,7 @@ public class HttpClient {
      * @throws MeilisearchException if the response is an error
      */
     <S, T> T post(String api, S body, Class<T> targetClass) throws MeilisearchException {
-        HttpRequest requestConfig =
-                request.create(HttpMethod.POST, api, Collections.emptyMap(), body);
+        HttpRequest requestConfig = request.create(HttpMethod.POST, api, this.headers, body);
         HttpResponse<T> httpRequest = this.client.post(requestConfig);
         HttpResponse<T> httpResponse = response.create(httpRequest, targetClass);
 
@@ -109,8 +111,7 @@ public class HttpClient {
      * @throws MeilisearchException if the response is an error
      */
     <S, T> T put(String api, S body, Class<T> targetClass) throws MeilisearchException {
-        HttpRequest requestConfig =
-                request.create(HttpMethod.PUT, api, Collections.emptyMap(), body);
+        HttpRequest requestConfig = request.create(HttpMethod.PUT, api, this.headers, body);
         HttpResponse<T> httpRequest = this.client.put(requestConfig);
         HttpResponse<T> httpResponse = response.create(httpRequest, targetClass);
 
@@ -130,8 +131,7 @@ public class HttpClient {
      * @throws MeilisearchException if the response is an error
      */
     <S, T> T patch(String api, S body, Class<T> targetClass) throws MeilisearchException {
-        HttpRequest requestConfig =
-                request.create(HttpMethod.PATCH, api, Collections.emptyMap(), body);
+        HttpRequest requestConfig = request.create(HttpMethod.PATCH, api, this.headers, body);
         HttpResponse<T> httpRequest = this.client.patch(requestConfig);
         HttpResponse<T> httpResponse = response.create(httpRequest, targetClass);
 
@@ -150,8 +150,7 @@ public class HttpClient {
      * @throws MeilisearchException if the response is an error
      */
     <T> T delete(String api, Class<T> targetClass) throws MeilisearchException {
-        HttpRequest requestConfig =
-                request.create(HttpMethod.DELETE, api, Collections.emptyMap(), null);
+        HttpRequest requestConfig = request.create(HttpMethod.DELETE, api, this.headers, null);
         HttpResponse<T> httpRequest = this.client.delete(requestConfig);
         HttpResponse<T> httpResponse = response.create(httpRequest, targetClass);
 

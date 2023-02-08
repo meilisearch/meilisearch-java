@@ -2,6 +2,9 @@ package com.meilisearch.sdk.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.exceptions.JsonDecodingException;
@@ -26,9 +29,20 @@ public class GsonJsonHandler implements JsonHandler {
             return (String) o;
         }
         // TODO: review later
+        // This is a workaround to encode the Key class properly
         if (o != null && o.getClass() == Key.class) {
             GsonBuilder builder = new GsonBuilder();
-            this.gson = builder.serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
+            this.gson = builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
+
+            Key key = (Key) o;
+            if (key.getExpiresAt() == null) {
+                JsonElement jsonElement = gson.toJsonTree(o);
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                jsonObject.add("expiresAt", JsonNull.INSTANCE);
+                o = jsonObject;
+                this.gson =
+                        builder.serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
+            }
         }
         try {
             return gson.toJson(o);
@@ -52,7 +66,7 @@ public class GsonJsonHandler implements JsonHandler {
                 return gson.<T>fromJson((String) o, targetClass);
             } else {
                 TypeToken<?> parameterized = TypeToken.getParameterized(targetClass, parameters);
-                return gson.fromJson((String) o, parameterized.getType());
+                return gson.<T>fromJson((String) o, parameterized.getType());
             }
         } catch (JsonSyntaxException e) {
             throw new JsonDecodingException(e);

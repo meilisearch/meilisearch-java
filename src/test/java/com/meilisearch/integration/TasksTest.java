@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.model.Result;
 import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TaskInfo;
+import com.meilisearch.sdk.model.TasksQuery;
+import com.meilisearch.sdk.model.TasksResults;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,10 +35,10 @@ public class TasksTest extends AbstractIT {
     @Test
     public void testClientGetTask() throws Exception {
         String indexUid = "GetClientTask";
-        Task response = client.createIndex(indexUid);
-        client.waitForTask(response.getUid());
+        TaskInfo response = client.createIndex(indexUid);
+        client.waitForTask(response.getTaskUid());
 
-        Task task = client.getTask(response.getUid());
+        Task task = client.getTask(response.getTaskUid());
 
         assertTrue(task instanceof Task);
         assertNotNull(task.getStatus());
@@ -52,7 +54,7 @@ public class TasksTest extends AbstractIT {
     /** Test Get Tasks */
     @Test
     public void testClientGetTasks() throws Exception {
-        Result<Task> result = client.getTasks();
+        TasksResults result = client.getTasks();
         Task[] tasks = result.getResults();
 
         for (Task task : tasks) {
@@ -68,14 +70,61 @@ public class TasksTest extends AbstractIT {
         }
     }
 
+    /** Test Get Tasks with limit */
+    @Test
+    public void testClientGetTasksLimit() throws Exception {
+        int limit = 2;
+        TasksQuery query = new TasksQuery().setLimit(limit);
+        TasksResults result = client.getTasks(query);
+
+        assertEquals(limit, result.getLimit());
+        assertNotNull(result.getFrom());
+        assertNotNull(result.getNext());
+        assertNotNull(result.getResults().length);
+    }
+
+    /** Test Get Tasks with limit and from */
+    @Test
+    public void testClientGetTasksLimitAndFrom() throws Exception {
+        int limit = 2;
+        int from = 2;
+        TasksQuery query = new TasksQuery().setLimit(limit).setFrom(from);
+        TasksResults result = client.getTasks(query);
+
+        assertEquals(limit, result.getLimit());
+        assertEquals(from, result.getFrom());
+        assertNotNull(result.getFrom());
+        assertNotNull(result.getNext());
+        assertNotNull(result.getResults().length);
+    }
+
+    /** Test Get Tasks with all query parameters */
+    @Test
+    public void testClientGetTasksAllQueryParameters() throws Exception {
+        int limit = 2;
+        int from = 2;
+        TasksQuery query =
+                new TasksQuery()
+                        .setLimit(limit)
+                        .setFrom(from)
+                        .setStatus(new String[] {"enqueued", "succeeded"})
+                        .setType(new String[] {"indexDeletion"});
+        TasksResults result = client.getTasks(query);
+        Task[] tasks = result.getResults();
+
+        assertEquals(limit, result.getLimit());
+        assertNotNull(result.getFrom());
+        assertNotNull(result.getNext());
+    }
+
     /** Test waitForTask */
     @Test
     public void testWaitForTask() throws Exception {
         String indexUid = "WaitForTask";
-        Task response = client.createIndex(indexUid);
-        client.waitForTask(response.getUid());
+        TaskInfo response = client.createIndex(indexUid);
+        client.waitForTask(response.getTaskUid());
 
-        Task task = client.getTask(response.getUid());
+        Task task = client.getTask(response.getTaskUid());
 
         assertTrue(task.getUid() >= 0);
         assertNotNull(task.getEnqueuedAt());
@@ -94,9 +143,9 @@ public class TasksTest extends AbstractIT {
         String indexUid = "WaitForTaskTimoutInMs";
         Index index = client.index(indexUid);
 
-        Task task = index.addDocuments(this.testData.getRaw());
-        index.waitForTask(task.getUid());
+        TaskInfo task = index.addDocuments(this.testData.getRaw());
+        index.waitForTask(task.getTaskUid());
 
-        assertThrows(Exception.class, () -> index.waitForTask(task.getUid(), 0, 50));
+        assertThrows(Exception.class, () -> index.waitForTask(task.getTaskUid(), 0, 50));
     }
 }
