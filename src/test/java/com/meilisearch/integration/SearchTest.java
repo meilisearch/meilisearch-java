@@ -9,6 +9,7 @@ import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.SearchRequest;
 import com.meilisearch.sdk.json.GsonJsonHandler;
+import com.meilisearch.sdk.model.MatchingStrategy;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
@@ -498,7 +499,8 @@ public class SearchTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
-        SearchRequest searchRequest = new SearchRequest("and").setMatchingStrategy("all");
+        SearchRequest searchRequest =
+                new SearchRequest("and").setMatchingStrategy(MatchingStrategy.ALL.toString());
         SearchResult searchResult = index.search(searchRequest);
 
         assertEquals(20, searchResult.getHits().size());
