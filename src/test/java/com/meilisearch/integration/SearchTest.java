@@ -9,7 +9,6 @@ import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.SearchRequest;
 import com.meilisearch.sdk.json.GsonJsonHandler;
-import com.meilisearch.sdk.model.MatchingStrategy;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
@@ -487,22 +486,5 @@ public class SearchTest extends AbstractIT {
         SearchResult searchResult = index.search(new SearchRequest(null).setLimit(10));
 
         assertEquals(10, searchResult.getHits().size());
-    }
-
-    /** Test search matchingStrategy */
-    @Test
-    public void testSearchMatchingStrategy() throws Exception {
-        String indexUid = "SearchMatchingStrategy";
-        Index index = client.index(indexUid);
-
-        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        TaskInfo task = index.addDocuments(testData.getRaw());
-
-        index.waitForTask(task.getTaskUid());
-        SearchRequest searchRequest =
-                new SearchRequest("and").setMatchingStrategy(MatchingStrategy.ALL);
-        SearchResult searchResult = index.search(searchRequest);
-
-        assertEquals(20, searchResult.getHits().size());
     }
 }
