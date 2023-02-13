@@ -191,10 +191,10 @@ public class SettingsTest extends AbstractIT {
     /** Tests of the ranking rules setting methods */
     @Test
     @DisplayName("Test get ranking rules settings by uid")
-    public void testGetRankingRuleSettings() throws Exception {
-        Index index = createIndex("testGetRankingRuleSettings");
+    public void testGetRankingRulesSettings() throws Exception {
+        Index index = createIndex("testGetRankingRulesSettings");
         Settings initialSettings = index.getSettings();
-        String[] initialRankingRules = index.getRankingRuleSettings();
+        String[] initialRankingRules = index.getRankingRulesSettings();
 
         assertEquals(initialSettings.getRankingRules().length, initialRankingRules.length);
         assertArrayEquals(initialSettings.getRankingRules(), initialRankingRules);
@@ -202,9 +202,9 @@ public class SettingsTest extends AbstractIT {
 
     @Test
     @DisplayName("Test update ranking rules settings")
-    public void testUpdateRankingRuleSettings() throws Exception {
-        Index index = createIndex("testUpdateRankingRuleSettings");
-        String[] initialRuleSettings = index.getRankingRuleSettings();
+    public void testUpdateRankingRulesSettings() throws Exception {
+        Index index = createIndex("testUpdateRankingRulesSettings");
+        String[] initialRulesSettings = index.getRankingRulesSettings();
         String[] newRankingRules = {
             "typo",
             "words",
@@ -216,19 +216,19 @@ public class SettingsTest extends AbstractIT {
             "rank:desc"
         };
 
-        index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getTaskUid());
-        String[] updatedRankingRuleSettings = index.getRankingRuleSettings();
+        index.waitForTask(index.updateRankingRulesSettings(newRankingRules).getTaskUid());
+        String[] updatedRankingRulesSettings = index.getRankingRulesSettings();
 
-        assertEquals(newRankingRules.length, updatedRankingRuleSettings.length);
-        assertArrayEquals(newRankingRules, updatedRankingRuleSettings);
-        assertNotEquals(initialRuleSettings.length, updatedRankingRuleSettings.length);
+        assertEquals(newRankingRules.length, updatedRankingRulesSettings.length);
+        assertArrayEquals(newRankingRules, updatedRankingRulesSettings);
+        assertNotEquals(initialRulesSettings.length, updatedRankingRulesSettings.length);
     }
 
     @Test
     @DisplayName("Test reset ranking rules settings")
-    public void testResetRankingRuleSettings() throws Exception {
-        Index index = createIndex("testResetRankingRuleSettings");
-        String[] initialRuleSettings = index.getRankingRuleSettings();
+    public void testResetRankingRulesSettings() throws Exception {
+        Index index = createIndex("testResetRankingRulesSettings");
+        String[] initialRulesSettings = index.getRankingRulesSettings();
         String[] newRankingRules = {
             "typo",
             "words",
@@ -240,19 +240,19 @@ public class SettingsTest extends AbstractIT {
             "rank:desc"
         };
 
-        index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getTaskUid());
-        String[] updatedRankingRuleSettings = index.getRankingRuleSettings();
+        index.waitForTask(index.updateRankingRulesSettings(newRankingRules).getTaskUid());
+        String[] updatedRankingRulesSettings = index.getRankingRulesSettings();
 
-        index.waitForTask(index.resetRankingRuleSettings().getTaskUid());
-        String[] rankingRulesAfterReset = index.getRankingRuleSettings();
+        index.waitForTask(index.resetRankingRulesSettings().getTaskUid());
+        String[] rankingRulesAfterReset = index.getRankingRulesSettings();
 
-        assertEquals(newRankingRules.length, updatedRankingRuleSettings.length);
-        assertArrayEquals(newRankingRules, updatedRankingRuleSettings);
-        assertNotEquals(initialRuleSettings.length, updatedRankingRuleSettings.length);
+        assertEquals(newRankingRules.length, updatedRankingRulesSettings.length);
+        assertArrayEquals(newRankingRules, updatedRankingRulesSettings);
+        assertNotEquals(initialRulesSettings.length, updatedRankingRulesSettings.length);
 
-        assertNotEquals(updatedRankingRuleSettings.length, rankingRulesAfterReset.length);
-        assertEquals(initialRuleSettings.length, rankingRulesAfterReset.length);
-        assertArrayEquals(initialRuleSettings, rankingRulesAfterReset);
+        assertNotEquals(updatedRankingRulesSettings.length, rankingRulesAfterReset.length);
+        assertEquals(initialRulesSettings.length, rankingRulesAfterReset.length);
+        assertArrayEquals(initialRulesSettings, rankingRulesAfterReset);
     }
 
     /** Tests of the synonyms setting methods */
@@ -741,9 +741,9 @@ public class SettingsTest extends AbstractIT {
 
     @Test
     @DisplayName("Test reset ranking rules when null value is passed")
-    public void testUpdateRankingRuleSettingsUsingNull() throws Exception {
-        Index index = createIndex("testUpdateRankingRuleSettingsUsingNull");
-        String[] initialRankingRule = index.getRankingRuleSettings();
+    public void testUpdateRankingRulesSettingsUsingNull() throws Exception {
+        Index index = createIndex("testUpdateRankingRulesSettingsUsingNull");
+        String[] initialRankingRule = index.getRankingRulesSettings();
         String[] newRankingRules = {
             "typo",
             "words",
@@ -755,11 +755,11 @@ public class SettingsTest extends AbstractIT {
             "rank:desc"
         };
 
-        index.waitForTask(index.updateRankingRuleSettings(newRankingRules).getTaskUid());
-        String[] newRankingRule = index.getRankingRuleSettings();
+        index.waitForTask(index.updateRankingRulesSettings(newRankingRules).getTaskUid());
+        String[] newRankingRule = index.getRankingRulesSettings();
 
-        index.waitForTask(index.updateRankingRuleSettings(null).getTaskUid());
-        String[] resetRankingRule = index.getRankingRuleSettings();
+        index.waitForTask(index.updateRankingRulesSettings(null).getTaskUid());
+        String[] resetRankingRule = index.getRankingRulesSettings();
 
         assertNotEquals(newRankingRule.length, resetRankingRule.length);
         assertEquals(initialRankingRule.length, resetRankingRule.length);
