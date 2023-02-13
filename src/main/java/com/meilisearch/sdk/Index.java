@@ -392,36 +392,36 @@ public class Index implements Serializable {
     }
 
     /**
-     * Gets the ranking rule settings of the index Refer
+     * Gets the ranking rules settings of the index Refer
      * https://docs.meilisearch.com/reference/api/settings.html#get-settings
      *
      * @return ranking rules of a given uid as String
      * @throws MeilisearchException if an error occurs
      */
-    public String[] getRankingRuleSettings() throws MeilisearchException {
-        return this.settingsHandler.getRankingRuleSettings(this.uid);
+    public String[] getRankingRulesSettings() throws MeilisearchException {
+        return this.settingsHandler.getRankingRulesSettings(this.uid);
     }
 
     /**
-     * Updates the ranking rule settings of the index Refer
+     * Updates the ranking rules settings of the index Refer
      * https://docs.meilisearch.com/reference/api/settings.html#update-settings
      *
      * @param rankingRules array that contain the data with the new ranking rules
      * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    public TaskInfo updateRankingRuleSettings(String[] rankingRules) throws MeilisearchException {
-        return this.settingsHandler.updateRankingRuleSettings(this.uid, rankingRules);
+    public TaskInfo updateRankingRulesSettings(String[] rankingRules) throws MeilisearchException {
+        return this.settingsHandler.updateRankingRulesSettings(this.uid, rankingRules);
     }
 
     /**
-     * Resets the ranking rule settings of the index Refer
+     * Resets the ranking rules settings of the index Refer
      * https://docs.meilisearch.com/reference/api/settings.html#reset-settings
      *
      * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    public TaskInfo resetRankingRuleSettings() throws MeilisearchException {
+    public TaskInfo resetRankingRulesSettings() throws MeilisearchException {
         return this.settingsHandler.resetRankingRulesSettings(this.uid);
     }
 
