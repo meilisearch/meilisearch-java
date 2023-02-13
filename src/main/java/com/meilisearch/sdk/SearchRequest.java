@@ -376,7 +376,6 @@ public class SearchRequest {
                         .putOpt("filter", this.filter)
                         .putOpt("filter", this.filterArray);
 
-        System.out.println("SearchRequest: " + jsonObject.toString());
         return jsonObject.toString();
     }
 }
