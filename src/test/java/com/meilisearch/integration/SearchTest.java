@@ -457,6 +457,7 @@ public class SearchTest extends AbstractIT {
 
         assertEquals(20, searchResult.getHits().size());
     }
+
     /** Test place holder search */
     @Test
     public void testPlaceHolder() throws Exception {
