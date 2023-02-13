@@ -222,6 +222,25 @@ public class KeysTest extends AbstractIT {
         assertNotNull(key.getUpdatedAt());
     }
 
+    /** Test Create an API Key with wildcarded action */
+    @Test
+    public void testClientCreateKeyWithWilcardedAction() throws Exception {
+        Key keyInfo = new Key();
+        keyInfo.setIndexes(new String[] {"*"});
+        keyInfo.setActions(new String[] {"documents.*"});
+        keyInfo.setExpiresAt(null);
+
+        Key key = client.createKey(keyInfo);
+
+        assertNotNull(key.getKey());
+        assertEquals("documents.*", key.getActions()[0]);
+        assertEquals("*", key.getIndexes()[0]);
+        assertNull(key.getDescription());
+        assertNull(key.getExpiresAt());
+        assertNotNull(key.getCreatedAt());
+        assertNotNull(key.getUpdatedAt());
+    }
+
     /** Test Update an API Key */
     @Test
     public void testClientUpdateKey() throws Exception {
