@@ -175,7 +175,7 @@ update_stop_words_1: |-
 reset_stop_words_1: |-
   client.index("movies").resetStopWordsSettings();
 get_ranking_rules_1: |-
-  client.index("movies").getRankingRuleSettings();
+  client.index("movies").getRankingRulesSettings();
 update_ranking_rules_1: |-
   Settings settings = new Settings();
   settings.setRankingRules(new String[]
@@ -191,7 +191,7 @@ update_ranking_rules_1: |-
   });
   client.index("movies").updateSettings(settings);
 reset_ranking_rules_1: |-
-  client.index("movies").resetRankingRuleSettings();
+  client.index("movies").resetRankingRulesSettings();
 get_distinct_attribute_1: |-
   client.index("shoes").getDistinctAttributeSettings();
 update_distinct_attribute_1: |-
