@@ -57,10 +57,10 @@ dependencies {
 	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
 
 	// Lombok
-	compileOnly 'org.projectlombok:lombok:1.18.24'
-	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+	compileOnly 'org.projectlombok:lombok:1.18.26'
+	annotationProcessor 'org.projectlombok:lombok:1.18.26'
 	testCompileOnly 'org.projectlombok:lombok:1.18.24'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
 
 	// Jwt
 	implementation 'com.auth0:java-jwt:4.2.2'
