@@ -102,7 +102,7 @@ public class Search {
      */
     String rawSearch(String uid, SearchRequest sr) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/search";
-        return httpClient.post(requestQuery, sr, String.class);
+        return httpClient.post(requestQuery, sr.toString(), String.class);
     }
 
     /**

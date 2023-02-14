@@ -175,7 +175,7 @@ update_stop_words_1: |-
 reset_stop_words_1: |-
   client.index("movies").resetStopWordsSettings();
 get_ranking_rules_1: |-
-  client.index("movies").getRankingRuleSettings();
+  client.index("movies").getRankingRulesSettings();
 update_ranking_rules_1: |-
   Settings settings = new Settings();
   settings.setRankingRules(new String[]
@@ -191,7 +191,7 @@ update_ranking_rules_1: |-
   });
   client.index("movies").updateSettings(settings);
 reset_ranking_rules_1: |-
-  client.index("movies").resetRankingRuleSettings();
+  client.index("movies").resetRankingRulesSettings();
 get_distinct_attribute_1: |-
   client.index("shoes").getDistinctAttributeSettings();
 update_distinct_attribute_1: |-
@@ -455,7 +455,7 @@ getting_started_add_documents_md: |-
   <dependency>
     <groupId>com.meilisearch.sdk</groupId>
     <artifactId>meilisearch-java</artifactId>
-    <version>0.9.0</version>
+    <version>0.10.0</version>
     <type>pom</type>
   </dependency>
   ```
@@ -463,7 +463,7 @@ getting_started_add_documents_md: |-
   **Gradle**
   Add the following line to the `dependencies` section of your `build.gradle`:
   ```groovy
-  implementation 'com.meilisearch.sdk:meilisearch-java:0.9.0'
+  implementation 'com.meilisearch.sdk:meilisearch-java:0.10.0'
   ```
 
   ```java

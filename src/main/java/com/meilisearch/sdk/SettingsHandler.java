@@ -65,7 +65,7 @@ public class SettingsHandler {
      * @return an array of strings that contains the ranking rules settings
      * @throws MeilisearchException if an error occurs
      */
-    String[] getRankingRuleSettings(String uid) throws MeilisearchException {
+    String[] getRankingRulesSettings(String uid) throws MeilisearchException {
         return httpClient.get(
                 settingsPath(uid).addSubroute("ranking-rules").getURL(), String[].class);
     }
@@ -78,7 +78,7 @@ public class SettingsHandler {
      * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    TaskInfo updateRankingRuleSettings(String uid, String[] rankingRules)
+    TaskInfo updateRankingRulesSettings(String uid, String[] rankingRules)
             throws MeilisearchException {
         return httpClient.put(
                 settingsPath(uid).addSubroute("ranking-rules").getURL(),
