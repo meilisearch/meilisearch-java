@@ -76,7 +76,7 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest = new SearchRequest("a").setOffset(20);
+        SearchRequest searchRequest = SearchRequest.builder().q("a").offset(20).build();
         SearchResult searchResult = index.search(searchRequest);
 
         assertEquals(10, searchResult.getHits().size());
@@ -94,7 +94,7 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest = new SearchRequest("a").setLimit(2);
+        SearchRequest searchRequest = SearchRequest.builder().q("a").limit(2).build();
         SearchResult searchResult = index.search(searchRequest);
 
         assertEquals(2, searchResult.getHits().size());
@@ -141,9 +141,11 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest =
-                new SearchRequest("and")
-                        .setAttributesToCrop(new String[] {"overview"})
-                        .setCropLength(1);
+                SearchRequest.builder()
+                        .q("and")
+                        .attributesToCrop(new String[] {"overview"})
+                        .cropLength(1)
+                        .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -165,10 +167,12 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest =
-                new SearchRequest("and")
-                        .setAttributesToCrop(new String[] {"overview"})
-                        .setCropLength(1)
-                        .setCropMarker("(ꈍᴗꈍ)");
+                SearchRequest.builder()
+                        .q("and")
+                        .attributesToCrop(new String[] {"overview"})
+                        .cropLength(1)
+                        .cropMarker("(ꈍᴗꈍ)")
+                        .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -212,10 +216,12 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest =
-                new SearchRequest("and")
-                        .setAttributesToHighlight(new String[] {"title"})
-                        .setHighlightPreTag("(⊃｡•́‿•̀｡)⊃ ")
-                        .setHighlightPostTag(" ⊂(´• ω •`⊂)");
+                SearchRequest.builder()
+                        .q("and")
+                        .attributesToHighlight(new String[] {"title"})
+                        .highlightPreTag("(⊃｡•́‿•̀｡)⊃ ")
+                        .highlightPostTag(" ⊂(´• ω •`⊂)")
+                        .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -370,7 +376,8 @@ public class SearchTest extends AbstractIT {
         settings.setSortableAttributes(new String[] {"id"});
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest = new SearchRequest("and").setSort(new String[] {"id:asc"});
+        SearchRequest searchRequest =
+                SearchRequest.builder().q("and").sort(new String[] {"id:asc"}).build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -401,7 +408,10 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchRequest searchRequest =
-                new SearchRequest("dark").setSort(new String[] {"id:asc", "title:asc"});
+                SearchRequest.builder()
+                        .q("dark")
+                        .sort(new String[] {"id:asc", "title:asc"})
+                        .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
