@@ -32,6 +32,7 @@ public class DeleteTasksQuery {
     public String toQuery() {
         URLBuilder urlb =
                 new URLBuilder()
+                        .addParameter("uids", this.getUids())
                         .addParameter("statuses", this.getStatuses())
                         .addParameter("types", this.getTypes())
                         .addParameter("indexUids", this.getIndexUids())
