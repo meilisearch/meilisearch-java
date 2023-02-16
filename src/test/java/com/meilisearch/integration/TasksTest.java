@@ -6,6 +6,7 @@ import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.model.CancelTasksQuery;
+import com.meilisearch.sdk.model.DeleteTasksQuery;
 import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.model.TasksQuery;
@@ -152,6 +153,42 @@ public class TasksTest extends AbstractIT {
         assertNotEquals("", task.getStatus());
         assertNull(task.getIndexUid());
         assertEquals("taskCancelation", task.getType());
+    }
+
+    /** Test Delete Task */
+    @Test
+    public void testClientDeleteTask() throws Exception {
+        DeleteTasksQuery query =
+                new DeleteTasksQuery().setStatuses(new String[] {"enqueued", "succeeded"});
+
+        TaskInfo task = client.deleteTasks(query);
+
+        assertTrue(task instanceof TaskInfo);
+        assertNotNull(task.getStatus());
+        assertNotEquals("", task.getStatus());
+        assertNull(task.getIndexUid());
+        assertEquals("taskDeletion", task.getType());
+    }
+
+    /** Test Delete Task with multiple filters */
+    @Test
+    public void testClientDeleteTaskWithMultipleFilters() throws Exception {
+        Date date = new Date();
+        DeleteTasksQuery query =
+                new DeleteTasksQuery()
+                        .setUids(new int[] {0, 1, 2})
+                        .setStatuses(new String[] {"enqueued", "succeeded"})
+                        .setTypes(new String[] {"indexDeletion"})
+                        .setIndexUids(new String[] {"index"})
+                        .setBeforeEnqueuedAt(date);
+
+        TaskInfo task = client.deleteTasks(query);
+
+        assertTrue(task instanceof TaskInfo);
+        assertNotNull(task.getStatus());
+        assertNotEquals("", task.getStatus());
+        assertNull(task.getIndexUid());
+        assertEquals("taskDeletion", task.getType());
     }
 
     /** Test waitForTask */
