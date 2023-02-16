@@ -23,7 +23,8 @@ class SearchRequestTest {
 
     @Test
     void toStringQueryAndOffset() {
-        SearchRequest classToTest = new SearchRequest("This is a Test").setOffset(200);
+        SearchRequest classToTest =
+                new SearchRequest("This is a Test").setQuery("This is a Test").setOffset(200);
 
         assertEquals("{\"q\":\"This is a Test\",\"offset\":200}", classToTest.toString());
     }

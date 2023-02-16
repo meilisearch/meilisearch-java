@@ -70,10 +70,10 @@ public class SearchRequest {
         JSONObject jsonObject =
                 new JSONObject()
                         .put("q", this.q)
-                        .put("offset", this.offset == null ? null : this.offset)
-                        .put("limit", this.limit == null ? null : this.limit)
+                        .put("offset", this.offset)
+                        .put("limit", this.limit)
                         .put("attributesToRetrieve", this.attributesToRetrieve)
-                        .put("cropLength", this.cropLength == null ? null : this.cropLength)
+                        .put("cropLength", this.cropLength)
                         .put("cropMarker", this.cropMarker)
                         .put("highlightPreTag", this.highlightPreTag)
                         .put("highlightPostTag", this.highlightPostTag)
@@ -82,9 +82,7 @@ public class SearchRequest {
                                 this.matchingStrategy == null
                                         ? null
                                         : this.matchingStrategy.toString())
-                        .put(
-                                "showMatchesPosition",
-                                this.showMatchesPosition == null ? null : this.showMatchesPosition)
+                        .put("showMatchesPosition", this.showMatchesPosition)
                         .put("facets", this.facets)
                         .put("sort", this.sort)
                         .putOpt("attributesToCrop", this.attributesToCrop)
