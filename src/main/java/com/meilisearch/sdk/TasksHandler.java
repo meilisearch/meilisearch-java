@@ -3,7 +3,10 @@ package com.meilisearch.sdk;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.exceptions.MeilisearchTimeoutException;
 import com.meilisearch.sdk.http.URLBuilder;
+import com.meilisearch.sdk.model.CancelTasksQuery;
+import com.meilisearch.sdk.model.DeleteTasksQuery;
 import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.model.TasksQuery;
 import com.meilisearch.sdk.model.TasksResults;
 import java.util.Date;
@@ -97,6 +100,33 @@ public class TasksHandler {
 
         TasksResults result =
                 httpClient.get(tasksPath().addQuery(param.toQuery()).getURL(), TasksResults.class);
+        return result;
+    }
+
+    /**
+     * Delete tasks from the client
+     *
+     * @param param accept by the tasks route
+     * @return Meilisearch API response as TaskInfo
+     * @throws MeilisearchException if client request causes an error
+     */
+    TaskInfo cancelTasks(CancelTasksQuery param) throws MeilisearchException {
+        URLBuilder urlb = tasksPath().addSubroute("cancel");
+        TaskInfo result =
+                httpClient.post(urlb.addQuery(param.toQuery()).getURL(), null, TaskInfo.class);
+        return result;
+    }
+
+    /**
+     * Delete tasks from the client
+     *
+     * @param param accept by the tasks route
+     * @return Meilisearch API response as TaskInfo
+     * @throws MeilisearchException if client request causes an error
+     */
+    TaskInfo deleteTasks(DeleteTasksQuery param) throws MeilisearchException {
+        TaskInfo result =
+                httpClient.delete(tasksPath().addQuery(param.toQuery()).getURL(), TaskInfo.class);
         return result;
     }
 
