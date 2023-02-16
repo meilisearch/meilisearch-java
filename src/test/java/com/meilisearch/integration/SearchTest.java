@@ -468,6 +468,50 @@ public class SearchTest extends AbstractIT {
         assertEquals(20, searchResult.getHits().size());
     }
 
+    /** Test search page */
+    @Test
+    public void testSearchPage() throws Exception {
+        String indexUid = "SearchOffset";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SearchRequest searchRequest = SearchRequest.builder().q("a").page(1).build();
+        SearchResult searchResult = index.search(searchRequest);
+
+        assertEquals(20, searchResult.getHits().size());
+        assertEquals(1, searchResult.getPage());
+        assertEquals(20, searchResult.getHitsPerPage());
+        assertEquals(30, searchResult.getTotalHits());
+        assertEquals(2, searchResult.getTotalPages());
+        assertEquals(0, searchResult.getEstimatedTotalHits());
+    }
+
+    /** Test search pagination */
+    @Test
+    public void testSearchPagination() throws Exception {
+        String indexUid = "SearchOffset";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SearchRequest searchRequest = SearchRequest.builder().q("a").page(2).hitsPerPage(2).build();
+        SearchResult searchResult = index.search(searchRequest);
+
+        assertEquals(2, searchResult.getHits().size());
+        assertEquals(2, searchResult.getPage());
+        assertEquals(2, searchResult.getHitsPerPage());
+        assertEquals(30, searchResult.getTotalHits());
+        assertEquals(15, searchResult.getTotalPages());
+        assertEquals(0, searchResult.getEstimatedTotalHits());
+    }
+
     /** Test place holder search */
     @Test
     public void testPlaceHolder() throws Exception {

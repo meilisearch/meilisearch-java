@@ -21,6 +21,10 @@ public class SearchResult implements Serializable {
     protected Object facetDistribution;
     protected int processingTimeMs;
     protected String query;
+    protected int totalHits;
+    protected int hitsPerPage;
+    protected int page;
+    protected int totalPages;
 
     public SearchResult() {}
 }
