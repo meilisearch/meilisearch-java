@@ -7,6 +7,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.json.JsonHandler;
+import com.meilisearch.sdk.model.CancelTasksQuery;
 import com.meilisearch.sdk.model.IndexesQuery;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.KeyUpdate;
@@ -251,6 +252,18 @@ public class Client {
      */
     public TasksResults getTasks(TasksQuery param) throws MeilisearchException {
         return this.tasksHandler.getTasks(param);
+    }
+
+    /**
+     * Cancel any number of enqueued or processing tasks
+     * https://docs.meilisearch.com/reference/api/tasks.html#cancel-tasks
+     *
+     * @param param accept by the tasks route
+     * @return Meilisearch API response as TaskInfo
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo cancelTasks(CancelTasksQuery param) throws MeilisearchException {
+        return this.tasksHandler.cancelTasks(param);
     }
 
     /**
