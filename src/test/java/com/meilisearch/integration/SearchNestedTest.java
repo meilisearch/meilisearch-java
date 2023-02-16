@@ -87,7 +87,10 @@ public class SearchNestedTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
         index.waitForTask(index.updateSettings(newSettings).getTaskUid());
         SearchRequest searchRequest =
-                new SearchRequest("An Awesome").setSort(new String[] {"info.reviewNb:desc"});
+                SearchRequest.builder()
+                        .q("An Awesome")
+                        .sort(new String[] {"info.reviewNb:desc"})
+                        .build();
 
         Results searchResultGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -110,7 +113,10 @@ public class SearchNestedTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
         index.waitForTask(index.updateSettings(newSettings).getTaskUid());
         SearchRequest searchRequest =
-                new SearchRequest("An Awesome").setSort(new String[] {"info.reviewNb:desc"});
+                SearchRequest.builder()
+                        .q("An Awesome")
+                        .sort(new String[] {"info.reviewNb:desc"})
+                        .build();
         Results searchResultGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
         assertEquals(1, searchResultGson.hits.length);
