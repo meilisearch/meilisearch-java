@@ -240,8 +240,7 @@ Set up your `Client` with it.
 ```java
 import com.meilisearch.sdk.json.JacksonJsonHandler;
 
-Config config = new Config("http://localhost:7700", "masterKey");
-config.setJsonHandler(new JacksonJsonHandler());
+Config config = new Config("http://localhost:7700", "masterKey", new JacksonJsonHandler());
 Client client = new Client(config);
 ```
 
@@ -258,8 +257,7 @@ To create your own JSON handler, you must conform to the `JsonHandler` interface
  Then create your client by initializing your `Config` with your new handler.
 
 ```java
-Config config = new Config("http://localhost:7700", "masterKey");
-config.setJsonHandler(new myJsonHandler());
+Config config = new Config("http://localhost:7700", "masterKey", new myJsonHandler());
 Client client = new Client(config);
 ```
 
