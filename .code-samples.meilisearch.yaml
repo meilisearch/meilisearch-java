@@ -463,7 +463,7 @@ getting_started_add_documents_md: |-
   **Gradle**
   Add the following line to the `dependencies` section of your `build.gradle`:
   ```groovy
-  implementation 'com.meilisearch.sdk:meilisearch-java:0.10.0'
+  implementation 'com.meilisearch.sdk:meilisearch-java:0.11.0'
   ```
 
   ```java
