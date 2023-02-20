@@ -36,11 +36,18 @@ public class Config {
      * @param apiKey API key to pass to the header of requests sent to Meilisearch
      */
     public Config(String hostUrl, String apiKey) {
-        this.hostUrl = hostUrl;
-        this.apiKey = apiKey;
-        this.headers = configHeaders(new String[0]);
-        this.jsonHandler = new GsonJsonHandler();
-        this.httpClient = new HttpClient(this);
+        this(hostUrl, apiKey, new GsonJsonHandler(), new String[0]);
+    }
+
+    /**
+     * Creates a configuration with an API key and no customized headers.
+     *
+     * @param hostUrl URL of the Meilisearch instance
+     * @param apiKey API key to pass to the header of requests sent to Meilisearch
+     * @param jsonHandler JsonHandler to parse or write JSON
+     */
+    public Config(String hostUrl, String apiKey, JsonHandler jsonHandler) {
+        this(hostUrl, apiKey, jsonHandler, new String[0]);
     }
 
     /**
@@ -51,10 +58,22 @@ public class Config {
      * @param clientAgents List of customized agents to be passed to User-Agent header.
      */
     public Config(String hostUrl, String apiKey, String[] clientAgents) {
+        this(hostUrl, apiKey, new GsonJsonHandler(), clientAgents);
+    }
+
+    /**
+     * Creates a configuration with an API key
+     *
+     * @param hostUrl URL of the Meilisearch instance
+     * @param apiKey API key to pass to the header of requests sent to Meilisearch
+     * @param jsonHandler JsonHandler to parse or write JSON
+     * @param clientAgents List of customized agents to be passed to User-Agent header.
+     */
+    public Config(String hostUrl, String apiKey, JsonHandler jsonHandler, String[] clientAgents) {
         this.hostUrl = hostUrl;
         this.apiKey = apiKey;
         this.headers = configHeaders(clientAgents);
-        this.jsonHandler = new GsonJsonHandler();
+        this.jsonHandler = jsonHandler;
         this.httpClient = new HttpClient(this);
     }
 
