@@ -15,6 +15,7 @@ import com.meilisearch.sdk.model.KeyUpdate;
 import com.meilisearch.sdk.model.KeysQuery;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.Stats;
+import com.meilisearch.sdk.model.SwapIndexesParams;
 import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.model.TasksQuery;
@@ -164,6 +165,18 @@ public class Client {
      */
     public TaskInfo deleteIndex(String uid) throws MeilisearchException {
         return this.indexesHandler.deleteIndex(uid);
+    }
+
+    /**
+     * Swap the documents, settings, and task history of two or more indexes
+     * https://docs.meilisearch.com/reference/api/indexes.html#swap-indexes
+     *
+     * @param param accepted by the swap-indexes route
+     * @return Meilisearch API response as TaskInfo
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo swapIndexes(SwapIndexesParams[] param) throws MeilisearchException {
+        return config.httpClient.post("/swap-indexes", param, TaskInfo.class);
     }
 
     /**

@@ -27,6 +27,7 @@ public class TaskDetails {
     protected int canceledTasks;
     protected String originalFilter;
     protected int deletedTasks;
+    protected SwapIndexesParams[] swaps;
 
     public TaskDetails() {}
 }
