@@ -2,6 +2,7 @@ package com.meilisearch.sdk.http;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import org.junit.jupiter.api.Test;
@@ -81,8 +82,9 @@ public class URLBuilderTest {
     }
 
     @Test
-    void addParameterStringDate() {
-        Date date = new Date();
+    void addParameterStringDate() throws Exception {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = format.parse("2042-01-30");
 
         classToTest.addParameter("parameter1", date);
         String parameterDate1 =
@@ -91,7 +93,7 @@ public class URLBuilderTest {
                         .toString()
                         .substring(12, classToTest.getParams().toString().length());
         assertDoesNotThrow(() -> DateTimeFormatter.ISO_DATE.parse(parameterDate1));
-        assertTrue(classToTest.getParams().toString().contains("?parameter1="));
+        assertEquals("?parameter1=2042-01-30", classToTest.getParams().toString());
 
         classToTest.addParameter("parameter2", date);
         String parameterDate2 =
@@ -100,8 +102,8 @@ public class URLBuilderTest {
                         .toString()
                         .substring(34, classToTest.getParams().toString().length());
         assertDoesNotThrow(() -> DateTimeFormatter.ISO_DATE.parse(parameterDate2));
-        assertTrue(classToTest.getParams().toString().contains("?parameter1="));
-        assertTrue(classToTest.getParams().toString().contains("&parameter2="));
+        assertEquals(
+                "?parameter1=2042-01-30&parameter2=2042-01-30", classToTest.getParams().toString());
     }
 
     @Test
