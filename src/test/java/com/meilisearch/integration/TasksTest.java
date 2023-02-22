@@ -12,6 +12,7 @@ import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.model.TasksQuery;
 import com.meilisearch.sdk.model.TasksResults;
 import com.meilisearch.sdk.utils.Movie;
+import java.util.Date;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -100,6 +101,43 @@ public class TasksTest extends AbstractIT {
         assertNotNull(result.getResults().length);
     }
 
+    /** Test Get Tasks with uid as filter */
+    @Test
+    public void testClientGetTasksWithUidFilter() throws Exception {
+        TasksQuery query = new TasksQuery().setUids(new int[] {1});
+        TasksResults result = client.getTasks(query);
+
+        assertNotNull(result.getLimit());
+        assertNotNull(result.getFrom());
+        assertNotNull(result.getNext());
+        assertNotNull(result.getResults().length);
+    }
+
+    /** Test Get Tasks with beforeEnqueuedAt as filter */
+    @Test
+    public void testClientGetTasksWithDateFilter() throws Exception {
+        Date date = new Date();
+        TasksQuery query = new TasksQuery().setBeforeEnqueuedAt(date);
+        TasksResults result = client.getTasks(query);
+
+        assertNotNull(result.getLimit());
+        assertNotNull(result.getFrom());
+        assertNotNull(result.getNext());
+        assertNotNull(result.getResults().length);
+    }
+
+    /** Test Get Tasks with canceledBy as filter */
+    @Test
+    public void testClientGetTasksWithCanceledByFilter() throws Exception {
+        TasksQuery query = new TasksQuery().setCanceledBy(new int[] {1});
+        TasksResults result = client.getTasks(query);
+
+        assertNotNull(result.getLimit());
+        assertNotNull(result.getFrom());
+        assertNotNull(result.getNext());
+        assertNotNull(result.getResults().length);
+    }
+
     /** Test Get Tasks with all query parameters */
     @Test
     public void testClientGetTasksAllQueryParameters() throws Exception {
@@ -109,14 +147,14 @@ public class TasksTest extends AbstractIT {
                 new TasksQuery()
                         .setLimit(limit)
                         .setFrom(from)
-                        .setStatus(new String[] {"enqueued", "succeeded"})
-                        .setType(new String[] {"indexDeletion"});
+                        .setStatuses(new String[] {"enqueued", "succeeded"})
+                        .setTypes(new String[] {"indexDeletion"});
         TasksResults result = client.getTasks(query);
-        Task[] tasks = result.getResults();
 
         assertEquals(limit, result.getLimit());
         assertNotNull(result.getFrom());
         assertNotNull(result.getNext());
+        assertNotNull(result.getResults().length);
     }
 
     /** Test Cancel Task */
