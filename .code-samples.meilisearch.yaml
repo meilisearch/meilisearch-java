@@ -3,42 +3,6 @@
 # the documentation on build
 # You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
 ---
-async_guide_filter_by_date_1: |-
-  with filter: { afterEnqueuedAt=2020-10-11T11:49:53.000Z }
-
-async_guide_multiple_filters_1: |-
-  with filter: { indexUids: movies, types: ["documentAdditionOrUpdate","documentDeletion"], statuses: ["processing"] }
-
-async_guide_filter_by_ids_1: |-
-  with filter: { uids: [5, 10, 13] }
-
-async_guide_filter_by_statuses_1: |-
-  with filter: { statuses: ["failed", "canceled"] }
-
-async_guide_filter_by_types_1: |-
-  with filter: { types: ["dumpCreation", "indexSwap"] }
-
-async_guide_filter_by_index_uids_1: |-
-  with filter: { indexUids: ["movies"] }
-
-delete_tasks_1: |-
-  with filter: { uids: [1, 2] }
-
-cancel_tasks_1: |-
-  with filter: { uids: [1,2] }
-
-async_guide_canceled_by: |-
-  with filter: { canceledBy: [9] }
-
-swap_indexes_1: |-
-  with data: { indexes: [ "indexA", "indexB"], indexes: [ "indexX", "indexY" ] }
-
-search_parameter_guide_hitsperpage_1: |-
-  with queryparams: { "q": "", "hitsPerPage": 15 }
-
-search_parameter_guide_page_1: |-
-  with queryparams: { "q": "", "page": 2 }
-
 get_one_index_1: |-
   client.getIndex("movies");
 list_all_indexes_1: |-
@@ -49,6 +13,13 @@ update_an_index_1: |-
   client.updateIndex("movies", "id");
 delete_an_index_1: |-
   client.deleteIndex("movies");
+swap_indexes_1: |-
+  SwapIndexesParams[] params =
+          new SwapIndexesParams[] {
+              new SwapIndexesParams().setIndexes(new String[] {"indexA", "indexB"}),
+              new SwapIndexesParams().setIndexes(new String[] {"indexX", "indexY"})
+          };
+  TaskInfo task = client.swapIndexes(params);
 get_one_document_1: |-
   client.index("movies").getDocument("25684");
 get_documents_1: |-
@@ -91,6 +62,12 @@ get_task_1: |-
   client.getTask(1);
 get_all_tasks_by_index_1: |-
   client.index("movies").getTasks();
+delete_tasks_1: |-
+  DeleteTasksQuery query = new DeleteTasksQuery().setUids(new int[] {1, 2})
+  client.deleteTasks(query);
+cancel_tasks_1: |-
+  CancelTasksQuery query = new CancelTasksQuery().setUids(new int[] {1, 2})
+  client.cancelTasks(query);
 get_one_key_1: |-
   client.getKey("d0552b41536279a0ad88bd595327b96f01176a60c2243e906c52ac02375f9bc4");
 get_all_keys_1: |-
@@ -327,6 +304,12 @@ search_parameter_guide_highlight_tag_1: |-
 search_parameter_guide_matches_1: |-
   SearchRequest searchRequest = new SearchRequest("winter feast").setMatches(true);
   SearchResult searchResult = index.search(searchRequest);
+search_parameter_guide_hitsperpage_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("").hitsPerPage(15).build();
+  SearchResultPaginated searchResult = index.search(searchRequest);
+search_parameter_guide_page_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("").page(15).build();
+  SearchResultPaginated searchResult = index.search(searchRequest);
 settings_guide_synonyms_1: |-
   Settings settings = new Settings();
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
@@ -717,3 +700,32 @@ tenant_token_guide_generate_sdk_1: |-
 tenant_token_guide_search_sdk_1: |-
   Client frontEndClient = new Client(new Config("http://localhost:7700", token));
   frontEndClient.index("patient_medical_records").search("blood test");
+async_guide_filter_by_date_1: |-
+  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+  Date date = format.parse("2020-10-11T11:49:53.000Z");
+  TasksQuery query = new TasksQuery().setBeforeEnqueuedAt(date);
+
+  client.getTasks(query);
+async_guide_multiple_filters_1: |-
+  TasksQuery query =
+          new TasksQuery()
+                  .setStatuse(new String[] {"processing"})
+                  .setTypes(new String[] {"documentAdditionOrUpdate", "documentDeletion"})
+                  .SetIndexUids(new String[] {"movies"});
+
+  client.getTasks(query);
+async_guide_filter_by_ids_1: |-
+  TasksQuery query = new TasksQuery().setUids(new int[] {5, 10, 13});
+  client.getTasks(query);
+async_guide_filter_by_statuses_1: |-
+  TasksQuery query = new TasksQuery().setStatuse(new String[] {"failed", "canceled"});
+  client.getTasks(query);
+async_guide_filter_by_types_1: |-
+  TasksQuery query = new TasksQuery().setTypes(new String[] {"dumpCreation", "indexSwap"});
+  client.getTasks(query);
+async_guide_filter_by_index_uids_1: |-
+  TasksQuery query = new TasksQuery().SetIndexUids(new String[] {"movies"});
+  client.getTasks(query);
+async_guide_canceled_by: |-
+  TasksQuery query = new TasksQuery().setCanceledBy(new int[] {9});
+  client.getTasks(query);
