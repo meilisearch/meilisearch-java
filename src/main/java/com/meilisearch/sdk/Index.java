@@ -6,6 +6,7 @@ import com.meilisearch.sdk.model.DocumentsQuery;
 import com.meilisearch.sdk.model.IndexStats;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.SearchResult;
+import com.meilisearch.sdk.model.Searchable;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.model.TaskInfo;
@@ -341,12 +342,11 @@ public class Index implements Serializable {
      * Searches documents in the index Refer
      * https://docs.meilisearch.com/reference/api/search.html#search-in-an-index-with-post-route
      *
-     * @param <T> Type of the search returned
      * @param searchRequest SearchRequest SearchRequest
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    public <T> T search(SearchRequest searchRequest) throws MeilisearchException {
+    public Searchable search(SearchRequest searchRequest) throws MeilisearchException {
         return this.search.search(this.uid, searchRequest);
     }
 

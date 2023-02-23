@@ -1,5 +1,7 @@
 package com.meilisearch.sdk.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -10,11 +12,15 @@ import lombok.ToString;
  */
 @Getter
 @ToString
-public class SearchResultPaginated extends Searcheable {
+public class SearchResultPaginated implements Searchable {
     protected int totalHits;
     protected int hitsPerPage;
     protected int page;
     protected int totalPages;
+    ArrayList<HashMap<String, Object>> hits;
+    Object facetDistribution;
+    int processingTimeMs;
+    String query;
 
     public SearchResultPaginated() {}
 }

@@ -1,5 +1,7 @@
 package com.meilisearch.sdk.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -10,10 +12,14 @@ import lombok.ToString;
  */
 @Getter
 @ToString
-public class SearchResult extends Searcheable {
-    protected int offset;
-    protected int limit;
-    protected int estimatedTotalHits;
+public class SearchResult implements Searchable {
+    ArrayList<HashMap<String, Object>> hits;
+    Object facetDistribution;
+    int processingTimeMs;
+    String query;
+    int offset;
+    int limit;
+    int estimatedTotalHits;
 
     public SearchResult() {}
 }
