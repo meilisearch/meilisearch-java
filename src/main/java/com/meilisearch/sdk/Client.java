@@ -17,6 +17,7 @@ import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.model.TasksQuery;
 import com.meilisearch.sdk.model.TasksResults;
+import com.meilisearch.sdk.TenantTokenOptions;
 import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
@@ -107,6 +108,17 @@ public class Client {
      */
     public String getRawIndexes() throws MeilisearchException {
         return this.indexesHandler.getRawIndexes();
+    }
+
+    /**
+     * Gets all indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     *
+     * @param params query parameters accepted by the get indexes route
+     * @return List of indexes from the Meilisearch API as String
+     * @throws MeilisearchException if an error occurs
+     */
+    public String getRawIndexes(IndexesQuery params) throws MeilisearchException {
+        return this.indexesHandler.getRawIndexes(params);
     }
 
     /**
