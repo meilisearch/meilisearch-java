@@ -10,6 +10,7 @@ import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.SearchRequest;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.model.SearchResult;
+import com.meilisearch.sdk.model.SearchResultPaginated;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
@@ -480,14 +481,13 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest = SearchRequest.builder().q("a").page(1).build();
-        SearchResult searchResult = index.search(searchRequest);
+        SearchResultPaginated searchResult = index.search(searchRequest);
 
         assertEquals(20, searchResult.getHits().size());
         assertEquals(1, searchResult.getPage());
         assertEquals(20, searchResult.getHitsPerPage());
         assertEquals(30, searchResult.getTotalHits());
         assertEquals(2, searchResult.getTotalPages());
-        assertEquals(0, searchResult.getEstimatedTotalHits());
     }
 
     /** Test search pagination */
@@ -502,14 +502,13 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest = SearchRequest.builder().q("a").page(2).hitsPerPage(2).build();
-        SearchResult searchResult = index.search(searchRequest);
+        SearchResultPaginated searchResult = index.search(searchRequest);
 
         assertEquals(2, searchResult.getHits().size());
         assertEquals(2, searchResult.getPage());
         assertEquals(2, searchResult.getHitsPerPage());
         assertEquals(30, searchResult.getTotalHits());
         assertEquals(15, searchResult.getTotalPages());
-        assertEquals(0, searchResult.getEstimatedTotalHits());
     }
 
     /** Test place holder search */

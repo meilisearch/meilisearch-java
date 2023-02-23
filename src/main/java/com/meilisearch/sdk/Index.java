@@ -341,11 +341,12 @@ public class Index implements Serializable {
      * Searches documents in the index Refer
      * https://docs.meilisearch.com/reference/api/search.html#search-in-an-index-with-post-route
      *
+     * @param <T> Type of the search returned
      * @param searchRequest SearchRequest SearchRequest
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    public SearchResult search(SearchRequest searchRequest) throws MeilisearchException {
+    public <T> T search(SearchRequest searchRequest) throws MeilisearchException {
         return this.search.search(this.uid, searchRequest);
     }
 
