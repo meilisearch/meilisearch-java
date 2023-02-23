@@ -70,9 +70,7 @@ public class Search {
      * @throws MeilisearchException Search Exception or Client Error
      */
     Searchable search(String uid, SearchRequest sr) throws MeilisearchException {
-        if (sr != null
-                && (sr.getPage() != null && sr.getPage() != 0
-                        || sr.getHitsPerPage() != null && sr.getHitsPerPage() != 0)) {
+        if (sr != null && (sr.getPage() != null || sr.getHitsPerPage() != null)) {
             return httpClient.jsonHandler.decode(rawSearch(uid, sr), SearchResultPaginated.class);
         }
         return httpClient.jsonHandler.decode(rawSearch(uid, sr), SearchResult.class);
