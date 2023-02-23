@@ -139,6 +139,10 @@ implementation 'com.meilisearch.sdk:meilisearch-java:X.X.X'
 
 - [.code-samples.meilisearch.yaml](/.code-samples.meilisearch.yaml) in the `getting_started_add_documents_md` field
 
+```xml
+<version>X.X.X</version>
+```
+
 ```groovy
 implementation 'com.meilisearch.sdk:meilisearch-java:X.X.X'
 ```
