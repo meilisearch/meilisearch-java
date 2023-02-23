@@ -204,6 +204,7 @@ public class ClientTest extends AbstractIT {
         JsonArray jsonIndexArray = jsonIndexObject.getAsJsonArray("results");
 
         assertEquals(limit, jsonIndexArray.size());
+        assertEquals(limit, jsonIndexObject.get("limit").getAsInt());
         assert (Arrays.asList(indexUids)
                 .contains(jsonIndexArray.get(0).getAsJsonObject().get("uid").getAsString()));
     }
