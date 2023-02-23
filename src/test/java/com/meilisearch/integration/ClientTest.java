@@ -190,7 +190,7 @@ public class ClientTest extends AbstractIT {
                 .contains(jsonIndexArray.get(1).getAsJsonObject().get("uid").getAsString()));
     }
 
-    /** Test getRawIndexes with limits*/
+    /** Test getRawIndexes with limits */
     @Test
     public void testGetRawIndexesLimit() throws Exception {
         int limit = 1;
@@ -205,7 +205,7 @@ public class ClientTest extends AbstractIT {
 
         assertEquals(limit, jsonIndexArray.size());
         assert (Arrays.asList(indexUids)
-            .contains(jsonIndexArray.get(0).getAsJsonObject().get("uid").getAsString()));
+                .contains(jsonIndexArray.get(0).getAsJsonObject().get("uid").getAsString()));
     }
 
     /** Test deleteIndex */
