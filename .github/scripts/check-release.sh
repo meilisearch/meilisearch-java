@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Checking if current tag matches the package version
-current_tag=$(echo $GITHUB_REF | tr -d 'refs/tags/v')
+current_tag=$(echo $GITHUB_REF | cut -d '/' -f 3 | sed -r 's/^v//')
 check1='build.gradle'
 check2='README.md'
 check3='README.md'

@@ -6,7 +6,7 @@ import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.model.IndexStats;
 import com.meilisearch.sdk.model.Stats;
-import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TaskInfo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -64,9 +64,9 @@ public class InstanceTest extends AbstractIT {
     public void testGetIndexStats() throws Exception {
         String indexUid = "IndexStats";
         Index index = client.index(indexUid);
-        Task task = client.createIndex(indexUid);
+        TaskInfo task = client.createIndex(indexUid);
 
-        client.waitForTask(task.getUid());
+        client.waitForTask(task.getTaskUid());
         IndexStats stats = index.getStats();
 
         assertNotNull(stats);

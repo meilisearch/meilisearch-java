@@ -7,7 +7,7 @@
 <h4 align="center">
   <a href="https://github.com/meilisearch/meilisearch">Meilisearch</a> |
   <a href="https://docs.meilisearch.com">Documentation</a> |
-  <a href="https://slack.meilisearch.com">Slack</a> |
+  <a href="https://discord.meilisearch.com">Discord</a> |
   <a href="https://roadmap.meilisearch.com/tabs/1-under-consideration">Roadmap</a> |
   <a href="https://www.meilisearch.com">Website</a> |
   <a href="https://docs.meilisearch.com/faq">FAQ</a>
@@ -56,7 +56,7 @@ Add the following code to the `<dependencies>` section of your project:
 <dependency>
   <groupId>com.meilisearch.sdk</groupId>
   <artifactId>meilisearch-java</artifactId>
-  <version>0.8.0</version>
+  <version>0.10.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -66,7 +66,7 @@ Add the following code to the `<dependencies>` section of your project:
 Add the following line to the `dependencies` section of your `build.gradle`:
 
 ```groovy
-implementation 'com.meilisearch.sdk:meilisearch-java:0.8.0'
+implementation 'com.meilisearch.sdk:meilisearch-java:0.10.0'
 ```
 
 ### Run Meilisearch <!-- omit in toc -->
@@ -118,7 +118,7 @@ class TestMeilisearch {
     Index index = client.index("movies");
 
     // If the index 'movies' does not exist, Meilisearch creates it when you first add the documents.
-    index.addDocuments(documents); // => { "uid": 0 }
+    index.addDocuments(documents); // => { "taskUid": 0 }
   }
 }
 ```
@@ -140,7 +140,7 @@ System.out.println(results);
 - Output:
 
 ```
-SearchResult(hits=[{id=1.0, title=Carol, genres:[Romance, Drama]}], offset=0, limit=20, nbHits=1, exhaustiveNbHits=false, facetsDistribution=null, exhaustiveFacetsCount=false, processingTimeMs=3, query=carlo)
+SearchResult(hits=[{id=1.0, title=Carol, genres:[Romance, Drama]}], offset=0, limit=20, estimatedTotalHits=1, facetDistribution=null, processingTimeMs=3, query=carlo)
 ```
 
 #### Custom Search <!-- omit in toc -->
@@ -155,7 +155,7 @@ import com.meilisearch.sdk.SearchRequest;
 
 SearchResult results = index.search(
   new SearchRequest("of")
-  .setMatches(true)
+  .setShowMatchesPosition(true)
   .setAttributesToHighlight(new String[]{"title"})
 );
 System.out.println(results.getHits());
@@ -173,10 +173,10 @@ System.out.println(results.getHits());
     "title":"Life <em>of</em> Pi",
     "genres":["Adventure","Drama"]
   },
-  "_matchesInfo":{
+  "_matchesPosition":{
     "title":[{
-      "start":5,
-      "length":2
+      "start":5.0,
+      "length":2.0
     }]
   }
 }]
@@ -217,7 +217,7 @@ index.search(
   ],
   "offset": 0,
   "limit": 20,
-  "nbHits": 1,
+  "estimatedTotalHits": 1,
   "processingTimeMs": 0,
   "query": "wonder"
 }
@@ -240,8 +240,7 @@ Set up your `Client` with it.
 ```java
 import com.meilisearch.sdk.json.JacksonJsonHandler;
 
-Config config = new Config("http://localhost:7700", "masterKey");
-config.setJsonHandler(new JacksonJsonHandler());
+Config config = new Config("http://localhost:7700", "masterKey", new JacksonJsonHandler());
 Client client = new Client(config);
 ```
 
@@ -258,14 +257,13 @@ To create your own JSON handler, you must conform to the `JsonHandler` interface
  Then create your client by initializing your `Config` with your new handler.
 
 ```java
-Config config = new Config("http://localhost:7700", "masterKey");
-config.setJsonHandler(new myJsonHandler());
+Config config = new Config("http://localhost:7700", "masterKey", new myJsonHandler());
 Client client = new Client(config);
 ```
 
 ## 🤖 Compatibility with Meilisearch
 
-This package only guarantees compatibility with the [version v0.27.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.27.0).
+This package only guarantees compatibility with the [version v0.29.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.29.0).
 
 ## 💡 Learn more
 
