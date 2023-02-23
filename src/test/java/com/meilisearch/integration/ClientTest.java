@@ -190,6 +190,24 @@ public class ClientTest extends AbstractIT {
                 .contains(jsonIndexArray.get(1).getAsJsonObject().get("uid").getAsString()));
     }
 
+    /** Test getRawIndexes with limits*/
+    @Test
+    public void testGetRawIndexesLimit() throws Exception {
+        int limit = 1;
+        String[] indexUids = {"GetRawIndexes", "GetRawIndexes2"};
+        createEmptyIndex(indexUids[0]);
+        createEmptyIndex(indexUids[1], this.primaryKey);
+        IndexesQuery query = new IndexesQuery().setLimit(limit);
+
+        String indexes = client.getRawIndexes(query);
+        JsonObject jsonIndexObject = JsonParser.parseString(indexes).getAsJsonObject();
+        JsonArray jsonIndexArray = jsonIndexObject.getAsJsonArray("results");
+
+        assertEquals(limit, jsonIndexArray.size());
+        assert (Arrays.asList(indexUids)
+            .contains(jsonIndexArray.get(0).getAsJsonObject().get("uid").getAsString()));
+    }
+
     /** Test deleteIndex */
     @Test
     public void testDeleteIndex() throws Exception {
