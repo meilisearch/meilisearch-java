@@ -752,10 +752,7 @@ date_guide_index_1: |-
   Index index = client.index("games");
   index.addDocuments(gamesJson);
 date_guide_filterable_attributes_1: |-
-  client.index("movies").updateFilterableAttributesSettings(new String[]
-  {
-    "release_timestamp"
-  });
+  client.index("movies").updateFilterableAttributesSettings(new String[] { "release_timestamp" });
 date_guide_filter_1: |-
   SearchRequest searchRequest =
     new SearchRequest("").setFilter(new String[] {"release_timestamp >= 1514761200 AND release_timestamp < 1672527600"});
