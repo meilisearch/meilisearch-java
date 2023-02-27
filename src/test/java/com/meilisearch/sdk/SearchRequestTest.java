@@ -85,10 +85,17 @@ class SearchRequestTest {
     @Test
     void toStringQueryLimitOffsetAndPageAndHitPerPage() {
         SearchRequest classToTest =
-                SearchRequest.builder().q("This is a Test").limit(20).offset(0).build();
+                SearchRequest.builder()
+                        .q("This is a Test")
+                        .limit(20)
+                        .offset(0)
+                        .page(10)
+                        .hitsPerPage(2)
+                        .build();
 
         assertEquals(
-                "{\"q\":\"This is a Test\",\"offset\":0,\"limit\":20}", classToTest.toString());
+                "{\"q\":\"This is a Test\",\"offset\":0,\"hitsPerPage\":2,\"limit\":20,\"page\":10}",
+                classToTest.toString());
     }
 
     @Test
@@ -103,7 +110,9 @@ class SearchRequestTest {
                         .setCropLength(900)
                         .setFilter(new String[] {"test='test'"})
                         .setFacets(new String[] {"facets"})
-                        .setSort(new String[] {"sort"});
+                        .setSort(new String[] {"sort"})
+                        .setPage(10)
+                        .setHitsPerPage(2);
 
         assertEquals("This is a Test", classToTest.getQ());
         assertEquals(200, classToTest.getOffset());
@@ -120,6 +129,8 @@ class SearchRequestTest {
         assertEquals("facets", classToTest.getFacets()[0]);
         assertEquals("sort", classToTest.getSort()[0]);
         assertEquals(900, classToTest.getCropLength());
+        assertEquals(10, classToTest.getPage());
+        assertEquals(2, classToTest.getHitsPerPage());
     }
 
     @Test
@@ -136,6 +147,8 @@ class SearchRequestTest {
                         .filter(new String[] {"test='test'"})
                         .facets(new String[] {"facets"})
                         .sort(new String[] {"sort"})
+                        .page(10)
+                        .hitsPerPage(2)
                         .build();
 
         assertEquals("This is a Test", classToTest.getQ());
@@ -153,6 +166,8 @@ class SearchRequestTest {
         assertEquals("facets", classToTest.getFacets()[0]);
         assertEquals("sort", classToTest.getSort()[0]);
         assertEquals(900, classToTest.getCropLength());
+        assertEquals(10, classToTest.getPage());
+        assertEquals(2, classToTest.getHitsPerPage());
     }
 
     @Test
@@ -175,7 +190,9 @@ class SearchRequestTest {
                                 })
                         .setShowMatchesPosition(true)
                         .setFacets(new String[] {"facets"})
-                        .setSort(new String[] {"sort"});
+                        .setSort(new String[] {"sort"})
+                        .setPage(0)
+                        .setHitsPerPage(0);
 
         assertEquals("This is a Test", classToTest.getQ());
         assertEquals(200, classToTest.getOffset());
@@ -194,8 +211,10 @@ class SearchRequestTest {
         assertEquals("facets", classToTest.getFacets()[0]);
         assertEquals("sort", classToTest.getSort()[0]);
         assertEquals(900, classToTest.getCropLength());
+        assertEquals(0, classToTest.getPage());
+        assertEquals(0, classToTest.getHitsPerPage());
         assertEquals(
-                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"matchingStrategy\":\"all\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"attributesToCrop\":[\"crop\"]}",
+                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"matchingStrategy\":\"all\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}",
                 classToTest.toString());
     }
 
@@ -221,6 +240,8 @@ class SearchRequestTest {
                         .showMatchesPosition(true)
                         .facets(new String[] {"facets"})
                         .sort(new String[] {"sort"})
+                        .page(0)
+                        .hitsPerPage(0)
                         .build();
 
         assertEquals("This is a Test", classToTest.getQ());
@@ -240,8 +261,10 @@ class SearchRequestTest {
         assertEquals("facets", classToTest.getFacets()[0]);
         assertEquals("sort", classToTest.getSort()[0]);
         assertEquals(900, classToTest.getCropLength());
+        assertEquals(0, classToTest.getPage());
+        assertEquals(0, classToTest.getHitsPerPage());
         assertEquals(
-                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"matchingStrategy\":\"all\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"attributesToCrop\":[\"crop\"]}",
+                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"matchingStrategy\":\"all\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}",
                 classToTest.toString());
     }
 
@@ -267,6 +290,8 @@ class SearchRequestTest {
                         .showMatchesPosition(true)
                         .facets(new String[] {"facets"})
                         .sort(new String[] {"sort"})
+                        .page(0)
+                        .hitsPerPage(0)
                         .build();
 
         assertEquals("This is a Test", classToTest.getQ());
@@ -287,7 +312,7 @@ class SearchRequestTest {
         assertEquals("sort", classToTest.getSort()[0]);
         assertEquals(900, classToTest.getCropLength());
         assertEquals(
-                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"attributesToCrop\":[\"crop\"]}",
+                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}",
                 classToTest.toString());
     }
 }
