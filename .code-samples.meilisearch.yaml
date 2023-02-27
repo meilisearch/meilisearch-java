@@ -779,7 +779,7 @@ async_guide_filter_by_date_1: |-
 async_guide_multiple_filters_1: |-
   TasksQuery query =
           new TasksQuery()
-                  .setStatuse(new String[] {"processing"})
+                  .setStatuses(new String[] {"processing"})
                   .setTypes(new String[] {"documentAdditionOrUpdate", "documentDeletion"})
                   .SetIndexUids(new String[] {"movies"});
 
