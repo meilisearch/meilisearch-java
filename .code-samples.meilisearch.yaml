@@ -456,6 +456,12 @@ settings_guide_typo_tolerance_1: |-
   typoTolerance.setDisableOnAttributes(new String[] {"title"});
 
   client.index("movies").updateTypoToleranceSettings(typoTolerance);
+synonyms_guide_1: |-
+  HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
+  synonyms.put("great", new String[] {"fantastic"});
+  synonyms.put("fantastic", new String[] {"great"});
+
+  client.index("movies").updateSynonymsSettings(synonyms);
 typo_tolerance_guide_1: |-
   TypoTolerance typoTolerance = new TypoTolerance();
   typoTolerance.setEnabled(false);
@@ -492,7 +498,7 @@ getting_started_add_documents_md: |-
   <dependency>
     <groupId>com.meilisearch.sdk</groupId>
     <artifactId>meilisearch-java</artifactId>
-    <version>0.10.0</version>
+    <version>0.11.0</version>
     <type>pom</type>
   </dependency>
   ```
@@ -500,7 +506,7 @@ getting_started_add_documents_md: |-
   **Gradle**
   Add the following line to the `dependencies` section of your `build.gradle`:
   ```groovy
-  implementation 'com.meilisearch.sdk:meilisearch-java:0.10.0'
+  implementation 'com.meilisearch.sdk:meilisearch-java:0.11.0'
   ```
 
   ```java
@@ -604,6 +610,8 @@ getting_started_communicating_with_a_protected_instance: |-
   Client client = new Client(new Config("http://localhost:7700", "apiKey"));
   
   client.index("movies").search(new SearchRequest(""));
+getting_started_faceting: |-
+getting_started_pagination: |-
 faceted_search_update_settings_1: |-
   client.index("movies").updateFilterableAttributesSettings(new String[]
   {
@@ -770,6 +778,29 @@ tenant_token_guide_generate_sdk_1: |-
 tenant_token_guide_search_sdk_1: |-
   Client frontEndClient = new Client(new Config("http://localhost:7700", token));
   frontEndClient.index("patient_medical_records").search("blood test");
+date_guide_index_1: |-
+  import com.meilisearch.sdk;
+  import org.json.JSONArray;
+  import java.nio.file.Files;
+  import java.nio.file.Path;
+
+  Path fileName = Path.of("games.json");
+  String gamesJson = Files.readString(fileName);
+  Index index = client.index("games");
+  index.addDocuments(gamesJson);
+date_guide_filterable_attributes_1: |-
+  client.index("movies").updateFilterableAttributesSettings(new String[] { "release_timestamp" });
+date_guide_filter_1: |-
+  SearchRequest searchRequest =
+    new SearchRequest("").setFilter(new String[] {"release_timestamp >= 1514761200 AND release_timestamp < 1672527600"});
+  client.index("games").search(searchRequest);
+date_guide_sortable_attributes_1: |-
+  Settings settings = new Settings();
+  settings.setSortableAttributes(new String[] {"release_timestamp"});
+  client.index("games").updateSettings(settings);
+date_guide_sort_1: |-
+  SearchRequest searchRequest = new SearchRequest("").setSort(new String[] {"release_timestamp:desc"});
+  client.index("games").search(searchRequest);
 async_guide_filter_by_date_1: |-
   SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
   Date date = format.parse("2020-10-11T11:49:53.000Z");
