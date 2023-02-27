@@ -19,6 +19,15 @@ public class TaskDetails {
     protected Map<String, String[]> synonyms;
     protected String distinctAttribute;
     protected TypoTolerance typoTolerance;
+    protected int providedIds;
+    protected Pagination pagination;
+    protected Faceting faceting;
+    protected String dumpUid;
+    protected int matchedTasks;
+    protected int canceledTasks;
+    protected String originalFilter;
+    protected int deletedTasks;
+    protected SwapIndexesParams[] swaps;
 
     public TaskDetails() {}
 }
