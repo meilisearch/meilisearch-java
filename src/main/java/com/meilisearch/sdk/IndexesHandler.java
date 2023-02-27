@@ -76,7 +76,7 @@ class IndexesHandler {
     /**
      * Gets indexes in the current Meilisearch instance
      *
-     * @param query parameters accepted by the indexes route
+     * @param params parameters accepted by the indexes route
      * @return Results containing a list of indexes
      * @throws MeilisearchException if an error occurs
      */
@@ -93,6 +93,17 @@ class IndexesHandler {
      */
     String getRawIndexes() throws MeilisearchException {
         return httpClient.get(indexesPath().getURL(), String.class);
+    }
+
+    /**
+     * Gets indexes in the current Meilisearch instance
+     *
+     * @param params parameters accepted by the indexes route
+     * @return List of indexes as String
+     * @throws MeilisearchException if an error occurs
+     */
+    String getRawIndexes(IndexesQuery params) throws MeilisearchException {
+        return httpClient.get(indexesPath().addQuery(params.toQuery()).getURL(), String.class);
     }
 
     /**

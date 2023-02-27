@@ -363,7 +363,7 @@ search_parameter_guide_highlight_tag_1: |-
                   .build();
   client.index("movies").search(searchRequest);
 search_parameter_guide_matches_1: |-
-  SearchRequest searchRequest = new SearchRequest("winter feast").setMatches(true);
+  SearchRequest searchRequest = SearchRequest.builder().q("winter feast").matches(true).build();
   client.index("movies").search(searchRequest);
 search_parameter_guide_hitsperpage_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("").hitsPerPage(15).build();
@@ -372,13 +372,13 @@ search_parameter_guide_page_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("").page(15).build();
   SearchResultPaginated searchResult = client.index("movies").search(searchRequest);
 search_parameter_guide_show_matches_position_1: |-
-  SearchRequest searchRequest = new SearchRequest("winter feast").setShowMatchesPosition(true);
+  SearchRequest searchRequest = SearchRequest.builder().q("winter feast").showMatchesPosition(true).build();
   SearchResultPaginated searchResult = client.index("movies").search(searchRequest);
 search_parameter_guide_matching_strategy_1: |-
-  SearchRequest searchRequest = new SearchRequest("big fat liar").setMatchingStrategy(MatchingStrategy.LAST);
+  SearchRequest searchRequest = SearchRequest.builder().q("big fat liar").matchingStrategy(MatchingStrategy.LAST).build();
   client.index("movies").search(searchRequest);
 search_parameter_guide_matching_strategy_2: |-
-  SearchRequest searchRequest = new SearchRequest("big fat liar").setMatchingStrategy(MatchingStrategy.ALL);
+  SearchRequest searchRequest = SearchRequest.builder().q("big fat liar").matchingStrategy(MatchingStrategy.ALL).build();
   client.index("movies").search(searchRequest);
 settings_guide_synonyms_1: |-
   Settings settings = new Settings();
