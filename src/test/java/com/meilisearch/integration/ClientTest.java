@@ -245,6 +245,7 @@ public class ClientTest extends AbstractIT {
                     new SwapIndexesParams().setIndexes(new String[] {indexUidA, indexUidB})
                 };
         TaskInfo task = client.swapIndexes(params);
+        client.waitForTask(task.getTaskUid());
 
         assertEquals("indexSwap", task.getType());
         assertEquals("Document1", indexB.getDocument("1", Movie.class).getTitle());
