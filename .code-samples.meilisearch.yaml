@@ -14,6 +14,13 @@ update_an_index_1: |-
   client.updateIndex("movies", "id");
 delete_an_index_1: |-
   client.deleteIndex("movies");
+swap_indexes_1: |-
+  SwapIndexesParams[] params =
+          new SwapIndexesParams[] {
+              new SwapIndexesParams().setIndexes(new String[] {"indexA", "indexB"}),
+              new SwapIndexesParams().setIndexes(new String[] {"indexX", "indexY"})
+          };
+  TaskInfo task = client.swapIndexes(params);
 get_one_document_1: |-
   DocumentQuery query = new DocumentQuery().setFields(new String[] {"id", "title", "poster", "release_date"});
   client.index("movies").getDocument("25684", query);
@@ -56,6 +63,12 @@ get_task_1: |-
   client.getTask(1);
 get_all_tasks_filtering_1: |-
   client.index("movies").getTasks();
+delete_tasks_1: |-
+  DeleteTasksQuery query = new DeleteTasksQuery().setUids(new int[] {1, 2})
+  client.deleteTasks(query);
+cancel_tasks_1: |-
+  CancelTasksQuery query = new CancelTasksQuery().setUids(new int[] {1, 2})
+  client.cancelTasks(query);
 get_all_tasks_filtering_2: |-
   TasksQuery query = new TasksQuery()
         .setStatus(new String[] {"succeeded", "failed"})
@@ -322,15 +335,19 @@ search_parameter_guide_retrieve_1: |-
   client.index("movies").search(searchRequest);
 search_parameter_guide_crop_1: |-
   SearchRequest searchRequest =
-    new SearchRequest("shifu")
-      .setAttributesToCrop(new String[] {"overview"})
-      .setCropLength(5);
+          SearchRequest.builder()
+                  .q("shifu")
+                  .attributesToCrop(new String[] {"overview"})
+                  .cropLength(5)
+                  .build();
   client.index("movies").search(searchRequest);
 search_parameter_guide_crop_marker_1: |-
   SearchRequest searchRequest =
-    new SearchRequest("shifu")
-      .setAttributesToCrop(new String[] {"overview"})
-      .setCropMarker("[…]");
+          SearchRequest.builder()
+                  .q("shifu")
+                  .attributesToCrop(new String[] {"overview"})
+                  .cropMarker("[…]")
+                  .build();
   client.index("movies").search(searchRequest);
 search_parameter_guide_highlight_1: |-
   SearchRequest searchRequest =
@@ -338,10 +355,30 @@ search_parameter_guide_highlight_1: |-
   client.index("movies").search(searchRequest);
 search_parameter_guide_highlight_tag_1: |-
   SearchRequest searchRequest =
-    new SearchRequest("winter feast")
-    .setAttributesToHighlight(new String[] {"overview"})
-    .setHighlightPreTag("<span class=\"highlight\">")
-    .setHighlightPostTag("</span>");
+          SearchRequest.builder()
+                  .q("winter feast")
+                  .attributesToHighlight(new String[] {"overview"})
+                  .highlightPreTag("<span class=\"highlight\">")
+                  .highlightPostTag("</span>")
+                  .build();
+  client.index("movies").search(searchRequest);
+search_parameter_guide_matches_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("winter feast").matches(true).build();
+  client.index("movies").search(searchRequest);
+search_parameter_guide_hitsperpage_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("").hitsPerPage(15).build();
+  SearchResultPaginated searchResult = client.index("movies").search(searchRequest);
+search_parameter_guide_page_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("").page(15).build();
+  SearchResultPaginated searchResult = client.index("movies").search(searchRequest);
+search_parameter_guide_show_matches_position_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("winter feast").showMatchesPosition(true).build();
+  SearchResultPaginated searchResult = client.index("movies").search(searchRequest);
+search_parameter_guide_matching_strategy_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("big fat liar").matchingStrategy(MatchingStrategy.LAST).build();
+  client.index("movies").search(searchRequest);
+search_parameter_guide_matching_strategy_2: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("big fat liar").matchingStrategy(MatchingStrategy.ALL).build();
   client.index("movies").search(searchRequest);
 settings_guide_synonyms_1: |-
   Settings settings = new Settings();
@@ -764,3 +801,32 @@ date_guide_sortable_attributes_1: |-
 date_guide_sort_1: |-
   SearchRequest searchRequest = new SearchRequest("").setSort(new String[] {"release_timestamp:desc"});
   client.index("games").search(searchRequest);
+async_guide_filter_by_date_1: |-
+  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+  Date date = format.parse("2020-10-11T11:49:53.000Z");
+  TasksQuery query = new TasksQuery().setBeforeEnqueuedAt(date);
+
+  client.getTasks(query);
+async_guide_multiple_filters_1: |-
+  TasksQuery query =
+          new TasksQuery()
+                  .setStatuses(new String[] {"processing"})
+                  .setTypes(new String[] {"documentAdditionOrUpdate", "documentDeletion"})
+                  .setIndexUids(new String[] {"movies"});
+
+  client.getTasks(query);
+async_guide_filter_by_ids_1: |-
+  TasksQuery query = new TasksQuery().setUids(new int[] {5, 10, 13});
+  client.getTasks(query);
+async_guide_filter_by_statuses_1: |-
+  TasksQuery query = new TasksQuery().setStatuses(new String[] {"failed", "canceled"});
+  client.getTasks(query);
+async_guide_filter_by_types_1: |-
+  TasksQuery query = new TasksQuery().setTypes(new String[] {"dumpCreation", "indexSwap"});
+  client.getTasks(query);
+async_guide_filter_by_index_uids_1: |-
+  TasksQuery query = new TasksQuery().setIndexUids(new String[] {"movies"});
+  client.getTasks(query);
+async_guide_canceled_by_1: |-
+  TasksQuery query = new TasksQuery().setCanceledBy(new int[] {9, 15});
+  client.getTasks(query);
