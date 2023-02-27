@@ -9,6 +9,7 @@ import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.SearchRequest;
 import com.meilisearch.sdk.json.GsonJsonHandler;
+import com.meilisearch.sdk.model.MatchingStrategy;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
@@ -229,6 +230,26 @@ public class SearchTest extends AbstractIT {
         assertEquals(
                 "Harry Potter (⊃｡•́‿•̀｡)⊃ and ⊂(´• ω •`⊂) the Philosopher's Stone",
                 resGson.hits[0].getFormatted().getTitle());
+    }
+
+    /** Test search with customized highlight */
+    @Test
+    public void testSearchWithMatchingStrategy() throws Exception {
+        String indexUid = "SearchMatchingStrategy";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SearchRequest searchRequest =
+                SearchRequest.builder().q("and").matchingStrategy(MatchingStrategy.ALL).build();
+
+        SearchResult searchResult = index.search(searchRequest);
+
+        assertEquals(20, searchResult.getHits().size());
+        assertEquals(21, searchResult.getEstimatedTotalHits());
     }
 
     /** Test search with phrase */
