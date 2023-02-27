@@ -781,7 +781,7 @@ async_guide_multiple_filters_1: |-
           new TasksQuery()
                   .setStatuses(new String[] {"processing"})
                   .setTypes(new String[] {"documentAdditionOrUpdate", "documentDeletion"})
-                  .SetIndexUids(new String[] {"movies"});
+                  .setIndexUids(new String[] {"movies"});
 
   client.getTasks(query);
 async_guide_filter_by_ids_1: |-
