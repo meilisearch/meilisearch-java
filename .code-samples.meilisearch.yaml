@@ -423,6 +423,7 @@ synonyms_guide_1: |-
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("great", new String[] {"fantastic"});
   synonyms.put("fantastic", new String[] {"great"});
+
   client.index("movies").updateSynonymsSettings(synonyms);
 typo_tolerance_guide_1: |-
   TypoTolerance typoTolerance = new TypoTolerance();
