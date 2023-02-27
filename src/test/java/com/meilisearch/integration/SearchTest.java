@@ -11,6 +11,8 @@ import com.meilisearch.sdk.SearchRequest;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.model.MatchingStrategy;
 import com.meilisearch.sdk.model.SearchResult;
+import com.meilisearch.sdk.model.SearchResultPaginated;
+import com.meilisearch.sdk.model.Searchable;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
@@ -78,7 +80,7 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest = SearchRequest.builder().q("a").offset(20).build();
-        SearchResult searchResult = index.search(searchRequest);
+        SearchResult searchResult = (SearchResult) index.search(searchRequest);
 
         assertEquals(10, searchResult.getHits().size());
         assertEquals(30, searchResult.getEstimatedTotalHits());
@@ -96,7 +98,7 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest = SearchRequest.builder().q("a").limit(2).build();
-        SearchResult searchResult = index.search(searchRequest);
+        SearchResult searchResult = (SearchResult) index.search(searchRequest);
 
         assertEquals(2, searchResult.getHits().size());
         assertEquals(30, searchResult.getEstimatedTotalHits());
@@ -246,7 +248,7 @@ public class SearchTest extends AbstractIT {
         SearchRequest searchRequest =
                 SearchRequest.builder().q("and").matchingStrategy(MatchingStrategy.ALL).build();
 
-        SearchResult searchResult = index.search(searchRequest);
+        SearchResult searchResult = (SearchResult) index.search(searchRequest);
 
         assertEquals(20, searchResult.getHits().size());
         assertEquals(21, searchResult.getEstimatedTotalHits());
@@ -344,7 +346,7 @@ public class SearchTest extends AbstractIT {
 
         SearchRequest searchRequest = new SearchRequest("knight").setFacets(new String[] {"*"});
 
-        SearchResult searchResult = index.search(searchRequest);
+        Searchable searchResult = index.search(searchRequest);
 
         assertEquals(1, searchResult.getHits().size());
         assertNotNull(searchResult.getFacetDistribution());
@@ -484,9 +486,51 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest = new SearchRequest("and").setShowMatchesPosition(true);
-        SearchResult searchResult = index.search(searchRequest);
+        Searchable searchResult = index.search(searchRequest);
 
         assertEquals(20, searchResult.getHits().size());
+    }
+
+    /** Test search page */
+    @Test
+    public void testSearchPage() throws Exception {
+        String indexUid = "SearchOffset";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SearchRequest searchRequest = SearchRequest.builder().q("a").page(1).build();
+        SearchResultPaginated searchResult = (SearchResultPaginated) index.search(searchRequest);
+
+        assertEquals(20, searchResult.getHits().size());
+        assertEquals(1, searchResult.getPage());
+        assertEquals(20, searchResult.getHitsPerPage());
+        assertEquals(30, searchResult.getTotalHits());
+        assertEquals(2, searchResult.getTotalPages());
+    }
+
+    /** Test search pagination */
+    @Test
+    public void testSearchPagination() throws Exception {
+        String indexUid = "SearchOffset";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SearchRequest searchRequest = SearchRequest.builder().q("a").page(2).hitsPerPage(2).build();
+        SearchResultPaginated searchResult = (SearchResultPaginated) index.search(searchRequest);
+
+        assertEquals(2, searchResult.getHits().size());
+        assertEquals(2, searchResult.getPage());
+        assertEquals(2, searchResult.getHitsPerPage());
+        assertEquals(30, searchResult.getTotalHits());
+        assertEquals(15, searchResult.getTotalPages());
     }
 
     /** Test place holder search */
@@ -499,7 +543,7 @@ public class SearchTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
-        SearchResult result = index.search("");
+        SearchResult result = (SearchResult) index.search("");
 
         assertEquals(20, result.getLimit());
     }
@@ -514,7 +558,7 @@ public class SearchTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
-        SearchResult searchResult = index.search(new SearchRequest(null).setLimit(10));
+        Searchable searchResult = index.search(new SearchRequest(null).setLimit(10));
 
         assertEquals(10, searchResult.getHits().size());
     }
