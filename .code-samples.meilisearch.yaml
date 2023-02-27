@@ -797,5 +797,5 @@ async_guide_filter_by_index_uids_1: |-
   TasksQuery query = new TasksQuery().SetIndexUids(new String[] {"movies"});
   client.getTasks(query);
 async_guide_canceled_by_1: |-
-  TasksQuery query = new TasksQuery().setCanceledBy(new int[] {9});
+  TasksQuery query = new TasksQuery().setCanceledBy(new int[] {9, 15});
   client.getTasks(query);
