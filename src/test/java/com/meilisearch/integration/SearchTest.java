@@ -248,7 +248,7 @@ public class SearchTest extends AbstractIT {
         SearchRequest searchRequest =
                 SearchRequest.builder().q("and").matchingStrategy(MatchingStrategy.ALL).build();
 
-        SearchResult searchResult = index.search(searchRequest);
+        SearchResult searchResult = (SearchResult) index.search(searchRequest);
 
         assertEquals(20, searchResult.getHits().size());
         assertEquals(21, searchResult.getEstimatedTotalHits());
