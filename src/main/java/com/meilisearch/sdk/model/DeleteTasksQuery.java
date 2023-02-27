@@ -14,10 +14,8 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class TasksQuery {
+public class DeleteTasksQuery {
     private int[] uids;
-    private int limit = -1;
-    private int from = -1;
     private String[] statuses;
     private String[] types;
     private String[] indexUids;
@@ -29,13 +27,11 @@ public class TasksQuery {
     private Date beforeFinishedAt;
     private Date afterFinishedAt;
 
-    public TasksQuery() {}
+    public DeleteTasksQuery() {}
 
     public String toQuery() {
         URLBuilder urlb =
                 new URLBuilder()
-                        .addParameter("limit", this.getLimit())
-                        .addParameter("from", this.getFrom())
                         .addParameter("uids", this.getUids())
                         .addParameter("statuses", this.getStatuses())
                         .addParameter("types", this.getTypes())
