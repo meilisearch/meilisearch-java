@@ -14,9 +14,15 @@ import lombok.experimental.Accessors;
 public class Key {
     @Setter
     @Accessors(chain = true)
+    protected String name = null;
+
+    @Setter
+    @Accessors(chain = true)
     protected String description = null;
 
-    protected String key = "";
+    protected String uid = null;
+
+    protected String key = null;
 
     @Setter
     @Accessors(chain = true)

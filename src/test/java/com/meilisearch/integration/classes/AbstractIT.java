@@ -7,8 +7,8 @@ import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.json.JacksonJsonHandler;
 import com.meilisearch.sdk.model.Key;
-import com.meilisearch.sdk.model.Result;
-import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.Results;
+import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
 import java.io.*;
 import java.net.URL;
@@ -59,14 +59,14 @@ public abstract class AbstractIT {
     }
 
     public Index createEmptyIndex(String indexUid) throws Exception {
-        Task task = client.createIndex(indexUid);
-        client.waitForTask(task.getUid());
+        TaskInfo task = client.createIndex(indexUid);
+        client.waitForTask(task.getTaskUid());
         return client.getIndex(indexUid);
     }
 
     public Index createEmptyIndex(String indexUid, String primaryKey) throws Exception {
-        Task task = client.createIndex(indexUid, primaryKey);
-        client.waitForTask(task.getUid());
+        TaskInfo task = client.createIndex(indexUid, primaryKey);
+        client.waitForTask(task.getTaskUid());
         return client.getIndex(indexUid);
     }
 
@@ -89,11 +89,10 @@ public abstract class AbstractIT {
     }
 
     public Key getPrivateKey() throws Exception {
-        Result<Key> result = client.getKeys();
+        Results<Key> result = client.getKeys();
         Key[] keys = result.getResults();
         for (Key key : keys) {
-            if ((key.getDescription() == null)
-                    || (key.getDescription().contains("Default Admin API"))) {
+            if ((key.getName() == null) || (key.getName().contains("Default Admin API"))) {
                 return key;
             }
         }
@@ -103,9 +102,10 @@ public abstract class AbstractIT {
     public static void deleteAllIndexes() {
         try {
             Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"));
-            Index[] indexes = ms.getIndexes();
-            for (Index index : indexes) {
-                ms.deleteIndex(index.getUid());
+            Results<Index> indexes = ms.getIndexes();
+            for (Index index : indexes.getResults()) {
+                TaskInfo task = ms.deleteIndex(index.getUid());
+                ms.waitForTask(task.getTaskUid());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,7 +115,7 @@ public abstract class AbstractIT {
     public static void deleteAllKeys() {
         try {
             Client ms = new Client(new Config(getMeilisearchHost(), "masterKey"));
-            Result<Key> result = ms.getKeys();
+            Results<Key> result = ms.getKeys();
             Key[] keys = result.getResults();
             for (Key key : keys) {
                 if ((key.getDescription() == null) || (key.getDescription().contains("test"))) {

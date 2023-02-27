@@ -2,6 +2,11 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.json.JsonHandler;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +17,7 @@ public class Config {
     protected final String hostUrl;
     protected final String apiKey;
     protected final HttpClient httpClient;
+    protected final Map<String, String> headers;
     protected JsonHandler jsonHandler;
 
     /**
@@ -24,15 +30,50 @@ public class Config {
     }
 
     /**
-     * Creates a configuration with an API key
+     * Creates a configuration with an API key and no customized headers.
      *
      * @param hostUrl URL of the Meilisearch instance
      * @param apiKey API key to pass to the header of requests sent to Meilisearch
      */
     public Config(String hostUrl, String apiKey) {
+        this(hostUrl, apiKey, new GsonJsonHandler(), new String[0]);
+    }
+
+    /**
+     * Creates a configuration with an API key and no customized headers.
+     *
+     * @param hostUrl URL of the Meilisearch instance
+     * @param apiKey API key to pass to the header of requests sent to Meilisearch
+     * @param jsonHandler JsonHandler to parse or write JSON
+     */
+    public Config(String hostUrl, String apiKey, JsonHandler jsonHandler) {
+        this(hostUrl, apiKey, jsonHandler, new String[0]);
+    }
+
+    /**
+     * Creates a configuration with an API key
+     *
+     * @param hostUrl URL of the Meilisearch instance
+     * @param apiKey API key to pass to the header of requests sent to Meilisearch
+     * @param clientAgents List of customized agents to be passed to User-Agent header.
+     */
+    public Config(String hostUrl, String apiKey, String[] clientAgents) {
+        this(hostUrl, apiKey, new GsonJsonHandler(), clientAgents);
+    }
+
+    /**
+     * Creates a configuration with an API key
+     *
+     * @param hostUrl URL of the Meilisearch instance
+     * @param apiKey API key to pass to the header of requests sent to Meilisearch
+     * @param jsonHandler JsonHandler to parse or write JSON
+     * @param clientAgents List of customized agents to be passed to User-Agent header.
+     */
+    public Config(String hostUrl, String apiKey, JsonHandler jsonHandler, String[] clientAgents) {
         this.hostUrl = hostUrl;
         this.apiKey = apiKey;
-        this.jsonHandler = new GsonJsonHandler();
+        this.headers = configHeaders(clientAgents);
+        this.jsonHandler = jsonHandler;
         this.httpClient = new HttpClient(this);
     }
 
@@ -43,5 +84,15 @@ public class Config {
      */
     public String getBearerApiKey() {
         return "Bearer " + apiKey;
+    }
+
+    private Map<String, String> configHeaders(String[] clientAgents) {
+        List<String> list = new ArrayList<String>(Arrays.asList(clientAgents));
+        list.add(0, Version.getQualifiedVersion());
+
+        Map<String, String> data = new HashMap<>();
+        data.put("User-Agent", String.join(";", list));
+
+        return data;
     }
 }

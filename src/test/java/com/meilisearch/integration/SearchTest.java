@@ -11,7 +11,7 @@ import com.meilisearch.sdk.SearchRequest;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.model.Settings;
-import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,8 +27,7 @@ public class SearchTest extends AbstractIT {
         Movie[] hits;
         int offset;
         int limit;
-        int nbHits;
-        boolean exhaustiveNbHits;
+        int estimatedTotalHits;
         int processingTimeMs;
         String query;
     }
@@ -53,17 +52,17 @@ public class SearchTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         SearchResult searchResult = index.search("batman");
 
-        assertNull(searchResult.getFacetsDistribution());
+        assertNull(searchResult.getFacetDistribution());
         assertEquals(1, searchResult.getHits().size());
         assertEquals(0, searchResult.getOffset());
         assertEquals(20, searchResult.getLimit());
-        assertEquals(1, searchResult.getNbHits());
+        assertEquals(1, searchResult.getEstimatedTotalHits());
     }
 
     /** Test search offset */
@@ -73,15 +72,15 @@ public class SearchTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest = new SearchRequest("a").setOffset(20);
+        SearchRequest searchRequest = SearchRequest.builder().q("a").offset(20).build();
         SearchResult searchResult = index.search(searchRequest);
 
         assertEquals(10, searchResult.getHits().size());
-        assertEquals(30, searchResult.getNbHits());
+        assertEquals(30, searchResult.getEstimatedTotalHits());
     }
 
     /** Test search limit */
@@ -91,15 +90,15 @@ public class SearchTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest = new SearchRequest("a").setLimit(2);
+        SearchRequest searchRequest = SearchRequest.builder().q("a").limit(2).build();
         SearchResult searchResult = index.search(searchRequest);
 
         assertEquals(2, searchResult.getHits().size());
-        assertEquals(30, searchResult.getNbHits());
+        assertEquals(30, searchResult.getEstimatedTotalHits());
     }
 
     /** Test search attributesToRetrieve */
@@ -110,9 +109,9 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest =
                 new SearchRequest("a").setAttributesToRetrieve(new String[] {"id", "title"});
@@ -137,14 +136,16 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest =
-                new SearchRequest("and")
-                        .setAttributesToCrop(new String[] {"overview"})
-                        .setCropLength(1);
+                SearchRequest.builder()
+                        .q("and")
+                        .attributesToCrop(new String[] {"overview"})
+                        .cropLength(1)
+                        .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -161,15 +162,17 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest =
-                new SearchRequest("and")
-                        .setAttributesToCrop(new String[] {"overview"})
-                        .setCropLength(1)
-                        .setCropMarker("(ꈍᴗꈍ)");
+                SearchRequest.builder()
+                        .q("and")
+                        .attributesToCrop(new String[] {"overview"})
+                        .cropLength(1)
+                        .cropMarker("(ꈍᴗꈍ)")
+                        .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -185,9 +188,9 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest =
                 new SearchRequest("and").setAttributesToHighlight(new String[] {"title"});
@@ -208,15 +211,17 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest =
-                new SearchRequest("and")
-                        .setAttributesToHighlight(new String[] {"title"})
-                        .setHighlightPreTag("(⊃｡•́‿•̀｡)⊃ ")
-                        .setHighlightPostTag(" ⊂(´• ω •`⊂)");
+                SearchRequest.builder()
+                        .q("and")
+                        .attributesToHighlight(new String[] {"title"})
+                        .highlightPreTag("(⊃｡•́‿•̀｡)⊃ ")
+                        .highlightPostTag(" ⊂(´• ω •`⊂)")
+                        .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -234,9 +239,9 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         Results resGson = jsonGson.decode(index.rawSearch("coco \"harry\""), Results.class);
 
@@ -253,14 +258,14 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         Settings settings = index.getSettings();
 
         settings.setFilterableAttributes(new String[] {"title"});
-        index.waitForTask(index.updateSettings(settings).getUid());
+        index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchRequest searchRequest =
                 new SearchRequest("and").setFilter(new String[] {"title = \"The Dark Knight\""});
@@ -280,14 +285,14 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         Settings settings = index.getSettings();
 
         settings.setFilterableAttributes(new String[] {"title", "id"});
-        index.waitForTask(index.updateSettings(settings).getUid());
+        index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchRequest searchRequest =
                 new SearchRequest("and")
@@ -307,22 +312,21 @@ public class SearchTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         Settings settings = index.getSettings();
 
         settings.setFilterableAttributes(new String[] {"title"});
-        index.waitForTask(index.updateSettings(settings).getUid());
+        index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest =
-                new SearchRequest("knight").setFacetsDistribution(new String[] {"*"});
+        SearchRequest searchRequest = new SearchRequest("knight").setFacets(new String[] {"*"});
 
         SearchResult searchResult = index.search(searchRequest);
 
         assertEquals(1, searchResult.getHits().size());
-        assertNotNull(searchResult.getFacetsDistribution());
+        assertNotNull(searchResult.getFacetDistribution());
     }
 
     /** Test search sort */
@@ -333,14 +337,14 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         Settings settings = index.getSettings();
 
         settings.setSortableAttributes(new String[] {"title"});
-        index.waitForTask(index.updateSettings(settings).getUid());
+        index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchRequest searchRequest = new SearchRequest("and").setSort(new String[] {"title:asc"});
 
@@ -363,16 +367,17 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         Settings settings = index.getSettings();
 
         settings.setSortableAttributes(new String[] {"id"});
-        index.waitForTask(index.updateSettings(settings).getUid());
+        index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest = new SearchRequest("and").setSort(new String[] {"id:asc"});
+        SearchRequest searchRequest =
+                SearchRequest.builder().q("and").sort(new String[] {"id:asc"}).build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -393,17 +398,20 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         Settings settings = index.getSettings();
 
         settings.setSortableAttributes(new String[] {"id", "title"});
-        index.waitForTask(index.updateSettings(settings).getUid());
+        index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchRequest searchRequest =
-                new SearchRequest("dark").setSort(new String[] {"id:asc", "title:asc"});
+                SearchRequest.builder()
+                        .q("dark")
+                        .sort(new String[] {"id:asc", "title:asc"})
+                        .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -422,14 +430,14 @@ public class SearchTest extends AbstractIT {
         GsonJsonHandler jsonGson = new GsonJsonHandler();
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
         Settings settings = index.getSettings();
 
         settings.setSortableAttributes(new String[] {"id", "title"});
-        index.waitForTask(index.updateSettings(settings).getUid());
+        index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchRequest searchRequest =
                 new SearchRequest("").setSort(new String[] {"id:asc", "title:asc"});
@@ -450,15 +458,16 @@ public class SearchTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest = new SearchRequest("and").setMatches(true);
+        SearchRequest searchRequest = new SearchRequest("and").setShowMatchesPosition(true);
         SearchResult searchResult = index.search(searchRequest);
 
         assertEquals(20, searchResult.getHits().size());
     }
+
     /** Test place holder search */
     @Test
     public void testPlaceHolder() throws Exception {
@@ -466,9 +475,9 @@ public class SearchTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
         SearchResult result = index.search("");
 
         assertEquals(20, result.getLimit());
@@ -481,9 +490,9 @@ public class SearchTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
-        Task task = index.addDocuments(testData.getRaw());
+        TaskInfo task = index.addDocuments(testData.getRaw());
 
-        index.waitForTask(task.getUid());
+        index.waitForTask(task.getTaskUid());
         SearchResult searchResult = index.search(new SearchRequest(null).setLimit(10));
 
         assertEquals(10, searchResult.getHits().size());
