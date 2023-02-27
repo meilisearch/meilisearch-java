@@ -794,7 +794,7 @@ async_guide_filter_by_types_1: |-
   TasksQuery query = new TasksQuery().setTypes(new String[] {"dumpCreation", "indexSwap"});
   client.getTasks(query);
 async_guide_filter_by_index_uids_1: |-
-  TasksQuery query = new TasksQuery().SetIndexUids(new String[] {"movies"});
+  TasksQuery query = new TasksQuery().setIndexUids(new String[] {"movies"});
   client.getTasks(query);
 async_guide_canceled_by_1: |-
   TasksQuery query = new TasksQuery().setCanceledBy(new int[] {9, 15});
