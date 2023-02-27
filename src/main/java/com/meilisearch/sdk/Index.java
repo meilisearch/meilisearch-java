@@ -6,6 +6,7 @@ import com.meilisearch.sdk.model.DocumentsQuery;
 import com.meilisearch.sdk.model.IndexStats;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.SearchResult;
+import com.meilisearch.sdk.model.Searchable;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.model.TaskInfo;
@@ -345,7 +346,7 @@ public class Index implements Serializable {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      */
-    public SearchResult search(SearchRequest searchRequest) throws MeilisearchException {
+    public Searchable search(SearchRequest searchRequest) throws MeilisearchException {
         return this.search.search(this.uid, searchRequest);
     }
 

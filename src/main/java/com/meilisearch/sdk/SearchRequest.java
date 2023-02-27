@@ -34,6 +34,8 @@ public class SearchRequest {
     private Boolean showMatchesPosition;
     private String[] facets;
     private String[] sort;
+    protected Integer page;
+    protected Integer hitsPerPage;
 
     /**
      * Constructor for SearchRequest for building search queries with the default values: offset: 0,
@@ -85,6 +87,8 @@ public class SearchRequest {
                         .put("showMatchesPosition", this.showMatchesPosition)
                         .put("facets", this.facets)
                         .put("sort", this.sort)
+                        .put("page", this.page)
+                        .put("hitsPerPage", this.hitsPerPage)
                         .putOpt("attributesToCrop", this.attributesToCrop)
                         .putOpt("attributesToHighlight", this.attributesToHighlight)
                         .putOpt("filter", this.filter)
