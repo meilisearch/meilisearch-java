@@ -42,7 +42,7 @@ configurations {
 dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
 	implementation 'com.google.code.gson:gson:2.10.1'
-	implementation 'org.json:json:20220924'
+	implementation 'org.json:json:20230227'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
 	compileOnly 'com.squareup.okhttp3:okhttp:4.10.0'
 
