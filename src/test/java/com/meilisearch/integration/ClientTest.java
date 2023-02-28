@@ -11,6 +11,7 @@ import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
 import com.meilisearch.sdk.model.IndexesQuery;
 import com.meilisearch.sdk.model.Results;
+import com.meilisearch.sdk.model.SwapIndexesParams;
 import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
@@ -190,6 +191,25 @@ public class ClientTest extends AbstractIT {
                 .contains(jsonIndexArray.get(1).getAsJsonObject().get("uid").getAsString()));
     }
 
+    /** Test getRawIndexes with limits */
+    @Test
+    public void testGetRawIndexesLimit() throws Exception {
+        int limit = 1;
+        String[] indexUids = {"GetRawIndexes", "GetRawIndexes2"};
+        createEmptyIndex(indexUids[0]);
+        createEmptyIndex(indexUids[1], this.primaryKey);
+        IndexesQuery query = new IndexesQuery().setLimit(limit);
+
+        String indexes = client.getRawIndexes(query);
+        JsonObject jsonIndexObject = JsonParser.parseString(indexes).getAsJsonObject();
+        JsonArray jsonIndexArray = jsonIndexObject.getAsJsonArray("results");
+
+        assertEquals(limit, jsonIndexArray.size());
+        assertEquals(limit, jsonIndexObject.get("limit").getAsInt());
+        assert (Arrays.asList(indexUids)
+                .contains(jsonIndexArray.get(0).getAsJsonObject().get("uid").getAsString()));
+    }
+
     /** Test deleteIndex */
     @Test
     public void testDeleteIndex() throws Exception {
@@ -199,6 +219,39 @@ public class ClientTest extends AbstractIT {
         client.waitForTask(task.getTaskUid());
 
         assertThrows(MeilisearchApiException.class, () -> client.getIndex(indexUid));
+    }
+
+    /** Test swapIndexes */
+    @Test
+    public void testSwapIndexes() throws Exception {
+        String indexUidA = "IndexA";
+        String indexUidB = "IndexB";
+        Index indexA = createEmptyIndex(indexUidA);
+        Index indexB = createEmptyIndex(indexUidB);
+        TaskInfo taskAddDocumentIndexA =
+                indexA.addDocuments(
+                        "[{"
+                                + "\"id\": 1,"
+                                + "\"title\": \"Document1\""
+                                + "},"
+                                + "{"
+                                + "\"id\": 2,"
+                                + "\"title\": \"Document2\""
+                                + "}]");
+        indexA.waitForTask(taskAddDocumentIndexA.getTaskUid());
+
+        SwapIndexesParams[] params =
+                new SwapIndexesParams[] {
+                    new SwapIndexesParams().setIndexes(new String[] {indexUidA, indexUidB})
+                };
+        TaskInfo task = client.swapIndexes(params);
+        client.waitForTask(task.getTaskUid());
+
+        assertEquals("indexSwap", task.getType());
+        assertEquals("Document1", indexB.getDocument("1", Movie.class).getTitle());
+        assertEquals("Document2", indexB.getDocument("2", Movie.class).getTitle());
+        assertThrows(MeilisearchApiException.class, () -> indexA.getDocument("1", Movie.class));
+        assertThrows(MeilisearchApiException.class, () -> indexA.getDocument("2", Movie.class));
     }
 
     /** Test call to index method with an inexistent index */

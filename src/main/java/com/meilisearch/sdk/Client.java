@@ -7,12 +7,15 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.json.JsonHandler;
+import com.meilisearch.sdk.model.CancelTasksQuery;
+import com.meilisearch.sdk.model.DeleteTasksQuery;
 import com.meilisearch.sdk.model.IndexesQuery;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.KeyUpdate;
 import com.meilisearch.sdk.model.KeysQuery;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.Stats;
+import com.meilisearch.sdk.model.SwapIndexesParams;
 import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.model.TasksQuery;
@@ -110,6 +113,17 @@ public class Client {
     }
 
     /**
+     * Gets all indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     *
+     * @param params query parameters accepted by the get indexes route
+     * @return List of indexes from the Meilisearch API as String
+     * @throws MeilisearchException if an error occurs
+     */
+    public String getRawIndexes(IndexesQuery params) throws MeilisearchException {
+        return this.indexesHandler.getRawIndexes(params);
+    }
+
+    /**
      * Creates a local reference to an index identified by `uid`, without doing an HTTP call.
      * Calling this method doesn't create an index by itself, but grants access to all the other
      * methods in the Index class.
@@ -162,6 +176,18 @@ public class Client {
      */
     public TaskInfo deleteIndex(String uid) throws MeilisearchException {
         return this.indexesHandler.deleteIndex(uid);
+    }
+
+    /**
+     * Swap the documents, settings, and task history of two or more indexes
+     * https://docs.meilisearch.com/reference/api/indexes.html#swap-indexes
+     *
+     * @param param accepted by the swap-indexes route
+     * @return Meilisearch API response as TaskInfo
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo swapIndexes(SwapIndexesParams[] param) throws MeilisearchException {
+        return config.httpClient.post("/swap-indexes", param, TaskInfo.class);
     }
 
     /**
@@ -251,6 +277,30 @@ public class Client {
      */
     public TasksResults getTasks(TasksQuery param) throws MeilisearchException {
         return this.tasksHandler.getTasks(param);
+    }
+
+    /**
+     * Cancel any number of enqueued or processing tasks
+     * https://docs.meilisearch.com/reference/api/tasks.html#cancel-tasks
+     *
+     * @param param accept by the tasks route
+     * @return Meilisearch API response as TaskInfo
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo cancelTasks(CancelTasksQuery param) throws MeilisearchException {
+        return this.tasksHandler.cancelTasks(param);
+    }
+
+    /**
+     * Delete a finished (succeeded, failed, or canceled) task
+     * https://docs.meilisearch.com/reference/api/tasks.html#delete-tasks
+     *
+     * @param param accept by the tasks route
+     * @return Meilisearch API response as TaskInfo
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo deleteTasks(DeleteTasksQuery param) throws MeilisearchException {
+        return this.tasksHandler.deleteTasks(param);
     }
 
     /**

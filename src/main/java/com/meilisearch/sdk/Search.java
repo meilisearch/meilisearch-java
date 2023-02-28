@@ -2,6 +2,8 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.SearchResult;
+import com.meilisearch.sdk.model.SearchResultPaginated;
+import com.meilisearch.sdk.model.Searchable;
 
 /**
  * Class used for searching on Meilisearch indexes
@@ -44,7 +46,7 @@ public class Search {
      */
     String rawSearch(String uid, SearchRequest sr) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/search";
-        return httpClient.post(requestQuery, sr, String.class);
+        return httpClient.post(requestQuery, sr.toString(), String.class);
     }
 
     /**
@@ -67,7 +69,10 @@ public class Search {
      * @return search results
      * @throws MeilisearchException Search Exception or Client Error
      */
-    SearchResult search(String uid, SearchRequest sr) throws MeilisearchException {
+    Searchable search(String uid, SearchRequest sr) throws MeilisearchException {
+        if (sr != null && (sr.getPage() != null || sr.getHitsPerPage() != null)) {
+            return httpClient.jsonHandler.decode(rawSearch(uid, sr), SearchResultPaginated.class);
+        }
         return httpClient.jsonHandler.decode(rawSearch(uid, sr), SearchResult.class);
     }
 }
