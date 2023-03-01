@@ -617,9 +617,7 @@ post_dump_1: |-
 phrase_search_1: |-
   client.index("movies").search("\"african american\" horror");
 sorting_guide_update_sortable_attributes_1: |-
-  Settings settings = new Settings();
-  settings.setSortableAttributes(new String[] {"price", "author"});
-  client.index("books").updateSettings(settings);
+  client.index("books").updateSortableAttributesSettings(new String[] {"price", "author"});
 sorting_guide_update_ranking_rules_1: |-
   Settings settings = new Settings();
   settings.setRankingRules(new String[]
@@ -641,10 +639,9 @@ sorting_guide_sort_parameter_2: |-
 get_sortable_attributes_1: |-
   client.index("books").getSettings().getSortableAttributes();
 update_sortable_attributes_1: |-
-  Settings settings = new Settings();
-  settings.setSortableAttributes(new String[] {"price", "author"});
-  client.index("books").updateSettings(settings);
+  client.index("books").updateSortableAttributesSettings(new String[] {"price", "author"});
 reset_sortable_attributes_1: |-
+  client.index("books").resetSortableAttributesSettings();
 search_parameter_guide_sort_1: |-
   SearchRequest searchRequest = new SearchRequest("science fiction").setSort(new String[] {"price:asc"});
   client.index("search_parameter_guide_sort_1").search(searchRequest);
@@ -662,7 +659,7 @@ geosearch_guide_filter_usage_2: |-
   client.index("restaurants").search(searchRequest);
 geosearch_guide_sort_settings_1: |-
   Settings settings = new Settings();
-  settings.setSortableAttributes(new String[] {"_geo"});
+  client.index("restaurants").updateSortableAttributesSettings(new String[] {"_geo"});
   client.index("restaurants").updateSettings(settings);
 geosearch_guide_sort_usage_1: |-
   SearchRequest searchRequest =
