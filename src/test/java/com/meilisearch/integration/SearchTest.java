@@ -116,8 +116,7 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest =
-                new SearchRequest("a").setAttributesToRetrieve(new String[] {"id", "title"});
+        SearchRequest searchRequest = SearchRequest.builder().q("a").attributesToRetrieve(new String[] {"id", "title"}).build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -196,7 +195,7 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest =
-                new SearchRequest("and").setAttributesToHighlight(new String[] {"title"});
+                SearchRequest.builder().q("and").attributesToHighlight(new String[] {"title"}).build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -291,7 +290,7 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchRequest searchRequest =
-                new SearchRequest("and").setFilter(new String[] {"title = \"The Dark Knight\""});
+                SearchRequest.builder().q("and").filter(new String[] {"title = \"The Dark Knight\""}).build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -318,8 +317,8 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchRequest searchRequest =
-                new SearchRequest("and")
-                        .setFilter(new String[] {"title = \"The Dark Knight\" OR id = 290859"});
+                SearchRequest.builder().q("and")
+                        .filter(new String[] {"title = \"The Dark Knight\" OR id = 290859"}).build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -344,7 +343,7 @@ public class SearchTest extends AbstractIT {
         settings.setFilterableAttributes(new String[] {"title"});
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest = new SearchRequest("knight").setFacets(new String[] {"*"});
+        SearchRequest searchRequest = SearchRequest.builder().q("knight").facets(new String[] {"*"}).build();
 
         Searchable searchResult = index.search(searchRequest);
 
@@ -369,7 +368,7 @@ public class SearchTest extends AbstractIT {
         settings.setSortableAttributes(new String[] {"title"});
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest = new SearchRequest("and").setSort(new String[] {"title:asc"});
+        SearchRequest searchRequest = SearchRequest.builder().q("and").sort(new String[] {"title:asc"}).build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -462,8 +461,7 @@ public class SearchTest extends AbstractIT {
         settings.setSortableAttributes(new String[] {"id", "title"});
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest =
-                new SearchRequest("").setSort(new String[] {"id:asc", "title:asc"});
+        SearchRequest searchRequest = SearchRequest.builder().q("").sort(new String[] {"id:asc", "title:asc"}).build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -485,7 +483,7 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest = new SearchRequest("and").setShowMatchesPosition(true);
+        SearchRequest searchRequest = SearchRequest.builder().q("and").showMatchesPosition(true).build();
         Searchable searchResult = index.search(searchRequest);
 
         assertEquals(20, searchResult.getHits().size());
@@ -558,7 +556,7 @@ public class SearchTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
-        Searchable searchResult = index.search(new SearchRequest(null).setLimit(10));
+        Searchable searchResult = index.search(SearchRequest.builder().q(null).limit(10).build());
 
         assertEquals(10, searchResult.getHits().size());
     }

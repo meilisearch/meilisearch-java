@@ -9,7 +9,7 @@ class SearchRequestTest {
 
     @Test
     void toStringSimpleQuery() {
-        SearchRequest classToTest = new SearchRequest("This is a Test");
+        SearchRequest classToTest = SearchRequest.builder().q("This is a Test").build();
 
         assertEquals("{\"q\":\"This is a Test\"}", classToTest.toString());
     }
@@ -23,8 +23,7 @@ class SearchRequestTest {
 
     @Test
     void toStringQueryAndOffset() {
-        SearchRequest classToTest =
-                new SearchRequest("This is a Test").setQuery("This is a Test").setOffset(200);
+        SearchRequest classToTest = SearchRequest.builder().q("This is a Test").offset(200).build();
 
         assertEquals("{\"q\":\"This is a Test\",\"offset\":200}", classToTest.toString());
     }
@@ -38,8 +37,7 @@ class SearchRequestTest {
 
     @Test
     void toStringQueryLimitAndOffset() {
-        SearchRequest classToTest =
-                new SearchRequest("This is a Test").setOffset(200).setLimit(900);
+        SearchRequest classToTest = SearchRequest.builder().q("This is a Test").offset(200).limit(900).build();
 
         assertEquals(
                 "{\"q\":\"This is a Test\",\"offset\":200,\"limit\":900}", classToTest.toString());
@@ -56,11 +54,7 @@ class SearchRequestTest {
 
     @Test
     void toStringQueryLimitOffsetAndAttributesToRetrieve() {
-        SearchRequest classToTest =
-                new SearchRequest("This is a Test")
-                        .setOffset(200)
-                        .setLimit(900)
-                        .setAttributesToRetrieve(new String[] {"bubble"});
+        SearchRequest classToTest = SearchRequest.builder().q("This is a Test").offset(200).limit(900).attributesToRetrieve(new String[] {"bubble"}).build();
 
         assertEquals(
                 "{\"q\":\"This is a Test\",\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"limit\":900}",
@@ -101,18 +95,21 @@ class SearchRequestTest {
     @Test
     void toStringEveryParameters() {
         SearchRequest classToTest =
-                new SearchRequest("This is a Test")
-                        .setOffset(200)
-                        .setLimit(900)
-                        .setAttributesToRetrieve(new String[] {"bubble"})
-                        .setAttributesToHighlight(new String[] {"highlight"})
-                        .setAttributesToCrop(new String[] {"crop"})
-                        .setCropLength(900)
-                        .setFilter(new String[] {"test='test'"})
-                        .setFacets(new String[] {"facets"})
-                        .setSort(new String[] {"sort"})
-                        .setPage(10)
-                        .setHitsPerPage(2);
+            SearchRequest
+                .builder()
+                .q("This is a Test")
+                .offset(200)
+                .limit(900)
+                .attributesToRetrieve(new String[] {"bubble"})
+                .attributesToHighlight(new String[] {"highlight"})
+                .attributesToCrop(new String[] {"crop"})
+                .cropLength(900)
+                .filter(new String[] {"test='test'"})
+                .facets(new String[] {"facets"})
+                .sort(new String[] {"sort"})
+                .page(10)
+                .hitsPerPage(2)
+                .build();
 
         assertEquals("This is a Test", classToTest.getQ());
         assertEquals(200, classToTest.getOffset());
@@ -172,27 +169,28 @@ class SearchRequestTest {
 
     @Test
     void toStringEveryParametersWithArray() {
-        SearchRequest classToTest =
-                new SearchRequest("This is a Test")
-                        .setOffset(200)
-                        .setLimit(900)
-                        .setAttributesToRetrieve(new String[] {"bubble"})
-                        .setAttributesToHighlight(new String[] {"highlight"})
-                        .setAttributesToCrop(new String[] {"crop"})
-                        .setCropLength(900)
-                        .setCropMarker("123")
-                        .setHighlightPreTag("abc")
-                        .setHighlightPostTag("zyx")
-                        .setMatchingStrategy(MatchingStrategy.ALL)
-                        .setFilterArray(
-                                new String[][] {
-                                    new String[] {"test='test'"}, new String[] {"test1='test1'"}
-                                })
-                        .setShowMatchesPosition(true)
-                        .setFacets(new String[] {"facets"})
-                        .setSort(new String[] {"sort"})
-                        .setPage(0)
-                        .setHitsPerPage(0);
+        SearchRequest classToTest = SearchRequest.builder()
+            .q("This is a Test")
+            .limit(900)
+            .offset(200)
+            .attributesToRetrieve(new String[] {"bubble"})
+            .attributesToHighlight(new String[] {"highlight"})
+            .attributesToCrop(new String[] {"crop"})
+            .cropLength(900)
+            .cropMarker("123")
+            .highlightPreTag("abc")
+            .highlightPostTag("zyx")
+            .matchingStrategy(MatchingStrategy.ALL)
+            .filterArray((
+                new String[][] {
+                    new String[] {"test='test'"}, new String[] {"test1='test1'"}
+                }))
+            .showMatchesPosition(true)
+            .facets(new String[] {"facets"})
+            .sort(new String[] {"sort"})
+            .page(0)
+            .hitsPerPage(0)
+            .build();
 
         assertEquals("This is a Test", classToTest.getQ());
         assertEquals(200, classToTest.getOffset());
