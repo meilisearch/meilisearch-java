@@ -3,12 +3,7 @@ package com.meilisearch.sdk;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.exceptions.MeilisearchTimeoutException;
 import com.meilisearch.sdk.http.URLBuilder;
-import com.meilisearch.sdk.model.CancelTasksQuery;
-import com.meilisearch.sdk.model.DeleteTasksQuery;
-import com.meilisearch.sdk.model.Task;
-import com.meilisearch.sdk.model.TaskInfo;
-import com.meilisearch.sdk.model.TasksQuery;
-import com.meilisearch.sdk.model.TasksResults;
+import com.meilisearch.sdk.model.*;
 import java.util.Date;
 
 /**
@@ -145,7 +140,7 @@ public class TasksHandler {
      */
     void waitForTask(int taskUid, int timeoutInMs, int intervalInMs) throws MeilisearchException {
         Task task;
-        String status = "";
+        TaskStatus status = TaskStatus.ENQUEUED;
         long startTime = new Date().getTime();
         long elapsedTime = 0;
 

@@ -5,12 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.model.CancelTasksQuery;
-import com.meilisearch.sdk.model.DeleteTasksQuery;
-import com.meilisearch.sdk.model.Task;
-import com.meilisearch.sdk.model.TaskInfo;
-import com.meilisearch.sdk.model.TasksQuery;
-import com.meilisearch.sdk.model.TasksResults;
+import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Date;
 import org.junit.jupiter.api.AfterAll;
@@ -45,7 +40,7 @@ public class TasksTest extends AbstractIT {
 
         assertTrue(task instanceof Task);
         assertNotNull(task.getStatus());
-        assertNotEquals("", task.getStatus());
+        assertNotNull(task.getStatus());
         assertNotNull(task.getStartedAt());
         assertNotNull(task.getEnqueuedAt());
         assertNotNull(task.getFinishedAt());
@@ -64,7 +59,7 @@ public class TasksTest extends AbstractIT {
             client.waitForTask(task.getUid());
 
             assertNotNull(task.getStatus());
-            assertNotEquals("", task.getStatus());
+            assertNotNull(task.getStatus());
             assertTrue(task.getUid() >= 0);
             assertNotNull(task.getDetails());
             if (task.getType().equals("indexDeletion")) {
@@ -167,7 +162,7 @@ public class TasksTest extends AbstractIT {
 
         assertTrue(task instanceof TaskInfo);
         assertNotNull(task.getStatus());
-        assertNotEquals("", task.getStatus());
+        assertNotNull(task.getStatus());
         assertNull(task.getIndexUid());
         assertEquals("taskCancelation", task.getType());
     }
@@ -188,7 +183,7 @@ public class TasksTest extends AbstractIT {
 
         assertTrue(task instanceof TaskInfo);
         assertNotNull(task.getStatus());
-        assertNotEquals("", task.getStatus());
+        assertNotNull(task.getStatus());
         assertNull(task.getIndexUid());
         assertEquals("taskCancelation", task.getType());
     }
@@ -203,7 +198,7 @@ public class TasksTest extends AbstractIT {
 
         assertTrue(task instanceof TaskInfo);
         assertNotNull(task.getStatus());
-        assertNotEquals("", task.getStatus());
+        assertNotNull(task.getStatus());
         assertNull(task.getIndexUid());
         assertEquals("taskDeletion", task.getType());
     }
@@ -224,7 +219,7 @@ public class TasksTest extends AbstractIT {
 
         assertTrue(task instanceof TaskInfo);
         assertNotNull(task.getStatus());
-        assertNotEquals("", task.getStatus());
+        assertNotEquals(null, task.getStatus());
         assertNull(task.getIndexUid());
         assertEquals("taskDeletion", task.getType());
     }
@@ -242,7 +237,7 @@ public class TasksTest extends AbstractIT {
         assertNotNull(task.getEnqueuedAt());
         assertNotNull(task.getStartedAt());
         assertNotNull(task.getFinishedAt());
-        assertEquals("succeeded", task.getStatus());
+        assertEquals(TaskStatus.SUCCEEDED, task.getStatus());
         assertNotNull(task.getDetails());
         assertNull(task.getDetails().getPrimaryKey());
 

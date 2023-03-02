@@ -10,7 +10,7 @@ import lombok.Getter;
  */
 @Getter
 public class TaskInfo {
-    protected String status = "";
+    protected TaskStatus status = null;
     protected int taskUid = 0;
     protected String indexUid = "";
     protected String type = null;
