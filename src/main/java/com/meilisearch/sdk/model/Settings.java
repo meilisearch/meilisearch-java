@@ -14,6 +14,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 public class Settings {
+
     protected HashMap<String, String[]> synonyms;
     protected String[] stopWords;
     protected String[] rankingRules;
@@ -23,6 +24,7 @@ public class Settings {
     protected String[] displayedAttributes;
     protected String[] sortableAttributes;
     protected TypoTolerance typoTolerance;
+    public Pagination pagination;
 
     public Settings() {}
 }

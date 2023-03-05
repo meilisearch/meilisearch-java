@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.model.Pagination;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.model.TypoTolerance;
@@ -23,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
 
 @Tag("integration")
 public class SettingsTest extends AbstractIT {
@@ -843,6 +845,55 @@ public class SettingsTest extends AbstractIT {
         assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
         assertEquals(initialDistinctAttribute, resetDistinctAttribute);
     }
+
+    /** Tests of the pagination setting methods */
+    @Test
+    @DisplayName("Test get pagination settings by uid")
+    public void testGetPaginationSettings() throws Exception {
+        Index index = createIndex("testGetPaginationSettings");
+        Settings initialSettings = index.getSettings();
+        Pagination initialPagination = index.getPaginationSettings();
+
+        assertEquals(initialSettings.getPagination().getMaxTotalHits(),0);
+        assertNotNull(initialPagination.getMaxTotalHits());
+    }
+    @Test
+    @DisplayName("Test update pagination settings")
+    public void testUpdatePaginationSettings() throws Exception {
+        Index index = createIndex("testUpdatePaginationSettings");
+        Pagination newPagination = new Pagination();
+
+        Integer MaxTotalHitsTypos = 100;
+
+        newPagination.setMaxTotalHits(MaxTotalHitsTypos);
+        index.waitForTask(index.updatePaginationSettings(newPagination).getTaskUid());
+        Pagination updatedPagination = index.getPaginationSettings();
+
+        assertTrue(
+            updatedPagination.getMaxTotalHits() == 100
+        );
+    }
+    @Test
+    @DisplayName("Test reset pagination settings")
+    public void testResetPaginationSettings() throws Exception {
+        Index index = createIndex("testResetPaginationSettings");
+
+        Pagination initialPagination = index.getPaginationSettings();
+        Pagination newPagination = new Pagination();
+        Integer MaxTotalHitsTypos = 100;
+        newPagination.setMaxTotalHits(MaxTotalHitsTypos);
+
+        index.waitForTask(index.resetPaginationSettings().getTaskUid());
+        Pagination paginationAfterReset = index.getPaginationSettings();
+
+        assertTrue(
+            paginationAfterReset.getMaxTotalHits() == 0
+        );
+    }
+
+
+
+
 
     private Index createIndex(String indexUid) throws Exception {
         Index index = client.index(indexUid);
