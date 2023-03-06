@@ -397,7 +397,7 @@ public class SettingsHandler {
      * Gets the pagination settings of the index
      *
      * @param uid Index identifier
-     * @return a pagination instance that contains all pagination settings
+     * @return a Pagination instance that contains all pagination settings
      * @throws MeilisearchException if an error occurs
      */
     Pagination getPaginationSettings(String uid) throws MeilisearchException {
