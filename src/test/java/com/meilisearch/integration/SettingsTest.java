@@ -854,7 +854,7 @@ public class SettingsTest extends AbstractIT {
         Settings initialSettings = index.getSettings();
         Pagination initialPagination = index.getPaginationSettings();
 
-        assertEquals(initialSettings.getPagination().getMaxTotalHits(),0);
+        assertEquals(initialSettings.getPagination().getMaxTotalHits(), 1000);
         assertNotNull(initialPagination.getMaxTotalHits());
     }
     @Test
