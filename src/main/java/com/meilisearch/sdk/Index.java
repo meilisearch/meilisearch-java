@@ -669,7 +669,7 @@ public class Index implements Serializable {
      * Gets the pagination field of the index Refer
      * https://docs.meilisearch.com/reference/api/settings.html#get-pagination-settings
      *
-     * @return pagination instance from Index
+     * @return Pagination instance from Index
      * @throws MeilisearchException if an error occurs
      */
     public Pagination getPaginationSettings() throws MeilisearchException {
