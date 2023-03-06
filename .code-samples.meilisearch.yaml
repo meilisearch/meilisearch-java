@@ -313,10 +313,10 @@ filtering_guide_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("Avengers").filter(new String[] {"release_date > \"795484800\""}).build();
   client.index("movies").search(searchRequest);
 filtering_guide_2: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("Avengers").filter(new String[] {"release_date > 795484800 AND (director = \"Tim Burton\" OR director = \"Christopher Nolan\")"}).build();
+  SearchRequest searchRequest = SearchRequest.builder().q("Batman").filter(new String[] {"release_date > 795484800 AND (director = \"Tim Burton\" OR director = \"Christopher Nolan\")"}).build();
   client.index("movies").search(searchRequest);
 filtering_guide_3: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("Avengers").filter(new String[] {"rating >= 3 AND (NOT director = \"Tim Burton\")"}).build();
+  SearchRequest searchRequest = SearchRequest.builder().q("Planet of the Apes").filter(new String[] {"rating >= 3 AND (NOT director = \"Tim Burton\")"}).build();
   client.index("movies").search(searchRequest);
 search_parameter_guide_query_1: |-
   client.index("movies").search("shifu");
