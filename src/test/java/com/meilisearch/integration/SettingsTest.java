@@ -888,7 +888,7 @@ public class SettingsTest extends AbstractIT {
 
         assertTrue(initialPagination.getMaxTotalHits() == 1000);
         assertTrue(
-            paginationAfterReset.getMaxTotalHits() == 0
+            paginationAfterReset.getMaxTotalHits() == 1000
         );
     }
 
