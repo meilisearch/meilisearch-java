@@ -24,7 +24,7 @@ public class Settings {
     protected String[] displayedAttributes;
     protected String[] sortableAttributes;
     protected TypoTolerance typoTolerance;
-    public Pagination pagination;
+    protected Pagination pagination;
 
     public Settings() {}
 }
