@@ -879,6 +879,9 @@ public class SettingsTest extends AbstractIT {
 
         Pagination initialPagination = index.getPaginationSettings();
         Pagination newPagination = new Pagination();
+
+        Integer MaxTotalHitsTypos = 100;
+        newPagination.setMaxTotalHits(MaxTotalHitsTypos);
         index.waitForTask(index.updatePaginationSettings(newPagination).getTaskUid());
         Pagination updatedPagination = index.getPaginationSettings();
 
