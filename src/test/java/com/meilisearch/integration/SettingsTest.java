@@ -888,9 +888,9 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.resetPaginationSettings().getTaskUid());
         Pagination paginationAfterReset = index.getPaginationSettings();
 
-        assertTrue(initialPagination.getMaxTotalHits() == 1000);
-        assertTrue(updatedPagination.getMaxTotalHits() == 100);
-        assertTrue(paginationAfterReset.getMaxTotalHits() == 1000);
+        assertEquals(1000, initialPagination.getMaxTotalHits());
+        assertEquals(100, updatedPagination.getMaxTotalHits());
+        assertEquals(1000, paginationAfterReset.getMaxTotalHits());
     }
 
     private Index createIndex(String indexUid) throws Exception {
