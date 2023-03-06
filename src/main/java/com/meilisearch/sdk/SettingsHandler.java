@@ -2,6 +2,7 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.URLBuilder;
+import com.meilisearch.sdk.model.Pagination;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.model.TypoTolerance;
@@ -390,6 +391,46 @@ public class SettingsHandler {
     TaskInfo resetTypoToleranceSettings(String uid) throws MeilisearchException {
         return httpClient.delete(
                 settingsPath(uid).addSubroute("typo-tolerance").getURL(), TaskInfo.class);
+    }
+
+    /**
+     * Gets the pagination settings of the index
+     *
+     * @param uid Index identifier
+     * @return a Pagination instance that contains all pagination settings
+     * @throws MeilisearchException if an error occurs
+     */
+    Pagination getPaginationSettings(String uid) throws MeilisearchException {
+        return httpClient.get(
+                settingsPath(uid).addSubroute("pagination").getURL(), Pagination.class);
+    }
+
+    /**
+     * Updates the pagination settings of the index
+     *
+     * @param uid Index identifier
+     * @param pagination a Pagination instance that contains the new pagination settings
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo updatePaginationSettings(String uid, Pagination pagination)
+            throws MeilisearchException {
+        return httpClient.patch(
+                settingsPath(uid).addSubroute("pagination").getURL(),
+                pagination == null ? httpClient.jsonHandler.encode(pagination) : pagination,
+                TaskInfo.class);
+    }
+
+    /**
+     * Resets the pagination settings of the index
+     *
+     * @param uid Index identifier
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo resetPaginationSettings(String uid) throws MeilisearchException {
+        return httpClient.delete(
+                settingsPath(uid).addSubroute("pagination").getURL(), TaskInfo.class);
     }
 
     /** Creates an URLBuilder for the constant route settings */
