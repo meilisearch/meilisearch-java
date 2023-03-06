@@ -24,7 +24,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.opentest4j.AssertionFailedError;
 
 @Tag("integration")
 public class SettingsTest extends AbstractIT {
@@ -857,6 +856,7 @@ public class SettingsTest extends AbstractIT {
         assertEquals(initialSettings.getPagination().getMaxTotalHits(), 1000);
         assertNotNull(initialPagination.getMaxTotalHits());
     }
+
     @Test
     @DisplayName("Test update pagination settings")
     public void testUpdatePaginationSettings() throws Exception {
@@ -869,10 +869,9 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updatePaginationSettings(newPagination).getTaskUid());
         Pagination updatedPagination = index.getPaginationSettings();
 
-        assertTrue(
-            updatedPagination.getMaxTotalHits() == 100
-        );
+        assertTrue(updatedPagination.getMaxTotalHits() == 100);
     }
+
     @Test
     @DisplayName("Test reset pagination settings")
     public void testResetPaginationSettings() throws Exception {
@@ -890,10 +889,6 @@ public class SettingsTest extends AbstractIT {
         assertTrue(updatedPagination.getMaxTotalHits() == 100);
         assertTrue(paginationAfterReset.getMaxTotalHits() == 1000);
     }
-
-
-
-
 
     private Index createIndex(String indexUid) throws Exception {
         Index index = client.index(indexUid);

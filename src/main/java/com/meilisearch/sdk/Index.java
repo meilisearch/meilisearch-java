@@ -2,7 +2,6 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.*;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -684,8 +683,7 @@ public class Index implements Serializable {
      * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    public TaskInfo updatePaginationSettings(Pagination pagination)
-        throws MeilisearchException {
+    public TaskInfo updatePaginationSettings(Pagination pagination) throws MeilisearchException {
         return this.settingsHandler.updatePaginationSettings(this.uid, pagination);
     }
 
@@ -782,6 +780,4 @@ public class Index implements Serializable {
         Index retrievedIndex = httpClient.get(requestQuery, Index.class);
         this.primaryKey = retrievedIndex.getPrimaryKey();
     }
-
-
 }

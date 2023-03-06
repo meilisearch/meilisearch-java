@@ -402,7 +402,7 @@ public class SettingsHandler {
      */
     Pagination getPaginationSettings(String uid) throws MeilisearchException {
         return httpClient.get(
-            settingsPath(uid).addSubroute("pagination").getURL(), Pagination.class);
+                settingsPath(uid).addSubroute("pagination").getURL(), Pagination.class);
     }
 
     /**
@@ -414,13 +414,11 @@ public class SettingsHandler {
      * @throws MeilisearchException if an error occurs
      */
     TaskInfo updatePaginationSettings(String uid, Pagination pagination)
-        throws MeilisearchException {
+            throws MeilisearchException {
         return httpClient.patch(
-            settingsPath(uid).addSubroute("pagination").getURL(),
-            pagination == null
-                ? httpClient.jsonHandler.encode(pagination)
-                : pagination,
-            TaskInfo.class);
+                settingsPath(uid).addSubroute("pagination").getURL(),
+                pagination == null ? httpClient.jsonHandler.encode(pagination) : pagination,
+                TaskInfo.class);
     }
 
     /**
@@ -432,10 +430,8 @@ public class SettingsHandler {
      */
     TaskInfo resetPaginationSettings(String uid) throws MeilisearchException {
         return httpClient.delete(
-            settingsPath(uid).addSubroute("pagination").getURL(), TaskInfo.class);
+                settingsPath(uid).addSubroute("pagination").getURL(), TaskInfo.class);
     }
-
-
 
     /** Creates an URLBuilder for the constant route settings */
     private URLBuilder settingsPath(String uid) {
