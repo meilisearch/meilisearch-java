@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 public class Task {
-    protected String status = "";
+    protected TaskStatus status = null;
     protected int uid = 0;
     protected String indexUid = "";
     protected String type = null;

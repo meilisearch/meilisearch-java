@@ -3,12 +3,7 @@ package com.meilisearch.sdk;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.exceptions.MeilisearchTimeoutException;
 import com.meilisearch.sdk.http.URLBuilder;
-import com.meilisearch.sdk.model.CancelTasksQuery;
-import com.meilisearch.sdk.model.DeleteTasksQuery;
-import com.meilisearch.sdk.model.Task;
-import com.meilisearch.sdk.model.TaskInfo;
-import com.meilisearch.sdk.model.TasksQuery;
-import com.meilisearch.sdk.model.TasksResults;
+import com.meilisearch.sdk.model.*;
 import java.util.Date;
 
 /**
@@ -18,8 +13,6 @@ import java.util.Date;
  */
 public class TasksHandler {
     private final HttpClient httpClient;
-    public static final String SUCCEEDED = "succeeded";
-    public static final String FAILED = "failed";
 
     /**
      * Creates and sets up an instance of Task to simplify MeiliSearch API calls to manage tasks
@@ -145,11 +138,12 @@ public class TasksHandler {
      */
     void waitForTask(int taskUid, int timeoutInMs, int intervalInMs) throws MeilisearchException {
         Task task;
-        String status = "";
+        TaskStatus status = null;
         long startTime = new Date().getTime();
         long elapsedTime = 0;
 
-        while (!status.equals(SUCCEEDED) && !status.equals(FAILED)) {
+        while (status == null
+                || (!status.equals(TaskStatus.SUCCEEDED) && !status.equals(TaskStatus.FAILED))) {
             if (elapsedTime >= timeoutInMs) {
                 throw new MeilisearchTimeoutException();
             }
