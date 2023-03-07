@@ -594,6 +594,18 @@ public class Index implements Serializable {
         return this.settingsHandler.resetFilterableAttributesSettings(this.uid);
     }
 
+    public String[] getSortableAttributesSettings() throws MeilisearchException {
+        return this.settingsHandler.getSortableAttributesSettings(this.uid);
+    }
+    public TaskInfo updateSortableAttributesSettings(String[] sortableAttributes)
+        throws MeilisearchException {
+        return this.settingsHandler.updateSortableAttributesSettings(
+            this.uid, sortableAttributes);
+    }
+    public TaskInfo resetSortableAttributesSettings() throws MeilisearchException {
+        return this.settingsHandler.resetSortableAttributesSettings(this.uid);
+    }
+
     /**
      * Gets the distinct attribute field of the index Refer
      * https://docs.meilisearch.com/reference/api/distinct_attribute.html#get-distinct-attribute

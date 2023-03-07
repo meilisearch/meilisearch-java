@@ -308,6 +308,49 @@ public class SettingsHandler {
     }
 
     /**
+     * Gets the sortableAttributes of the index
+     *
+     * @param uid Index identifier
+     * @return an array of strings that contains the sortable attributes settings
+     * @throws MeilisearchException if an error occurs
+     */
+    String[] getSortableAttributesSettings(String uid) throws MeilisearchException {
+        return httpClient.get(
+            settingsPath(uid).addSubroute("sortable-attributes").getURL(), String[].class);
+    }
+
+    /**
+     * Updates the sortable attributes of the index. This will re-index all documents in the index
+     *
+     * @param uid Index identifier
+     * @param sortableAttributes an array of strings that contains the new sortable attributes
+     *     settings
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo updateSortableAttributesSettings(String uid, String[] sortableAttributes)
+        throws MeilisearchException {
+        return httpClient.put(
+            settingsPath(uid).addSubroute("sortable-attributes").getURL(),
+            sortableAttributes== null
+                ? httpClient.jsonHandler.encode(sortableAttributes)
+                : sortableAttributes,
+            TaskInfo.class);
+    }
+    /**
+     * Resets the sortable attributes of the index
+     *
+     * @param uid Index identifier
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo resetSortableAttributesSettings(String uid) throws MeilisearchException {
+        return httpClient.delete(
+            settingsPath(uid).addSubroute("sortable-attributes").getURL(), TaskInfo.class);
+    }
+
+
+    /**
      * Gets the distinct attribute field of the index
      *
      * @param uid Index identifier
