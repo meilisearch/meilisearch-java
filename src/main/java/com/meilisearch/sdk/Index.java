@@ -1,18 +1,7 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
-import com.meilisearch.sdk.model.DocumentQuery;
-import com.meilisearch.sdk.model.DocumentsQuery;
-import com.meilisearch.sdk.model.IndexStats;
-import com.meilisearch.sdk.model.Results;
-import com.meilisearch.sdk.model.SearchResult;
-import com.meilisearch.sdk.model.Searchable;
-import com.meilisearch.sdk.model.Settings;
-import com.meilisearch.sdk.model.Task;
-import com.meilisearch.sdk.model.TaskInfo;
-import com.meilisearch.sdk.model.TasksQuery;
-import com.meilisearch.sdk.model.TasksResults;
-import com.meilisearch.sdk.model.TypoTolerance;
+import com.meilisearch.sdk.model.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +16,7 @@ public class Index implements Serializable {
     @Getter protected String uid;
     @Getter protected String primaryKey;
     @Getter protected String createdAt;
+    @Getter protected Pagination pagination;
     @Getter @ToString.Exclude protected String updatedAt;
     @Getter @ToString.Exclude protected Config config;
     @ToString.Exclude protected Documents documents;
@@ -672,6 +662,40 @@ public class Index implements Serializable {
      */
     public TaskInfo resetTypoToleranceSettings() throws MeilisearchException {
         return this.settingsHandler.resetTypoToleranceSettings(this.uid);
+    }
+
+    /**
+     * Gets the pagination field of the index Refer
+     * https://docs.meilisearch.com/reference/api/settings.html#get-pagination-settings
+     *
+     * @return Pagination instance from Index
+     * @throws MeilisearchException if an error occurs
+     */
+    public Pagination getPaginationSettings() throws MeilisearchException {
+        return this.settingsHandler.getPaginationSettings(this.uid);
+    }
+
+    /**
+     * Updates the pagination field of the index Refer
+     * https://docs.meilisearch.com/reference/api/settings.html#update-pagination-settings
+     *
+     * @param pagination A pagination instance
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo updatePaginationSettings(Pagination pagination) throws MeilisearchException {
+        return this.settingsHandler.updatePaginationSettings(this.uid, pagination);
+    }
+
+    /**
+     * Resets the pagination field of the index Refer
+     * https://docs.meilisearch.com/reference/api/settings.html#reset-pagination-settings
+     *
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo resetPaginationSettings() throws MeilisearchException {
+        return this.settingsHandler.resetPaginationSettings(this.uid);
     }
 
     /**
