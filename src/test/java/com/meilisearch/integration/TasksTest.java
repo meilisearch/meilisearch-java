@@ -219,7 +219,6 @@ public class TasksTest extends AbstractIT {
 
         assertTrue(task instanceof TaskInfo);
         assertNotNull(task.getStatus());
-        assertNotEquals(null, task.getStatus());
         assertNull(task.getIndexUid());
         assertEquals("taskDeletion", task.getType());
     }

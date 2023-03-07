@@ -13,8 +13,6 @@ import java.util.Date;
  */
 public class TasksHandler {
     private final HttpClient httpClient;
-    public static final String SUCCEEDED = "succeeded";
-    public static final String FAILED = "failed";
 
     /**
      * Creates and sets up an instance of Task to simplify MeiliSearch API calls to manage tasks
@@ -140,11 +138,12 @@ public class TasksHandler {
      */
     void waitForTask(int taskUid, int timeoutInMs, int intervalInMs) throws MeilisearchException {
         Task task;
-        TaskStatus status = TaskStatus.ENQUEUED;
+        TaskStatus status = null;
         long startTime = new Date().getTime();
         long elapsedTime = 0;
 
-        while (!status.equals(SUCCEEDED) && !status.equals(FAILED)) {
+        while (status == null
+                || (!status.equals(TaskStatus.SUCCEEDED) && !status.equals(TaskStatus.FAILED))) {
             if (elapsedTime >= timeoutInMs) {
                 throw new MeilisearchTimeoutException();
             }

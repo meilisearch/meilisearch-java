@@ -9,11 +9,7 @@ import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
-import com.meilisearch.sdk.model.IndexesQuery;
-import com.meilisearch.sdk.model.Results;
-import com.meilisearch.sdk.model.SwapIndexesParams;
-import com.meilisearch.sdk.model.Task;
-import com.meilisearch.sdk.model.TaskInfo;
+import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.Arrays;
 import org.junit.jupiter.api.AfterAll;
@@ -298,7 +294,7 @@ public class ClientTest extends AbstractIT {
         client.waitForTask(task.getTaskUid());
         Task dump = client.getTask(task.getTaskUid());
 
-        assertEquals(task.getStatus(), "enqueued");
+        assertEquals(task.getStatus(), TaskStatus.ENQUEUED);
         assertEquals("dumpCreation", dump.getType());
     }
 }
