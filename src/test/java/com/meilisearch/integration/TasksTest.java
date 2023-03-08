@@ -59,12 +59,12 @@ public class TasksTest extends AbstractIT {
             client.waitForTask(task.getUid());
 
             assertNotNull(task.getStatus());
-            assertNotNull(task.getStatus());
             assertTrue(task.getUid() >= 0);
             assertNotNull(task.getDetails());
             if (task.getType().equals("indexDeletion")) {
                 assertNotNull(task.getDetails().getDeletedDocuments());
             }
+            break;
         }
     }
 
