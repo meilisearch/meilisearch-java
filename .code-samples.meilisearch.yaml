@@ -3,6 +3,12 @@
 # the documentation on build
 # You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
 ---
+filtering_guide_nested_1: |-
+  with data: { "index": "movies", "q": "thriller", "filter": "rating.users >= 90" }
+
+sorting_guide_sort_nested_1: |-
+  with data: { "index": "books", "q": "science fiction", "sort": ["rating.users:asc"] }
+
 get_one_index_1: |-
   client.getIndex("movies");
 list_all_indexes_1: |-
@@ -286,11 +292,11 @@ get_health_1: |-
   client.health();
 get_version_1: |-
   client.getVersion();
-distinct_attribute_guide_1: |-
+>>>>>>>>>>>>>>>> UPDATE_ME distinct_attribute_guide_1 (use distinct attribute route): |-
   Settings settings = new Settings();
   settings.setDistinctAttribute("product_id");
   client.index("jackets").updateSettings(settings);
-field_properties_guide_searchable_1: |-
+>>>>>>>>>>>>>>>> UPDATE_ME field_properties_guide_searchable_1 (use searchable attribute route): |-
   Settings settings = new Settings();
   settings.setSearchableAttributes(new String[]
   {
@@ -299,7 +305,7 @@ field_properties_guide_searchable_1: |-
     "genres"
   });
   client.index("movies").updateSettings(settings);
-field_properties_guide_displayed_1: |-
+>>>>>>>>>>>>>>>> UPDATE_ME field_properties_guide_displayed_1 (use displayed attribute route): |-
   Settings settings = new Settings();
   settings.setDisplayedAttributes(new String[]
   {
@@ -376,14 +382,14 @@ search_parameter_guide_matching_strategy_1: |-
 search_parameter_guide_matching_strategy_2: |-
   SearchRequest searchRequest = SearchRequest.builder().q("big fat liar").matchingStrategy(MatchingStrategy.ALL).build();
   client.index("movies").search(searchRequest);
-settings_guide_synonyms_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_synonyms_1: |-
   Settings settings = new Settings();
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("sweater", new String[] {"jumper"});
   synonyms.put("jumper", new String[] {"sweater"});
   settings.setSynonyms(synonyms);
   client.index("tops").updateSettings(settings);
-settings_guide_stop_words_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_stop_words_1: |-
   Settings settings = new Settings();
   settings.setStopWords(new String[]
   {
@@ -392,7 +398,7 @@ settings_guide_stop_words_1: |-
     "an"
   });
   client.index("movies").updateSettings(settings);
-settings_guide_ranking_rules_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_ranking_rules_1: |-
   Settings settings = new Settings();
   settings.setRankingRules(new String[]
   {
@@ -406,11 +412,11 @@ settings_guide_ranking_rules_1: |-
     "rank_desc"
   });
   client.index("movies").updateSettings(settings);
-settings_guide_distinct_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_distinct_1: |-
   Settings settings = new Settings();
   settings.setDistinctAttribute("product_id");
   client.index("jackets").updateSettings(settings);
-settings_guide_searchable_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_searchable_1: |-
   Settings settings = new Settings();
   settings.setSearchableAttributes(new String[]
   {
@@ -419,7 +425,7 @@ settings_guide_searchable_1: |-
     "genres"
   });
   client.index("movies").updateSettings(settings);
-settings_guide_displayed_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_displayed_1: |-
   Settings settings = new Settings();
   settings.setDisplayedAttributes(new String[]
   {
@@ -429,7 +435,7 @@ settings_guide_displayed_1: |-
     "release_date"
   });
   client.index("movies").updateSettings(settings);
-settings_guide_sortable_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_sortable_1: |-
   Settings settings = new Settings();
   settings.setSortableAttributes(new String[]
   {
@@ -437,9 +443,9 @@ settings_guide_sortable_1: |-
     "author",
   });
   client.index("books").updateSettings(settings);
-settings_guide_faceting_1: |-
-settings_guide_pagination_1: |-
-settings_guide_typo_tolerance_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_faceting_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_pagination_1: |-
+>>>>>>>>>>> REMOVE_ME settings_guide_typo_tolerance_1: |-
   TypoTolerance typoTolerance = new TypoTolerance();
   HashMap<String, Integer> minWordSizeTypos =
           new HashMap<String, Integer>() {
