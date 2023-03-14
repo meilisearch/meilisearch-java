@@ -651,9 +651,7 @@ post_dump_1: |-
 phrase_search_1: |-
   client.index("movies").search("\"african american\" horror");
 sorting_guide_update_sortable_attributes_1: |-
-  Settings settings = new Settings();
-  settings.setSortableAttributes(new String[] {"price", "author"});
-  client.index("books").updateSettings(settings);
+  client.index("books").updateSortableAttributesSettings(new String[] {"price", "author"});
 sorting_guide_update_ranking_rules_1: |-
   Settings settings = new Settings();
   settings.setRankingRules(new String[]
@@ -673,12 +671,11 @@ sorting_guide_sort_parameter_2: |-
   SearchRequest searchRequest = SearchRequest.builder().q("butler").sort(new String[] {"author:desc"}).build();
   client.index("books").search(searchRequest);
 get_sortable_attributes_1: |-
-  client.index("books").getSettings().getSortableAttributes();
+  client.index("books").getSortableAttributesSettings();
 update_sortable_attributes_1: |-
-  Settings settings = new Settings();
-  settings.setSortableAttributes(new String[] {"price", "author"});
-  client.index("books").updateSettings(settings);
+  client.index("books").updateSortableAttributesSettings(new String[] {"price", "author"});
 reset_sortable_attributes_1: |-
+  client.index("books").resetSortableAttributesSettings();
 search_parameter_guide_sort_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("science fiction").sort(new String[] {"price:asc"}).build();
   client.index("search_parameter_guide_sort_1").search(searchRequest);
@@ -693,9 +690,7 @@ geosearch_guide_filter_usage_2: |-
   SearchRequest searchRequest = SearchRequest.builder().q("").filter(new String[] {"_geoRadius(45.472735, 9.184019, 2000) AND type = pizza"}).build();
   client.index("restaurants").search(searchRequest);
 geosearch_guide_sort_settings_1: |-
-  Settings settings = new Settings();
-  settings.setSortableAttributes(new String[] {"_geo"});
-  client.index("restaurants").updateSettings(settings);
+  client.index("restaurants").updateSortableAttributesSettings(new String[] {"_geo"});
 geosearch_guide_sort_usage_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("").sort(new String[] {"_geoPoint(48.8561446,2.2978204):asc"}).build();
   client.index("restaurants").search(searchRequest);

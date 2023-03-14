@@ -524,6 +524,63 @@ public class SettingsTest extends AbstractIT {
         assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
     }
 
+    /** Tests of the sortable attributes setting methods* */
+    @Test
+    @DisplayName("Test get sortable attributes settings by uid")
+    public void testGetSortableAttributesSettings() throws Exception {
+        Index index = createIndex("testGetSortableAttributesSettings");
+        Settings initialSettings = index.getSettings();
+        String[] initialSortableAttributes = index.getSortableAttributesSettings();
+
+        assertEquals(
+                initialSettings.getSortableAttributes().length, initialSortableAttributes.length);
+        assertArrayEquals(initialSettings.getSortableAttributes(), initialSortableAttributes);
+    }
+
+    @Test
+    @DisplayName("Test update sortable attributes settings")
+    public void testUpdateSortableAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateSortableAttributesSettings");
+        String[] initialSortableAttributes = index.getSortableAttributesSettings();
+        String[] newSortableAttributes = {"title", "description", "genre", "release_date"};
+
+        index.waitForTask(
+                index.updateSortableAttributesSettings(newSortableAttributes).getTaskUid());
+        String[] updatedSortableAttributes = index.getSortableAttributesSettings();
+
+        assertEquals(newSortableAttributes.length, updatedSortableAttributes.length);
+        assertThat(
+                Arrays.asList(newSortableAttributes),
+                containsInAnyOrder(updatedSortableAttributes));
+        assertNotEquals(initialSortableAttributes.length, updatedSortableAttributes.length);
+    }
+
+    @Test
+    @DisplayName("Test reset sortable attributes settings")
+    public void testResetSortableAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateSortableAttributesSettings");
+        String[] initialSortableAttributes = index.getSortableAttributesSettings();
+        String[] newSortableAttributes = {
+            "title", "description", "genres", "director", "release_date"
+        };
+
+        index.waitForTask(
+                index.updateSortableAttributesSettings(newSortableAttributes).getTaskUid());
+        String[] updatedSortableAttributes = index.getSortableAttributesSettings();
+
+        index.waitForTask(index.resetFilterableAttributesSettings().getTaskUid());
+        String[] filterableAttributesAfterReset = index.getFilterableAttributesSettings();
+
+        assertEquals(newSortableAttributes.length, updatedSortableAttributes.length);
+        assertThat(
+                Arrays.asList(newSortableAttributes),
+                containsInAnyOrder(updatedSortableAttributes));
+        assertNotEquals(initialSortableAttributes.length, updatedSortableAttributes.length);
+
+        assertNotEquals(updatedSortableAttributes.length, filterableAttributesAfterReset.length);
+        assertNotEquals(initialSortableAttributes.length, updatedSortableAttributes.length);
+    }
+
     /** Tests of the distinct attributes setting methods */
     @Test
     @DisplayName("Test get distinct attribute settings by uid")
