@@ -52,19 +52,21 @@ public class TasksTest extends AbstractIT {
     /** Test Get Tasks */
     @Test
     public void testClientGetTasks() throws Exception {
+        String indexUid = "GetClientTasks";
+        TaskInfo response = client.createIndex(indexUid);
+        client.waitForTask(response.getTaskUid());
+
         TasksResults result = client.getTasks();
         Task[] tasks = result.getResults();
 
-        for (Task task : tasks) {
-            client.waitForTask(task.getUid());
+        Task task = tasks[0];
+        client.waitForTask(task.getUid());
 
-            assertNotNull(task.getStatus());
-            assertTrue(task.getUid() >= 0);
-            assertNotNull(task.getDetails());
-            if (task.getType().equals("indexDeletion")) {
-                assertNotNull(task.getDetails().getDeletedDocuments());
-            }
-            break;
+        assertNotNull(task.getStatus());
+        assertTrue(task.getUid() >= 0);
+        assertNotNull(task.getDetails());
+        if (task.getType().equals("indexDeletion")) {
+            assertNotNull(task.getDetails().getDeletedDocuments());
         }
     }
 
