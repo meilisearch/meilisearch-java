@@ -57,7 +57,7 @@ Add the following code to the `<dependencies>` section of your project:
   <groupId>com.meilisearch.sdk</groupId>
   <artifactId>meilisearch-java</artifactId>
   <version>0.11.0</version>
-  <type>pom</type>
+  <type>compile</type>
 </dependency>
 ```
 
