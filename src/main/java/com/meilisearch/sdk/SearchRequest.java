@@ -67,33 +67,47 @@ public class SearchRequest {
      *
      * @return JSON String of the SearchRequest query
      */
-    @Override
+ @Override
     public String toString() {
-        JSONObject jsonObject =
-                new JSONObject()
-                        .put("q", this.q)
-                        .put("offset", this.offset)
-                        .put("limit", this.limit)
-                        .put("attributesToRetrieve", this.attributesToRetrieve)
-                        .put("cropLength", this.cropLength)
-                        .put("cropMarker", this.cropMarker)
-                        .put("highlightPreTag", this.highlightPreTag)
-                        .put("highlightPostTag", this.highlightPostTag)
-                        .put(
-                                "matchingStrategy",
-                                this.matchingStrategy == null
-                                        ? null
-                                        : this.matchingStrategy.toString())
-                        .put("showMatchesPosition", this.showMatchesPosition)
-                        .put("facets", this.facets)
-                        .put("sort", this.sort)
-                        .put("page", this.page)
-                        .put("hitsPerPage", this.hitsPerPage)
-                        .putOpt("attributesToCrop", this.attributesToCrop)
-                        .putOpt("attributesToHighlight", this.attributesToHighlight)
-                        .putOpt("filter", this.filter)
-                        .putOpt("filter", this.filterArray);
-
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("q", this.getQ());
+        jsonObject.put("offset", this.getOffset());
+        jsonObject.put("limit", this.getLimit());
+        jsonObject.put("attributesToRetrieve", getStrArrays(this.getAttributesToRetrieve()));
+        jsonObject.put("cropLength", this.getCropLength());
+        jsonObject.put("cropMarker", this.getCropMarker());
+        jsonObject.put("highlightPreTag", this.getHighlightPreTag());
+        jsonObject.put("highlightPostTag", this.getHighlightPostTag());
+        jsonObject.put("matchingStrategy", this.getMatchingStrategy() == null ? null : this.getMatchingStrategy().toString());
+        jsonObject.put("showMatchesPosition", this.getShowMatchesPosition());
+        jsonObject.put("facets", getStrArrays(this.getFacets()));
+        jsonObject.put("sort", getStrArrays(this.getSort()));
+        jsonObject.put("page", this.getPage());
+        jsonObject.put("hitsPerPage", this.getHitsPerPage());
+        jsonObject.putOpt("attributesToCrop", getStrArrays(this.getAttributesToCrop()));
+        jsonObject.putOpt("attributesToHighlight", getStrArrays(this.getAttributesToHighlight()));
+        jsonObject.putOpt("filter", getStrArrays(this.getFilter()));
+        jsonObject.putOpt("filter", this.getFilterArray());
         return jsonObject.toString();
     }
-}
+
+    /**
+     * trans it to json String value 
+     *
+     * @param arr arr
+     * @return {@code Object}
+     */
+    private static Object getStrArrays(String[] arr) {
+        if (arr == null) {
+            return null;
+        }
+        if (arr.length >= 1) {
+            final JSONArray jsonArray = new JSONArray();
+            for (String s : arr) {
+                jsonArray.put(s);
+            }
+            return jsonArray;
+        } else {
+            return arr;
+        }
+    }
