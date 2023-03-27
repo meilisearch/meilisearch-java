@@ -111,3 +111,4 @@ public class SearchRequest {
             return arr;
         }
     }
+}
