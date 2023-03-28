@@ -603,7 +603,7 @@ getting_started_communicating_with_a_protected_instance: |-
   client.index("movies").search(new SearchRequest(""));
 getting_started_faceting: |-
 getting_started_pagination: |-
-faceted_search_update_settings_1: |-
+filtering_update_settings_1: |-
   client.index("movies").updateFilterableAttributesSettings(new String[]
   {
     "director",
