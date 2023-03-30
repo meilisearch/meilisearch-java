@@ -25,6 +25,7 @@ public class Settings {
     protected String[] sortableAttributes;
     protected TypoTolerance typoTolerance;
     protected Pagination pagination;
+    protected Faceting faceting;
 
     public Settings() {}
 }

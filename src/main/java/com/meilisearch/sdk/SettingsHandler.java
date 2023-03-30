@@ -2,6 +2,7 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.URLBuilder;
+import com.meilisearch.sdk.model.Faceting;
 import com.meilisearch.sdk.model.Pagination;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
@@ -473,6 +474,44 @@ public class SettingsHandler {
     TaskInfo resetPaginationSettings(String uid) throws MeilisearchException {
         return httpClient.delete(
                 settingsPath(uid).addSubroute("pagination").getURL(), TaskInfo.class);
+    }
+
+    /**
+     * Gets the faceting settings of the index
+     *
+     * @param uid Index identifier
+     * @return a Faceting instance that contains all faceting settings
+     * @throws MeilisearchException if an error occurs
+     */
+    Faceting getFacetingSettings(String uid) throws MeilisearchException {
+        return httpClient.get(settingsPath(uid).addSubroute("faceting").getURL(), Faceting.class);
+    }
+
+    /**
+     * Updates the pagination settings of the index
+     *
+     * @param uid Index identifier
+     * @param faceting a Faceting instance that contains the new faceting settings
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo updateFacetingSettings(String uid, Faceting faceting) throws MeilisearchException {
+        return httpClient.patch(
+                settingsPath(uid).addSubroute("faceting").getURL(),
+                faceting == null ? httpClient.jsonHandler.encode(faceting) : faceting,
+                TaskInfo.class);
+    }
+
+    /**
+     * Reset the faceting settings of the index
+     *
+     * @param uid Index identifier
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo resetFacetingSettings(String uid) throws MeilisearchException {
+        return httpClient.delete(
+                settingsPath(uid).addSubroute("faceting").getURL(), TaskInfo.class);
     }
 
     /** Creates an URLBuilder for the constant route settings */

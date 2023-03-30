@@ -17,6 +17,7 @@ public class Index implements Serializable {
     @Getter protected String primaryKey;
     @Getter protected String createdAt;
     @Getter protected Pagination pagination;
+    @Getter protected Faceting faceting;
     @Getter @ToString.Exclude protected String updatedAt;
     @Getter @ToString.Exclude protected Config config;
     @ToString.Exclude protected Documents documents;
@@ -709,6 +710,40 @@ public class Index implements Serializable {
      */
     public TaskInfo resetPaginationSettings() throws MeilisearchException {
         return this.settingsHandler.resetPaginationSettings(this.uid);
+    }
+
+    /**
+     * Gets the faceting field of the index Refer
+     * https://docs.meilisearch.com/reference/api/settings.html#get-faceting-settings
+     *
+     * @return Faceting instance from Index
+     * @throws MeilisearchException if an error occurs
+     */
+    public Faceting getFacetingSettings() throws MeilisearchException {
+        return this.settingsHandler.getFacetingSettings(this.uid);
+    }
+
+    /**
+     * Updates the faceting field of the index Refer
+     * https://docs.meilisearch.com/reference/api/settings.html#update-faceting-settings
+     *
+     * @param faceting A faceting instance
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo updateFacetingSettings(Faceting faceting) throws MeilisearchException {
+        return this.settingsHandler.updateFacetingSettings(this.uid, faceting);
+    }
+
+    /**
+     * Resets the faceting field of the index Refer
+     * https://docs.meilisearch.com/reference/api/settings.html#reset-faceting-settings
+     *
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo resetFacetingSettings() throws MeilisearchException {
+        return this.settingsHandler.resetFacetingSettings(this.uid);
     }
 
     /**
