@@ -503,7 +503,7 @@ public class SettingsHandler {
     }
 
     /**
-     * Deletes the faceting settings of the index
+     * Reset the faceting settings of the index
      *
      * @param uid Index identifier
      * @return TaskInfo instance
