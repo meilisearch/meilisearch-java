@@ -14,7 +14,6 @@ import com.meilisearch.sdk.utils.Movie;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -614,7 +613,6 @@ public class DocumentsTest extends AbstractIT {
         assertFalse(containsDeletedMovie);
     }
 
-    @NotNull
     private List<String> getIdentifiersToDelete(Movie[] movies) {
         return Arrays.asList(
                 movies[1].getId(), movies[4].getId(), movies[10].getId(), movies[16].getId());

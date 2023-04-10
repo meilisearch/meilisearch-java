@@ -13,7 +13,7 @@ plugins {
 	id 'signing'
 	id 'jacoco'
 	id 'io.codearte.nexus-staging' version '0.30.0'
-	id "com.diffplug.spotless" version "6.13.0"
+	id "com.diffplug.spotless" version "6.18.0"
 }
 
 group = 'com.meilisearch.sdk'
@@ -27,17 +27,27 @@ java {
 
 jacoco {
   toolVersion = "0.8.8"
-  reportsDir = file("$projectDir/tmp/coverage")
+  // reportsDir = file("$projectDir/tmp/coverage")
+	reportsDirectory = layout.buildDirectory.dir("$projectDir/tmp/coverage")
 }
 
 repositories {
 	mavenCentral() // Required for Lombok dependency
-	jcenter()
 }
 
 configurations {
 	testCompile.extendsFrom compileOnly
 }
+
+// temp
+
+// if (JavaVersion.current().isJava8Compatible()) {
+	allprojects {
+		tasks.withType(Javadoc) {
+			options.addStringOption('Xdoclint:none', '-quiet')
+		}
+	}
+// }
 
 dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
@@ -52,6 +62,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:4.9.0'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
+	testImplementation 'com.squareup.okio:okio:3.3.0'
+	testImplementation 'com.squareup.okhttp3:okhttp:4.10.0'
+	testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
 	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
@@ -85,7 +98,7 @@ test {
 		excludeTags('integration')
 
 		reports {
-			html.destination = file("$projectDir/tmp/test-reports")
+			html.outputLocation = file("$projectDir/tmp/test-reports")
 		}
 	}
 	testLogging {
@@ -171,12 +184,12 @@ nexusStaging {
 	username System.getenv('OSSRH_USERNAME')
 	password System.getenv('OSSRH_PASSWORD')
 }
-spotless {
 
+spotless {
 	java {
 		// don't need to set target, it is inferred from java
 
 		// apply a specific flavor of google-java-format
-		googleJavaFormat('1.7').aosp()
+		// googleJavaFormat('1.7').aosp()
 	}
 }
