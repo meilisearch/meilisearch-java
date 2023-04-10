@@ -15,13 +15,17 @@ jobs:
     # Will still run for each push to bump-meilisearch-v*
     if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
     runs-on: ubuntu-latest
-    name: integration-and-unit-tests
+    strategy:
+      fail-fast: false
+      matrix:
+        java: ['8', '17']
+    name: integration-and-unit-tests (Java ${{ matrix.java }})
     steps:
     - uses: actions/checkout@v3
     - name: Set up Java
       uses: actions/setup-java@v3
       with:
-        java-version: 8
+        java-version: ${{ matrix.java }}
         distribution: 'zulu'
         cache: gradle
     - name: Grant execute permission for gradlew
