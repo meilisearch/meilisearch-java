@@ -20,6 +20,7 @@ import com.meilisearch.sdk.model.Task;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.model.TasksQuery;
 import com.meilisearch.sdk.model.TasksResults;
+import com.meilisearch.sdk.model.TenantTokenOptions;
 import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;

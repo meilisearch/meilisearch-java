@@ -1,4 +1,4 @@
-package com.meilisearch.sdk;
+package com.meilisearch.sdk.model;
 
 import java.util.Date;
 import lombok.Getter;
