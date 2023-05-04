@@ -44,7 +44,7 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.10.1'
 	implementation 'org.json:json:20230227'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
-	compileOnly 'com.squareup.okhttp3:okhttp:4.10.0'
+	compileOnly 'com.squareup.okhttp3:okhttp:4.11.0'
 
 	// Use JUnit test framework
 	testImplementation(platform('org.junit:junit-bom:5.9.2'))
