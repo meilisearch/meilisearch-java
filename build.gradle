@@ -44,17 +44,17 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.10.1'
 	implementation 'org.json:json:20230227'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
-	compileOnly 'com.squareup.okhttp3:okhttp:4.10.0'
+	compileOnly 'com.squareup.okhttp3:okhttp:4.11.0'
 
 	// Use JUnit test framework
-	testImplementation(platform('org.junit:junit-bom:5.9.2'))
+	testImplementation(platform('org.junit:junit-bom:5.9.3'))
 	testImplementation('org.junit.jupiter:junit-jupiter:5.9.2')
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:4.9.0'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
+	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.0'
 
 	// Lombok
 	compileOnly 'org.projectlombok:lombok:1.18.26'
@@ -63,7 +63,7 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
 
 	// Jwt
-	implementation 'com.auth0:java-jwt:4.3.0'
+	implementation 'com.auth0:java-jwt:4.4.0'
 }
 
 task buildJar(type: Jar) {
