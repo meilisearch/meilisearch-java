@@ -30,6 +30,16 @@ jacoco {
   reportsDirectory = layout.buildDirectory.dir("$projectDir/tmp/coverage")
 }
 
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.30
+			}
+		}
+	}
+}
+
 repositories {
 	mavenCentral()
 }
@@ -85,11 +95,8 @@ test {
 	finalizedBy jacocoTestReport
 	useJUnitPlatform {
 		excludeTags('integration')
-
-		reports {
-			html.destination = file("$projectDir/tmp/test-reports")
-		}
 	}
+
 	testLogging {
 		events 'passed', 'skipped', 'failed'
 	}
@@ -97,6 +104,12 @@ test {
 
 jacocoTestReport {
 	dependsOn test
+	reports {
+		xml.required = false
+		csv.required = false
+		html.outputLocation = layout.buildDirectory.dir("$projectDir/tmp/test-reports")
+	}
+	finalizedBy jacocoTestCoverageVerification
 }
 
 task integrationTest(type: Test) {
