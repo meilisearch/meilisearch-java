@@ -52,6 +52,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:4.9.0'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
+	testImplementation 'com.squareup.okio:okio:3.3.0'
+	testImplementation 'com.squareup.okhttp3:okhttp:4.11.0'
+	testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
 	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.0'
