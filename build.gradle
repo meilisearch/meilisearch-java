@@ -27,12 +27,11 @@ java {
 
 jacoco {
   toolVersion = "0.8.8"
-  reportsDir = file("$projectDir/tmp/coverage")
+  reportsDirectory = layout.buildDirectory.dir("$projectDir/tmp/coverage")
 }
 
 repositories {
-	mavenCentral() // Required for Lombok dependency
-	jcenter()
+	mavenCentral()
 }
 
 configurations {
