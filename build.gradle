@@ -27,12 +27,21 @@ java {
 
 jacoco {
   toolVersion = "0.8.8"
-  reportsDir = file("$projectDir/tmp/coverage")
+  reportsDirectory = layout.buildDirectory.dir("$projectDir/tmp/coverage")
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.30
+			}
+		}
+	}
 }
 
 repositories {
-	mavenCentral() // Required for Lombok dependency
-	jcenter()
+	mavenCentral()
 }
 
 configurations {
@@ -52,6 +61,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:4.9.0'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
+	testImplementation 'com.squareup.okio:okio:3.3.0'
+	testImplementation 'com.squareup.okhttp3:okhttp:4.11.0'
+	testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
 	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.0'
@@ -83,11 +95,8 @@ test {
 	finalizedBy jacocoTestReport
 	useJUnitPlatform {
 		excludeTags('integration')
-
-		reports {
-			html.destination = file("$projectDir/tmp/test-reports")
-		}
 	}
+
 	testLogging {
 		events 'passed', 'skipped', 'failed'
 	}
@@ -95,6 +104,12 @@ test {
 
 jacocoTestReport {
 	dependsOn test
+	reports {
+		xml.required = false
+		csv.required = false
+		html.outputLocation = layout.buildDirectory.dir("$projectDir/tmp/test-reports")
+	}
+	finalizedBy jacocoTestCoverageVerification
 }
 
 task integrationTest(type: Test) {
