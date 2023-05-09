@@ -69,6 +69,8 @@ Add the following line to the `dependencies` section of your `build.gradle`:
 implementation 'com.meilisearch.sdk:meilisearch-java:0.11.0'
 ```
 
+:warning: `meilisearch-java` also requires `okhttp` as a peer dependency.
+
 ### Run Meilisearch <!-- omit in toc -->
 
 There are many easy ways to [download and run a Meilisearch instance](https://docs.meilisearch.com/reference/features/installation.html#download-and-launch).
