@@ -606,8 +606,9 @@ getting_started_pagination: |-
 faceted_search_update_settings_1: |-
   client.index("movies").updateFilterableAttributesSettings(new String[]
   {
-    "director",
-    "genres"
+    "genres",
+    "language",
+    "rating"
   });
 faceted_search_filter_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("thriller").filterArray().build(new String[][] {
