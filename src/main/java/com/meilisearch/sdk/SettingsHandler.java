@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Class covering the Meilisearch Settings API {@link Settings}
  *
- * <p>https://docs.meilisearch.com/reference/api/settings.html
+ * <p>https://www.meilisearch.com/docs/reference/api/settings
  */
 public class SettingsHandler {
     private final HttpClient httpClient;
