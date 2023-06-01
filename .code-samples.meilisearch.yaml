@@ -4,7 +4,7 @@
 # You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
 ---
 filtering_guide_nested_1: |-
-  with data: { "index": "movies", "q": "thriller", "filter": "rating.users >= 90" }
+  with data: { "index": "movie_ratings", "q": "thriller", "filter": "rating.users >= 90" }
 
 sorting_guide_sort_nested_1: |-
   with data: { "index": "books", "q": "science fiction", "sort": ["rating.users:asc"] }
