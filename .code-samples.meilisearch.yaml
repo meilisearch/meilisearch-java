@@ -289,8 +289,8 @@ get_version_1: |-
 distinct_attribute_guide_1: |-
   client.index("jackets").updateDistinctAttributeSettings("product_id");
 field_properties_guide_searchable_1: |-
-  String[] settings = {"title", "overview", "genres"}
-  client.index("movies").updateSearchableAttributesSettings(settings);
+  String[] attributes = {"title", "overview", "genres"}
+  client.index("movies").updateSearchableAttributesSettings(attributes);
 field_properties_guide_displayed_1: |-
   String[] attributes = {"title", "overview", "genres", "release_date"}
   client.index("movies").updateDisplayedAttributesSettings(attributes);
