@@ -500,7 +500,7 @@ getting_started_add_documents_md: |-
   <dependency>
     <groupId>com.meilisearch.sdk</groupId>
     <artifactId>meilisearch-java</artifactId>
-    <version>0.11.0</version>
+    <version>0.11.1</version>
     <type>pom</type>
   </dependency>
   ```
@@ -508,7 +508,7 @@ getting_started_add_documents_md: |-
   **Gradle**
   Add the following line to the `dependencies` section of your `build.gradle`:
   ```groovy
-  implementation 'com.meilisearch.sdk:meilisearch-java:0.11.0'
+  implementation 'com.meilisearch.sdk:meilisearch-java:0.11.1'
   ```
 
   ```java
@@ -612,8 +612,9 @@ getting_started_pagination: |-
 faceted_search_update_settings_1: |-
   client.index("movies").updateFilterableAttributesSettings(new String[]
   {
-    "director",
-    "genres"
+    "genres",
+    "rating",
+    "language"
   });
 faceted_search_filter_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("thriller").filterArray().build(new String[][] {
