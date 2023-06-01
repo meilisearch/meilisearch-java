@@ -18,10 +18,11 @@ class MeilisearchApiExceptionTest {
                         new APIError()
                                 .setMessage("Index `movies` not found.")
                                 .setCode("index_not_found")
-                                .setLink("https://docs.meilisearch.com/errors#index_not_found")
+                                .setLink(
+                                        "https://www.meilisearch.com/docs/reference/errors/error_codes#index_not_found")
                                 .setType("invalid_request"));
         assertEquals(
-                "Meilisearch ApiException: {Error=APIError: {message='Index `movies` not found.', code='index_not_found', type='invalid_request', link='https://docs.meilisearch.com/errors#index_not_found'}}",
+                "Meilisearch ApiException: {Error=APIError: {message='Index `movies` not found.', code='index_not_found', type='invalid_request', link='https://www.meilisearch.com/docs/reference/errors/error_codes#index_not_found'}}",
                 classToTest.toString());
     }
 }
