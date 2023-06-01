@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 /**
  * Typo Tolerance setting data structure
  *
- * <p>https://docs.meilisearch.com/reference/api/typo_tolerance.html
+ * <p>https://www.meilisearch.com/docs/reference/api/settings#typo-tolerance-object
  */
 @Getter
 @Setter

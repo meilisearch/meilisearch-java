@@ -51,7 +51,7 @@ public class Client {
 
     /**
      * Creates an index with a unique identifier
-     * https://docs.meilisearch.com/reference/api/indexes.html#create-an-index
+     * https://www.meilisearch.com/docs/reference/api/indexes#create-an-index
      *
      * @param uid Unique identifier for the index to create
      * @return Meilisearch API response as TaskInfo
@@ -63,7 +63,7 @@ public class Client {
 
     /**
      * Creates an index with a unique identifier
-     * https://docs.meilisearch.com/reference/api/indexes.html#create-an-index
+     * https://www.meilisearch.com/docs/reference/api/indexes#create-an-index
      *
      * @param uid Unique identifier for the index to create
      * @param primaryKey The primary key of the documents in that index
@@ -75,7 +75,7 @@ public class Client {
     }
 
     /**
-     * Gets indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     * Gets indexes https://www.meilisearch.com/docs/reference/api/indexes#list-all-indexes
      *
      * @return Results containing a list of indexes from the Meilisearch API
      * @throws MeilisearchException if an error occurs
@@ -89,7 +89,7 @@ public class Client {
     }
 
     /**
-     * Gets indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     * Gets indexes https://www.meilisearch.com/docs/reference/api/indexes#list-all-indexes
      *
      * @param params query parameters accepted by the get indexes route
      * @return Results containing a list of indexes from the Meilisearch API
@@ -104,7 +104,7 @@ public class Client {
     }
 
     /**
-     * Gets all indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     * Gets all indexes https://www.meilisearch.com/docs/reference/api/indexes#list-all-indexes
      *
      * @return List of indexes from the Meilisearch API as String
      * @throws MeilisearchException if an error occurs
@@ -114,7 +114,7 @@ public class Client {
     }
 
     /**
-     * Gets all indexes https://docs.meilisearch.com/reference/api/indexes.html#list-all-indexes
+     * Gets all indexes https://www.meilisearch.com/docs/reference/api/indexes#list-all-indexes
      *
      * @param params query parameters accepted by the get indexes route
      * @return List of indexes from the Meilisearch API as String
@@ -142,7 +142,7 @@ public class Client {
 
     /**
      * Gets single index by its unique identifier
-     * https://docs.meilisearch.com/reference/api/indexes.html#get-one-index
+     * https://www.meilisearch.com/docs/reference/api/indexes#get-one-index
      *
      * @param uid Unique identifier of the index to get
      * @return Meilisearch API response as Index instance
@@ -156,7 +156,7 @@ public class Client {
 
     /**
      * Updates the primary key of an index
-     * https://docs.meilisearch.com/reference/api/indexes.html#update-an-index
+     * https://www.meilisearch.com/docs/reference/api/indexes#update-an-index
      *
      * @param uid Unique identifier of the index to update
      * @param primaryKey Primary key of the documents in the index
@@ -169,7 +169,7 @@ public class Client {
 
     /**
      * Deletes single index by its unique identifier
-     * https://docs.meilisearch.com/reference/api/indexes.html#delete-one-index
+     * https://www.meilisearch.com/docs/reference/api/indexes#delete-one-index
      *
      * @param uid Unique identifier of the index to delete
      * @return Meilisearch API response as TaskInfo
@@ -181,7 +181,7 @@ public class Client {
 
     /**
      * Swap the documents, settings, and task history of two or more indexes
-     * https://docs.meilisearch.com/reference/api/indexes.html#swap-indexes
+     * https://www.meilisearch.com/docs/reference/api/indexes#swap-indexes
      *
      * @param param accepted by the swap-indexes route
      * @return Meilisearch API response as TaskInfo
@@ -193,7 +193,7 @@ public class Client {
 
     /**
      * Triggers the creation of a Meilisearch dump.
-     * https://docs.meilisearch.com/reference/api/dump.html#create-a-dump
+     * https://www.meilisearch.com/docs/reference/api/dump#create-a-dump
      *
      * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
@@ -204,7 +204,7 @@ public class Client {
 
     /**
      * Gets the status and availability of a Meilisearch instance
-     * https://docs.meilisearch.com/reference/api/health.html#health
+     * https://www.meilisearch.com/docs/reference/api/health#health
      *
      * @return String containing the status of the Meilisearch instance from Meilisearch API
      *     response
@@ -216,7 +216,7 @@ public class Client {
 
     /**
      * Gets the status and availability of a Meilisearch instance
-     * https://docs.meilisearch.com/reference/api/health.html#health
+     * https://www.meilisearch.com/docs/reference/api/health#health
      *
      * @return True if the Meilisearch instance is available or false if it is not
      * @throws MeilisearchException if an error occurs
@@ -227,7 +227,7 @@ public class Client {
 
     /**
      * Gets extended information and metrics about indexes and the Meilisearch database
-     * https://docs.meilisearch.com/reference/api/stats.html#stats-object
+     * https://www.meilisearch.com/docs/reference/api/stats#stats-object
      *
      * @return Stats instance from Meilisearch API response
      * @throws MeilisearchException if an error occurs
@@ -238,7 +238,7 @@ public class Client {
 
     /**
      * Gets the version of Meilisearch instance
-     * https://docs.meilisearch.com/reference/api/version.html#version
+     * https://www.meilisearch.com/docs/reference/api/version#version
      *
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
@@ -249,7 +249,7 @@ public class Client {
 
     /**
      * Retrieves a task with the specified uid
-     * https://docs.meilisearch.com/reference/api/tasks.html#get-one-task
+     * https://www.meilisearch.com/docs/reference/api/tasks#get-one-task
      *
      * @param uid Identifier of the requested Task
      * @return Meilisearch API response as Task Instance
@@ -260,7 +260,7 @@ public class Client {
     }
 
     /**
-     * Retrieves list of tasks https://docs.meilisearch.com/reference/api/tasks.html#get-tasks
+     * Retrieves list of tasks https://www.meilisearch.com/docs/reference/api/tasks#get-tasks
      *
      * @return TasksResults containing a list of tasks from the Meilisearch API
      * @throws MeilisearchException if an error occurs
@@ -270,7 +270,7 @@ public class Client {
     }
 
     /**
-     * Retrieves list of tasks https://docs.meilisearch.com/reference/api/tasks.html#get-tasks
+     * Retrieves list of tasks https://www.meilisearch.com/docs/reference/api/tasks#get-tasks
      *
      * @param param accept by the tasks route
      * @return TasksResults containing a list of tasks from the Meilisearch API
@@ -282,7 +282,7 @@ public class Client {
 
     /**
      * Cancel any number of enqueued or processing tasks
-     * https://docs.meilisearch.com/reference/api/tasks.html#cancel-tasks
+     * https://www.meilisearch.com/docs/reference/api/tasks#cancel-tasks
      *
      * @param param accept by the tasks route
      * @return Meilisearch API response as TaskInfo
@@ -294,7 +294,7 @@ public class Client {
 
     /**
      * Delete a finished (succeeded, failed, or canceled) task
-     * https://docs.meilisearch.com/reference/api/tasks.html#delete-tasks
+     * https://www.meilisearch.com/docs/reference/api/tasks#delete-tasks
      *
      * @param param accept by the tasks route
      * @return Meilisearch API response as TaskInfo
@@ -316,7 +316,7 @@ public class Client {
 
     /**
      * Retrieves the key with the specified uid
-     * https://docs.meilisearch.com/reference/api/keys.html#get-one-key
+     * https://www.meilisearch.com/docs/reference/api/keys#get-one-key
      *
      * @param uid Identifier of the requested Key
      * @return Meilisearch API response as Key Instance
@@ -327,7 +327,7 @@ public class Client {
     }
 
     /**
-     * Retrieves list of keys https://docs.meilisearch.com/reference/api/keys.html#get-all-keys
+     * Retrieves list of keys https://www.meilisearch.com/docs/reference/api/keys#get-all-keys
      *
      * @return Results containing a list of Key from the Meilisearch API
      * @throws MeilisearchException if an error occurs
@@ -337,7 +337,7 @@ public class Client {
     }
 
     /**
-     * Get list of all API keys https://docs.meilisearch.com/reference/api/keys.html#get-all-keys
+     * Get list of all API keys https://www.meilisearch.com/docs/reference/api/keys#get-all-keys
      *
      * @param params query parameters accepted by the get keys route
      * @return Results containing a list of Key from the Meilisearch API
@@ -348,7 +348,7 @@ public class Client {
     }
 
     /**
-     * Creates a key https://docs.meilisearch.com/reference/api/keys.html#create-a-key
+     * Creates a key https://www.meilisearch.com/docs/reference/api/keys#create-a-key
      *
      * @param options Key containing the options of the key
      * @return Meilisearch API response as Key Instance
@@ -359,7 +359,7 @@ public class Client {
     }
 
     /**
-     * Updates a key https://docs.meilisearch.com/reference/api/keys.html#update-a-key
+     * Updates a key https://www.meilisearch.com/docs/reference/api/keys#update-a-key
      *
      * @param key String containing the key
      * @param options String containing the options to update
@@ -371,7 +371,7 @@ public class Client {
     }
 
     /**
-     * Deletes a key https://docs.meilisearch.com/reference/api/keys.html#delete-a-key
+     * Deletes a key https://www.meilisearch.com/docs/reference/api/keys#delete-a-key
      *
      * @param key String containing the key
      * @throws MeilisearchException if an error occurs
@@ -387,7 +387,7 @@ public class Client {
 
     /**
      * Generate a tenant token
-     * https://docs.meilisearch.com/learn/security/tenant_tokens.html#multitenancy-and-tenant-tokens
+     * https://www.meilisearch.com/docs/learn/security/tenant_tokens#multitenancy-and-tenant-tokens
      *
      * @param apiKeyUid Uid of a signing API key.
      * @param searchRules A Map of string, object which contains the rules to be enforced at search

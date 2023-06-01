@@ -18,7 +18,7 @@ plugins {
 
 group = 'com.meilisearch.sdk'
 archivesBaseName = 'meilisearch-java'
-version = '0.11.0'
+version = '0.11.1'
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_1_8
@@ -27,12 +27,21 @@ java {
 
 jacoco {
   toolVersion = "0.8.8"
-  reportsDir = file("$projectDir/tmp/coverage")
+  reportsDirectory = layout.buildDirectory.dir("$projectDir/tmp/coverage")
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.30
+			}
+		}
+	}
 }
 
 repositories {
-	mavenCentral() // Required for Lombok dependency
-	jcenter()
+	mavenCentral()
 }
 
 configurations {
@@ -44,23 +53,26 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.10.1'
 	implementation 'org.json:json:20230227'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
-	compileOnly 'com.squareup.okhttp3:okhttp:4.11.0'
+	api 'com.squareup.okhttp3:okhttp:[4.10.0,5.0.0)'
 
 	// Use JUnit test framework
 	testImplementation(platform('org.junit:junit-bom:5.9.3'))
-	testImplementation('org.junit.jupiter:junit-jupiter:5.9.2')
+	testImplementation('org.junit.jupiter:junit-jupiter:5.9.3')
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:4.9.0'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
+	testImplementation 'com.squareup.okio:okio:3.3.0'
+	testImplementation 'com.squareup.okhttp3:okhttp:4.11.0'
+	testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.0'
+	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.2'
 
 	// Lombok
-	compileOnly 'org.projectlombok:lombok:1.18.26'
-	annotationProcessor 'org.projectlombok:lombok:1.18.26'
-	testCompileOnly 'org.projectlombok:lombok:1.18.26'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+	compileOnly 'org.projectlombok:lombok:1.18.28'
+	annotationProcessor 'org.projectlombok:lombok:1.18.28'
+	testCompileOnly 'org.projectlombok:lombok:1.18.28'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
 
 	// Jwt
 	implementation 'com.auth0:java-jwt:4.4.0'
@@ -83,11 +95,8 @@ test {
 	finalizedBy jacocoTestReport
 	useJUnitPlatform {
 		excludeTags('integration')
-
-		reports {
-			html.destination = file("$projectDir/tmp/test-reports")
-		}
 	}
+
 	testLogging {
 		events 'passed', 'skipped', 'failed'
 	}
@@ -95,6 +104,12 @@ test {
 
 jacocoTestReport {
 	dependsOn test
+	reports {
+		xml.required = false
+		csv.required = false
+		html.outputLocation = layout.buildDirectory.dir("$projectDir/tmp/test-reports")
+	}
+	finalizedBy jacocoTestCoverageVerification
 }
 
 task integrationTest(type: Test) {
