@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.model.Faceting;
 import com.meilisearch.sdk.model.Pagination;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
@@ -948,6 +949,54 @@ public class SettingsTest extends AbstractIT {
         assertEquals(1000, initialPagination.getMaxTotalHits());
         assertEquals(100, updatedPagination.getMaxTotalHits());
         assertEquals(1000, paginationAfterReset.getMaxTotalHits());
+    }
+
+    /** Tests of the faceting setting methods */
+    @Test
+    @DisplayName("Test get faceting settings by uid")
+    public void testGetFacetingSettings() throws Exception {
+        Index index = createIndex("testGetFacetingSettings");
+        Settings initialSettings = index.getSettings();
+        Faceting initialFaceting = index.getFacetingSettings();
+
+        assertEquals(initialSettings.getFaceting().getMaxValuesPerFacet(), 100);
+        assertNotNull(initialFaceting.getMaxValuesPerFacet());
+    }
+
+    @Test
+    @DisplayName("Test update faceting settings")
+    public void testUpdateFacetingSettings() throws Exception {
+        Index index = createIndex("testUpdateFacetingSettings");
+        Faceting newFaceting = new Faceting();
+
+        Integer MaxValuesPerFacetTypos = 200;
+
+        newFaceting.setMaxValuesPerFacet(MaxValuesPerFacetTypos);
+        index.waitForTask(index.updateFacetingSettings(newFaceting).getTaskUid());
+        Faceting updatedFaceting = index.getFacetingSettings();
+
+        assertEquals(200, updatedFaceting.getMaxValuesPerFacet());
+    }
+
+    @Test
+    @DisplayName("Test reset faceting settings")
+    public void testResetFacetingSettings() throws Exception {
+        Index index = createIndex("testResetFacetingSettings");
+
+        Faceting initialFaceting = index.getFacetingSettings();
+        Faceting newFaceting = new Faceting();
+
+        Integer MaxValuesPerFacetTypos = 200;
+        newFaceting.setMaxValuesPerFacet(MaxValuesPerFacetTypos);
+        index.waitForTask(index.updateFacetingSettings(newFaceting).getTaskUid());
+        Faceting updatedFaceting = index.getFacetingSettings();
+
+        index.waitForTask(index.resetFacetingSettings().getTaskUid());
+        Faceting facetingAfterReset = index.getFacetingSettings();
+
+        assertEquals(100, initialFaceting.getMaxValuesPerFacet());
+        assertEquals(200, updatedFaceting.getMaxValuesPerFacet());
+        assertEquals(100, facetingAfterReset.getMaxValuesPerFacet());
     }
 
     private Index createIndex(String indexUid) throws Exception {

@@ -6,18 +6,18 @@
 
 <h4 align="center">
   <a href="https://github.com/meilisearch/meilisearch">Meilisearch</a> |
-  <a href="https://docs.meilisearch.com">Documentation</a> |
+  <a href="https://www.meilisearch.com/docs">Documentation</a> |
   <a href="https://discord.meilisearch.com">Discord</a> |
   <a href="https://roadmap.meilisearch.com/tabs/1-under-consideration">Roadmap</a> |
   <a href="https://www.meilisearch.com">Website</a> |
-  <a href="https://docs.meilisearch.com/faq">FAQ</a>
+  <a href="https://www.meilisearch.com/docs/faq">FAQ</a>
 </h4>
 
 <p align="center">
   <a href="https://maven-badges.herokuapp.com/maven-central/com.meilisearch.sdk/meilisearch-java"><img src="https://maven-badges.herokuapp.com/maven-central/com.meilisearch.sdk/meilisearch-java/badge.svg" alt="Version"></a>
   <a href="https://github.com/meilisearch/meilisearch-java/actions"><img src="https://github.com/meilisearch/meilisearch-java/workflows/Tests/badge.svg" alt="Tests"></a>
   <a href="https://github.com/meilisearch/meilisearch-java/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
-  <a href="https://app.bors.tech/repositories/29365"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
+  <a href="https://ms-bors.herokuapp.com/repositories/60"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
 </p>
 
 <p align="center">⚡ The Meilisearch API client written for Java ☕️</p>
@@ -40,7 +40,7 @@
 
 This readme contains all the documentation you need to start using this Meilisearch SDK.
 
-For general information on how to use Meilisearch—such as our API reference, tutorials, guides, and in-depth articles—refer to our [main documentation website](https://docs.meilisearch.com/).
+For general information on how to use Meilisearch—such as our API reference, tutorials, guides, and in-depth articles—refer to our [main documentation website](https://www.meilisearch.com/docs/).
 
 
 
@@ -56,7 +56,7 @@ Add the following code to the `<dependencies>` section of your project:
 <dependency>
   <groupId>com.meilisearch.sdk</groupId>
   <artifactId>meilisearch-java</artifactId>
-  <version>0.11.0</version>
+  <version>0.11.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -66,12 +66,14 @@ Add the following code to the `<dependencies>` section of your project:
 Add the following line to the `dependencies` section of your `build.gradle`:
 
 ```groovy
-implementation 'com.meilisearch.sdk:meilisearch-java:0.11.0'
+implementation 'com.meilisearch.sdk:meilisearch-java:0.11.1'
 ```
+
+:warning: `meilisearch-java` also requires `okhttp` as a peer dependency.
 
 ### Run Meilisearch <!-- omit in toc -->
 
-There are many easy ways to [download and run a Meilisearch instance](https://docs.meilisearch.com/reference/features/installation.html#download-and-launch).
+There are many easy ways to [download and run a Meilisearch instance](https://www.meilisearch.com/docs/learn/getting_started/installation).
 
 For example, using the `curl` command in [your Terminal](https://itconnect.uw.edu/learn/workshops/online-tutorials/web-publishing/what-is-a-terminal/):
 
@@ -123,7 +125,7 @@ class TestMeilisearch {
 }
 ```
 
-With the `taskUid`, you can check the status (`enqueued`, `processing`, `succeeded` or `failed`) of your documents addition using the [task endpoint](https://docs.meilisearch.com/reference/api/tasks.html#get-task).
+With the `taskUid`, you can check the status (`enqueued`, `processing`, `succeeded` or `failed`) of your documents addition using the [task endpoint](https://www.meilisearch.com/docs/reference/api/tasks).
 
 #### Basic Search <!-- omit in toc -->
 
@@ -146,7 +148,7 @@ SearchResult(hits=[{id=1.0, title=Carol, genres:[Romance, Drama]}], offset=0, li
 #### Custom Search <!-- omit in toc -->
 
 If you want a custom search, the easiest way is to create a `SearchRequest` object, and set the parameters that you need.<br>
-All the supported options are described in the [search parameters](https://docs.meilisearch.com/reference/features/search_parameters.html) section of the documentation.
+All the supported options are described in the [search parameters](https://www.meilisearch.com/docs/reference/api/search#search-parameters) section of the documentation.
 
 ```java
 import com.meilisearch.sdk.SearchRequest;
@@ -195,7 +197,7 @@ index.updateFilterableAttributesSettings(new String[]
 
 You only need to perform this operation once.
 
-Note that Meilisearch will rebuild your index whenever you update `filterableAttributes`. Depending on the size of your dataset, this might take time. You can track the process using the [task status](https://docs.meilisearch.com/reference/api/tasks.html#get-task).
+Note that Meilisearch will rebuild your index whenever you update `filterableAttributes`. Depending on the size of your dataset, this might take time. You can track the process using the [task status](https://www.meilisearch.com/docs/reference/api/tasks).
 
 Then, you can perform the search:
 
@@ -269,10 +271,10 @@ This package guarantees compatibility with [version v1.x of Meilisearch](https:/
 
 The following sections in our main documentation website may interest you:
 
-- **Manipulate documents**: see the [API references](https://docs.meilisearch.com/reference/api/documents.html) or read more about [documents](https://docs.meilisearch.com/learn/core_concepts/documents.html).
-- **Search**: see the [API references](https://docs.meilisearch.com/reference/api/search.html) or follow our guide on [search parameters](https://docs.meilisearch.com/reference/features/search_parameters.html).
-- **Manage the indexes**: see the [API references](https://docs.meilisearch.com/reference/api/indexes.html) or read more about [indexes](https://docs.meilisearch.com/learn/core_concepts/indexes.html).
-- **Configure the index settings**: see the [API references](https://docs.meilisearch.com/reference/api/settings.html) or follow our guide on [settings parameters](https://docs.meilisearch.com/reference/features/settings.html).
+- **Manipulate documents**: see the [API references](https://www.meilisearch.com/docs/reference/api/documents) or read more about [documents](https://www.meilisearch.com/docs/learn/core_concepts/documents).
+- **Search**: see the [API references](https://www.meilisearch.com/docs/reference/api/search) or follow our guide on [search parameters](https://www.meilisearch.com/docs/reference/api/search#search-parameters).
+- **Manage the indexes**: see the [API references](https://www.meilisearch.com/docs/reference/api/indexes) or read more about [indexes](https://www.meilisearch.com/docs/learn/core_concepts/indexes).
+- **Configure the index settings**: see the [API references](https://www.meilisearch.com/docs/reference/api/settings) or follow our guide on [settings parameters](https://www.meilisearch.com/docs/reference/api/settings#settings_parameters).
 
 ## ⚙️ Contributing
 
