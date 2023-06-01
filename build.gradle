@@ -63,10 +63,10 @@ dependencies {
 	testImplementation 'org.hamcrest:hamcrest:2.2'
 	testImplementation 'com.squareup.okio:okio:3.3.0'
 	testImplementation 'com.squareup.okhttp3:okhttp:4.11.0'
-	testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
+	testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.0'
+	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.2'
 
 	// Lombok
 	compileOnly 'org.projectlombok:lombok:1.18.28'
