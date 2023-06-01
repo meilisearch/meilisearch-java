@@ -292,8 +292,8 @@ field_properties_guide_searchable_1: |-
   String[] settings = {"title", "overview", "genres"}
   client.index("movies").updateSearchableAttributesSettings(settings);
 field_properties_guide_displayed_1: |-
-  String[] settings = {"title", "overview", "genres", "release_date"}
-  client.index("movies").updateDisplayedAttributesSettings(settings);
+  String[] attributes = {"title", "overview", "genres", "release_date"}
+  client.index("movies").updateDisplayedAttributesSettings(attributes);
 filtering_guide_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("Avengers").filter(new String[] {"release_date > \"795484800\""}).build();
   client.index("movies").search(searchRequest);
