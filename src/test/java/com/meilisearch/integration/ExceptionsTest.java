@@ -38,7 +38,8 @@ public class ExceptionsTest extends AbstractIT {
         String message = "You must have an authorization token";
         String code = "missing_authorization_header";
         String type = "authentication_error";
-        String link = "https://www.meilisearch.com/docs/reference/errors/error_codes#missing_authorization_header";
+        String link =
+                "https://www.meilisearch.com/docs/reference/errors/error_codes#missing_authorization_header";
         try {
             throw new MeilisearchApiException(new APIError(message, code, type, link));
         } catch (MeilisearchApiException e) {

@@ -570,8 +570,7 @@ public class Index implements Serializable {
 
     /**
      * Updates the filterable attributes of the index. This will re-index all documents in the index
-     * Refer
-     * https://www.meilisearch.com/docs/reference/api/settings#update-filterable-attributes
+     * Refer https://www.meilisearch.com/docs/reference/api/settings#update-filterable-attributes
      *
      * @param filterableAttributes An array of strings containing the attributes that can be used as
      *     filters at query time.
