@@ -3,12 +3,6 @@
 # the documentation on build
 # You can read more on https://github.com/meilisearch/documentation/tree/master/.vuepress/code-samples
 ---
-filtering_guide_nested_1: |-
-  with data: { "index": "movie_ratings", "q": "thriller", "filter": "rating.users >= 90" }
-
-sorting_guide_sort_nested_1: |-
-  with data: { "index": "books", "q": "science fiction", "sort": ["rating.users:asc"] }
-
 get_one_index_1: |-
   client.getIndex("movies");
 list_all_indexes_1: |-
@@ -292,29 +286,14 @@ get_health_1: |-
   client.health();
 get_version_1: |-
   client.getVersion();
->>>>>>>>>>>>>>>> UPDATE_ME distinct_attribute_guide_1 (use distinct attribute route): |-
-  Settings settings = new Settings();
-  settings.setDistinctAttribute("product_id");
-  client.index("jackets").updateSettings(settings);
->>>>>>>>>>>>>>>> UPDATE_ME field_properties_guide_searchable_1 (use searchable attribute route): |-
-  Settings settings = new Settings();
-  settings.setSearchableAttributes(new String[]
-  {
-    "title",
-    "overview",
-    "genres"
-  });
-  client.index("movies").updateSettings(settings);
->>>>>>>>>>>>>>>> UPDATE_ME field_properties_guide_displayed_1 (use displayed attribute route): |-
-  Settings settings = new Settings();
-  settings.setDisplayedAttributes(new String[]
-  {
-    "title",
-    "overview",
-    "genres",
-    "release_date"
-  });
-  client.index("movies").updateSettings(settings);
+distinct_attribute_guide_1: |-
+  client.index("jackets").updateDistinctAttributeSettings("product_id");
+field_properties_guide_searchable_1: |-
+  String[] settings = {"title", "overview", "genres"}
+  client.index("movies").updateSearchableAttributesSettings(settings);
+field_properties_guide_displayed_1: |-
+  String[] settings = {"title", "overview", "genres", "release_date"}
+  client.index("movies").updateDisplayedAttributesSettings(settings);
 filtering_guide_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("Avengers").filter(new String[] {"release_date > \"795484800\""}).build();
   client.index("movies").search(searchRequest);
@@ -324,6 +303,9 @@ filtering_guide_2: |-
 filtering_guide_3: |-
   SearchRequest searchRequest = SearchRequest.builder().q("Planet of the Apes").filter(new String[] {"rating >= 3 AND (NOT director = \"Tim Burton\")"}).build();
   client.index("movies").search(searchRequest);
+filtering_guide_nested_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("thriller").filter(new String[] {"rating.users >= 90"}).build();
+  client.index("movie_ratings").search(searchRequest);
 search_parameter_guide_query_1: |-
   client.index("movies").search("shifu");
 search_parameter_guide_offset_1: |-
@@ -382,82 +364,6 @@ search_parameter_guide_matching_strategy_1: |-
 search_parameter_guide_matching_strategy_2: |-
   SearchRequest searchRequest = SearchRequest.builder().q("big fat liar").matchingStrategy(MatchingStrategy.ALL).build();
   client.index("movies").search(searchRequest);
->>>>>>>>>>> REMOVE_ME settings_guide_synonyms_1: |-
-  Settings settings = new Settings();
-  HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
-  synonyms.put("sweater", new String[] {"jumper"});
-  synonyms.put("jumper", new String[] {"sweater"});
-  settings.setSynonyms(synonyms);
-  client.index("tops").updateSettings(settings);
->>>>>>>>>>> REMOVE_ME settings_guide_stop_words_1: |-
-  Settings settings = new Settings();
-  settings.setStopWords(new String[]
-  {
-    "the",
-    "a",
-    "an"
-  });
-  client.index("movies").updateSettings(settings);
->>>>>>>>>>> REMOVE_ME settings_guide_ranking_rules_1: |-
-  Settings settings = new Settings();
-  settings.setRankingRules(new String[]
-  {
-    "words",
-    "typo",
-    "proximity",
-    "attribute",
-    "sort",
-    "exactness",
-    "release_date:asc",
-    "rank_desc"
-  });
-  client.index("movies").updateSettings(settings);
->>>>>>>>>>> REMOVE_ME settings_guide_distinct_1: |-
-  Settings settings = new Settings();
-  settings.setDistinctAttribute("product_id");
-  client.index("jackets").updateSettings(settings);
->>>>>>>>>>> REMOVE_ME settings_guide_searchable_1: |-
-  Settings settings = new Settings();
-  settings.setSearchableAttributes(new String[]
-  {
-    "title",
-    "overview",
-    "genres"
-  });
-  client.index("movies").updateSettings(settings);
->>>>>>>>>>> REMOVE_ME settings_guide_displayed_1: |-
-  Settings settings = new Settings();
-  settings.setDisplayedAttributes(new String[]
-  {
-    "title",
-    "overview",
-    "genres",
-    "release_date"
-  });
-  client.index("movies").updateSettings(settings);
->>>>>>>>>>> REMOVE_ME settings_guide_sortable_1: |-
-  Settings settings = new Settings();
-  settings.setSortableAttributes(new String[]
-  {
-    "price",
-    "author",
-  });
-  client.index("books").updateSettings(settings);
->>>>>>>>>>> REMOVE_ME settings_guide_faceting_1: |-
->>>>>>>>>>> REMOVE_ME settings_guide_pagination_1: |-
->>>>>>>>>>> REMOVE_ME settings_guide_typo_tolerance_1: |-
-  TypoTolerance typoTolerance = new TypoTolerance();
-  HashMap<String, Integer> minWordSizeTypos =
-          new HashMap<String, Integer>() {
-              {
-                  put("twoTypos", 12);
-              }
-          };
-
-  typoTolerance.setMinWordSizeForTypos(minWordSizeTypos);
-  typoTolerance.setDisableOnAttributes(new String[] {"title"});
-
-  client.index("movies").updateTypoToleranceSettings(typoTolerance);
 synonyms_guide_1: |-
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("great", new String[] {"fantastic"});
@@ -676,6 +582,9 @@ sorting_guide_sort_parameter_1: |-
   client.index("books").search(searchRequest);
 sorting_guide_sort_parameter_2: |-
   SearchRequest searchRequest = SearchRequest.builder().q("butler").sort(new String[] {"author:desc"}).build();
+  client.index("books").search(searchRequest);
+sorting_guide_sort_nested_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("science fiction").sort(new String[] {"rating.users:asc"}).build();
   client.index("books").search(searchRequest);
 get_sortable_attributes_1: |-
   client.index("books").getSortableAttributesSettings();
