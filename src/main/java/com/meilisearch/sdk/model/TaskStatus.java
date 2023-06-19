@@ -1,5 +1,7 @@
 package com.meilisearch.sdk.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum TaskStatus {
     ENQUEUED("enqueued"),
     PROCESSING("processing"),
@@ -13,6 +15,7 @@ public enum TaskStatus {
         this.taskStatus = taskStatus;
     }
 
+    @JsonValue
     @Override
     public String toString() {
         return this.taskStatus;
