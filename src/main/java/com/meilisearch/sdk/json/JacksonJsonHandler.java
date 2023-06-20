@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.meilisearch.sdk.exceptions.JsonDecodingException;
 import com.meilisearch.sdk.exceptions.JsonEncodingException;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
-import com.meilisearch.sdk.model.Key;
 import java.io.IOException;
 
 public class JacksonJsonHandler implements JsonHandler {
@@ -39,10 +38,7 @@ public class JacksonJsonHandler implements JsonHandler {
             return (String) o;
         }
         try {
-            // TODO: review later
-            if (o != null && o.getClass() != Key.class) {
-                this.mapper.setSerializationInclusion(Include.NON_NULL);
-            }
+            this.mapper.setSerializationInclusion(Include.NON_NULL);
             return mapper.writeValueAsString(o);
         } catch (JsonProcessingException e) {
             throw new JsonEncodingException(e);
