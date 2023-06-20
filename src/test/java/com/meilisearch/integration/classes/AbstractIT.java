@@ -41,8 +41,7 @@ public abstract class AbstractIT {
     }
 
     public void setUpJacksonClient() {
-        Config config = new Config(getMeilisearchHost(), "masterKey");
-        config.setJsonHandler(new JacksonJsonHandler());
+        Config config = new Config(getMeilisearchHost(), "masterKey", new JacksonJsonHandler());
         if (clientJackson == null) clientJackson = new Client(config);
     }
 

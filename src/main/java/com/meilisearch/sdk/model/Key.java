@@ -1,5 +1,7 @@
 package com.meilisearch.sdk.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +13,7 @@ import lombok.experimental.Accessors;
  * <p>https://www.meilisearch.com/docs/reference/api/keys
  */
 @Getter
+@JsonInclude(Include.NON_NULL)
 public class Key {
     @Setter
     @Accessors(chain = true)
@@ -34,6 +37,7 @@ public class Key {
 
     @Setter
     @Accessors(chain = true)
+    @JsonInclude(Include.ALWAYS)
     protected Date expiresAt = null;
 
     protected Date createdAt = null;
