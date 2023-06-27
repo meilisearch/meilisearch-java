@@ -443,7 +443,7 @@ getting_started_add_meteorites: |-
   import org.json.JSONArray;
   import java.nio.file.Files;
   import java.nio.file.Path;
-  
+
   Path fileName = Path.of("meteorites.json");
   String meteoritesJson = Files.readString(fileName);
   Client client = new Client(new Config("http://localhost:7700", "masterKey"));
@@ -497,7 +497,7 @@ getting_started_filtering: |-
   client.index("meteorites").search(searchRequest);
 getting_started_geo_radius: |-
   SearchRequest searchRequest = SearchRequest.builder().q("").filter(new String[] {"_geoRadius(46.9480, 7.4474, 210000)"}).build();
-  client.index("meteorites").search(searchRequest); 
+  client.index("meteorites").search(searchRequest);
 getting_started_geo_point: |-
   SearchRequest searchRequest = SearchRequest.builder().q("").sort(new String[] {"_geoPoint(48.8583701,2.2922926):asc"}).build();
   client.index("meteorites").search(searchRequest);
@@ -511,7 +511,7 @@ getting_started_configure_settings: |-
   client.index("meteorites").updateSettings(settings);
 getting_started_communicating_with_a_protected_instance: |-
   Client client = new Client(new Config("http://localhost:7700", "apiKey"));
-  
+
   client.index("movies").search(new SearchRequest(""));
 getting_started_faceting: |-
 getting_started_pagination: |-
