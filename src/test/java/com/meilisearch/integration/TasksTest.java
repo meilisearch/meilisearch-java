@@ -21,6 +21,7 @@ public class TasksTest extends AbstractIT {
     @BeforeEach
     public void initialize() {
         this.setUp();
+        this.setUpJacksonClient();
         if (testData == null) testData = this.getTestData(MOVIES_INDEX, Movie.class);
     }
 
@@ -252,5 +253,17 @@ public class TasksTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
 
         assertThrows(Exception.class, () -> index.waitForTask(task.getTaskUid(), 0, 50));
+    }
+
+    /** Test Tasks with Jackson Json Handler */
+    @Test
+    public void testTasksWithJacksonJsonHandler() throws Exception {
+        String indexUid = "tasksWithJacksonJsonHandler";
+        Index index = clientJackson.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        assertEquals(TaskStatus.ENQUEUED, task.getStatus());
     }
 }
