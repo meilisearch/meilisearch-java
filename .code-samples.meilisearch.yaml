@@ -399,7 +399,7 @@ documents_guide_add_movie_1: |-
     + "\"title\": \"Amelie Poulain\""
     + "}]"
   );
-getting_started_add_documents_md: |-
+PLEASE_UPDATE_ME>>>>>>>>>>>>>getting_started_add_documents_md: |-
   **Maven**
   Add the following code to the `<dependencies>` section of your project:
   ```xml
