@@ -17,35 +17,39 @@ jobs:
     runs-on: ubuntu-latest
     name: integration-and-unit-tests
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Java
-      uses: actions/setup-java@v3
-      with:
-        java-version: 8
-        distribution: 'zulu'
-        cache: gradle
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Meilisearch (latest) setup with Docker
-      run: docker run -d -p 7700:7700 getmeili/meilisearch:latest meilisearch --master-key=masterKey --no-analytics
-    - name: Build and run unit and integration tests
-      run: ./gradlew build integrationTest
-    - name: Archive test report
-      uses: actions/upload-artifact@v3
-      if: failure()
-      with:
-        name: Test report
-        path: build/reports/tests/integrationTest
-        if-no-files-found: ignore
+      - uses: actions/checkout@v3
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 8
+          distribution: 'zulu'
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Meilisearch (latest) setup with Docker
+        run: docker run -d -p 7700:7700 getmeili/meilisearch:latest meilisearch --master-key=masterKey --no-analytics
+      - name: Build and run unit and integration tests
+        run: ./gradlew build integrationTest
+      - name: Archive test report
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: Test report
+          path: build/reports/tests/integrationTest
+          if-no-files-found: ignore
 
   linter:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v3
-      with:
-        java-version: 8
-        distribution: 'zulu'
-    - name: Run linter
-      run: bash scripts/lint.sh
+      - uses: actions/checkout@v3
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v3
+        with:
+          java-version: 8
+          distribution: 'zulu'
+      - name: Run linter
+        run: bash scripts/lint.sh
+      - name: Yaml lint check
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          config_file: .yamllint.yml
