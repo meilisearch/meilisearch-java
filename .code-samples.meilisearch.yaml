@@ -399,7 +399,7 @@ documents_guide_add_movie_1: |-
     + "\"title\": \"Amelie Poulain\""
     + "}]"
   );
-PLEASE_UPDATE_ME>>>>>>>>>>>>>getting_started_add_documents_md: |-
+getting_started_add_documents_md: |-
   **Maven**
   Add the following code to the `<dependencies>` section of your project:
   ```xml
@@ -424,7 +424,7 @@ PLEASE_UPDATE_ME>>>>>>>>>>>>>getting_started_add_documents_md: |-
 
   Path fileName = Path.of("movies.json");
   String moviesJson = Files.readString(fileName);
-  Client client = new Client(new Config("http://localhost:7700", "masterKey"));
+  Client client = new Client(new Config("http://localhost:7700", "aSampleMasterKey"));
   Index index = client.index("movies");
   index.addDocuments(moviesJson);
   ```
