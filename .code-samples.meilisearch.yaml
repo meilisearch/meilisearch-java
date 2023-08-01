@@ -515,18 +515,39 @@ getting_started_communicating_with_a_protected_instance: |-
   client.index("movies").search(new SearchRequest(""));
 getting_started_faceting: |-
 getting_started_pagination: |-
-faceted_search_update_settings_1: |-
+filtering_update_settings_1: |-
   client.index("movies").updateFilterableAttributesSettings(new String[]
+  {
+    "genres",
+    "director"
+  });
+faceted_search_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("classic").facets(new String[]
   {
     "genres",
     "rating",
     "language"
-  });
+  }).build();
+  client.index("books").search(searchRequest);
+search_parameter_guide_facet_stats_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("Batman").facets(new String[]
+  {
+    "genres",
+    "rating"
+  }).build();
+  client.index("movies").search(searchRequest);
 faceted_search_filter_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("thriller").filterArray().build(new String[][] {
       new String[] {"genres = Horror", "genres = Mystery"},
       new String[] {"director = \"Jordan Peele\""}}).build();
   client.index("movies").search(searchRequest);
+faceted_search_update_settings_1:
+  client.index("books").updateFilterableAttributesSettings(new String[]
+  {
+    "genres",
+    "director",
+    "language"
+  });
 faceted_search_facets_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("Batman").facets(new String[] {"genres"}).build();
   client.index("movies").search(searchRequest);
@@ -614,6 +635,11 @@ geosearch_guide_sort_usage_2: |-
   SearchRequest searchRequest = SearchRequest.builder().q()("").sort(new String[] {
       "_geoPoint(48.8561446,2.2978204):asc",
       "rating:desc",
+    }).build();
+  client.index("restaurants").search(searchRequest);
+geosearch_guide_filter_usage_3: |-
+  SearchRequest searchRequest = SearchRequest.builder().q()("").filter(new String[] {
+      "_geoBoundingBox([45.494181, 9.179175], [45.449484, 9.214024])"
     }).build();
   client.index("restaurants").search(searchRequest);
 primary_field_guide_update_document_primary_key: |-
