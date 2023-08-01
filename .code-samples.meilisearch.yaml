@@ -287,28 +287,13 @@ get_health_1: |-
 get_version_1: |-
   client.getVersion();
 distinct_attribute_guide_1: |-
-  Settings settings = new Settings();
-  settings.setDistinctAttribute("product_id");
-  client.index("jackets").updateSettings(settings);
+  client.index("jackets").updateDistinctAttributeSettings("product_id");
 field_properties_guide_searchable_1: |-
-  Settings settings = new Settings();
-  settings.setSearchableAttributes(new String[]
-  {
-    "title",
-    "overview",
-    "genres"
-  });
-  client.index("movies").updateSettings(settings);
+  String[] attributes = {"title", "overview", "genres"}
+  client.index("movies").updateSearchableAttributesSettings(attributes);
 field_properties_guide_displayed_1: |-
-  Settings settings = new Settings();
-  settings.setDisplayedAttributes(new String[]
-  {
-    "title",
-    "overview",
-    "genres",
-    "release_date"
-  });
-  client.index("movies").updateSettings(settings);
+  String[] attributes = {"title", "overview", "genres", "release_date"}
+  client.index("movies").updateDisplayedAttributesSettings(attributes);
 filtering_guide_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("Avengers").filter(new String[] {"release_date > \"795484800\""}).build();
   client.index("movies").search(searchRequest);
@@ -318,6 +303,9 @@ filtering_guide_2: |-
 filtering_guide_3: |-
   SearchRequest searchRequest = SearchRequest.builder().q("Planet of the Apes").filter(new String[] {"rating >= 3 AND (NOT director = \"Tim Burton\")"}).build();
   client.index("movies").search(searchRequest);
+filtering_guide_nested_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("thriller").filter(new String[] {"rating.users >= 90"}).build();
+  client.index("movie_ratings").search(searchRequest);
 search_parameter_guide_query_1: |-
   client.index("movies").search("shifu");
 search_parameter_guide_offset_1: |-
@@ -376,82 +364,6 @@ search_parameter_guide_matching_strategy_1: |-
 search_parameter_guide_matching_strategy_2: |-
   SearchRequest searchRequest = SearchRequest.builder().q("big fat liar").matchingStrategy(MatchingStrategy.ALL).build();
   client.index("movies").search(searchRequest);
-settings_guide_synonyms_1: |-
-  Settings settings = new Settings();
-  HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
-  synonyms.put("sweater", new String[] {"jumper"});
-  synonyms.put("jumper", new String[] {"sweater"});
-  settings.setSynonyms(synonyms);
-  client.index("tops").updateSettings(settings);
-settings_guide_stop_words_1: |-
-  Settings settings = new Settings();
-  settings.setStopWords(new String[]
-  {
-    "the",
-    "a",
-    "an"
-  });
-  client.index("movies").updateSettings(settings);
-settings_guide_ranking_rules_1: |-
-  Settings settings = new Settings();
-  settings.setRankingRules(new String[]
-  {
-    "words",
-    "typo",
-    "proximity",
-    "attribute",
-    "sort",
-    "exactness",
-    "release_date:asc",
-    "rank_desc"
-  });
-  client.index("movies").updateSettings(settings);
-settings_guide_distinct_1: |-
-  Settings settings = new Settings();
-  settings.setDistinctAttribute("product_id");
-  client.index("jackets").updateSettings(settings);
-settings_guide_searchable_1: |-
-  Settings settings = new Settings();
-  settings.setSearchableAttributes(new String[]
-  {
-    "title",
-    "overview",
-    "genres"
-  });
-  client.index("movies").updateSettings(settings);
-settings_guide_displayed_1: |-
-  Settings settings = new Settings();
-  settings.setDisplayedAttributes(new String[]
-  {
-    "title",
-    "overview",
-    "genres",
-    "release_date"
-  });
-  client.index("movies").updateSettings(settings);
-settings_guide_sortable_1: |-
-  Settings settings = new Settings();
-  settings.setSortableAttributes(new String[]
-  {
-    "price",
-    "author",
-  });
-  client.index("books").updateSettings(settings);
-settings_guide_faceting_1: |-
-settings_guide_pagination_1: |-
-settings_guide_typo_tolerance_1: |-
-  TypoTolerance typoTolerance = new TypoTolerance();
-  HashMap<String, Integer> minWordSizeTypos =
-          new HashMap<String, Integer>() {
-              {
-                  put("twoTypos", 12);
-              }
-          };
-
-  typoTolerance.setMinWordSizeForTypos(minWordSizeTypos);
-  typoTolerance.setDisableOnAttributes(new String[] {"title"});
-
-  client.index("movies").updateTypoToleranceSettings(typoTolerance);
 synonyms_guide_1: |-
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("great", new String[] {"fantastic"});
@@ -512,7 +424,7 @@ getting_started_add_documents_md: |-
 
   Path fileName = Path.of("movies.json");
   String moviesJson = Files.readString(fileName);
-  Client client = new Client(new Config("http://localhost:7700", "masterKey"));
+  Client client = new Client(new Config("http://localhost:7700", "aSampleMasterKey"));
   Index index = client.index("movies");
   index.addDocuments(moviesJson);
   ```
@@ -531,7 +443,7 @@ getting_started_add_meteorites: |-
   import org.json.JSONArray;
   import java.nio.file.Files;
   import java.nio.file.Path;
-  
+
   Path fileName = Path.of("meteorites.json");
   String meteoritesJson = Files.readString(fileName);
   Client client = new Client(new Config("http://localhost:7700", "masterKey"));
@@ -585,7 +497,7 @@ getting_started_filtering: |-
   client.index("meteorites").search(searchRequest);
 getting_started_geo_radius: |-
   SearchRequest searchRequest = SearchRequest.builder().q("").filter(new String[] {"_geoRadius(46.9480, 7.4474, 210000)"}).build();
-  client.index("meteorites").search(searchRequest); 
+  client.index("meteorites").search(searchRequest);
 getting_started_geo_point: |-
   SearchRequest searchRequest = SearchRequest.builder().q("").sort(new String[] {"_geoPoint(48.8583701,2.2922926):asc"}).build();
   client.index("meteorites").search(searchRequest);
@@ -599,7 +511,7 @@ getting_started_configure_settings: |-
   client.index("meteorites").updateSettings(settings);
 getting_started_communicating_with_a_protected_instance: |-
   Client client = new Client(new Config("http://localhost:7700", "apiKey"));
-  
+
   client.index("movies").search(new SearchRequest(""));
 getting_started_faceting: |-
 getting_started_pagination: |-
@@ -670,6 +582,9 @@ sorting_guide_sort_parameter_1: |-
   client.index("books").search(searchRequest);
 sorting_guide_sort_parameter_2: |-
   SearchRequest searchRequest = SearchRequest.builder().q("butler").sort(new String[] {"author:desc"}).build();
+  client.index("books").search(searchRequest);
+sorting_guide_sort_nested_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("science fiction").sort(new String[] {"rating.users:asc"}).build();
   client.index("books").search(searchRequest);
 get_sortable_attributes_1: |-
   client.index("books").getSortableAttributesSettings();

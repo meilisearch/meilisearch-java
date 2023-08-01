@@ -208,7 +208,7 @@ public class SearchTest extends AbstractIT {
 
         assertEquals(20, resGson.hits.length);
         assertEquals(
-                "Harry Potter <em>and</em> the Philosopher's Stone",
+                "Birds of Prey (<em>and</em> the Fantabulous Emancipation of One Harley Quinn)",
                 resGson.hits[0].getFormatted().getTitle());
     }
 
@@ -236,7 +236,7 @@ public class SearchTest extends AbstractIT {
 
         assertEquals(20, resGson.hits.length);
         assertEquals(
-                "Harry Potter (⊃｡•́‿•̀｡)⊃ and ⊂(´• ω •`⊂) the Philosopher's Stone",
+                "Birds of Prey ((⊃｡•́‿•̀｡)⊃ and ⊂(´• ω •`⊂) the Fantabulous Emancipation of One Harley Quinn)",
                 resGson.hits[0].getFormatted().getTitle());
     }
 
@@ -387,12 +387,12 @@ public class SearchTest extends AbstractIT {
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
         assertEquals(20, resGson.hits.length);
-        assertEquals("671", resGson.hits[0].getId());
-        assertEquals("Harry Potter and the Philosopher's Stone", resGson.hits[0].getTitle());
-        assertEquals("495764", resGson.hits[1].getId());
+        assertEquals("495764", resGson.hits[0].getId());
         assertEquals(
                 "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)",
-                resGson.hits[1].getTitle());
+                resGson.hits[0].getTitle());
+        assertEquals("671", resGson.hits[1].getId());
+        assertEquals("Harry Potter and the Philosopher's Stone", resGson.hits[1].getTitle());
     }
 
     /** Test search sort */
