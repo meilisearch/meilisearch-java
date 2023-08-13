@@ -1,6 +1,13 @@
 package com.meilisearch.integration;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.in;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -11,7 +18,6 @@ import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
 import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.utils.Movie;
-import java.util.Arrays;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -42,8 +48,8 @@ public class ClientTest extends AbstractIT {
         String indexUid = "CreateIndexWithoutPrimaryKey";
         Index index = createEmptyIndex(indexUid);
 
-        assertEquals(index.getUid(), indexUid);
-        assertNull(index.getPrimaryKey());
+        assertThat(index.getUid(), is(equalTo(indexUid)));
+        assertThat(index.getPrimaryKey(), is(nullValue()));
     }
 
     /** Test Index creation without PrimaryKey with Jackson Json Handler */
@@ -54,8 +60,8 @@ public class ClientTest extends AbstractIT {
         clientJackson.waitForTask(task.getTaskUid());
         Index index = clientJackson.getIndex(indexUid);
 
-        assertEquals(index.getUid(), indexUid);
-        assertNull(index.getPrimaryKey());
+        assertThat(index.getUid(), is(equalTo(indexUid)));
+        assertThat(index.getPrimaryKey(), is(nullValue()));
     }
 
     /** Test Index creation with PrimaryKey */
@@ -64,8 +70,8 @@ public class ClientTest extends AbstractIT {
         String indexUid = "CreateIndexWithPrimaryKey";
         Index index = createEmptyIndex(indexUid, this.primaryKey);
 
-        assertEquals(index.getUid(), indexUid);
-        assertEquals(index.getPrimaryKey(), this.primaryKey);
+        assertThat(index.getUid(), is(equalTo(indexUid)));
+        assertThat(index.getPrimaryKey(), is(equalTo(this.primaryKey)));
     }
 
     /** Test Index creation with PrimaryKey with Jackson Json Handler */
@@ -76,8 +82,8 @@ public class ClientTest extends AbstractIT {
         clientJackson.waitForTask(task.getTaskUid());
         Index index = clientJackson.getIndex(indexUid);
 
-        assertEquals(index.getUid(), indexUid);
-        assertEquals(index.getPrimaryKey(), this.primaryKey);
+        assertThat(index.getUid(), is(equalTo(indexUid)));
+        assertThat(index.getPrimaryKey(), is(equalTo(this.primaryKey)));
     }
 
     /** Test Index creation twice doesn't throw an error: already exists */
@@ -86,15 +92,15 @@ public class ClientTest extends AbstractIT {
         String indexUid = "CreateIndexAlreadyExists";
         Index index = createEmptyIndex(indexUid, this.primaryKey);
 
-        assertEquals(index.getUid(), indexUid);
-        assertEquals(index.getPrimaryKey(), this.primaryKey);
+        assertThat(index.getUid(), is(equalTo(indexUid)));
+        assertThat(index.getPrimaryKey(), is(equalTo(this.primaryKey)));
 
         Index indexDuplicate = createEmptyIndex(indexUid, this.primaryKey);
 
-        assertEquals(index.getUid(), indexUid);
-        assertEquals(indexDuplicate.getUid(), indexUid);
-        assertEquals(index.getPrimaryKey(), this.primaryKey);
-        assertEquals(indexDuplicate.getPrimaryKey(), this.primaryKey);
+        assertThat(index.getUid(), is(equalTo(indexUid)));
+        assertThat(indexDuplicate.getUid(), is(equalTo(indexUid)));
+        assertThat(index.getPrimaryKey(), is(equalTo(this.primaryKey)));
+        assertThat(indexDuplicate.getPrimaryKey(), is(equalTo(this.primaryKey)));
     }
 
     /** Test update Index PrimaryKey */
@@ -103,16 +109,16 @@ public class ClientTest extends AbstractIT {
         String indexUid = "UpdateIndexPrimaryKey";
         Index index = createEmptyIndex(indexUid);
 
-        assertEquals(index.getUid(), indexUid);
-        assertNull(index.getPrimaryKey());
+        assertThat(index.getUid(), is(equalTo(indexUid)));
+        assertThat(index.getPrimaryKey(), is(nullValue()));
 
         TaskInfo task = client.updateIndex(indexUid, this.primaryKey);
         client.waitForTask(task.getTaskUid());
         index = client.getIndex(indexUid);
 
-        assertTrue(index instanceof Index);
-        assertEquals(index.getUid(), indexUid);
-        assertEquals(index.getPrimaryKey(), this.primaryKey);
+        assertThat(index, instanceOf(Index.class));
+        assertThat(index.getUid(), is(equalTo(indexUid)));
+        assertThat(index.getPrimaryKey(), is(equalTo(this.primaryKey)));
     }
 
     /** Test getIndex */
@@ -122,8 +128,8 @@ public class ClientTest extends AbstractIT {
         Index index = createEmptyIndex(indexUid);
         Index getIndex = client.getIndex(indexUid);
 
-        assertEquals(index.getUid(), getIndex.getUid());
-        assertEquals(index.getPrimaryKey(), getIndex.getPrimaryKey());
+        assertThat(getIndex.getUid(), is(equalTo(index.getUid())));
+        assertThat(getIndex.getPrimaryKey(), is(equalTo(index.getPrimaryKey())));
     }
 
     /** Test getIndexes */
@@ -134,9 +140,7 @@ public class ClientTest extends AbstractIT {
         createEmptyIndex(indexUids[1], this.primaryKey);
         Results<Index> indexes = client.getIndexes();
 
-        assertEquals(2, indexes.getResults().length);
-        assert (Arrays.asList(indexUids).contains(indexUids[0]));
-        assert (Arrays.asList(indexUids).contains(indexUids[1]));
+        assertThat(indexes.getResults(), is(arrayWithSize(2)));
     }
 
     /** Test getIndexes with limit */
@@ -149,8 +153,8 @@ public class ClientTest extends AbstractIT {
         createEmptyIndex(indexUids[1], this.primaryKey);
         Results<Index> indexes = client.getIndexes(query);
 
-        assertEquals(limit, indexes.getResults().length);
-        assertEquals(limit, indexes.getLimit());
+        assertThat(indexes.getResults(), is(arrayWithSize(limit)));
+        assertThat(indexes.getLimit(), is(equalTo(limit)));
     }
 
     /** Test getIndexes with limit and offset */
@@ -164,9 +168,9 @@ public class ClientTest extends AbstractIT {
         createEmptyIndex(indexUids[1], this.primaryKey);
         Results<Index> indexes = client.getIndexes(query);
 
-        assertEquals(limit, indexes.getResults().length);
-        assertEquals(limit, indexes.getLimit());
-        assertEquals(offset, indexes.getOffset());
+        assertThat(indexes.getResults(), is(arrayWithSize(limit)));
+        assertThat(indexes.getLimit(), is(equalTo(limit)));
+        assertThat(indexes.getOffset(), is(equalTo(offset)));
     }
 
     /** Test getRawIndexes */
@@ -180,11 +184,13 @@ public class ClientTest extends AbstractIT {
         JsonObject jsonIndexObject = JsonParser.parseString(indexes).getAsJsonObject();
         JsonArray jsonIndexArray = jsonIndexObject.getAsJsonArray("results");
 
-        assertEquals(2, jsonIndexArray.size());
-        assert (Arrays.asList(indexUids)
-                .contains(jsonIndexArray.get(0).getAsJsonObject().get("uid").getAsString()));
-        assert (Arrays.asList(indexUids)
-                .contains(jsonIndexArray.get(1).getAsJsonObject().get("uid").getAsString()));
+        assertThat(jsonIndexArray.size(), is(equalTo(2)));
+        assertThat(
+                jsonIndexArray.get(0).getAsJsonObject().get("uid").getAsString(),
+                is(in(indexUids)));
+        assertThat(
+                jsonIndexArray.get(1).getAsJsonObject().get("uid").getAsString(),
+                is(in(indexUids)));
     }
 
     /** Test getRawIndexes with limits */
@@ -200,10 +206,11 @@ public class ClientTest extends AbstractIT {
         JsonObject jsonIndexObject = JsonParser.parseString(indexes).getAsJsonObject();
         JsonArray jsonIndexArray = jsonIndexObject.getAsJsonArray("results");
 
-        assertEquals(limit, jsonIndexArray.size());
-        assertEquals(limit, jsonIndexObject.get("limit").getAsInt());
-        assert (Arrays.asList(indexUids)
-                .contains(jsonIndexArray.get(0).getAsJsonObject().get("uid").getAsString()));
+        assertThat(jsonIndexArray.size(), is(equalTo(limit)));
+        assertThat(jsonIndexObject.get("limit").getAsInt(), is(equalTo(limit)));
+        assertThat(
+                jsonIndexArray.get(0).getAsJsonObject().get("uid").getAsString(),
+                is(in(indexUids)));
     }
 
     /** Test deleteIndex */
@@ -243,9 +250,9 @@ public class ClientTest extends AbstractIT {
         TaskInfo task = client.swapIndexes(params);
         client.waitForTask(task.getTaskUid());
 
-        assertEquals("indexSwap", task.getType());
-        assertEquals("Document1", indexB.getDocument("1", Movie.class).getTitle());
-        assertEquals("Document2", indexB.getDocument("2", Movie.class).getTitle());
+        assertThat(task.getType(), is(equalTo("indexSwap")));
+        assertThat(indexB.getDocument("1", Movie.class).getTitle(), is(equalTo("Document1")));
+        assertThat(indexB.getDocument("2", Movie.class).getTitle(), is(equalTo("Document2")));
         assertThrows(MeilisearchApiException.class, () -> indexA.getDocument("1", Movie.class));
         assertThrows(MeilisearchApiException.class, () -> indexA.getDocument("2", Movie.class));
     }
@@ -256,7 +263,7 @@ public class ClientTest extends AbstractIT {
         String indexUid = "IndexMethodCallInexistentIndex";
         Index index = client.index(indexUid);
 
-        assertEquals(indexUid, index.getUid());
+        assertThat(index.getUid(), is(equalTo(indexUid)));
         assertThrows(MeilisearchApiException.class, () -> client.getIndex(indexUid));
     }
 
@@ -267,8 +274,8 @@ public class ClientTest extends AbstractIT {
         Index createdIndex = createEmptyIndex(indexUid);
         Index index = client.index(indexUid);
 
-        assertEquals(createdIndex.getUid(), index.getUid());
-        assertNull(index.getPrimaryKey());
+        assertThat(index.getUid(), is(equalTo(createdIndex.getUid())));
+        assertThat(index.getPrimaryKey(), is(nullValue()));
     }
 
     /** Test call to index method with an existing index with primary key */
@@ -279,12 +286,12 @@ public class ClientTest extends AbstractIT {
         Index createdIndex = createEmptyIndex(indexUid, primaryKey);
         Index index = client.index(indexUid);
 
-        assertEquals(createdIndex.getUid(), index.getUid());
-        assertNull(index.getPrimaryKey());
+        assertThat(index.getUid(), is(equalTo(createdIndex.getUid())));
+        assertThat(index.getPrimaryKey(), is(nullValue()));
 
         index.fetchPrimaryKey();
 
-        assertEquals(primaryKey, index.getPrimaryKey());
+        assertThat(index.getPrimaryKey(), is(equalTo(primaryKey)));
     }
 
     /** Test call to create dump */
@@ -294,7 +301,7 @@ public class ClientTest extends AbstractIT {
         client.waitForTask(task.getTaskUid());
         Task dump = client.getTask(task.getTaskUid());
 
-        assertEquals(task.getStatus(), TaskStatus.ENQUEUED);
-        assertEquals("dumpCreation", dump.getType());
+        assertThat(task.getStatus(), is(equalTo(TaskStatus.ENQUEUED)));
+        assertThat(dump.getType(), is(equalTo("dumpCreation")));
     }
 }

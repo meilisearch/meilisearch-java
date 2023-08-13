@@ -1,6 +1,13 @@
 package com.meilisearch.integration;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
@@ -39,15 +46,15 @@ public class TasksTest extends AbstractIT {
 
         Task task = client.getTask(response.getTaskUid());
 
-        assertTrue(task instanceof Task);
-        assertNotNull(task.getStatus());
-        assertNotNull(task.getStatus());
-        assertNotNull(task.getStartedAt());
-        assertNotNull(task.getEnqueuedAt());
-        assertNotNull(task.getFinishedAt());
-        assertTrue(task.getUid() >= 0);
-        assertNotNull(task.getDetails());
-        assertNull(task.getDetails().getPrimaryKey());
+        assertThat(task, is(instanceOf(Task.class)));
+        assertThat(task.getStatus(), is(notNullValue()));
+        assertThat(task.getStatus(), is(notNullValue()));
+        assertThat(task.getStartedAt(), is(notNullValue()));
+        assertThat(task.getEnqueuedAt(), is(notNullValue()));
+        assertThat(task.getFinishedAt(), is(notNullValue()));
+        assertThat(task.getUid(), is(greaterThanOrEqualTo(0)));
+        assertThat(task.getDetails(), is(notNullValue()));
+        assertThat(task.getDetails().getPrimaryKey(), is(nullValue()));
     }
 
     /** Test Get Tasks */
@@ -63,9 +70,9 @@ public class TasksTest extends AbstractIT {
         Task task = tasks[0];
         client.waitForTask(task.getUid());
 
-        assertNotNull(task.getStatus());
-        assertTrue(task.getUid() >= 0);
-        assertNotNull(task.getDetails());
+        assertThat(task.getStatus(), is(notNullValue()));
+        assertThat(task.getUid(), is(greaterThanOrEqualTo(0)));
+        assertThat(task.getDetails(), is(notNullValue()));
     }
 
     /** Test Get Tasks with limit */
@@ -75,10 +82,10 @@ public class TasksTest extends AbstractIT {
         TasksQuery query = new TasksQuery().setLimit(limit);
         TasksResults result = client.getTasks(query);
 
-        assertEquals(limit, result.getLimit());
-        assertNotNull(result.getFrom());
-        assertNotNull(result.getNext());
-        assertNotNull(result.getResults().length);
+        assertThat(result.getLimit(), is(equalTo(limit)));
+        assertThat(result.getFrom(), is(notNullValue()));
+        assertThat(result.getNext(), is(notNullValue()));
+        assertThat(result.getResults().length, is(notNullValue()));
     }
 
     /** Test Get Tasks with limit and from */
@@ -89,11 +96,11 @@ public class TasksTest extends AbstractIT {
         TasksQuery query = new TasksQuery().setLimit(limit).setFrom(from);
         TasksResults result = client.getTasks(query);
 
-        assertEquals(limit, result.getLimit());
-        assertEquals(from, result.getFrom());
-        assertNotNull(result.getFrom());
-        assertNotNull(result.getNext());
-        assertNotNull(result.getResults().length);
+        assertThat(result.getLimit(), is(equalTo(limit)));
+        assertThat(result.getFrom(), is(equalTo(from)));
+        assertThat(result.getFrom(), is(notNullValue()));
+        assertThat(result.getNext(), is(notNullValue()));
+        assertThat(result.getResults().length, is(notNullValue()));
     }
 
     /** Test Get Tasks with uid as filter */
@@ -102,10 +109,10 @@ public class TasksTest extends AbstractIT {
         TasksQuery query = new TasksQuery().setUids(new int[] {1});
         TasksResults result = client.getTasks(query);
 
-        assertNotNull(result.getLimit());
-        assertNotNull(result.getFrom());
-        assertNotNull(result.getNext());
-        assertNotNull(result.getResults().length);
+        assertThat(result.getLimit(), is(notNullValue()));
+        assertThat(result.getFrom(), is(notNullValue()));
+        assertThat(result.getNext(), is(notNullValue()));
+        assertThat(result.getResults().length, is(notNullValue()));
     }
 
     /** Test Get Tasks with beforeEnqueuedAt as filter */
@@ -115,10 +122,10 @@ public class TasksTest extends AbstractIT {
         TasksQuery query = new TasksQuery().setBeforeEnqueuedAt(date);
         TasksResults result = client.getTasks(query);
 
-        assertNotNull(result.getLimit());
-        assertNotNull(result.getFrom());
-        assertNotNull(result.getNext());
-        assertNotNull(result.getResults().length);
+        assertThat(result.getLimit(), is(notNullValue()));
+        assertThat(result.getFrom(), is(notNullValue()));
+        assertThat(result.getNext(), is(notNullValue()));
+        assertThat(result.getResults().length, is(notNullValue()));
     }
 
     /** Test Get Tasks with canceledBy as filter */
@@ -127,10 +134,10 @@ public class TasksTest extends AbstractIT {
         TasksQuery query = new TasksQuery().setCanceledBy(new int[] {1});
         TasksResults result = client.getTasks(query);
 
-        assertNotNull(result.getLimit());
-        assertNotNull(result.getFrom());
-        assertNotNull(result.getNext());
-        assertNotNull(result.getResults().length);
+        assertThat(result.getLimit(), is(notNullValue()));
+        assertThat(result.getFrom(), is(notNullValue()));
+        assertThat(result.getNext(), is(notNullValue()));
+        assertThat(result.getResults().length, is(notNullValue()));
     }
 
     /** Test Get Tasks with all query parameters */
@@ -146,10 +153,10 @@ public class TasksTest extends AbstractIT {
                         .setTypes(new String[] {"indexDeletion"});
         TasksResults result = client.getTasks(query);
 
-        assertEquals(limit, result.getLimit());
-        assertNotNull(result.getFrom());
-        assertNotNull(result.getNext());
-        assertNotNull(result.getResults().length);
+        assertThat(result.getLimit(), is(equalTo(limit)));
+        assertThat(result.getFrom(), is(notNullValue()));
+        assertThat(result.getNext(), is(notNullValue()));
+        assertThat(result.getResults().length, is(notNullValue()));
     }
 
     /** Test Cancel Task */
@@ -160,11 +167,11 @@ public class TasksTest extends AbstractIT {
 
         TaskInfo task = client.cancelTasks(query);
 
-        assertTrue(task instanceof TaskInfo);
-        assertNotNull(task.getStatus());
-        assertNotNull(task.getStatus());
-        assertNull(task.getIndexUid());
-        assertEquals("taskCancelation", task.getType());
+        assertThat(task, is(instanceOf(TaskInfo.class)));
+        assertThat(task.getStatus(), is(notNullValue()));
+        assertThat(task.getStatus(), is(notNullValue()));
+        assertThat(task.getIndexUid(), is(nullValue()));
+        assertThat(task.getType(), is(equalTo("taskCancelation")));
     }
 
     /** Test Cancel Task with multiple filters */
@@ -181,11 +188,11 @@ public class TasksTest extends AbstractIT {
 
         TaskInfo task = client.cancelTasks(query);
 
-        assertTrue(task instanceof TaskInfo);
-        assertNotNull(task.getStatus());
-        assertNotNull(task.getStatus());
-        assertNull(task.getIndexUid());
-        assertEquals("taskCancelation", task.getType());
+        assertThat(task, is(instanceOf(TaskInfo.class)));
+        assertThat(task.getStatus(), is(notNullValue()));
+        assertThat(task.getStatus(), is(notNullValue()));
+        assertThat(task.getIndexUid(), is(nullValue()));
+        assertThat(task.getType(), is(equalTo("taskCancelation")));
     }
 
     /** Test Delete Task */
@@ -196,11 +203,11 @@ public class TasksTest extends AbstractIT {
 
         TaskInfo task = client.deleteTasks(query);
 
-        assertTrue(task instanceof TaskInfo);
-        assertNotNull(task.getStatus());
-        assertNotNull(task.getStatus());
-        assertNull(task.getIndexUid());
-        assertEquals("taskDeletion", task.getType());
+        assertThat(task, is(instanceOf(TaskInfo.class)));
+        assertThat(task.getStatus(), is(notNullValue()));
+        assertThat(task.getStatus(), is(notNullValue()));
+        assertThat(task.getIndexUid(), is(nullValue()));
+        assertThat(task.getType(), is(equalTo("taskDeletion")));
     }
 
     /** Test Delete Task with multiple filters */
@@ -217,10 +224,10 @@ public class TasksTest extends AbstractIT {
 
         TaskInfo task = client.deleteTasks(query);
 
-        assertTrue(task instanceof TaskInfo);
-        assertNotNull(task.getStatus());
-        assertNull(task.getIndexUid());
-        assertEquals("taskDeletion", task.getType());
+        assertThat(task, is(instanceOf(TaskInfo.class)));
+        assertThat(task.getStatus(), is(notNullValue()));
+        assertThat(task.getIndexUid(), is(nullValue()));
+        assertThat(task.getType(), is(equalTo("taskDeletion")));
     }
 
     /** Test waitForTask */
@@ -232,13 +239,13 @@ public class TasksTest extends AbstractIT {
 
         Task task = client.getTask(response.getTaskUid());
 
-        assertTrue(task.getUid() >= 0);
-        assertNotNull(task.getEnqueuedAt());
-        assertNotNull(task.getStartedAt());
-        assertNotNull(task.getFinishedAt());
-        assertEquals(TaskStatus.SUCCEEDED, task.getStatus());
-        assertNotNull(task.getDetails());
-        assertNull(task.getDetails().getPrimaryKey());
+        assertThat(task.getUid(), is(greaterThanOrEqualTo(0)));
+        assertThat(task.getEnqueuedAt(), is(notNullValue()));
+        assertThat(task.getStartedAt(), is(notNullValue()));
+        assertThat(task.getFinishedAt(), is(notNullValue()));
+        assertThat(task.getStatus(), is(equalTo(TaskStatus.SUCCEEDED)));
+        assertThat(task.getDetails(), is(notNullValue()));
+        assertThat(task.getDetails().getPrimaryKey(), is(nullValue()));
 
         client.deleteIndex(task.getIndexUid());
     }
@@ -264,6 +271,6 @@ public class TasksTest extends AbstractIT {
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         TaskInfo task = index.addDocuments(testData.getRaw());
 
-        assertEquals(TaskStatus.ENQUEUED, task.getStatus());
+        assertThat(task.getStatus(), is(equalTo(TaskStatus.ENQUEUED)));
     }
 }

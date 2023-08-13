@@ -1,11 +1,13 @@
 package com.meilisearch.sdk;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 import com.meilisearch.sdk.model.TasksQuery;
 import org.junit.jupiter.api.Test;
 
-class TasksHandlerUtilsTest {
+class TaskHandlerUtilsTest {
 
     @Test
     void addIndexUidToQueryWithParamNull() {
@@ -14,7 +16,7 @@ class TasksHandlerUtilsTest {
         TasksQuery param = null;
         TasksQuery query = classToTest.addIndexUidToQuery("indexName", param);
 
-        assertEquals("?indexUids=indexName", query.toQuery().toString());
+        assertThat(query.toQuery(), is(equalTo("?indexUids=indexName")));
     }
 
     @Test
@@ -24,7 +26,7 @@ class TasksHandlerUtilsTest {
         TasksQuery param = new TasksQuery().setIndexUids(new String[] {});
         TasksQuery query = classToTest.addIndexUidToQuery("indexName", param);
 
-        assertEquals("?indexUids=indexName", query.toQuery().toString());
+        assertThat(query.toQuery(), is(equalTo("?indexUids=indexName")));
     }
 
     @Test
@@ -34,7 +36,7 @@ class TasksHandlerUtilsTest {
         TasksQuery param = new TasksQuery().setIndexUids(new String[] {"indexName2"});
         TasksQuery query = classToTest.addIndexUidToQuery("indexName1", param);
 
-        assertEquals("?indexUids=indexName2,indexName1", query.toQuery().toString());
+        assertThat(query.toQuery(), is(equalTo("?indexUids=indexName2,indexName1")));
     }
 
     @Test
@@ -49,8 +51,8 @@ class TasksHandlerUtilsTest {
                                 });
         TasksQuery query = classToTest.addIndexUidToQuery("indexName1", param);
 
-        assertEquals(
-                "?indexUids=indexName2,indexName3,indexName4,indexName5,indexName1",
-                query.toQuery().toString());
+        assertThat(
+                query.toQuery(),
+                is(equalTo("?indexUids=indexName2,indexName3,indexName4,indexName5,indexName1")));
     }
 }

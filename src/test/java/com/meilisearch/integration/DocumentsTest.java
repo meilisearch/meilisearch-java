@@ -1,6 +1,14 @@
 package com.meilisearch.integration;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.google.gson.JsonObject;
 import com.meilisearch.integration.classes.AbstractIT;
@@ -48,21 +56,21 @@ public class DocumentsTest extends AbstractIT {
         Results<Movie> result = index.getDocuments(Movie.class);
         Movie[] movies = result.getResults();
 
-        assertEquals(1, movies.length);
-        assertEquals("419704", movies[0].getId());
-        assertEquals("Ad Astra", movies[0].getTitle());
-        assertEquals(
-                "https://image.tmdb.org/t/p/original/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg",
-                movies[0].getPoster());
-        assertEquals(
-                "The near future, a time when both hope and hardships drive humanity to look to the stars and beyond. While a mysterious phenomenon menaces to destroy life on planet Earth, astronaut Roy McBride undertakes a mission across the immensity of space and its many perils to uncover the truth about a lost expedition that decades before boldly faced emptiness and silence in search of the unknown.",
-                movies[0].getOverview());
-        assertEquals("2019-09-17", movies[0].getRelease_date());
-        assertEquals("en", movies[0].getLanguage());
-        assertNotNull(movies[0].getGenres());
-        assertEquals(2, movies[0].getGenres().length);
-        assertEquals("Science Fiction", movies[0].getGenres()[0]);
-        assertEquals("Drama", movies[0].getGenres()[1]);
+        String expectedOverview =
+                "The near future, a time when both hope and hardships drive humanity to look to the stars and beyond. While a mysterious phenomenon menaces to destroy life on planet Earth, astronaut Roy McBride undertakes a mission across the immensity of space and its many perils to uncover the truth about a lost expedition that decades before boldly faced emptiness and silence in search of the unknown.";
+        assertThat(movies, is(arrayWithSize(1)));
+        assertThat(movies[0].getId(), is(equalTo("419704")));
+        assertThat(movies[0].getTitle(), is(equalTo("Ad Astra")));
+        assertThat(
+                movies[0].getPoster(),
+                is(equalTo("https://image.tmdb.org/t/p/original/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg")));
+        assertThat(movies[0].getOverview(), is(equalTo(expectedOverview)));
+        assertThat(movies[0].getRelease_date(), is(equalTo("2019-09-17")));
+        assertThat(movies[0].getLanguage(), is(equalTo("en")));
+        assertThat(movies[0].getGenres(), is(notNullValue()));
+        assertThat(movies[0].getGenres(), is(arrayWithSize(2)));
+        assertThat(movies[0].getGenres()[0], is(equalTo("Science Fiction")));
+        assertThat(movies[0].getGenres()[1], is(equalTo("Drama")));
     }
 
     /** Test add Documents with primaryKey */
@@ -87,17 +95,17 @@ public class DocumentsTest extends AbstractIT {
 
         Results<Movie> result = index.getDocuments(Movie.class);
         Movie[] movies = result.getResults();
-        assertEquals(1, movies.length);
-        assertEquals("419704", movies[0].getId());
-        assertEquals("Ad Astra", movies[0].getTitle());
+        assertThat(movies, is(arrayWithSize(1)));
+        assertThat(movies[0].getId(), is(equalTo("419704")));
+        assertThat(movies[0].getTitle(), is(equalTo("Ad Astra")));
 
         TaskInfo secondTask = index.addDocuments("[" + secondDocument + "]", "language");
         index.waitForTask(secondTask.getTaskUid());
 
-        movies = (Movie[]) index.getDocuments(Movie.class).getResults();
-        assertEquals(1, movies.length);
-        assertEquals("574982", movies[0].getId());
-        assertEquals("The Blackout", movies[0].getTitle());
+        movies = index.getDocuments(Movie.class).getResults();
+        assertThat(movies, is(arrayWithSize(1)));
+        assertThat(movies[0].getId(), is(equalTo("574982")));
+        assertThat(movies[0].getTitle(), is(equalTo("The Blackout")));
     }
 
     /** Test Add multiple documents */
@@ -114,8 +122,8 @@ public class DocumentsTest extends AbstractIT {
         Results<Movie> result = index.getDocuments(Movie.class);
         Movie[] movies = result.getResults();
         for (int i = 0; i < movies.length; i++) {
-            Movie movie = index.<Movie>getDocument(testData.getData().get(i).getId(), Movie.class);
-            assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
+            Movie movie = index.getDocument(testData.getData().get(i).getId(), Movie.class);
+            assertThat(movie.getTitle(), is(equalTo(testData.getData().get(i).getTitle())));
         }
     }
 
@@ -133,8 +141,8 @@ public class DocumentsTest extends AbstractIT {
         Results<Movie> result = index.getDocuments(Movie.class);
         Movie[] movies = result.getResults();
         for (int i = 0; i < movies.length; i++) {
-            Movie movie = index.<Movie>getDocument(testData.getData().get(i).getId(), Movie.class);
-            assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
+            Movie movie = index.getDocument(testData.getData().get(i).getId(), Movie.class);
+            assertThat(movie.getTitle(), is(equalTo(testData.getData().get(i).getTitle())));
         }
     }
 
@@ -150,9 +158,9 @@ public class DocumentsTest extends AbstractIT {
         for (TaskInfo task : taskArr) {
             index.waitForTask(task.getTaskUid());
 
-            assertTrue(task instanceof TaskInfo);
-            assertEquals("documentAdditionOrUpdate", task.getType());
-            assertNotNull(task.getEnqueuedAt());
+            assertThat(task, is(instanceOf(TaskInfo.class)));
+            assertThat(task.getType(), is(equalTo("documentAdditionOrUpdate")));
+            assertThat(task.getEnqueuedAt(), is(notNullValue()));
         }
     }
 
@@ -168,9 +176,9 @@ public class DocumentsTest extends AbstractIT {
         for (TaskInfo task : taskArr) {
             index.waitForTask(task.getTaskUid());
 
-            assertTrue(task instanceof TaskInfo);
-            assertEquals("documentAdditionOrUpdate", task.getType());
-            assertNotNull(task.getEnqueuedAt());
+            assertThat(task, is(instanceOf(TaskInfo.class)));
+            assertThat(task.getType(), is(equalTo("documentAdditionOrUpdate")));
+            assertThat(task.getEnqueuedAt(), is(notNullValue()));
         }
     }
 
@@ -194,10 +202,10 @@ public class DocumentsTest extends AbstractIT {
         task = index.updateDocuments("[" + this.gson.toJson(toUpdate) + "]");
 
         index.waitForTask(task.getTaskUid());
-        Movie responseUpdate = index.<Movie>getDocument(toUpdate.getId(), Movie.class);
+        Movie responseUpdate = index.getDocument(toUpdate.getId(), Movie.class);
 
-        assertEquals(toUpdate.getTitle(), responseUpdate.getTitle());
-        assertEquals(toUpdate.getOverview(), responseUpdate.getOverview());
+        assertThat(responseUpdate.getTitle(), is(equalTo(toUpdate.getTitle())));
+        assertThat(responseUpdate.getOverview(), is(equalTo(toUpdate.getOverview())));
     }
 
     /** Test Update Documents with primaryKey */
@@ -224,17 +232,17 @@ public class DocumentsTest extends AbstractIT {
 
         Results<Movie> result = index.getDocuments(Movie.class);
         Movie[] movies = result.getResults();
-        assertEquals(1, movies.length);
-        assertEquals("419704", movies[0].getId());
-        assertEquals("Ad Astra", movies[0].getTitle());
+        assertThat(movies, is(arrayWithSize(1)));
+        assertThat(movies[0].getId(), is(equalTo("419704")));
+        assertThat(movies[0].getTitle(), is(equalTo("Ad Astra")));
 
         TaskInfo secondTask = index.updateDocuments("[" + secondDocument + "]", "language");
         index.waitForTask(secondTask.getTaskUid());
 
-        movies = (Movie[]) index.getDocuments(Movie.class).getResults();
-        assertEquals(1, movies.length);
-        assertEquals("574982", movies[0].getId()); // Second movie id
-        assertEquals("Ad Astra", movies[0].getTitle()); // First movie title
+        movies = index.getDocuments(Movie.class).getResults();
+        assertThat(movies, is(arrayWithSize(1)));
+        assertThat(movies[0].getId(), is(equalTo("574982"))); // Second movie id
+        assertThat(movies[0].getTitle(), is(equalTo("Ad Astra"))); // First movie title
     }
 
     /** Test Update multiple documents */
@@ -260,9 +268,9 @@ public class DocumentsTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
         for (int j = 0; j < 5; j++) {
-            Movie responseUpdate = index.<Movie>getDocument(toUpdate.get(j).getId(), Movie.class);
-            assertEquals(toUpdate.get(j).getTitle(), responseUpdate.getTitle());
-            assertEquals(toUpdate.get(j).getOverview(), responseUpdate.getOverview());
+            Movie responseUpdate = index.getDocument(toUpdate.get(j).getId(), Movie.class);
+            assertThat(responseUpdate.getTitle(), is(equalTo(toUpdate.get(j).getTitle())));
+            assertThat(responseUpdate.getOverview(), is(equalTo(toUpdate.get(j).getOverview())));
         }
     }
 
@@ -289,8 +297,8 @@ public class DocumentsTest extends AbstractIT {
 
         for (TaskInfo task : taskArr) {
             index.waitForTask(task.getTaskUid());
-            assertEquals(task.getType(), "documentAdditionOrUpdate");
-            assertNotNull(task.getEnqueuedAt());
+            assertThat(task.getType(), is(equalTo("documentAdditionOrUpdate")));
+            assertThat(task.getEnqueuedAt(), is(notNullValue()));
         }
     }
 
@@ -317,8 +325,8 @@ public class DocumentsTest extends AbstractIT {
 
         for (TaskInfo task : taskArr) {
             index.waitForTask(task.getTaskUid());
-            assertEquals(task.getType(), "documentAdditionOrUpdate");
-            assertNotNull(task.getEnqueuedAt());
+            assertThat(task.getType(), is(equalTo("documentAdditionOrUpdate")));
+            assertThat(task.getEnqueuedAt(), is(notNullValue()));
         }
     }
 
@@ -333,8 +341,8 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
-        Movie movie = index.<Movie>getDocument(testData.getData().get(0).getId(), Movie.class);
-        assertEquals(movie.getTitle(), testData.getData().get(0).getTitle());
+        Movie movie = index.getDocument(testData.getData().get(0).getId(), Movie.class);
+        assertThat(movie.getTitle(), is(equalTo(testData.getData().get(0).getTitle())));
     }
 
     /** Test default GetRawDocuments */
@@ -351,7 +359,7 @@ public class DocumentsTest extends AbstractIT {
         Movie movie =
                 this.gson.fromJson(
                         index.getRawDocument(testData.getData().get(0).getId()), Movie.class);
-        assertEquals(movie.getTitle(), testData.getData().get(0).getTitle());
+        assertThat(movie.getTitle(), is(equalTo(testData.getData().get(0).getTitle())));
     }
 
     /** Test default GetDocuments */
@@ -368,22 +376,22 @@ public class DocumentsTest extends AbstractIT {
         Results<Movie> result = index.getDocuments(Movie.class);
         Movie[] movies = result.getResults();
 
-        assertEquals(20, movies.length);
+        assertThat(movies, is(arrayWithSize(20)));
         for (int i = 0; i < movies.length; i++) {
-            assertEquals(movies[i].getTitle(), testData.getData().get(i).getTitle());
+            assertThat(movies[i].getTitle(), is(equalTo(testData.getData().get(i).getTitle())));
             String[] expectedGenres = testData.getData().get(i).getGenres();
             String[] foundGenres = movies[i].getGenres();
             for (int x = 0; x < expectedGenres.length; x++) {
-                assertEquals(expectedGenres[x], foundGenres[x]);
+                assertThat(expectedGenres[x], is(equalTo(foundGenres[x])));
             }
         }
         for (int i = 0; i < movies.length; i++) {
-            Movie movie = index.<Movie>getDocument(testData.getData().get(i).getId(), Movie.class);
-            assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
+            Movie movie = index.getDocument(testData.getData().get(i).getId(), Movie.class);
+            assertThat(movie.getTitle(), is(equalTo(testData.getData().get(i).getTitle())));
             String[] expectedGenres = testData.getData().get(i).getGenres();
             String[] foundGenres = movie.getGenres();
             for (int x = 0; x < expectedGenres.length; x++) {
-                assertEquals(expectedGenres[x], foundGenres[x]);
+                assertThat(expectedGenres[x], is(equalTo(foundGenres[x])));
             }
         }
     }
@@ -403,10 +411,10 @@ public class DocumentsTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
         Results<Movie> result = index.getDocuments(query, Movie.class);
         Movie[] movies = result.getResults();
-        assertEquals(limit, movies.length);
+        assertThat(movies, is(arrayWithSize(limit)));
         for (int i = 0; i < movies.length; i++) {
-            Movie movie = index.<Movie>getDocument(testData.getData().get(i).getId(), Movie.class);
-            assertEquals(movie.getTitle(), testData.getData().get(i).getTitle());
+            Movie movie = index.getDocument(testData.getData().get(i).getId(), Movie.class);
+            assertThat(movie.getTitle(), is(equalTo(testData.getData().get(i).getTitle())));
         }
     }
 
@@ -430,11 +438,10 @@ public class DocumentsTest extends AbstractIT {
                 index.getDocuments(query.setOffset(secondOffset), Movie.class);
         Movie[] secondMovies = secondResults.getResults();
 
-        assertEquals(limit, movies.length);
-        assertEquals(limit, secondMovies.length);
-
-        assertNotEquals(movies[0].getTitle(), secondMovies[0].getTitle());
-        assertNotEquals(movies[1].getTitle(), secondMovies[1].getTitle());
+        assertThat(movies, is(arrayWithSize(limit)));
+        assertThat(secondMovies, is(arrayWithSize(limit)));
+        assertThat(secondMovies[0].getTitle(), is(not(equalTo(movies[0].getTitle()))));
+        assertThat(secondMovies[1].getTitle(), is(not(equalTo(movies[1].getTitle()))));
     }
 
     /** Test GetDocuments with limit, offset and specified fields */
@@ -458,16 +465,14 @@ public class DocumentsTest extends AbstractIT {
         Results<Movie> result = index.getDocuments(query, Movie.class);
         Movie[] movies = result.getResults();
 
-        assertEquals(limit, movies.length);
-
-        assertNotNull(movies[0].getId());
-        assertNotNull(movies[0].getTitle());
-
-        assertNull(movies[0].getGenres());
-        assertNull(movies[0].getLanguage());
-        assertNull(movies[0].getOverview());
-        assertNull(movies[0].getPoster());
-        assertNull(movies[0].getRelease_date());
+        assertThat(movies, is(arrayWithSize(limit)));
+        assertThat(movies[0].getId(), is(notNullValue()));
+        assertThat(movies[0].getTitle(), is(notNullValue()));
+        assertThat(movies[0].getGenres(), is(nullValue()));
+        assertThat(movies[0].getLanguage(), is(nullValue()));
+        assertThat(movies[0].getOverview(), is(nullValue()));
+        assertThat(movies[0].getPoster(), is(nullValue()));
+        assertThat(movies[0].getRelease_date(), is(nullValue()));
     }
 
     /** Test default GetRawDocuments */
@@ -482,14 +487,15 @@ public class DocumentsTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
         String results = index.getRawDocuments();
 
-        assertTrue(results.contains("results"));
-        assertTrue(results.contains(testData.getData().get(0).getId()));
-        assertTrue(results.contains(testData.getData().get(0).getTitle()));
-        assertTrue(results.contains(testData.getData().get(0).getGenres()[0]));
-        assertTrue(results.contains(testData.getData().get(0).getLanguage()));
-        assertTrue(results.contains(testData.getData().get(0).getOverview()));
-        assertTrue(results.contains(testData.getData().get(0).getPoster()));
-        assertTrue(results.contains(testData.getData().get(0).getRelease_date()));
+        assertThat(results.contains("results"), is(equalTo(true)));
+        assertThat(results.contains(testData.getData().get(0).getId()), is(equalTo(true)));
+        assertThat(results.contains(testData.getData().get(0).getTitle()), is(equalTo(true)));
+        assertThat(results.contains(testData.getData().get(0).getGenres()[0]), is(equalTo(true)));
+        assertThat(results.contains(testData.getData().get(0).getLanguage()), is(equalTo(true)));
+        assertThat(results.contains(testData.getData().get(0).getOverview()), is(equalTo(true)));
+        assertThat(results.contains(testData.getData().get(0).getPoster()), is(equalTo(true)));
+        assertThat(
+                results.contains(testData.getData().get(0).getRelease_date()), is(equalTo(true)));
     }
 
     /** Test GetRawDocuments with limit */
@@ -507,8 +513,8 @@ public class DocumentsTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
         String results = index.getRawDocuments(query);
 
-        assertTrue(results.contains("results"));
-        assertTrue(results.contains("\"limit\":24"));
+        assertThat(results.contains("results"), is(equalTo(true)));
+        assertThat(results.contains("\"limit\":24"), is(equalTo(true)));
     }
 
     /** Test GetRawDocuments with limit and offset */
@@ -517,7 +523,6 @@ public class DocumentsTest extends AbstractIT {
         String indexUid = "GetRawDocumentsLimitAndOffset";
         int limit = 2;
         int offset = 2;
-        int secondOffset = 5;
         DocumentsQuery query = new DocumentsQuery().setLimit(limit).setOffset(offset);
         Index index = client.index(indexUid);
 
@@ -527,9 +532,9 @@ public class DocumentsTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
         String results = index.getRawDocuments(query);
 
-        assertTrue(results.contains("results"));
-        assertTrue(results.contains("\"limit\":2"));
-        assertTrue(results.contains("\"offset\":2"));
+        assertThat(results.contains("results"), is(equalTo(true)));
+        assertThat(results.contains("\"limit\":2"), is(equalTo(true)));
+        assertThat(results.contains("\"offset\":2"), is(equalTo(true)));
     }
 
     /** Test GetRawDocuments with limit, offset and specified fields */
@@ -552,15 +557,15 @@ public class DocumentsTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
         String results = index.getRawDocuments(query);
 
-        assertTrue(results.contains("results"));
-        assertTrue(results.contains("\"limit\":2"));
-        assertTrue(results.contains("\"offset\":2"));
-        assertTrue(results.contains("id"));
-        assertTrue(results.contains("title"));
-        assertFalse(results.contains("genres"));
-        assertFalse(results.contains("langage"));
-        assertFalse(results.contains("poster"));
-        assertFalse(results.contains("release_date"));
+        assertThat(results.contains("results"), is(equalTo(true)));
+        assertThat(results.contains("\"limit\":2"), is(equalTo(true)));
+        assertThat(results.contains("\"offset\":2"), is(equalTo(true)));
+        assertThat(results.contains("id"), is(equalTo(true)));
+        assertThat(results.contains("title"), is(equalTo(true)));
+        assertThat(results.contains("genres"), is(equalTo(false)));
+        assertThat(results.contains("langage"), is(equalTo(false)));
+        assertThat(results.contains("poster"), is(equalTo(false)));
+        assertThat(results.contains("release_date"), is(equalTo(false)));
     }
 
     /** Test deleteDocument */
@@ -582,7 +587,7 @@ public class DocumentsTest extends AbstractIT {
 
         assertThrows(
                 MeilisearchApiException.class,
-                () -> index.<Movie>getDocument(toDelete.getId(), Movie.class));
+                () -> index.getDocument(toDelete.getId(), Movie.class));
     }
 
     /** Test deleteDocuments */
@@ -598,20 +603,20 @@ public class DocumentsTest extends AbstractIT {
 
         Results<Movie> result = index.getDocuments(Movie.class);
         Movie[] movies = result.getResults();
-        assertEquals(20, movies.length);
+        assertThat(movies, is(arrayWithSize(20)));
 
         List<String> identifiersToDelete = getIdentifiersToDelete(movies);
 
         task = index.deleteDocuments(identifiersToDelete);
         index.waitForTask(task.getTaskUid());
 
-        movies = (Movie[]) index.getDocuments(Movie.class).getResults();
+        movies = index.getDocuments(Movie.class).getResults();
 
         boolean containsDeletedMovie =
                 Arrays.stream(movies)
                         .anyMatch(movie -> identifiersToDelete.contains(movie.getId()));
 
-        assertFalse(containsDeletedMovie);
+        assertThat(containsDeletedMovie, is(equalTo(false)));
     }
 
     @NotNull
@@ -632,16 +637,16 @@ public class DocumentsTest extends AbstractIT {
 
         Results<Movie> result = index.getDocuments(Movie.class);
         Movie[] movies = result.getResults();
-        assertEquals(20, movies.length);
+        assertThat(movies, is(arrayWithSize(20)));
 
         TaskInfo task = index.deleteAllDocuments();
         index.waitForTask(task.getTaskUid());
 
-        assertTrue(task instanceof TaskInfo);
-        assertEquals(task.getType(), "documentDeletion");
-        assertNotNull(task.getEnqueuedAt());
+        assertThat(task, is(instanceOf(TaskInfo.class)));
+        assertThat(task.getType(), is(equalTo("documentDeletion")));
+        assertThat(task.getEnqueuedAt(), is(notNullValue()));
 
-        movies = (Movie[]) index.getDocuments(Movie.class).getResults();
-        assertEquals(0, movies.length);
+        movies = index.getDocuments(Movie.class).getResults();
+        assertThat(movies, is(arrayWithSize(0)));
     }
 }

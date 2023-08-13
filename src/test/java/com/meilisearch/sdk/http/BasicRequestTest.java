@@ -1,8 +1,8 @@
 package com.meilisearch.sdk.http;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 import com.meilisearch.sdk.http.request.BasicRequest;
 import com.meilisearch.sdk.http.request.HttpMethod;
@@ -20,9 +20,9 @@ class BasicRequestTest {
     void basicUseCase() {
         HttpRequest httpRequest = request.create(HttpMethod.GET, "/", Collections.emptyMap(), null);
 
-        assertFalse(httpRequest.hasContent());
-        assertEquals(httpRequest.getPath(), "/");
-        assertEquals(httpRequest.getMethod(), HttpMethod.GET);
+        assertThat(httpRequest.hasContent(), is(equalTo(false)));
+        assertThat(httpRequest.getPath(), is(equalTo("/")));
+        assertThat(httpRequest.getMethod(), is(equalTo(HttpMethod.GET)));
     }
 
     @Test
@@ -30,10 +30,10 @@ class BasicRequestTest {
         HttpRequest httpRequest =
                 request.create(HttpMethod.GET, "/", Collections.emptyMap(), "thisisatest");
 
-        assertTrue(httpRequest.hasContent());
-        assertEquals(httpRequest.getContent(), "thisisatest");
-        assertEquals(httpRequest.getPath(), "/");
-        assertEquals(httpRequest.getMethod(), HttpMethod.GET);
+        assertThat(httpRequest.hasContent(), is(equalTo(true)));
+        assertThat(httpRequest.getContent(), is(equalTo("thisisatest")));
+        assertThat(httpRequest.getPath(), is(equalTo("/")));
+        assertThat(httpRequest.getMethod(), is(equalTo(HttpMethod.GET)));
     }
 
     @Test
@@ -45,10 +45,11 @@ class BasicRequestTest {
                         Collections.emptyMap(),
                         new Movie("thisisanid", "thisisatitle"));
 
-        assertTrue(httpRequest.hasContent());
-        assertEquals(
-                httpRequest.getContent(), "{\"id\":\"thisisanid\",\"title\":\"thisisatitle\"}");
-        assertEquals(httpRequest.getPath(), "/");
-        assertEquals(httpRequest.getMethod(), HttpMethod.GET);
+        assertThat(httpRequest.hasContent(), is(equalTo(true)));
+        assertThat(
+                httpRequest.getContent(),
+                is(equalTo("{\"id\":\"thisisanid\",\"title\":\"thisisatitle\"}")));
+        assertThat(httpRequest.getPath(), is(equalTo("/")));
+        assertThat(httpRequest.getMethod(), is(equalTo(HttpMethod.GET)));
     }
 }

@@ -1,5 +1,8 @@
 package com.meilisearch.sdk.http;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.text.SimpleDateFormat;
@@ -15,7 +18,7 @@ public class URLBuilderTest {
     void addSubroute() {
         classToTest.addSubroute("route");
 
-        assertEquals("/route", classToTest.getRoutes().toString());
+        assertThat(classToTest.getRoutes().toString(), is(equalTo("/route")));
     }
 
     @Test
@@ -26,59 +29,65 @@ public class URLBuilderTest {
                 .addSubroute("route3")
                 .addSubroute("route4");
 
-        assertEquals("/route1/route2/route3/route4", classToTest.getRoutes().toString());
+        assertThat(classToTest.getRoutes().toString(), is(equalTo("/route1/route2/route3/route4")));
     }
 
     @Test
     void addParameterStringInt() {
         classToTest.addParameter("parameter1", 1);
-        assertEquals("?parameter1=1", classToTest.getParams().toString());
+        assertThat(classToTest.getParams().toString(), is(equalTo("?parameter1=1")));
 
         classToTest.addParameter("parameter2", 2);
-        assertEquals("?parameter1=1&parameter2=2", classToTest.getParams().toString());
+        assertThat(classToTest.getParams().toString(), is(equalTo("?parameter1=1&parameter2=2")));
 
         classToTest.addParameter("parameter3", 3);
-        assertEquals("?parameter1=1&parameter2=2&parameter3=3", classToTest.getParams().toString());
+        assertThat(
+                classToTest.getParams().toString(),
+                is(equalTo("?parameter1=1&parameter2=2&parameter3=3")));
     }
 
     @Test
     void addParameterStringString() {
         classToTest.addParameter("parameter1", "1");
-        assertEquals("?parameter1=1", classToTest.getParams().toString());
+        assertThat(classToTest.getParams().toString(), is(equalTo("?parameter1=1")));
 
         classToTest.addParameter("parameter2", "2");
-        assertEquals("?parameter1=1&parameter2=2", classToTest.getParams().toString());
+        assertThat(classToTest.getParams().toString(), is(equalTo("?parameter1=1&parameter2=2")));
 
         classToTest.addParameter("parameter3", "3");
-        assertEquals("?parameter1=1&parameter2=2&parameter3=3", classToTest.getParams().toString());
+        assertThat(
+                classToTest.getParams().toString(),
+                is(equalTo("?parameter1=1&parameter2=2&parameter3=3")));
     }
 
     @Test
     void addParameterStringStringArray() {
         classToTest.addParameter("parameter1", new String[] {"1", "a"});
-        assertEquals("?parameter1=1,a", classToTest.getParams().toString());
+        assertThat(classToTest.getParams().toString(), is(equalTo("?parameter1=1,a")));
 
         classToTest.addParameter("parameter2", new String[] {"2", "b"});
-        assertEquals("?parameter1=1,a&parameter2=2,b", classToTest.getParams().toString());
+        assertThat(
+                classToTest.getParams().toString(), is(equalTo("?parameter1=1,a&parameter2=2,b")));
 
         classToTest.addParameter("parameter3", new String[] {"3", "c"});
-        assertEquals(
-                "?parameter1=1,a&parameter2=2,b&parameter3=3,c",
-                classToTest.getParams().toString());
+        assertThat(
+                classToTest.getParams().toString(),
+                is(equalTo("?parameter1=1,a&parameter2=2,b&parameter3=3,c")));
     }
 
     @Test
     void addParameterStringIntArray() {
         classToTest.addParameter("parameter1", new int[] {1, 2});
-        assertEquals("?parameter1=1,2", classToTest.getParams().toString());
+        assertThat(classToTest.getParams().toString(), is(equalTo("?parameter1=1,2")));
 
         classToTest.addParameter("parameter2", new int[] {3, 4});
-        assertEquals("?parameter1=1,2&parameter2=3,4", classToTest.getParams().toString());
+        assertThat(
+                classToTest.getParams().toString(), is(equalTo("?parameter1=1,2&parameter2=3,4")));
 
         classToTest.addParameter("parameter3", new int[] {5, 6});
-        assertEquals(
-                "?parameter1=1,2&parameter2=3,4&parameter3=5,6",
-                classToTest.getParams().toString());
+        assertThat(
+                classToTest.getParams().toString(),
+                is(equalTo("?parameter1=1,2&parameter2=3,4&parameter3=5,6")));
     }
 
     @Test
@@ -93,7 +102,7 @@ public class URLBuilderTest {
                         .toString()
                         .substring(12, classToTest.getParams().toString().length());
         assertDoesNotThrow(() -> DateTimeFormatter.ISO_DATE.parse(parameterDate1));
-        assertEquals("?parameter1=2042-01-30", classToTest.getParams().toString());
+        assertThat(classToTest.getParams().toString(), is(equalTo("?parameter1=2042-01-30")));
 
         classToTest.addParameter("parameter2", date);
         String parameterDate2 =
@@ -102,17 +111,18 @@ public class URLBuilderTest {
                         .toString()
                         .substring(34, classToTest.getParams().toString().length());
         assertDoesNotThrow(() -> DateTimeFormatter.ISO_DATE.parse(parameterDate2));
-        assertEquals(
-                "?parameter1=2042-01-30&parameter2=2042-01-30", classToTest.getParams().toString());
+        assertThat(
+                classToTest.getParams().toString(),
+                is(equalTo("?parameter1=2042-01-30&parameter2=2042-01-30")));
     }
 
     @Test
     void getURL() {
-        assertEquals("", classToTest.getURL());
+        assertThat(classToTest.getURL(), is(equalTo("")));
 
         classToTest.addSubroute("routes");
         classToTest.addParameter("parameter", "value");
 
-        assertEquals("/routes?parameter=value", classToTest.getURL());
+        assertThat(classToTest.getURL(), is(equalTo("/routes?parameter=value")));
     }
 }
