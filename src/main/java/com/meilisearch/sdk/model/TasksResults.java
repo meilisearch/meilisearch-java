@@ -13,6 +13,7 @@ public class TasksResults {
     protected int limit;
     protected int from;
     protected int next;
+    protected int total;
 
     public TasksResults() {}
 }
