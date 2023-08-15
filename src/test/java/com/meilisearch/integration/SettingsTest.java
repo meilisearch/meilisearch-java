@@ -292,7 +292,7 @@ public class SettingsTest extends AbstractIT {
         Map<String, String[]> updatedSynonymsSettings = index.getSynonymsSettings();
 
         assertThat(updatedSynonymsSettings, is(aMapWithSize(newSynonymsSettings.size())));
-        assertThat(updatedSynonymsSettings, is(equalTo(newSynonymsSettings.keySet())));
+        assertThat(updatedSynonymsSettings.keySet(), is(equalTo(newSynonymsSettings.keySet())));
         assertThat(updatedSynonymsSettings, is(not(aMapWithSize(synonymsSettings.size()))));
         assertThat(updatedSynonymsSettings.keySet(), is(not(equalTo(synonymsSettings.keySet()))));
     }
@@ -314,13 +314,13 @@ public class SettingsTest extends AbstractIT {
         Map<String, String[]> synonymsSettingsAfterReset = index.getSynonymsSettings();
 
         assertThat(updatedSynonymsSettings, is(aMapWithSize(newSynonymsSettings.size())));
-        assertThat(updatedSynonymsSettings, is(equalTo(newSynonymsSettings.keySet())));
+        assertThat(updatedSynonymsSettings.keySet(), is(equalTo(newSynonymsSettings.keySet())));
         assertThat(updatedSynonymsSettings, is(not(aMapWithSize(synonymsSettings.size()))));
         assertThat(updatedSynonymsSettings.keySet(), is(not(equalTo(synonymsSettings.keySet()))));
         assertThat(
                 synonymsSettingsAfterReset, is(not(aMapWithSize(updatedSynonymsSettings.size()))));
         assertThat(synonymsSettingsAfterReset, is(aMapWithSize(synonymsSettings.size())));
-        assertThat(synonymsSettingsAfterReset, is(equalTo(synonymsSettings.keySet())));
+        assertThat(synonymsSettingsAfterReset.keySet(), is(equalTo(synonymsSettings.keySet())));
     }
 
     /** Tests of the stop words setting methods */
@@ -723,7 +723,7 @@ public class SettingsTest extends AbstractIT {
         assertThat(updatedTypoTolerance.getMinWordSizeForTypos(), hasKey("oneTypo"));
         assertThat(updatedTypoTolerance.getMinWordSizeForTypos().get("oneTypo"), is(equalTo(7)));
         assertThat(updatedTypoTolerance.getMinWordSizeForTypos(), hasKey("twoTypos"));
-        assertThat(updatedTypoTolerance.getMinWordSizeForTypos().get("oneTypo"), is(equalTo(10)));
+        assertThat(updatedTypoTolerance.getMinWordSizeForTypos().get("twoTypos"), is(equalTo(10)));
     }
 
     @Test
