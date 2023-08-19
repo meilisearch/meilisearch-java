@@ -73,7 +73,7 @@ public class InstanceTest extends AbstractIT {
         IndexStats stats = index.getStats();
 
         assertThat(stats, is(notNullValue()));
-        assertThat(stats.getNumberOfDocuments(), is(equalTo(0)));
+        assertThat(stats.getNumberOfDocuments(), is(equalTo(0L)));
         assertThat(stats.isIndexing(), is(equalTo(false)));
         assertThat(stats.getFieldDistribution(), is(notNullValue()));
     }
