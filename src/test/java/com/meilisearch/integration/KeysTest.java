@@ -1,6 +1,13 @@
 package com.meilisearch.integration;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
@@ -38,17 +45,17 @@ public class KeysTest extends AbstractIT {
         Results<Key> result = client.getKeys();
         Key[] keys = result.getResults();
 
-        assertEquals(2, keys.length);
+        assertThat(keys, is(arrayWithSize(2)));
 
         for (Key key : keys) {
-            assertNotNull(key.getKey());
-            assertNotNull(key.getUid());
-            assertNotNull(key.getActions());
-            assertNotNull(key.getIndexes());
-            assertNotNull(key.getDescription());
-            assertNull(key.getExpiresAt());
-            assertNotNull(key.getCreatedAt());
-            assertNotNull(key.getUpdatedAt());
+            assertThat(key.getKey(), is(notNullValue()));
+            assertThat(key.getUid(), is(notNullValue()));
+            assertThat(key.getActions(), is(notNullValue()));
+            assertThat(key.getIndexes(), is(notNullValue()));
+            assertThat(key.getDescription(), is(notNullValue()));
+            assertThat(key.getExpiresAt(), is(nullValue()));
+            assertThat(key.getCreatedAt(), is(notNullValue()));
+            assertThat(key.getUpdatedAt(), is(notNullValue()));
         }
     }
 
@@ -58,14 +65,14 @@ public class KeysTest extends AbstractIT {
         Results<Key> result = clientJackson.getKeys();
         Key[] keys = result.getResults();
 
-        assertEquals(2, keys.length);
+        assertThat(keys, is(arrayWithSize(2)));
 
         for (Key key : keys) {
-            assertNotNull(key.getKey());
-            assertNotNull(key.getActions());
-            assertNotNull(key.getIndexes());
-            assertNotNull(key.getCreatedAt());
-            assertNotNull(key.getUpdatedAt());
+            assertThat(key.getKey(), is(notNullValue()));
+            assertThat(key.getActions(), is(notNullValue()));
+            assertThat(key.getIndexes(), is(notNullValue()));
+            assertThat(key.getCreatedAt(), is(notNullValue()));
+            assertThat(key.getUpdatedAt(), is(notNullValue()));
         }
     }
 
@@ -77,10 +84,10 @@ public class KeysTest extends AbstractIT {
 
         Results<Key> result = client.getKeys(query);
 
-        assertEquals(limit, result.getLimit());
-        assertNotNull(result.getOffset());
-        assertNotNull(result.getTotal());
-        assertNotNull(result.getResults().length);
+        assertThat(result.getLimit(), is(equalTo(limit)));
+        assertThat(result.getOffset(), is(notNullValue()));
+        assertThat(result.getTotal(), is(notNullValue()));
+        assertThat(result.getResults().length, is(notNullValue()));
     }
 
     /** Test Get Keys With Limit and Offset */
@@ -92,10 +99,10 @@ public class KeysTest extends AbstractIT {
 
         Results<Key> result = client.getKeys(query);
 
-        assertEquals(limit, result.getLimit());
-        assertEquals(offset, result.getOffset());
-        assertNotNull(result.getTotal());
-        assertNotNull(result.getResults().length);
+        assertThat(result.getLimit(), is(equalTo(limit)));
+        assertThat(result.getOffset(), is(equalTo(offset)));
+        assertThat(result.getTotal(), is(notNullValue()));
+        assertThat(result.getResults().length, is(notNullValue()));
     }
 
     /** Test Get Key */
@@ -106,13 +113,13 @@ public class KeysTest extends AbstractIT {
 
         Key key = client.getKey(keys[0].getKey());
 
-        assertTrue(key instanceof Key);
-        assertNotNull(key.getKey());
-        assertNotNull(key.getActions());
-        assertNotNull(key.getIndexes());
-        assertNotNull(key.getDescription());
-        assertNotNull(key.getCreatedAt());
-        assertNotNull(key.getUpdatedAt());
+        assertThat(key, is(instanceOf(Key.class)));
+        assertThat(key.getKey(), is(notNullValue()));
+        assertThat(key.getActions(), is(notNullValue()));
+        assertThat(key.getIndexes(), is(notNullValue()));
+        assertThat(key.getDescription(), is(notNullValue()));
+        assertThat(key.getCreatedAt(), is(notNullValue()));
+        assertThat(key.getUpdatedAt(), is(notNullValue()));
     }
 
     /** Test Get Key With Uid */
@@ -123,13 +130,13 @@ public class KeysTest extends AbstractIT {
 
         Key key = client.getKey(keys[0].getUid());
 
-        assertTrue(key instanceof Key);
-        assertNotNull(key.getKey());
-        assertNotNull(key.getActions());
-        assertNotNull(key.getIndexes());
-        assertNotNull(key.getDescription());
-        assertNotNull(key.getCreatedAt());
-        assertNotNull(key.getUpdatedAt());
+        assertThat(key, is(instanceOf(Key.class)));
+        assertThat(key.getKey(), is(notNullValue()));
+        assertThat(key.getActions(), is(notNullValue()));
+        assertThat(key.getIndexes(), is(notNullValue()));
+        assertThat(key.getDescription(), is(notNullValue()));
+        assertThat(key.getCreatedAt(), is(notNullValue()));
+        assertThat(key.getUpdatedAt(), is(notNullValue()));
     }
 
     /** Test Get Key when the key does not exist */
@@ -148,14 +155,14 @@ public class KeysTest extends AbstractIT {
 
         Key key = client.createKey(keyInfo);
 
-        assertTrue(key instanceof Key);
-        assertNotNull(key.getKey());
-        assertEquals("*", key.getActions()[0]);
-        assertEquals("*", key.getIndexes()[0]);
-        assertNull(key.getDescription());
-        assertNull(key.getExpiresAt());
-        assertNotNull(key.getCreatedAt());
-        assertNotNull(key.getUpdatedAt());
+        assertThat(key, is(instanceOf(Key.class)));
+        assertThat(key.getKey(), is(notNullValue()));
+        assertThat(key.getActions()[0], is(equalTo("*")));
+        assertThat(key.getIndexes()[0], is(equalTo("*")));
+        assertThat(key.getDescription(), is(nullValue()));
+        assertThat(key.getExpiresAt(), is(nullValue()));
+        assertThat(key.getCreatedAt(), is(notNullValue()));
+        assertThat(key.getUpdatedAt(), is(notNullValue()));
     }
 
     /** Test Create a simple API Key without description with Jackson Json Handler */
@@ -168,14 +175,14 @@ public class KeysTest extends AbstractIT {
 
         Key key = clientJackson.createKey(keyInfo);
 
-        assertTrue(key instanceof Key);
-        assertNotNull(key.getKey());
-        assertEquals("*", key.getActions()[0]);
-        assertEquals("*", key.getIndexes()[0]);
-        assertNull(key.getDescription());
-        assertNull(key.getExpiresAt());
-        assertNotNull(key.getCreatedAt());
-        assertNotNull(key.getUpdatedAt());
+        assertThat(key, is(instanceOf(Key.class)));
+        assertThat(key.getKey(), is(notNullValue()));
+        assertThat(key.getActions()[0], is(equalTo("*")));
+        assertThat(key.getIndexes()[0], is(equalTo("*")));
+        assertThat(key.getDescription(), is(nullValue()));
+        assertThat(key.getExpiresAt(), is(nullValue()));
+        assertThat(key.getCreatedAt(), is(notNullValue()));
+        assertThat(key.getUpdatedAt(), is(notNullValue()));
     }
 
     /** Test Create an API Key with description */
@@ -189,14 +196,14 @@ public class KeysTest extends AbstractIT {
 
         Key key = client.createKey(keyInfo);
 
-        assertTrue(key instanceof Key);
-        assertNotNull(key.getKey());
-        assertEquals("*", key.getActions()[0]);
-        assertEquals("*", key.getIndexes()[0]);
-        assertEquals("testClientCreateKey", key.getDescription());
-        assertNull(key.getExpiresAt());
-        assertNotNull(key.getCreatedAt());
-        assertNotNull(key.getUpdatedAt());
+        assertThat(key, is(instanceOf(Key.class)));
+        assertThat(key.getKey(), is(notNullValue()));
+        assertThat(key.getActions()[0], is(equalTo("*")));
+        assertThat(key.getIndexes()[0], is(equalTo("*")));
+        assertThat(key.getDescription(), is(equalTo("testClientCreateKey")));
+        assertThat(key.getExpiresAt(), is(nullValue()));
+        assertThat(key.getCreatedAt(), is(notNullValue()));
+        assertThat(key.getUpdatedAt(), is(notNullValue()));
     }
 
     /** Test Create an API Key with expiresAt */
@@ -212,14 +219,14 @@ public class KeysTest extends AbstractIT {
 
         Key key = client.createKey(keyInfo);
 
-        assertTrue(key instanceof Key);
-        assertNotNull(key.getKey());
-        assertEquals("*", key.getActions()[0]);
-        assertEquals("*", key.getIndexes()[0]);
-        assertNull(key.getDescription());
-        assertEquals("2042-01-30", format.format(key.getExpiresAt()));
-        assertNotNull(key.getCreatedAt());
-        assertNotNull(key.getUpdatedAt());
+        assertThat(key, is(instanceOf(Key.class)));
+        assertThat(key.getKey(), is(notNullValue()));
+        assertThat(key.getActions()[0], is(equalTo("*")));
+        assertThat(key.getIndexes()[0], is(equalTo("*")));
+        assertThat(key.getDescription(), is(nullValue()));
+        assertThat(format.format(key.getExpiresAt()), is(equalTo("2042-01-30")));
+        assertThat(key.getCreatedAt(), is(notNullValue()));
+        assertThat(key.getUpdatedAt(), is(notNullValue()));
     }
 
     /** Test Create an API Key with wildcarded action */
@@ -232,13 +239,13 @@ public class KeysTest extends AbstractIT {
 
         Key key = client.createKey(keyInfo);
 
-        assertNotNull(key.getKey());
-        assertEquals("documents.*", key.getActions()[0]);
-        assertEquals("*", key.getIndexes()[0]);
-        assertNull(key.getDescription());
-        assertNull(key.getExpiresAt());
-        assertNotNull(key.getCreatedAt());
-        assertNotNull(key.getUpdatedAt());
+        assertThat(key.getKey(), is(notNullValue()));
+        assertThat(key.getActions()[0], is(equalTo("documents.*")));
+        assertThat(key.getIndexes()[0], is(equalTo("*")));
+        assertThat(key.getDescription(), is(nullValue()));
+        assertThat(key.getExpiresAt(), is(nullValue()));
+        assertThat(key.getCreatedAt(), is(notNullValue()));
+        assertThat(key.getUpdatedAt(), is(notNullValue()));
     }
 
     /** Test Update an API Key */
@@ -261,18 +268,18 @@ public class KeysTest extends AbstractIT {
         Key createKey = client.createKey(keyInfo);
         Key updateKey = client.updateKey(createKey.getKey(), keyChanges);
 
-        assertTrue(createKey instanceof Key);
-        assertTrue(updateKey instanceof Key);
-        assertNotNull(updateKey.getKey());
-        assertEquals("*", createKey.getIndexes()[0]);
-        assertEquals("search", createKey.getActions()[0]);
-        assertEquals("Key After Update", createKey.getName());
-        assertEquals("Description Key After Update - test", updateKey.getDescription());
-        assertEquals(createKey.getIndexes()[0], updateKey.getIndexes()[0]);
-        assertEquals(createKey.getActions()[0], updateKey.getActions()[0]);
-        assertEquals(dateParsed, updateKey.getExpiresAt());
-        assertNotNull(updateKey.getCreatedAt());
-        assertNotNull(updateKey.getUpdatedAt());
+        assertThat(createKey, is(instanceOf(Key.class)));
+        assertThat(updateKey, is(instanceOf(Key.class)));
+        assertThat(updateKey.getKey(), is(notNullValue()));
+        assertThat(createKey.getIndexes()[0], is(equalTo("*")));
+        assertThat(createKey.getActions()[0], is(equalTo("search")));
+        assertThat(createKey.getName(), is(equalTo("Key After Update")));
+        assertThat(updateKey.getDescription(), is(equalTo("Description Key After Update - test")));
+        assertThat(updateKey.getIndexes()[0], is(equalTo(createKey.getIndexes()[0])));
+        assertThat(updateKey.getActions()[0], is(equalTo(createKey.getActions()[0])));
+        assertThat(updateKey.getExpiresAt(), is(equalTo(dateParsed)));
+        assertThat(updateKey.getCreatedAt(), is(notNullValue()));
+        assertThat(updateKey.getUpdatedAt(), is(notNullValue()));
     }
 
     /** Test Update an API Key with Jackson Json Handler */
@@ -295,18 +302,18 @@ public class KeysTest extends AbstractIT {
         Key createKey = clientJackson.createKey(keyInfo);
         Key updateKey = clientJackson.updateKey(createKey.getKey(), keyChanges);
 
-        assertTrue(createKey instanceof Key);
-        assertTrue(updateKey instanceof Key);
-        assertNotNull(updateKey.getKey());
-        assertEquals("*", createKey.getIndexes()[0]);
-        assertEquals("search", createKey.getActions()[0]);
-        assertEquals("Key After Update", createKey.getName());
-        assertEquals("Description Key After Update - test", updateKey.getDescription());
-        assertEquals(createKey.getIndexes()[0], updateKey.getIndexes()[0]);
-        assertEquals(createKey.getActions()[0], updateKey.getActions()[0]);
-        assertEquals(dateParsed, updateKey.getExpiresAt());
-        assertNotNull(updateKey.getCreatedAt());
-        assertNotNull(updateKey.getUpdatedAt());
+        assertThat(createKey, is(instanceOf(Key.class)));
+        assertThat(updateKey, is(instanceOf(Key.class)));
+        assertThat(updateKey.getKey(), is(notNullValue()));
+        assertThat(createKey.getIndexes()[0], is(equalTo("*")));
+        assertThat(createKey.getActions()[0], is(equalTo("search")));
+        assertThat(createKey.getName(), is(equalTo("Key After Update")));
+        assertThat(updateKey.getDescription(), is(equalTo("Description Key After Update - test")));
+        assertThat(updateKey.getIndexes()[0], is(equalTo(createKey.getIndexes()[0])));
+        assertThat(updateKey.getActions()[0], is(equalTo(createKey.getActions()[0])));
+        assertThat(updateKey.getExpiresAt(), is(equalTo(dateParsed)));
+        assertThat(updateKey.getCreatedAt(), is(notNullValue()));
+        assertThat(updateKey.getUpdatedAt(), is(notNullValue()));
     }
 
     /** Test Delete an API Key */

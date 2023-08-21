@@ -1,12 +1,16 @@
 package com.meilisearch.integration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.aMapWithSize;
+import static org.hamcrest.Matchers.anEmptyMap;
+import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.Matchers.emptyArray;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
@@ -49,7 +53,7 @@ public class SettingsTest extends AbstractIT {
         Index index = createIndex("getSettings");
         Settings settings = index.getSettings();
 
-        assertEquals(6, settings.getRankingRules().length);
+        assertThat(settings.getRankingRules(), is(arrayWithSize(6)));
     }
 
     @Test
@@ -70,7 +74,7 @@ public class SettingsTest extends AbstractIT {
                 });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
         Settings newSettings = index.getSettings();
-        assertEquals(8, newSettings.getRankingRules().length);
+        assertThat(newSettings.getRankingRules(), is(arrayWithSize(8)));
     }
 
     @Test
@@ -88,7 +92,7 @@ public class SettingsTest extends AbstractIT {
 
         Settings newSettings = index.getSettings();
 
-        assertEquals(2, newSettings.getSynonyms().size());
+        assertThat(newSettings.getSynonyms(), is(aMapWithSize(2)));
     }
 
     @Test
@@ -102,7 +106,7 @@ public class SettingsTest extends AbstractIT {
 
         Settings newSettings = index.getSettings();
 
-        assertEquals(2, newSettings.getSortableAttributes().length);
+        assertThat(newSettings.getSortableAttributes(), is(arrayWithSize(2)));
     }
 
     @Test
@@ -120,9 +124,9 @@ public class SettingsTest extends AbstractIT {
 
         Settings newSettings = index.getSettings();
 
-        assertEquals(1, newSettings.getTypoTolerance().getDisableOnWords().length);
-        assertEquals(1, newSettings.getTypoTolerance().getDisableOnAttributes().length);
-        assertTrue(newSettings.getTypoTolerance().isEnabled());
+        assertThat(newSettings.getTypoTolerance().getDisableOnWords(), is(arrayWithSize(1)));
+        assertThat(newSettings.getTypoTolerance().getDisableOnAttributes(), is(arrayWithSize(1)));
+        assertThat(newSettings.getTypoTolerance().isEnabled(), is(equalTo(true)));
     }
 
     @Test
@@ -158,15 +162,15 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateSettings(settingsSynonyms).getTaskUid());
         Settings newSettingsSynonyms = index.getSettings();
 
-        assertEquals(4, newSettingsDisplayedAttr.getDisplayedAttributes().length);
-        assertEquals(6, newSettingsDisplayedAttr.getRankingRules().length);
-        assertEquals(0, newSettingsDisplayedAttr.getSynonyms().size());
-        assertEquals(4, newSettingsRankingRules.getDisplayedAttributes().length);
-        assertEquals(8, newSettingsRankingRules.getRankingRules().length);
-        assertEquals(0, newSettingsRankingRules.getSynonyms().size());
-        assertEquals(4, newSettingsSynonyms.getDisplayedAttributes().length);
-        assertEquals(2, newSettingsSynonyms.getSynonyms().size());
-        assertEquals(8, newSettingsSynonyms.getRankingRules().length);
+        assertThat(newSettingsDisplayedAttr.getDisplayedAttributes(), is(arrayWithSize(4)));
+        assertThat(newSettingsDisplayedAttr.getRankingRules(), is(arrayWithSize(6)));
+        assertThat(newSettingsDisplayedAttr.getSynonyms(), is(anEmptyMap()));
+        assertThat(newSettingsRankingRules.getDisplayedAttributes(), is(arrayWithSize(4)));
+        assertThat(newSettingsRankingRules.getRankingRules(), is(arrayWithSize(8)));
+        assertThat(newSettingsRankingRules.getSynonyms(), is(anEmptyMap()));
+        assertThat(newSettingsSynonyms.getDisplayedAttributes(), is(arrayWithSize(4)));
+        assertThat(newSettingsSynonyms.getSynonyms(), is(aMapWithSize(2)));
+        assertThat(newSettingsSynonyms.getRankingRules(), is(arrayWithSize(8)));
     }
 
     @Test
@@ -183,11 +187,13 @@ public class SettingsTest extends AbstractIT {
 
         index.waitForTask(index.updateSettings(settingsWithSynonyms).getTaskUid());
         settingsWithSynonyms = index.getSettings();
-        assertEquals(2, settingsWithSynonyms.getSynonyms().size());
+        assertThat(settingsWithSynonyms.getSynonyms(), is(aMapWithSize(2)));
 
         index.waitForTask(index.resetSettings().getTaskUid());
         Settings settingsAfterReset = index.getSettings();
-        assertEquals(initialSettings.getSynonyms().size(), settingsAfterReset.getSynonyms().size());
+        assertThat(
+                settingsAfterReset.getSynonyms().size(),
+                equalTo(initialSettings.getSynonyms().size()));
     }
 
     /** Tests of the ranking rules setting methods */
@@ -198,8 +204,9 @@ public class SettingsTest extends AbstractIT {
         Settings initialSettings = index.getSettings();
         String[] initialRankingRules = index.getRankingRulesSettings();
 
-        assertEquals(initialSettings.getRankingRules().length, initialRankingRules.length);
-        assertArrayEquals(initialSettings.getRankingRules(), initialRankingRules);
+        assertThat(
+                initialRankingRules, is(arrayWithSize(initialSettings.getRankingRules().length)));
+        assertThat(initialRankingRules, is(equalTo(initialSettings.getRankingRules())));
     }
 
     @Test
@@ -221,9 +228,10 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateRankingRulesSettings(newRankingRules).getTaskUid());
         String[] updatedRankingRulesSettings = index.getRankingRulesSettings();
 
-        assertEquals(newRankingRules.length, updatedRankingRulesSettings.length);
-        assertArrayEquals(newRankingRules, updatedRankingRulesSettings);
-        assertNotEquals(initialRulesSettings.length, updatedRankingRulesSettings.length);
+        assertThat(updatedRankingRulesSettings, is(arrayWithSize(newRankingRules.length)));
+        assertThat(updatedRankingRulesSettings, is(equalTo(newRankingRules)));
+        assertThat(
+                updatedRankingRulesSettings, is(not(arrayWithSize(initialRulesSettings.length))));
     }
 
     @Test
@@ -248,13 +256,14 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.resetRankingRulesSettings().getTaskUid());
         String[] rankingRulesAfterReset = index.getRankingRulesSettings();
 
-        assertEquals(newRankingRules.length, updatedRankingRulesSettings.length);
-        assertArrayEquals(newRankingRules, updatedRankingRulesSettings);
-        assertNotEquals(initialRulesSettings.length, updatedRankingRulesSettings.length);
-
-        assertNotEquals(updatedRankingRulesSettings.length, rankingRulesAfterReset.length);
-        assertEquals(initialRulesSettings.length, rankingRulesAfterReset.length);
-        assertArrayEquals(initialRulesSettings, rankingRulesAfterReset);
+        assertThat(updatedRankingRulesSettings, is(arrayWithSize(newRankingRules.length)));
+        assertThat(updatedRankingRulesSettings, is(equalTo(newRankingRules)));
+        assertThat(
+                updatedRankingRulesSettings, is(not(arrayWithSize(initialRulesSettings.length))));
+        assertThat(
+                rankingRulesAfterReset, is(not(arrayWithSize(updatedRankingRulesSettings.length))));
+        assertThat(rankingRulesAfterReset, is(arrayWithSize(initialRulesSettings.length)));
+        assertThat(rankingRulesAfterReset, is(equalTo(initialRulesSettings)));
     }
 
     /** Tests of the synonyms setting methods */
@@ -265,8 +274,8 @@ public class SettingsTest extends AbstractIT {
         Settings initialSettings = index.getSettings();
         Map<String, String[]> synonymsSettings = index.getSynonymsSettings();
 
-        assertEquals(initialSettings.getSynonyms().size(), synonymsSettings.size());
-        assertEquals(initialSettings.getSynonyms(), synonymsSettings);
+        assertThat(synonymsSettings, is(aMapWithSize(initialSettings.getSynonyms().size())));
+        assertThat(synonymsSettings, is(equalTo(initialSettings.getSynonyms())));
     }
 
     @Test
@@ -282,10 +291,10 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateSynonymsSettings(newSynonymsSettings).getTaskUid());
         Map<String, String[]> updatedSynonymsSettings = index.getSynonymsSettings();
 
-        assertEquals(newSynonymsSettings.size(), updatedSynonymsSettings.size());
-        assertEquals(newSynonymsSettings.keySet(), updatedSynonymsSettings.keySet());
-        assertNotEquals(synonymsSettings.size(), updatedSynonymsSettings.size());
-        assertNotEquals(synonymsSettings.keySet(), updatedSynonymsSettings.keySet());
+        assertThat(updatedSynonymsSettings, is(aMapWithSize(newSynonymsSettings.size())));
+        assertThat(updatedSynonymsSettings.keySet(), is(equalTo(newSynonymsSettings.keySet())));
+        assertThat(updatedSynonymsSettings, is(not(aMapWithSize(synonymsSettings.size()))));
+        assertThat(updatedSynonymsSettings.keySet(), is(not(equalTo(synonymsSettings.keySet()))));
     }
 
     @Test
@@ -304,14 +313,14 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.resetSynonymsSettings().getTaskUid());
         Map<String, String[]> synonymsSettingsAfterReset = index.getSynonymsSettings();
 
-        assertEquals(newSynonymsSettings.size(), updatedSynonymsSettings.size());
-        assertEquals(newSynonymsSettings.keySet(), updatedSynonymsSettings.keySet());
-        assertNotEquals(synonymsSettings.size(), updatedSynonymsSettings.size());
-        assertNotEquals(synonymsSettings.keySet(), updatedSynonymsSettings.keySet());
-
-        assertNotEquals(updatedSynonymsSettings.size(), synonymsSettingsAfterReset.size());
-        assertEquals(synonymsSettings.size(), synonymsSettingsAfterReset.size());
-        assertEquals(synonymsSettings.keySet(), synonymsSettingsAfterReset.keySet());
+        assertThat(updatedSynonymsSettings, is(aMapWithSize(newSynonymsSettings.size())));
+        assertThat(updatedSynonymsSettings.keySet(), is(equalTo(newSynonymsSettings.keySet())));
+        assertThat(updatedSynonymsSettings, is(not(aMapWithSize(synonymsSettings.size()))));
+        assertThat(updatedSynonymsSettings.keySet(), is(not(equalTo(synonymsSettings.keySet()))));
+        assertThat(
+                synonymsSettingsAfterReset, is(not(aMapWithSize(updatedSynonymsSettings.size()))));
+        assertThat(synonymsSettingsAfterReset, is(aMapWithSize(synonymsSettings.size())));
+        assertThat(synonymsSettingsAfterReset.keySet(), is(equalTo(synonymsSettings.keySet())));
     }
 
     /** Tests of the stop words setting methods */
@@ -322,8 +331,8 @@ public class SettingsTest extends AbstractIT {
         Settings initialSettings = index.getSettings();
         String[] initialStopWords = index.getStopWordsSettings();
 
-        assertEquals(initialSettings.getStopWords().length, initialStopWords.length);
-        assertArrayEquals(initialSettings.getStopWords(), initialStopWords);
+        assertThat(initialStopWords, is(arrayWithSize(initialSettings.getStopWords().length)));
+        assertThat(initialStopWords, is(equalTo(initialSettings.getStopWords())));
     }
 
     @Test
@@ -336,9 +345,9 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateStopWordsSettings(newStopWords).getTaskUid());
         String[] updatedStopWordsSettings = index.getStopWordsSettings();
 
-        assertEquals(newStopWords.length, updatedStopWordsSettings.length);
-        assertArrayEquals(newStopWords, updatedStopWordsSettings);
-        assertNotEquals(initialStopWords.length, updatedStopWordsSettings.length);
+        assertThat(updatedStopWordsSettings, is(arrayWithSize(newStopWords.length)));
+        assertThat(updatedStopWordsSettings, is(equalTo(newStopWords)));
+        assertThat(updatedStopWordsSettings, is(not(arrayWithSize(initialStopWords.length))));
     }
 
     @Test
@@ -354,13 +363,12 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.resetStopWordsSettings().getTaskUid());
         String[] stopWordsAfterReset = index.getStopWordsSettings();
 
-        assertEquals(newStopWords.length, updatedStopWordsSettings.length);
-        assertArrayEquals(newStopWords, updatedStopWordsSettings);
-        assertNotEquals(initialStopWords.length, updatedStopWordsSettings.length);
-
-        assertNotEquals(updatedStopWordsSettings.length, stopWordsAfterReset.length);
-        assertEquals(initialStopWords.length, stopWordsAfterReset.length);
-        assertArrayEquals(initialStopWords, stopWordsAfterReset);
+        assertThat(updatedStopWordsSettings, is(arrayWithSize(newStopWords.length)));
+        assertThat(updatedStopWordsSettings, is(equalTo(newStopWords)));
+        assertThat(updatedStopWordsSettings, is(not(arrayWithSize(initialStopWords.length))));
+        assertThat(stopWordsAfterReset, is(not(arrayWithSize(updatedStopWordsSettings.length))));
+        assertThat(stopWordsAfterReset, is(arrayWithSize(initialStopWords.length)));
+        assertThat(stopWordsAfterReset, is(equalTo(initialStopWords)));
     }
 
     /** Tests of the searchable attributes setting methods */
@@ -371,10 +379,12 @@ public class SettingsTest extends AbstractIT {
         Settings initialSettings = index.getSettings();
         String[] initialSearchableAttributes = index.getSearchableAttributesSettings();
 
-        assertEquals(
-                initialSettings.getSearchableAttributes().length,
-                initialSearchableAttributes.length);
-        assertArrayEquals(initialSettings.getSearchableAttributes(), initialSearchableAttributes);
+        assertThat(
+                initialSearchableAttributes,
+                is(arrayWithSize(initialSettings.getSearchableAttributes().length)));
+        assertThat(
+                initialSearchableAttributes,
+                is(equalTo(initialSettings.getSearchableAttributes())));
     }
 
     @Test
@@ -388,9 +398,11 @@ public class SettingsTest extends AbstractIT {
                 index.updateSearchableAttributesSettings(newSearchableAttributes).getTaskUid());
         String[] updatedSearchableAttributes = index.getSearchableAttributesSettings();
 
-        assertEquals(newSearchableAttributes.length, updatedSearchableAttributes.length);
-        assertArrayEquals(newSearchableAttributes, updatedSearchableAttributes);
-        assertNotEquals(initialSearchableAttributes.length, updatedSearchableAttributes.length);
+        assertThat(updatedSearchableAttributes, is(arrayWithSize(newSearchableAttributes.length)));
+        assertThat(updatedSearchableAttributes, is(equalTo(newSearchableAttributes)));
+        assertThat(
+                updatedSearchableAttributes,
+                is(not(arrayWithSize(initialSearchableAttributes.length))));
     }
 
     @Test
@@ -407,13 +419,18 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.resetSearchableAttributesSettings().getTaskUid());
         String[] searchableAttributesAfterReset = index.getSearchableAttributesSettings();
 
-        assertEquals(newSearchableAttributes.length, updatedSearchableAttributes.length);
-        assertArrayEquals(newSearchableAttributes, updatedSearchableAttributes);
-        assertNotEquals(initialSearchableAttributes.length, updatedSearchableAttributes.length);
-
-        assertNotEquals(updatedSearchableAttributes.length, searchableAttributesAfterReset.length);
-        assertEquals(initialSearchableAttributes.length, searchableAttributesAfterReset.length);
-        assertArrayEquals(initialSearchableAttributes, searchableAttributesAfterReset);
+        assertThat(updatedSearchableAttributes, is(arrayWithSize(newSearchableAttributes.length)));
+        assertThat(updatedSearchableAttributes, is(equalTo(newSearchableAttributes)));
+        assertThat(
+                updatedSearchableAttributes,
+                is(not(arrayWithSize(initialSearchableAttributes.length))));
+        assertThat(
+                searchableAttributesAfterReset,
+                is(not(arrayWithSize(updatedSearchableAttributes.length))));
+        assertThat(
+                searchableAttributesAfterReset,
+                is(arrayWithSize(initialSearchableAttributes.length)));
+        assertThat(searchableAttributesAfterReset, is(equalTo(initialSearchableAttributes)));
     }
 
     /** Tests of the display attributes setting methods */
@@ -424,10 +441,11 @@ public class SettingsTest extends AbstractIT {
         Settings initialSettings = index.getSettings();
         String[] initialDisplayedAttributes = index.getDisplayedAttributesSettings();
 
-        assertEquals(
-                initialSettings.getSearchableAttributes().length,
-                initialDisplayedAttributes.length);
-        assertArrayEquals(initialSettings.getDisplayedAttributes(), initialDisplayedAttributes);
+        assertThat(
+                initialDisplayedAttributes,
+                is(arrayWithSize(initialSettings.getSearchableAttributes().length)));
+        assertThat(
+                initialDisplayedAttributes, is(equalTo(initialSettings.getDisplayedAttributes())));
     }
 
     @Test
@@ -441,9 +459,11 @@ public class SettingsTest extends AbstractIT {
                 index.updateDisplayedAttributesSettings(newDisplayedAttributes).getTaskUid());
         String[] updatedDisplayedAttributes = index.getDisplayedAttributesSettings();
 
-        assertEquals(newDisplayedAttributes.length, updatedDisplayedAttributes.length);
-        assertArrayEquals(newDisplayedAttributes, updatedDisplayedAttributes);
-        assertNotEquals(initialDisplayedAttributes.length, updatedDisplayedAttributes.length);
+        assertThat(updatedDisplayedAttributes, is(arrayWithSize(newDisplayedAttributes.length)));
+        assertThat(updatedDisplayedAttributes, is(equalTo(newDisplayedAttributes)));
+        assertThat(
+                updatedDisplayedAttributes,
+                is(not(arrayWithSize(initialDisplayedAttributes.length))));
     }
 
     @Test
@@ -460,11 +480,14 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.resetDisplayedAttributesSettings().getTaskUid());
         String[] displayedAttributesAfterReset = index.getDisplayedAttributesSettings();
 
-        assertEquals(newDisplayedAttributes.length, updatedDisplayedAttributes.length);
-        assertArrayEquals(newDisplayedAttributes, updatedDisplayedAttributes);
-        assertNotEquals(initialDisplayedAttributes.length, updatedDisplayedAttributes.length);
-
-        assertNotEquals(updatedDisplayedAttributes.length, displayedAttributesAfterReset.length);
+        assertThat(updatedDisplayedAttributes, is(arrayWithSize(newDisplayedAttributes.length)));
+        assertThat(updatedDisplayedAttributes, is(equalTo(newDisplayedAttributes)));
+        assertThat(
+                updatedDisplayedAttributes,
+                is(not(arrayWithSize(initialDisplayedAttributes.length))));
+        assertThat(
+                displayedAttributesAfterReset,
+                is(not(arrayWithSize(updatedDisplayedAttributes.length))));
     }
 
     /** Tests of the filterable attributes setting methods */
@@ -475,10 +498,12 @@ public class SettingsTest extends AbstractIT {
         Settings initialSettings = index.getSettings();
         String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
 
-        assertEquals(
-                initialSettings.getFilterableAttributes().length,
-                initialFilterableAttributes.length);
-        assertArrayEquals(initialSettings.getFilterableAttributes(), initialFilterableAttributes);
+        assertThat(
+                initialFilterableAttributes,
+                is(arrayWithSize(initialSettings.getFilterableAttributes().length)));
+        assertThat(
+                initialFilterableAttributes,
+                is(equalTo(initialSettings.getFilterableAttributes())));
     }
 
     @Test
@@ -492,11 +517,13 @@ public class SettingsTest extends AbstractIT {
                 index.updateFilterableAttributesSettings(newFilterableAttributes).getTaskUid());
         String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
 
-        assertEquals(newFilterableAttributes.length, updatedFilterableAttributes.length);
+        assertThat(updatedFilterableAttributes, is(arrayWithSize(newFilterableAttributes.length)));
         assertThat(
                 Arrays.asList(newFilterableAttributes),
                 containsInAnyOrder(updatedFilterableAttributes));
-        assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
+        assertThat(
+                updatedFilterableAttributes,
+                is(not(arrayWithSize(initialFilterableAttributes.length))));
     }
 
     @Test
@@ -515,14 +542,19 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.resetFilterableAttributesSettings().getTaskUid());
         String[] filterableAttributesAfterReset = index.getFilterableAttributesSettings();
 
-        assertEquals(newFilterableAttributes.length, updatedFilterableAttributes.length);
+        assertThat(updatedFilterableAttributes, is(arrayWithSize(newFilterableAttributes.length)));
         assertThat(
                 Arrays.asList(newFilterableAttributes),
                 containsInAnyOrder(updatedFilterableAttributes));
-        assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
-
-        assertNotEquals(updatedFilterableAttributes.length, filterableAttributesAfterReset.length);
-        assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
+        assertThat(
+                updatedFilterableAttributes,
+                is(not(arrayWithSize(initialFilterableAttributes.length))));
+        assertThat(
+                filterableAttributesAfterReset,
+                is(not(arrayWithSize(updatedFilterableAttributes.length))));
+        assertThat(
+                updatedFilterableAttributes,
+                is(not(arrayWithSize(initialFilterableAttributes.length))));
     }
 
     /** Tests of the sortable attributes setting methods* */
@@ -533,9 +565,10 @@ public class SettingsTest extends AbstractIT {
         Settings initialSettings = index.getSettings();
         String[] initialSortableAttributes = index.getSortableAttributesSettings();
 
-        assertEquals(
-                initialSettings.getSortableAttributes().length, initialSortableAttributes.length);
-        assertArrayEquals(initialSettings.getSortableAttributes(), initialSortableAttributes);
+        assertThat(
+                initialSortableAttributes,
+                is(arrayWithSize(initialSettings.getSortableAttributes().length)));
+        assertThat(initialSortableAttributes, is(equalTo(initialSettings.getSortableAttributes())));
     }
 
     @Test
@@ -549,11 +582,13 @@ public class SettingsTest extends AbstractIT {
                 index.updateSortableAttributesSettings(newSortableAttributes).getTaskUid());
         String[] updatedSortableAttributes = index.getSortableAttributesSettings();
 
-        assertEquals(newSortableAttributes.length, updatedSortableAttributes.length);
+        assertThat(updatedSortableAttributes, is(arrayWithSize(newSortableAttributes.length)));
         assertThat(
                 Arrays.asList(newSortableAttributes),
                 containsInAnyOrder(updatedSortableAttributes));
-        assertNotEquals(initialSortableAttributes.length, updatedSortableAttributes.length);
+        assertThat(
+                updatedSortableAttributes,
+                is(not(arrayWithSize(initialSortableAttributes.length))));
     }
 
     @Test
@@ -572,14 +607,19 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.resetFilterableAttributesSettings().getTaskUid());
         String[] filterableAttributesAfterReset = index.getFilterableAttributesSettings();
 
-        assertEquals(newSortableAttributes.length, updatedSortableAttributes.length);
+        assertThat(updatedSortableAttributes, is(arrayWithSize(newSortableAttributes.length)));
         assertThat(
                 Arrays.asList(newSortableAttributes),
                 containsInAnyOrder(updatedSortableAttributes));
-        assertNotEquals(initialSortableAttributes.length, updatedSortableAttributes.length);
-
-        assertNotEquals(updatedSortableAttributes.length, filterableAttributesAfterReset.length);
-        assertNotEquals(initialSortableAttributes.length, updatedSortableAttributes.length);
+        assertThat(
+                updatedSortableAttributes,
+                is(not(arrayWithSize(initialSortableAttributes.length))));
+        assertThat(
+                filterableAttributesAfterReset,
+                is(not(arrayWithSize(updatedSortableAttributes.length))));
+        assertThat(
+                updatedSortableAttributes,
+                is(not(arrayWithSize(initialSortableAttributes.length))));
     }
 
     /** Tests of the distinct attributes setting methods */
@@ -590,7 +630,7 @@ public class SettingsTest extends AbstractIT {
         Settings initialSettings = index.getSettings();
         String initialDistinctAttribute = index.getDistinctAttributeSettings();
 
-        assertEquals(initialSettings.getDistinctAttribute(), initialDistinctAttribute);
+        assertThat(initialDistinctAttribute, is(equalTo(initialSettings.getDistinctAttribute())));
     }
 
     @Test
@@ -603,8 +643,8 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateDistinctAttributeSettings(newDistinctAttribute).getTaskUid());
         String updatedDistinctAttribute = index.getDistinctAttributeSettings();
 
-        assertEquals(newDistinctAttribute, updatedDistinctAttribute);
-        assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
+        assertThat(updatedDistinctAttribute, is(equalTo(newDistinctAttribute)));
+        assertThat(updatedDistinctAttribute, is(not(equalTo(initialDistinctAttribute))));
     }
 
     @Test
@@ -620,11 +660,10 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.resetDistinctAttributeSettings().getTaskUid());
         String distinctAttributeAfterReset = index.getDistinctAttributeSettings();
 
-        assertEquals(newDistinctAttribute, updatedDistinctAttribute);
-        assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
-
-        assertNotEquals(updatedDistinctAttribute, distinctAttributeAfterReset);
-        assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
+        assertThat(updatedDistinctAttribute, is(equalTo(newDistinctAttribute)));
+        assertThat(updatedDistinctAttribute, is(not(equalTo(initialDistinctAttribute))));
+        assertThat(distinctAttributeAfterReset, is(not(equalTo(updatedDistinctAttribute))));
+        assertThat(updatedDistinctAttribute, is(not(equalTo(initialDistinctAttribute))));
     }
 
     /** Tests of the typo tolerance setting methods */
@@ -635,16 +674,23 @@ public class SettingsTest extends AbstractIT {
         Settings initialSettings = index.getSettings();
         TypoTolerance initialTypoTolerance = index.getTypoToleranceSettings();
 
-        assertEquals(initialSettings.getTypoTolerance().getDisableOnWords().length, 0);
-        assertEquals(initialTypoTolerance.getDisableOnWords().length, 0);
-        assertEquals(initialSettings.getTypoTolerance().getDisableOnAttributes().length, 0);
-        assertEquals(initialTypoTolerance.getDisableOnAttributes().length, 0);
-        assertEquals(
-                initialSettings.getTypoTolerance().isEnabled(), initialTypoTolerance.isEnabled());
-        assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo"));
-        assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().get("oneTypo"));
-        assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().containsKey("twoTypos"));
-        assertNotNull(initialTypoTolerance.getMinWordSizeForTypos().get("twoTypos"));
+        assertThat(initialSettings.getTypoTolerance().getDisableOnWords(), is(emptyArray()));
+        assertThat(initialTypoTolerance.getDisableOnWords(), is(emptyArray()));
+        assertThat(initialSettings.getTypoTolerance().getDisableOnAttributes(), is(emptyArray()));
+        assertThat(initialTypoTolerance.getDisableOnAttributes(), is(emptyArray()));
+        assertThat(
+                initialTypoTolerance.isEnabled(),
+                is(equalTo(initialSettings.getTypoTolerance().isEnabled())));
+        assertThat(
+                initialTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo"),
+                is(notNullValue()));
+        assertThat(
+                initialTypoTolerance.getMinWordSizeForTypos().get("oneTypo"), is(notNullValue()));
+        assertThat(
+                initialTypoTolerance.getMinWordSizeForTypos().containsKey("twoTypos"),
+                is(notNullValue()));
+        assertThat(
+                initialTypoTolerance.getMinWordSizeForTypos().get("twoTypos"), is(notNullValue()));
     }
 
     @Test
@@ -667,19 +713,17 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateTypoToleranceSettings(newTypoTolerance).getTaskUid());
         TypoTolerance updatedTypoTolerance = index.getTypoToleranceSettings();
 
-        assertEquals(
-                newTypoTolerance.getDisableOnWords()[0],
-                updatedTypoTolerance.getDisableOnWords()[0]);
-        assertEquals(
-                newTypoTolerance.getDisableOnAttributes()[0],
-                updatedTypoTolerance.getDisableOnAttributes()[0]);
-        assertTrue(updatedTypoTolerance.isEnabled());
-        assertTrue(
-                updatedTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo")
-                        && updatedTypoTolerance.getMinWordSizeForTypos().get("oneTypo") == 7);
-        assertTrue(
-                updatedTypoTolerance.getMinWordSizeForTypos().containsKey("twoTypos")
-                        && updatedTypoTolerance.getMinWordSizeForTypos().get("twoTypos") == 10);
+        assertThat(
+                updatedTypoTolerance.getDisableOnWords()[0],
+                is(equalTo(newTypoTolerance.getDisableOnWords()[0])));
+        assertThat(
+                updatedTypoTolerance.getDisableOnAttributes()[0],
+                is(equalTo(newTypoTolerance.getDisableOnAttributes()[0])));
+        assertThat(updatedTypoTolerance.isEnabled(), is(equalTo(true)));
+        assertThat(updatedTypoTolerance.getMinWordSizeForTypos(), hasKey("oneTypo"));
+        assertThat(updatedTypoTolerance.getMinWordSizeForTypos().get("oneTypo"), is(equalTo(7)));
+        assertThat(updatedTypoTolerance.getMinWordSizeForTypos(), hasKey("twoTypos"));
+        assertThat(updatedTypoTolerance.getMinWordSizeForTypos().get("twoTypos"), is(equalTo(10)));
     }
 
     @Test
@@ -693,19 +737,17 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateTypoToleranceSettings(newTypoTolerance).getTaskUid());
         TypoTolerance updatedTypoTolerance = index.getTypoToleranceSettings();
 
-        assertEquals(
-                newTypoTolerance.getDisableOnWords()[0],
-                updatedTypoTolerance.getDisableOnWords()[0]);
-        assertEquals(
-                newTypoTolerance.getDisableOnAttributes()[0],
-                updatedTypoTolerance.getDisableOnAttributes()[0]);
-        assertTrue(updatedTypoTolerance.isEnabled());
-        assertTrue(
-                updatedTypoTolerance.getMinWordSizeForTypos().containsKey("oneTypo")
-                        && updatedTypoTolerance.getMinWordSizeForTypos().get("oneTypo") == 5);
-        assertTrue(
-                updatedTypoTolerance.getMinWordSizeForTypos().containsKey("twoTypos")
-                        && updatedTypoTolerance.getMinWordSizeForTypos().get("twoTypos") == 9);
+        assertThat(
+                updatedTypoTolerance.getDisableOnWords()[0],
+                is(equalTo(newTypoTolerance.getDisableOnWords()[0])));
+        assertThat(
+                updatedTypoTolerance.getDisableOnAttributes()[0],
+                is(equalTo(newTypoTolerance.getDisableOnAttributes()[0])));
+        assertThat(updatedTypoTolerance.isEnabled(), is(equalTo(true)));
+        assertThat(updatedTypoTolerance.getMinWordSizeForTypos(), hasKey("oneTypo"));
+        assertThat(updatedTypoTolerance.getMinWordSizeForTypos().get("oneTypo"), is(equalTo(5)));
+        assertThat(updatedTypoTolerance.getMinWordSizeForTypos(), hasKey("twoTypos"));
+        assertThat(updatedTypoTolerance.getMinWordSizeForTypos().get("twoTypos"), is(equalTo(9)));
     }
 
     @Test
@@ -733,28 +775,30 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.resetTypoToleranceSettings().getTaskUid());
         TypoTolerance typoToleranceAfterReset = index.getTypoToleranceSettings();
 
-        assertEquals(
-                newTypoTolerance.getDisableOnWords().length,
-                updatedTypoTolerance.getDisableOnWords().length);
-        assertEquals(
-                newTypoTolerance.getDisableOnAttributes().length,
-                updatedTypoTolerance.getDisableOnAttributes().length);
-        assertEquals(newTypoTolerance.isEnabled(), updatedTypoTolerance.isEnabled());
+        assertThat(
+                updatedTypoTolerance.getDisableOnWords(),
+                is(arrayWithSize(newTypoTolerance.getDisableOnWords().length)));
+        assertThat(
+                updatedTypoTolerance.getDisableOnAttributes(),
+                is(arrayWithSize(newTypoTolerance.getDisableOnAttributes().length)));
+        assertThat(updatedTypoTolerance.isEnabled(), is(equalTo(newTypoTolerance.isEnabled())));
 
-        assertEquals(
-                initialTypoTolerance.getDisableOnWords().length,
-                typoToleranceAfterReset.getDisableOnWords().length);
-        assertEquals(
-                initialTypoTolerance.getDisableOnAttributes().length,
-                typoToleranceAfterReset.getDisableOnAttributes().length);
-        assertEquals(initialTypoTolerance.isEnabled(), typoToleranceAfterReset.isEnabled());
-        assertTrue(
-                typoToleranceAfterReset.getMinWordSizeForTypos().containsKey("oneTypo")
-                        && typoToleranceAfterReset.getMinWordSizeForTypos().get("oneTypo") != null);
-        assertTrue(
-                typoToleranceAfterReset.getMinWordSizeForTypos().containsKey("twoTypos")
-                        && typoToleranceAfterReset.getMinWordSizeForTypos().get("twoTypos")
-                                != null);
+        assertThat(
+                typoToleranceAfterReset.getDisableOnWords(),
+                is(arrayWithSize(initialTypoTolerance.getDisableOnWords().length)));
+        assertThat(
+                typoToleranceAfterReset.getDisableOnAttributes(),
+                is(arrayWithSize(initialTypoTolerance.getDisableOnAttributes().length)));
+        assertThat(
+                typoToleranceAfterReset.isEnabled(), is(equalTo(initialTypoTolerance.isEnabled())));
+        assertThat(typoToleranceAfterReset.getMinWordSizeForTypos(), hasKey("oneTypo"));
+        assertThat(
+                typoToleranceAfterReset.getMinWordSizeForTypos().get("oneTypo"),
+                is(notNullValue()));
+        assertThat(typoToleranceAfterReset.getMinWordSizeForTypos(), hasKey("twoTypos"));
+        assertThat(
+                typoToleranceAfterReset.getMinWordSizeForTypos().get("twoTypos"),
+                is(notNullValue()));
     }
 
     /** Tests of all the specifics setting methods when null is passed */
@@ -773,10 +817,10 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateSynonymsSettings(null).getTaskUid());
         Map<String, String[]> resetSynonymsSettings = index.getSynonymsSettings();
 
-        assertNotEquals(initialSynonymsSettings.size(), updatedSynonymsSettings.size());
-        assertNotEquals(updatedSynonymsSettings.size(), resetSynonymsSettings.size());
-        assertEquals(initialSynonymsSettings.size(), resetSynonymsSettings.size());
-        assertEquals(initialSynonymsSettings.keySet(), resetSynonymsSettings.keySet());
+        assertThat(updatedSynonymsSettings, is(not(aMapWithSize(initialSynonymsSettings.size()))));
+        assertThat(resetSynonymsSettings, is(not(aMapWithSize(updatedSynonymsSettings.size()))));
+        assertThat(resetSynonymsSettings, is(aMapWithSize(initialSynonymsSettings.size())));
+        assertThat(resetSynonymsSettings.keySet(), is(equalTo(initialSynonymsSettings.keySet())));
     }
 
     @Test
@@ -792,10 +836,10 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateStopWordsSettings(null).getTaskUid());
         String[] resetStopWords = index.getStopWordsSettings();
 
-        assertNotEquals(initialStopWords.length, updatedStopWords.length);
-        assertNotEquals(updatedStopWords.length, resetStopWords.length);
-        assertEquals(initialStopWords.length, resetStopWords.length);
-        assertArrayEquals(initialStopWords, resetStopWords);
+        assertThat(updatedStopWords, is(not(arrayWithSize(initialStopWords.length))));
+        assertThat(resetStopWords, is(not(arrayWithSize(updatedStopWords.length))));
+        assertThat(resetStopWords, is(arrayWithSize(initialStopWords.length)));
+        assertThat(resetStopWords, is(equalTo(initialStopWords)));
     }
 
     @Test
@@ -820,9 +864,9 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateRankingRulesSettings(null).getTaskUid());
         String[] resetRankingRule = index.getRankingRulesSettings();
 
-        assertNotEquals(newRankingRule.length, resetRankingRule.length);
-        assertEquals(initialRankingRule.length, resetRankingRule.length);
-        assertArrayEquals(initialRankingRule, resetRankingRule);
+        assertThat(resetRankingRule, is(not(arrayWithSize(newRankingRule.length))));
+        assertThat(resetRankingRule, is(arrayWithSize(initialRankingRule.length)));
+        assertThat(resetRankingRule, is(equalTo(initialRankingRule)));
     }
 
     @Test
@@ -839,10 +883,15 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateSearchableAttributesSettings(null).getTaskUid());
         String[] resetSearchableAttributes = index.getSearchableAttributesSettings();
 
-        assertNotEquals(initialSearchableAttributes.length, updatedSearchableAttributes.length);
-        assertNotEquals(updatedSearchableAttributes.length, resetSearchableAttributes.length);
-        assertEquals(initialSearchableAttributes.length, resetSearchableAttributes.length);
-        assertArrayEquals(initialSearchableAttributes, resetSearchableAttributes);
+        assertThat(
+                updatedSearchableAttributes,
+                is(not(arrayWithSize(initialSearchableAttributes.length))));
+        assertThat(
+                resetSearchableAttributes,
+                is(not(arrayWithSize(updatedSearchableAttributes.length))));
+        assertThat(
+                resetSearchableAttributes, is(arrayWithSize(initialSearchableAttributes.length)));
+        assertThat(resetSearchableAttributes, is(equalTo(initialSearchableAttributes)));
     }
 
     @Test
@@ -859,10 +908,14 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateDisplayedAttributesSettings(null).getTaskUid());
         String[] resetDisplayedAttributes = index.getDisplayedAttributesSettings();
 
-        assertNotEquals(initialDisplayedAttributes.length, updatedDisplayedAttributes.length);
-        assertNotEquals(updatedDisplayedAttributes.length, resetDisplayedAttributes.length);
-        assertEquals(initialDisplayedAttributes.length, resetDisplayedAttributes.length);
-        assertArrayEquals(initialDisplayedAttributes, resetDisplayedAttributes);
+        assertThat(
+                updatedDisplayedAttributes,
+                is(not(arrayWithSize(initialDisplayedAttributes.length))));
+        assertThat(
+                resetDisplayedAttributes,
+                is(not(arrayWithSize(updatedDisplayedAttributes.length))));
+        assertThat(resetDisplayedAttributes, is(arrayWithSize(initialDisplayedAttributes.length)));
+        assertThat(resetDisplayedAttributes, is(equalTo(initialDisplayedAttributes)));
     }
 
     @Test
@@ -879,10 +932,15 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateFilterableAttributesSettings(null).getTaskUid());
         String[] resetFilterableAttributes = index.getFilterableAttributesSettings();
 
-        assertNotEquals(updatedFilterableAttributes.length, resetFilterableAttributes.length);
-        assertNotEquals(initialFilterableAttributes.length, updatedFilterableAttributes.length);
-        assertEquals(initialFilterableAttributes.length, resetFilterableAttributes.length);
-        assertArrayEquals(initialFilterableAttributes, resetFilterableAttributes);
+        assertThat(
+                resetFilterableAttributes,
+                is(not(arrayWithSize(updatedFilterableAttributes.length))));
+        assertThat(
+                updatedFilterableAttributes,
+                is(not(arrayWithSize(initialFilterableAttributes.length))));
+        assertThat(
+                resetFilterableAttributes, is(arrayWithSize(initialFilterableAttributes.length)));
+        assertThat(resetFilterableAttributes, is(equalTo(initialFilterableAttributes)));
     }
 
     @Test
@@ -898,9 +956,9 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateDistinctAttributeSettings(null).getTaskUid());
         String resetDistinctAttribute = index.getDistinctAttributeSettings();
 
-        assertNotEquals(updatedDistinctAttribute, resetDistinctAttribute);
-        assertNotEquals(initialDistinctAttribute, updatedDistinctAttribute);
-        assertEquals(initialDistinctAttribute, resetDistinctAttribute);
+        assertThat(resetDistinctAttribute, is(not(equalTo(updatedDistinctAttribute))));
+        assertThat(updatedDistinctAttribute, is(not(equalTo(initialDistinctAttribute))));
+        assertThat(resetDistinctAttribute, is(equalTo(initialDistinctAttribute)));
     }
 
     /** Tests of the pagination setting methods */
@@ -911,8 +969,8 @@ public class SettingsTest extends AbstractIT {
         Settings initialSettings = index.getSettings();
         Pagination initialPagination = index.getPaginationSettings();
 
-        assertEquals(initialSettings.getPagination().getMaxTotalHits(), 1000);
-        assertNotNull(initialPagination.getMaxTotalHits());
+        assertThat(initialSettings.getPagination().getMaxTotalHits(), is(equalTo(1000)));
+        assertThat(initialPagination.getMaxTotalHits(), is(notNullValue()));
     }
 
     @Test
@@ -921,13 +979,13 @@ public class SettingsTest extends AbstractIT {
         Index index = createIndex("testUpdatePaginationSettings");
         Pagination newPagination = new Pagination();
 
-        Integer MaxTotalHitsTypos = 100;
+        int MaxTotalHitsTypos = 100;
 
         newPagination.setMaxTotalHits(MaxTotalHitsTypos);
         index.waitForTask(index.updatePaginationSettings(newPagination).getTaskUid());
         Pagination updatedPagination = index.getPaginationSettings();
 
-        assertEquals(100, updatedPagination.getMaxTotalHits());
+        assertThat(updatedPagination.getMaxTotalHits(), is(equalTo(100)));
     }
 
     @Test
@@ -938,7 +996,7 @@ public class SettingsTest extends AbstractIT {
         Pagination initialPagination = index.getPaginationSettings();
         Pagination newPagination = new Pagination();
 
-        Integer MaxTotalHitsTypos = 100;
+        int MaxTotalHitsTypos = 100;
         newPagination.setMaxTotalHits(MaxTotalHitsTypos);
         index.waitForTask(index.updatePaginationSettings(newPagination).getTaskUid());
         Pagination updatedPagination = index.getPaginationSettings();
@@ -946,9 +1004,9 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.resetPaginationSettings().getTaskUid());
         Pagination paginationAfterReset = index.getPaginationSettings();
 
-        assertEquals(1000, initialPagination.getMaxTotalHits());
-        assertEquals(100, updatedPagination.getMaxTotalHits());
-        assertEquals(1000, paginationAfterReset.getMaxTotalHits());
+        assertThat(initialPagination.getMaxTotalHits(), is(equalTo(1000)));
+        assertThat(updatedPagination.getMaxTotalHits(), is(equalTo(100)));
+        assertThat(paginationAfterReset.getMaxTotalHits(), is(equalTo(1000)));
     }
 
     /** Tests of the faceting setting methods */
@@ -959,8 +1017,8 @@ public class SettingsTest extends AbstractIT {
         Settings initialSettings = index.getSettings();
         Faceting initialFaceting = index.getFacetingSettings();
 
-        assertEquals(initialSettings.getFaceting().getMaxValuesPerFacet(), 100);
-        assertNotNull(initialFaceting.getMaxValuesPerFacet());
+        assertThat(initialSettings.getFaceting().getMaxValuesPerFacet(), is(equalTo(100)));
+        assertThat(initialFaceting.getMaxValuesPerFacet(), is(notNullValue()));
     }
 
     @Test
@@ -969,13 +1027,13 @@ public class SettingsTest extends AbstractIT {
         Index index = createIndex("testUpdateFacetingSettings");
         Faceting newFaceting = new Faceting();
 
-        Integer MaxValuesPerFacetTypos = 200;
+        int MaxValuesPerFacetTypos = 200;
 
         newFaceting.setMaxValuesPerFacet(MaxValuesPerFacetTypos);
         index.waitForTask(index.updateFacetingSettings(newFaceting).getTaskUid());
         Faceting updatedFaceting = index.getFacetingSettings();
 
-        assertEquals(200, updatedFaceting.getMaxValuesPerFacet());
+        assertThat(updatedFaceting.getMaxValuesPerFacet(), is(equalTo(200)));
     }
 
     @Test
@@ -986,7 +1044,7 @@ public class SettingsTest extends AbstractIT {
         Faceting initialFaceting = index.getFacetingSettings();
         Faceting newFaceting = new Faceting();
 
-        Integer MaxValuesPerFacetTypos = 200;
+        int MaxValuesPerFacetTypos = 200;
         newFaceting.setMaxValuesPerFacet(MaxValuesPerFacetTypos);
         index.waitForTask(index.updateFacetingSettings(newFaceting).getTaskUid());
         Faceting updatedFaceting = index.getFacetingSettings();
@@ -994,9 +1052,9 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.resetFacetingSettings().getTaskUid());
         Faceting facetingAfterReset = index.getFacetingSettings();
 
-        assertEquals(100, initialFaceting.getMaxValuesPerFacet());
-        assertEquals(200, updatedFaceting.getMaxValuesPerFacet());
-        assertEquals(100, facetingAfterReset.getMaxValuesPerFacet());
+        assertThat(initialFaceting.getMaxValuesPerFacet(), is(equalTo(100)));
+        assertThat(updatedFaceting.getMaxValuesPerFacet(), is(equalTo(200)));
+        assertThat(facetingAfterReset.getMaxValuesPerFacet(), is(equalTo(100)));
     }
 
     private Index createIndex(String indexUid) throws Exception {

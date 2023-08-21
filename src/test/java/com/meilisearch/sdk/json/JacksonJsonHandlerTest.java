@@ -2,8 +2,11 @@ package com.meilisearch.sdk.json;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.aMapWithSize;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -21,7 +24,7 @@ class JacksonJsonHandlerTest {
 
     @Test
     void serialize() throws Exception {
-        assertEquals("test", classToTest.encode("test"));
+        assertThat(classToTest.encode("test"), is(equalTo("test")));
         when(mapper.writeValueAsString(any(Movie.class)))
                 .thenThrow(new RuntimeException("Oh boy!"));
         assertThrows(RuntimeException.class, () -> classToTest.encode(new Movie()));
@@ -37,7 +40,7 @@ class JacksonJsonHandlerTest {
     @Test
     void deserializeString() throws Exception {
         String content = "{}";
-        assertEquals(content, classToTest.decode(content, String.class));
+        assertThat(classToTest.decode(content, String.class), is(equalTo(content)));
     }
 
     @Test
@@ -48,8 +51,8 @@ class JacksonJsonHandlerTest {
     @Test
     @SuppressWarnings({"RedundantArrayCreation", "ConfusingArgumentToVarargsMethod"})
     void deserializeWithParametersEmpty() throws Exception {
-        assertNotNull(classToTest.decode("{}", Movie.class, (Class<?>[]) null));
-        assertNotNull(classToTest.decode("{}", Movie.class, new Class[0]));
+        assertThat(classToTest.decode("{}", Movie.class, (Class<?>[]) null), is(notNullValue()));
+        assertThat(classToTest.decode("{}", Movie.class, new Class[0]), is(notNullValue()));
     }
 
     @Test

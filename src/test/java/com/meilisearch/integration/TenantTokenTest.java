@@ -1,6 +1,10 @@
 package com.meilisearch.integration;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
@@ -45,7 +49,7 @@ public class TenantTokenTest extends AbstractIT {
 
         Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
 
-        Map<String, Object> rules = new HashMap<String, Object>();
+        Map<String, Object> rules = new HashMap<>();
         rules.put("*", new HashMap<String, Object>());
 
         String jwtToken = privateClient.generateTenantToken(getPrivateKey().getUid(), rules);
@@ -64,7 +68,7 @@ public class TenantTokenTest extends AbstractIT {
 
         Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
 
-        Map<String, Object> rules = new HashMap<String, Object>();
+        Map<String, Object> rules = new HashMap<>();
         rules.put(indexUid, new HashMap<String, Object>());
 
         String jwtToken = privateClient.generateTenantToken(getPrivateKey().getUid(), rules);
@@ -82,9 +86,9 @@ public class TenantTokenTest extends AbstractIT {
 
         Client privateClient = new Client(new Config(getMeilisearchHost(), key.getKey()));
 
-        Map<String, Object> filters = new HashMap<String, Object>();
+        Map<String, Object> filters = new HashMap<>();
         filters.put("filter", "id > 1");
-        Map<String, Object> rules = new HashMap<String, Object>();
+        Map<String, Object> rules = new HashMap<>();
         rules.put("GenerateTokenwithFilter", filters);
 
         String jwtToken = privateClient.generateTenantToken(getPrivateKey().getUid(), rules);
@@ -102,9 +106,9 @@ public class TenantTokenTest extends AbstractIT {
 
         SearchResult searchResult = tokenClient.index(indexUid).search("");
 
-        assertEquals(20, searchResult.getHits().size());
-        assertEquals(20, searchResult.getLimit());
-        assertEquals(30, searchResult.getEstimatedTotalHits());
+        assertThat(searchResult.getHits().size(), is(equalTo(20)));
+        assertThat(searchResult.getLimit(), is(equalTo(20)));
+        assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(30)));
     }
 
     /** Test Create Tenant Token with expiration date */

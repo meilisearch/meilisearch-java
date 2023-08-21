@@ -1,6 +1,9 @@
 package com.meilisearch.integration;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.sdk.Client;
@@ -9,7 +12,10 @@ import com.meilisearch.sdk.TaskError;
 import com.meilisearch.sdk.exceptions.APIError;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
 import com.meilisearch.sdk.exceptions.MeilisearchCommunicationException;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 @Tag("integration")
 public class ExceptionsTest extends AbstractIT {
@@ -43,10 +49,10 @@ public class ExceptionsTest extends AbstractIT {
         try {
             throw new MeilisearchApiException(new APIError(message, code, type, link));
         } catch (MeilisearchApiException e) {
-            assertEquals(message, e.getMessage());
-            assertEquals(code, e.getCode());
-            assertEquals(type, e.getType());
-            assertEquals(link, e.getLink());
+            assertThat(e.getMessage(), is(equalTo(message)));
+            assertThat(e.getCode(), is(equalTo(code)));
+            assertThat(e.getType(), is(equalTo(type)));
+            assertThat(e.getLink(), is(equalTo(link)));
         }
     }
 
@@ -55,7 +61,7 @@ public class ExceptionsTest extends AbstractIT {
     public void testTaskErrorGetters() {
         TaskError error = new TaskError();
         error.setTaskErrorCode("wrong field");
-        assertEquals("wrong field", error.getTaskErrorCode());
+        assertThat(error.getTaskErrorCode(), is(equalTo("wrong field")));
     }
 
     /** Test MeilisearchApiException is thrown on Meilisearch bad request */
@@ -66,7 +72,7 @@ public class ExceptionsTest extends AbstractIT {
         try {
             client.getIndex(indexUid);
         } catch (MeilisearchApiException e) {
-            assertEquals("index_not_found", e.getCode());
+            assertThat(e.getCode(), is(equalTo("index_not_found")));
         }
     }
 }
