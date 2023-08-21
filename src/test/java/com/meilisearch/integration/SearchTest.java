@@ -1,8 +1,14 @@
 package com.meilisearch.integration;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasLength;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
@@ -61,11 +67,11 @@ public class SearchTest extends AbstractIT {
 
         SearchResult searchResult = index.search("batman");
 
-        assertNull(searchResult.getFacetDistribution());
-        assertEquals(1, searchResult.getHits().size());
-        assertEquals(0, searchResult.getOffset());
-        assertEquals(20, searchResult.getLimit());
-        assertEquals(1, searchResult.getEstimatedTotalHits());
+        assertThat(searchResult.getFacetDistribution(), is(nullValue()));
+        assertThat(searchResult.getHits(), hasSize(1));
+        assertThat(searchResult.getOffset(), is(equalTo(0)));
+        assertThat(searchResult.getLimit(), is(equalTo(20)));
+        assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(1)));
     }
 
     /** Test search offset */
@@ -82,8 +88,8 @@ public class SearchTest extends AbstractIT {
         SearchRequest searchRequest = SearchRequest.builder().q("a").offset(20).build();
         SearchResult searchResult = (SearchResult) index.search(searchRequest);
 
-        assertEquals(10, searchResult.getHits().size());
-        assertEquals(30, searchResult.getEstimatedTotalHits());
+        assertThat(searchResult.getHits(), hasSize(10));
+        assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(30)));
     }
 
     /** Test search limit */
@@ -100,8 +106,8 @@ public class SearchTest extends AbstractIT {
         SearchRequest searchRequest = SearchRequest.builder().q("a").limit(2).build();
         SearchResult searchResult = (SearchResult) index.search(searchRequest);
 
-        assertEquals(2, searchResult.getHits().size());
-        assertEquals(30, searchResult.getEstimatedTotalHits());
+        assertThat(searchResult.getHits(), hasSize(2));
+        assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(30)));
     }
 
     /** Test search attributesToRetrieve */
@@ -124,14 +130,14 @@ public class SearchTest extends AbstractIT {
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, resGson.hits.length);
+        assertThat(resGson.hits, is(arrayWithSize(20)));
         assertThat(resGson.hits[0].getId(), instanceOf(String.class));
         assertThat(resGson.hits[0].getTitle(), instanceOf(String.class));
-        assertNull(resGson.hits[0].getPoster());
-        assertNull(resGson.hits[0].getOverview());
-        assertNull(resGson.hits[0].getRelease_date());
-        assertNull(resGson.hits[0].getLanguage());
-        assertNull(resGson.hits[0].getGenres());
+        assertThat(resGson.hits[0].getPoster(), is(nullValue()));
+        assertThat(resGson.hits[0].getOverview(), is(nullValue()));
+        assertThat(resGson.hits[0].getRelease_date(), is(nullValue()));
+        assertThat(resGson.hits[0].getLanguage(), is(nullValue()));
+        assertThat(resGson.hits[0].getGenres(), is(nullValue()));
     }
 
     /** Test search crop */
@@ -155,9 +161,9 @@ public class SearchTest extends AbstractIT {
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, resGson.hits.length);
-        assertEquals(5, resGson.hits[0].getFormatted().getOverview().length());
-        assertEquals("…and…", resGson.hits[0].getFormatted().getOverview());
+        assertThat(resGson.hits, is(arrayWithSize(20)));
+        assertThat(resGson.hits[0].getFormatted().getOverview(), hasLength(5));
+        assertThat(resGson.hits[0].getFormatted().getOverview(), is(equalTo("…and…")));
     }
 
     /** Test search with customized crop marker */
@@ -182,8 +188,8 @@ public class SearchTest extends AbstractIT {
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, resGson.hits.length);
-        assertEquals("(ꈍᴗꈍ)and(ꈍᴗꈍ)", resGson.hits[0].getFormatted().getOverview());
+        assertThat(resGson.hits, is(arrayWithSize(20)));
+        assertThat(resGson.hits[0].getFormatted().getOverview(), is(equalTo("(ꈍᴗꈍ)and(ꈍᴗꈍ)")));
     }
 
     /** Test search highlight */
@@ -206,10 +212,12 @@ public class SearchTest extends AbstractIT {
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, resGson.hits.length);
-        assertEquals(
-                "Birds of Prey (<em>and</em> the Fantabulous Emancipation of One Harley Quinn)",
-                resGson.hits[0].getFormatted().getTitle());
+        assertThat(resGson.hits, is(arrayWithSize(20)));
+        assertThat(
+                resGson.hits[0].getFormatted().getTitle(),
+                is(
+                        equalTo(
+                                "Birds of Prey (<em>and</em> the Fantabulous Emancipation of One Harley Quinn)")));
     }
 
     /** Test search with customized highlight */
@@ -234,10 +242,12 @@ public class SearchTest extends AbstractIT {
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, resGson.hits.length);
-        assertEquals(
-                "Birds of Prey ((⊃｡•́‿•̀｡)⊃ and ⊂(´• ω •`⊂) the Fantabulous Emancipation of One Harley Quinn)",
-                resGson.hits[0].getFormatted().getTitle());
+        assertThat(resGson.hits, is(arrayWithSize(20)));
+        assertThat(
+                resGson.hits[0].getFormatted().getTitle(),
+                is(
+                        equalTo(
+                                "Birds of Prey ((⊃｡•́‿•̀｡)⊃ and ⊂(´• ω •`⊂) the Fantabulous Emancipation of One Harley Quinn)")));
     }
 
     /** Test search with customized highlight */
@@ -256,8 +266,8 @@ public class SearchTest extends AbstractIT {
 
         SearchResult searchResult = (SearchResult) index.search(searchRequest);
 
-        assertEquals(20, searchResult.getHits().size());
-        assertEquals(21, searchResult.getEstimatedTotalHits());
+        assertThat(searchResult.getHits(), hasSize(20));
+        assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(21)));
     }
 
     /** Test search with phrase */
@@ -274,9 +284,11 @@ public class SearchTest extends AbstractIT {
 
         Results resGson = jsonGson.decode(index.rawSearch("coco \"harry\""), Results.class);
 
-        assertEquals(1, resGson.hits.length);
-        assertEquals("671", resGson.hits[0].getId());
-        assertEquals("Harry Potter and the Philosopher's Stone", resGson.hits[0].getTitle());
+        assertThat(resGson.hits, is(arrayWithSize(1)));
+        assertThat(resGson.hits[0].getId(), is(equalTo("671")));
+        assertThat(
+                resGson.hits[0].getTitle(),
+                is(equalTo("Harry Potter and the Philosopher's Stone")));
     }
 
     /** Test search filter */
@@ -304,9 +316,9 @@ public class SearchTest extends AbstractIT {
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(1, resGson.hits.length);
-        assertEquals("155", resGson.hits[0].getId());
-        assertEquals("The Dark Knight", resGson.hits[0].getTitle());
+        assertThat(resGson.hits, is(arrayWithSize(1)));
+        assertThat(resGson.hits[0].getId(), is(equalTo("155")));
+        assertThat(resGson.hits[0].getTitle(), is(equalTo("The Dark Knight")));
     }
 
     /** Test search filter complex */
@@ -334,9 +346,9 @@ public class SearchTest extends AbstractIT {
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(2, resGson.hits.length);
-        assertEquals("155", resGson.hits[0].getId());
-        assertEquals("290859", resGson.hits[1].getId());
+        assertThat(resGson.hits, is(arrayWithSize(2)));
+        assertThat(resGson.hits[0].getId(), is(equalTo("155")));
+        assertThat(resGson.hits[1].getId(), is(equalTo("290859")));
     }
 
     /** Test search facet distribution */
@@ -360,8 +372,8 @@ public class SearchTest extends AbstractIT {
 
         Searchable searchResult = index.search(searchRequest);
 
-        assertEquals(1, searchResult.getHits().size());
-        assertNotNull(searchResult.getFacetDistribution());
+        assertThat(searchResult.getHits(), hasSize(1));
+        assertThat(searchResult.getFacetDistribution(), is(not(nullValue())));
     }
 
     /** Test search sort */
@@ -386,13 +398,17 @@ public class SearchTest extends AbstractIT {
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, resGson.hits.length);
-        assertEquals("495764", resGson.hits[0].getId());
-        assertEquals(
-                "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)",
-                resGson.hits[0].getTitle());
-        assertEquals("671", resGson.hits[1].getId());
-        assertEquals("Harry Potter and the Philosopher's Stone", resGson.hits[1].getTitle());
+        assertThat(resGson.hits, is(arrayWithSize(20)));
+        assertThat(resGson.hits[0].getId(), is(equalTo("495764")));
+        assertThat(
+                resGson.hits[0].getTitle(),
+                is(
+                        equalTo(
+                                "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)")));
+        assertThat(resGson.hits[1].getId(), is(equalTo("671")));
+        assertThat(
+                resGson.hits[1].getTitle(),
+                is(equalTo("Harry Potter and the Philosopher's Stone")));
     }
 
     /** Test search sort */
@@ -417,13 +433,17 @@ public class SearchTest extends AbstractIT {
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, resGson.hits.length);
-        assertEquals("671", resGson.hits[0].getId());
-        assertEquals("Harry Potter and the Philosopher's Stone", resGson.hits[0].getTitle());
-        assertEquals("495764", resGson.hits[1].getId());
-        assertEquals(
-                "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)",
-                resGson.hits[1].getTitle());
+        assertThat(resGson.hits, is(arrayWithSize(20)));
+        assertThat(resGson.hits[0].getId(), is(equalTo("671")));
+        assertThat(
+                resGson.hits[0].getTitle(),
+                is(equalTo("Harry Potter and the Philosopher's Stone")));
+        assertThat(resGson.hits[1].getId(), is(equalTo("495764")));
+        assertThat(
+                resGson.hits[1].getTitle(),
+                is(
+                        equalTo(
+                                "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)")));
     }
 
     /** Test search sort */
@@ -451,11 +471,11 @@ public class SearchTest extends AbstractIT {
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(3, resGson.hits.length);
-        assertEquals("155", resGson.hits[0].getId());
-        assertEquals("The Dark Knight", resGson.hits[0].getTitle());
-        assertEquals("290859", resGson.hits[1].getId());
-        assertEquals("Terminator: Dark Fate", resGson.hits[1].getTitle());
+        assertThat(resGson.hits, is(arrayWithSize(3)));
+        assertThat(resGson.hits[0].getId(), is(equalTo("155")));
+        assertThat(resGson.hits[0].getTitle(), is(equalTo("The Dark Knight")));
+        assertThat(resGson.hits[1].getId(), is(equalTo("290859")));
+        assertThat(resGson.hits[1].getTitle(), is(equalTo("Terminator: Dark Fate")));
     }
 
     /** Test search sort */
@@ -480,11 +500,13 @@ public class SearchTest extends AbstractIT {
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(20, resGson.hits.length);
-        assertEquals("155", resGson.hits[0].getId());
-        assertEquals("The Dark Knight", resGson.hits[0].getTitle());
-        assertEquals("671", resGson.hits[1].getId());
-        assertEquals("Harry Potter and the Philosopher's Stone", resGson.hits[1].getTitle());
+        assertThat(resGson.hits, is(arrayWithSize(20)));
+        assertThat(resGson.hits[0].getId(), is(equalTo("155")));
+        assertThat(resGson.hits[0].getTitle(), is(equalTo("The Dark Knight")));
+        assertThat(resGson.hits[1].getId(), is(equalTo("671")));
+        assertThat(
+                resGson.hits[1].getTitle(),
+                is(equalTo("Harry Potter and the Philosopher's Stone")));
     }
 
     /** Test search matches */
@@ -502,7 +524,7 @@ public class SearchTest extends AbstractIT {
                 SearchRequest.builder().q("and").showMatchesPosition(true).build();
         Searchable searchResult = index.search(searchRequest);
 
-        assertEquals(20, searchResult.getHits().size());
+        assertThat(searchResult.getHits(), hasSize(20));
     }
 
     /** Test search page */
@@ -519,11 +541,11 @@ public class SearchTest extends AbstractIT {
         SearchRequest searchRequest = SearchRequest.builder().q("a").page(1).build();
         SearchResultPaginated searchResult = (SearchResultPaginated) index.search(searchRequest);
 
-        assertEquals(20, searchResult.getHits().size());
-        assertEquals(1, searchResult.getPage());
-        assertEquals(20, searchResult.getHitsPerPage());
-        assertEquals(30, searchResult.getTotalHits());
-        assertEquals(2, searchResult.getTotalPages());
+        assertThat(searchResult.getHits(), hasSize(20));
+        assertThat(searchResult.getPage(), is(equalTo(1)));
+        assertThat(searchResult.getHitsPerPage(), is(equalTo(20)));
+        assertThat(searchResult.getTotalHits(), is(equalTo(30)));
+        assertThat(searchResult.getTotalPages(), is(equalTo(2)));
     }
 
     /** Test search pagination */
@@ -540,11 +562,11 @@ public class SearchTest extends AbstractIT {
         SearchRequest searchRequest = SearchRequest.builder().q("a").page(2).hitsPerPage(2).build();
         SearchResultPaginated searchResult = (SearchResultPaginated) index.search(searchRequest);
 
-        assertEquals(2, searchResult.getHits().size());
-        assertEquals(2, searchResult.getPage());
-        assertEquals(2, searchResult.getHitsPerPage());
-        assertEquals(30, searchResult.getTotalHits());
-        assertEquals(15, searchResult.getTotalPages());
+        assertThat(searchResult.getHits(), hasSize(2));
+        assertThat(searchResult.getPage(), is(equalTo(2)));
+        assertThat(searchResult.getHitsPerPage(), is(equalTo(2)));
+        assertThat(searchResult.getTotalHits(), is(equalTo(30)));
+        assertThat(searchResult.getTotalPages(), is(equalTo(15)));
     }
 
     /** Test place holder search */
@@ -557,9 +579,9 @@ public class SearchTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
-        SearchResult result = (SearchResult) index.search("");
+        SearchResult result = index.search("");
 
-        assertEquals(20, result.getLimit());
+        assertThat(result.getLimit(), is(equalTo(20)));
     }
 
     /** Test place holder search */
@@ -574,6 +596,6 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
         Searchable searchResult = index.search(SearchRequest.builder().q(null).limit(10).build());
 
-        assertEquals(10, searchResult.getHits().size());
+        assertThat(searchResult.getHits(), hasSize(10));
     }
 }

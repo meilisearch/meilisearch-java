@@ -1,6 +1,9 @@
 package com.meilisearch.integration;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.sdk.Index;
@@ -30,7 +33,7 @@ public class InstanceTest extends AbstractIT {
     public void testHealth() throws Exception {
         String health = client.health();
 
-        assertEquals(health, "{\"status\":\"available\"}");
+        assertThat(health, is(equalTo("{\"status\":\"available\"}")));
     }
 
     /** Test Is Healthy */
@@ -38,7 +41,7 @@ public class InstanceTest extends AbstractIT {
     public void testIsHealthy() throws Exception {
         Boolean healthy = client.isHealthy();
 
-        assertTrue(healthy);
+        assertThat(healthy, is(equalTo(true)));
     }
 
     /** Test Get Version */
@@ -46,7 +49,7 @@ public class InstanceTest extends AbstractIT {
     public void testGetVersion() throws Exception {
         String version = client.getVersion();
 
-        assertNotNull(version);
+        assertThat(version, is(notNullValue()));
     }
 
     /** Test Get Stats */
@@ -54,9 +57,9 @@ public class InstanceTest extends AbstractIT {
     public void testGetStats() throws Exception {
         Stats stats = client.getStats();
 
-        assertNotNull(stats);
-        assertNotNull(stats.getDatabaseSize());
-        assertNotNull(stats.getIndexes());
+        assertThat(stats, is(notNullValue()));
+        assertThat(stats.getDatabaseSize(), is(notNullValue()));
+        assertThat(stats.getIndexes(), is(notNullValue()));
     }
 
     /** Test Get Index Stats */
@@ -69,9 +72,9 @@ public class InstanceTest extends AbstractIT {
         client.waitForTask(task.getTaskUid());
         IndexStats stats = index.getStats();
 
-        assertNotNull(stats);
-        assertEquals(0, stats.getNumberOfDocuments());
-        assertFalse(stats.isIndexing());
-        assertNotNull(stats.getFieldDistribution());
+        assertThat(stats, is(notNullValue()));
+        assertThat(stats.getNumberOfDocuments(), is(equalTo(0L)));
+        assertThat(stats.isIndexing(), is(equalTo(false)));
+        assertThat(stats.getFieldDistribution(), is(notNullValue()));
     }
 }

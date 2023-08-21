@@ -1,6 +1,9 @@
 package com.meilisearch.integration;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
@@ -47,8 +50,8 @@ public class SearchNestedTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
         Results searchResultGson = jsonGson.decode(index.rawSearch("An awesome"), Results.class);
 
-        assertEquals(1, searchResultGson.hits.length);
-        assertEquals("5", searchResultGson.hits[0].getId());
+        assertThat(searchResultGson.hits, is(arrayWithSize(1)));
+        assertThat(searchResultGson.hits[0].getId(), is(equalTo("5")));
     }
 
     /** Test search on nested documents with searchable attributes */
@@ -69,8 +72,8 @@ public class SearchNestedTest extends AbstractIT {
 
         Results searchResultGson = jsonGson.decode(index.rawSearch("An awesome"), Results.class);
 
-        assertEquals(1, searchResultGson.hits.length);
-        assertEquals("5", searchResultGson.hits[0].getId());
+        assertThat(searchResultGson.hits, is(arrayWithSize(1)));
+        assertThat(searchResultGson.hits[0].getId(), is(equalTo("5")));
     }
 
     /** Test search on nested documents with sortable attributes */
@@ -94,8 +97,8 @@ public class SearchNestedTest extends AbstractIT {
 
         Results searchResultGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(1, searchResultGson.hits.length);
-        assertEquals("5", searchResultGson.hits[0].getId());
+        assertThat(searchResultGson.hits, is(arrayWithSize(1)));
+        assertThat(searchResultGson.hits[0].getId(), is(equalTo("5")));
     }
 
     /** Test search on nested documents with sortable and searchable attributes */
@@ -119,7 +122,7 @@ public class SearchNestedTest extends AbstractIT {
                         .build();
         Results searchResultGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
-        assertEquals(1, searchResultGson.hits.length);
-        assertEquals("5", searchResultGson.hits[0].getId());
+        assertThat(searchResultGson.hits, is(arrayWithSize(1)));
+        assertThat(searchResultGson.hits[0].getId(), is(equalTo("5")));
     }
 }
