@@ -68,11 +68,10 @@ public class BasicResponseTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void contentClass() {
         String content =
                 "{ \"uid\": 0, \"indexUid\": \"\", \"status\": \"\", \"type\": null, \"details\": null, \"duration\": \"\", \"enqueuedAt\": null, \"startedAt\": null, \"finishedAt\": null}";
-        HttpResponse response = new HttpResponse(null, 0, content);
+        HttpResponse<String> response = new HttpResponse<>(null, 0, content);
         HttpResponse<Task> httpResponse = basicResponse.create(response, Task.class);
 
         assertThat(httpResponse.getHeaders(), is(nullValue()));
