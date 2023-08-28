@@ -19,6 +19,7 @@
   <a href="https://github.com/meilisearch/meilisearch-java/actions"><img src="https://github.com/meilisearch/meilisearch-java/workflows/Tests/badge.svg" alt="Tests"></a>
   <a href="https://github.com/meilisearch/meilisearch-java/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational" alt="License"></a>
   <a href="https://ms-bors.herokuapp.com/repositories/60"><img src="https://bors.tech/images/badge_small.svg" alt="Bors enabled"></a>
+  <a href="https://codecov.io/gh/meilisearch/meilisearch-java"><img src="https://codecov.io/gh/meilisearch/meilisearch-java/branch/main/graph/badge.svg" alt="Code Coverage"></a>
 </p>
 
 <p align="center">⚡ The Meilisearch API client written for Java ☕️</p>
