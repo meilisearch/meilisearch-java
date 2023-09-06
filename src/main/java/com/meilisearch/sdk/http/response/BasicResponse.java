@@ -9,12 +9,12 @@ public class BasicResponse {
         this.jsonHandler = jsonHandler;
     }
 
-    public <T> HttpResponse<T> create(
-            HttpResponse<T> httpResponse, Class<T> targetClass, Class<?>... parameters) {
+    public <T, R> HttpResponse<R> create(
+            HttpResponse<T> httpResponse, Class<R> targetClass, Class<?>... parameters) {
         try {
-            T content = this.jsonHandler.decode(httpResponse.getContent(), targetClass, parameters);
+            R content = this.jsonHandler.decode(httpResponse.getContent(), targetClass, parameters);
 
-            return new HttpResponse<T>(
+            return new HttpResponse<>(
                     httpResponse.getHeaders(),
                     httpResponse.getStatusCode(),
                     httpResponse.getContent() == null ? null : content);
