@@ -296,13 +296,13 @@ field_properties_guide_displayed_1: |-
   client.index("movies").updateDisplayedAttributesSettings(attributes);
 filtering_guide_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("Avengers").filter(new String[] {"release_date > \"795484800\""}).build();
-  client.index("movies").search(searchRequest);
+  client.index("movie_ratings").search(searchRequest);
 filtering_guide_2: |-
   SearchRequest searchRequest = SearchRequest.builder().q("Batman").filter(new String[] {"release_date > 795484800 AND (director = \"Tim Burton\" OR director = \"Christopher Nolan\")"}).build();
-  client.index("movies").search(searchRequest);
+  client.index("movie_ratings").search(searchRequest);
 filtering_guide_3: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("Planet of the Apes").filter(new String[] {"rating >= 3 AND (NOT director = \"Tim Burton\")"}).build();
-  client.index("movies").search(searchRequest);
+  SearchRequest searchRequest = SearchRequest.builder().q("Planet of the Apes").filter(new String[] {"release_date > 1577884550 AND (NOT director = \"Tim Burton\")"}).build();
+  client.index("movie_ratings").search(searchRequest);
 filtering_guide_nested_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("thriller").filter(new String[] {"rating.users >= 90"}).build();
   client.index("movie_ratings").search(searchRequest);
@@ -536,13 +536,8 @@ search_parameter_guide_facet_stats_1: |-
     "rating"
   }).build();
   client.index("movies").search(searchRequest);
-faceted_search_filter_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("thriller").filterArray().build(new String[][] {
-      new String[] {"genres = Horror", "genres = Mystery"},
-      new String[] {"director = \"Jordan Peele\""}}).build();
-  client.index("movies").search(searchRequest);
 faceted_search_update_settings_1:
-  client.index("books").updateFilterableAttributesSettings(new String[]
+  client.index("movie_ratings").updateFilterableAttributesSettings(new String[]
   {
     "genres",
     "director",
@@ -639,7 +634,7 @@ geosearch_guide_sort_usage_2: |-
   client.index("restaurants").search(searchRequest);
 geosearch_guide_filter_usage_3: |-
   SearchRequest searchRequest = SearchRequest.builder().q()("").filter(new String[] {
-      "_geoBoundingBox([45.494181, 9.179175], [45.449484, 9.214024])"
+      "_geoBoundingBox([45.494181, 9.214024], [45.449484, 9.179175])"
     }).build();
   client.index("restaurants").search(searchRequest);
 primary_field_guide_update_document_primary_key: |-
