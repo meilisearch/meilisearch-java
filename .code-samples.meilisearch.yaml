@@ -272,12 +272,22 @@ update_typo_tolerance_1: |-
   client.index("books").updateTypoToleranceSettings(typoTolerance);
 reset_typo_tolerance_1: |-
   client.index("books").resetTypoToleranceSettings();
-get_pagination_settings_1:
+get_pagination_settings_1: |-
+  client.index("books").getPaginationSettings();
 update_pagination_settings_1: |-
+  Pagination newPagination = new Pagination();
+  newPagination.setMaxTotalHits(100);
+  client.index("books").updatePaginationSettings(newPagination);
 reset_pagination_settings_1: |-
+  client.index("books").resetPaginationSettings();
 get_faceting_settings_1: |-
+  client.index("books").getFacetingSettings();
 update_faceting_settings_1: |-
+  Faceting newFaceting = new Faceting();
+  newFaceting.setMaxValuesPerFacet(2);
+  client.index("books").updateFacetingSettings(newFaceting);
 reset_faceting_settings_1: |-
+  client.index("books").resetFacetingSettings();
 get_index_stats_1: |-
   client.index("movies").getStats();
 get_indexes_stats_1: |-
@@ -511,10 +521,15 @@ getting_started_configure_settings: |-
   client.index("meteorites").updateSettings(settings);
 getting_started_communicating_with_a_protected_instance: |-
   Client client = new Client(new Config("http://localhost:7700", "apiKey"));
-
   client.index("movies").search(new SearchRequest(""));
 getting_started_faceting: |-
+  Faceting newFaceting = new Faceting();
+  newFaceting.setMaxValuesPerFacet(2);
+  client.index("movies").updateFacetingSettings(newFaceting);
 getting_started_pagination: |-
+  Pagination newPagination = new Pagination();
+  newPagination.setMaxTotalHits(500);
+  client.index("movies").updatePaginationSettings(newPagination);
 filtering_update_settings_1: |-
   client.index("movies").updateFilterableAttributesSettings(new String[]
   {
