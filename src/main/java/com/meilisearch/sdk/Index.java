@@ -19,12 +19,12 @@ public class Index implements Serializable {
     @Getter protected Pagination pagination;
     @Getter protected Faceting faceting;
     @Getter @ToString.Exclude protected String updatedAt;
-    @Getter @ToString.Exclude protected Config config;
-    @ToString.Exclude protected Documents documents;
-    @ToString.Exclude protected TasksHandler tasksHandler;
-    @ToString.Exclude protected Search search;
-    @ToString.Exclude protected SettingsHandler settingsHandler;
-    @ToString.Exclude protected InstanceHandler instanceHandler;
+     @Getter @ToString.Exclude protected transient Config config;
+    @ToString.Exclude protected transient Documents documents;
+    @ToString.Exclude protected transient TasksHandler tasksHandler;
+    @ToString.Exclude protected transient Search search;
+    @ToString.Exclude protected transient SettingsHandler settingsHandler;
+    @ToString.Exclude protected transient InstanceHandler instanceHandler;
 
     /**
      * Sets the Meilisearch configuration for the index
