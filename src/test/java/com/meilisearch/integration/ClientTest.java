@@ -9,19 +9,17 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
+import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.utils.Movie;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+
+import java.lang.reflect.Modifier;
 
 @Tag("integration")
 public class ClientTest extends AbstractIT {
@@ -304,4 +302,23 @@ public class ClientTest extends AbstractIT {
         assertThat(task.getStatus(), is(equalTo(TaskStatus.ENQUEUED)));
         assertThat(dump.getType(), is(equalTo("dumpCreation")));
     }
+
+    /**
+     * Test the exclusion of transient fields.
+     *
+     * @see <a href="https://github.com/meilisearch/meilisearch-java/issues/655">Issue #655</a>
+     */
+    @Test
+    public void testTransientFieldExclusion() throws MeilisearchException {
+        Index test = client.index("Transient");
+
+        Gson gsonWithTransient = new GsonBuilder()
+            .excludeFieldsWithModifiers(Modifier.STATIC)
+            .create();
+
+        // TODO: Throws StackOverflowError on JDK 1.8, but InaccessibleObjectException on JDK9+
+        Assertions.assertThrows(StackOverflowError.class, () -> gsonWithTransient.toJson(test));
+        Assertions.assertDoesNotThrow(() -> gson.toJson(test));
+    }
+
 }
