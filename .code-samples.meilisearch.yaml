@@ -47,7 +47,7 @@ delete_all_documents_1: |-
   client.index("movies").deleteAllDocuments();
 delete_one_document_1: |-
   client.index("movies").deleteDocument("25684");
-delete_documents_1: |-
+delete_documents_by_batch_1: |-
   client.index("movies").deleteDocuments(Arrays.asList(new String[]
   {
     "23488",
@@ -61,20 +61,12 @@ get_all_tasks_1: |-
   client.getTasks();
 get_task_1: |-
   client.getTask(1);
-get_all_tasks_filtering_1: |-
-  client.index("movies").getTasks();
 delete_tasks_1: |-
   DeleteTasksQuery query = new DeleteTasksQuery().setUids(new int[] {1, 2})
   client.deleteTasks(query);
 cancel_tasks_1: |-
   CancelTasksQuery query = new CancelTasksQuery().setUids(new int[] {1, 2})
   client.cancelTasks(query);
-get_all_tasks_filtering_2: |-
-  TasksQuery query = new TasksQuery()
-        .setStatus(new String[] {"succeeded", "failed"})
-        .setType(new String[] {documentAdditionOrUpdate});
-
-  client.index("movies").getTasks(query);
 get_all_tasks_paginating_1: |-
   TasksQuery query = new TasksQuery()
         .setLimit(2)
@@ -272,12 +264,22 @@ update_typo_tolerance_1: |-
   client.index("books").updateTypoToleranceSettings(typoTolerance);
 reset_typo_tolerance_1: |-
   client.index("books").resetTypoToleranceSettings();
-get_pagination_settings_1:
+get_pagination_settings_1: |-
+  client.index("books").getPaginationSettings();
 update_pagination_settings_1: |-
+  Pagination newPagination = new Pagination();
+  newPagination.setMaxTotalHits(100);
+  client.index("books").updatePaginationSettings(newPagination);
 reset_pagination_settings_1: |-
+  client.index("books").resetPaginationSettings();
 get_faceting_settings_1: |-
+  client.index("books").getFacetingSettings();
 update_faceting_settings_1: |-
+  Faceting newFaceting = new Faceting();
+  newFaceting.setMaxValuesPerFacet(2);
+  client.index("books").updateFacetingSettings(newFaceting);
 reset_faceting_settings_1: |-
+  client.index("books").resetFacetingSettings();
 get_index_stats_1: |-
   client.index("movies").getStats();
 get_indexes_stats_1: |-
@@ -346,9 +348,6 @@ search_parameter_guide_highlight_tag_1: |-
                   .highlightPostTag("</span>")
                   .build();
   client.index("movies").search(searchRequest);
-search_parameter_guide_matches_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("winter feast").matches(true).build();
-  client.index("movies").search(searchRequest);
 search_parameter_guide_hitsperpage_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("").hitsPerPage(15).build();
   SearchResultPaginated searchResult = client.index("movies").search(searchRequest);
@@ -393,12 +392,6 @@ typo_tolerance_guide_4: |-
           };
   typoTolerance.setMinWordSizeForTypos(minWordSizeTypos);
   client.index("movies").updateTypoToleranceSettings(typoTolerance);
-documents_guide_add_movie_1: |-
-  client.index("movies").addDocuments("[{"
-    + "\"movie_id\": 123sq178,"
-    + "\"title\": \"Amelie Poulain\""
-    + "}]"
-  );
 getting_started_add_documents_md: |-
   **Maven**
   Add the following code to the `<dependencies>` section of your project:
@@ -509,12 +502,14 @@ getting_started_configure_settings: |-
   settings.setFilterableAttributes(new String[] {"mass", "_geo"});
   settings.setSortableAttributes(new String[] {"mass", "_geo"});
   client.index("meteorites").updateSettings(settings);
-getting_started_communicating_with_a_protected_instance: |-
-  Client client = new Client(new Config("http://localhost:7700", "apiKey"));
-
-  client.index("movies").search(new SearchRequest(""));
 getting_started_faceting: |-
+  Faceting newFaceting = new Faceting();
+  newFaceting.setMaxValuesPerFacet(2);
+  client.index("movies").updateFacetingSettings(newFaceting);
 getting_started_pagination: |-
+  Pagination newPagination = new Pagination();
+  newPagination.setMaxTotalHits(500);
+  client.index("movies").updatePaginationSettings(newPagination);
 filtering_update_settings_1: |-
   client.index("movies").updateFilterableAttributesSettings(new String[]
   {
@@ -543,9 +538,6 @@ faceted_search_update_settings_1:
     "director",
     "language"
   });
-faceted_search_facets_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("Batman").facets(new String[] {"genres"}).build();
-  client.index("movies").search(searchRequest);
 faceted_search_walkthrough_filter_1: |-
   SearchRequest searchRequest =
     SearchRequest.builder().q("thriller").filterArray(new String[][] {
