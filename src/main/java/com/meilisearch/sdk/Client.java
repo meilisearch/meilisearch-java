@@ -13,6 +13,7 @@ import com.meilisearch.sdk.model.IndexesQuery;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.KeyUpdate;
 import com.meilisearch.sdk.model.KeysQuery;
+import com.meilisearch.sdk.model.MultiSearchResult;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.Stats;
 import com.meilisearch.sdk.model.SwapIndexesParams;
@@ -377,6 +378,12 @@ public class Client {
      */
     public void deleteKey(String key) throws MeilisearchException {
         this.keysHandler.deleteKey(key);
+    }
+
+    public Results<MultiSearchResult> multiSearch(MultiSearchRequest search)
+            throws MeilisearchException {
+        return this.config.httpClient.post(
+                "/multi-search", search, Results.class, MultiSearchResult.class);
     }
 
     public String generateTenantToken(String apiKeyUid, Map<String, Object> searchRules)

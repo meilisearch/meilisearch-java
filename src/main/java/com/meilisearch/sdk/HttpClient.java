@@ -90,10 +90,11 @@ public class HttpClient {
      * @return results of the search
      * @throws MeilisearchException if the response is an error
      */
-    <S, T> T post(String api, S body, Class<T> targetClass) throws MeilisearchException {
+    <S, T> T post(String api, S body, Class<T> targetClass, Class<?>... parameters)
+            throws MeilisearchException {
         HttpRequest requestConfig = request.create(HttpMethod.POST, api, this.headers, body);
         HttpResponse<T> httpRequest = this.client.post(requestConfig);
-        HttpResponse<T> httpResponse = response.create(httpRequest, targetClass);
+        HttpResponse<T> httpResponse = response.create(httpRequest, targetClass, parameters);
 
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
