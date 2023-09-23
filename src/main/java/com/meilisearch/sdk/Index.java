@@ -19,7 +19,7 @@ public class Index implements Serializable {
     @Getter protected Pagination pagination;
     @Getter protected Faceting faceting;
     @Getter @ToString.Exclude protected String updatedAt;
-     @Getter @ToString.Exclude protected transient Config config;
+    @Getter @ToString.Exclude protected transient Config config;
     @ToString.Exclude protected transient Documents documents;
     @ToString.Exclude protected transient TasksHandler tasksHandler;
     @ToString.Exclude protected transient Search search;
