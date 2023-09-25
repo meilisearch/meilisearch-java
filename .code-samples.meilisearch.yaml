@@ -738,3 +738,10 @@ async_guide_filter_by_index_uids_1: |-
 async_guide_canceled_by_1: |-
   TasksQuery query = new TasksQuery().setCanceledBy(new int[] {9, 15});
   client.getTasks(query);
+multi_search_1: |-
+  MultiSearchRequest multiSearchRequest = new MultiSearchRequest();
+  multiIndexSearch.addQuery(new IndexSearchRequest("movies").setQuery("pooh").setLimit(5));
+  multiIndexSearch.addQuery(new IndexSearchRequest("movies").setQuery("nemo").setLimit(5));
+  multiIndexSearch.addQuery(new IndexSearchRequest("movie_ratings").setQuery("us"));
+  
+  client.multiSearch(multiSearchRequest);
