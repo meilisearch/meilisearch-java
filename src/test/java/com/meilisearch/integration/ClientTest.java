@@ -1,5 +1,9 @@
 package com.meilisearch.integration;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.google.gson.*;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
@@ -8,13 +12,8 @@ import com.meilisearch.sdk.exceptions.MeilisearchApiException;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.utils.Movie;
-import org.junit.jupiter.api.*;
-
 import java.lang.reflect.Modifier;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.*;
 
 @Tag("integration")
 public class ClientTest extends AbstractIT {
