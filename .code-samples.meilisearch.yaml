@@ -743,5 +743,5 @@ multi_search_1: |-
   multiIndexSearch.addQuery(new IndexSearchRequest("movies").setQuery("pooh").setLimit(5));
   multiIndexSearch.addQuery(new IndexSearchRequest("movies").setQuery("nemo").setLimit(5));
   multiIndexSearch.addQuery(new IndexSearchRequest("movie_ratings").setQuery("us"));
-  
+
   client.multiSearch(multiSearchRequest);
