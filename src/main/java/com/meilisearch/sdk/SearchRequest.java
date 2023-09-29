@@ -29,6 +29,7 @@ public class SearchRequest {
     private String highlightPostTag;
     private MatchingStrategy matchingStrategy;
     private String[] attributesToHighlight;
+    private String[] attributesToSearchOn;
     private String[] filter;
     private String[][] filterArray;
     private Boolean showMatchesPosition;
@@ -91,6 +92,7 @@ public class SearchRequest {
                         .put("hitsPerPage", this.hitsPerPage)
                         .putOpt("attributesToCrop", this.attributesToCrop)
                         .putOpt("attributesToHighlight", this.attributesToHighlight)
+                        .putOpt("attributesToSearchOn", this.attributesToSearchOn)
                         .putOpt("filter", this.filter)
                         .putOpt("filter", this.filterArray);
 

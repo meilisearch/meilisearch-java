@@ -106,6 +106,19 @@ class SearchRequestTest {
     }
 
     @Test
+    void toStringQueryDefinitionAttributesToSearchOn() {
+        SearchRequest classToTest =
+                SearchRequest.builder()
+                        .q("This is a Test")
+                        .attributesToSearchOn(new String[] {"attribute1", "attribute2"})
+                        .build();
+        String expected =
+                "{\"q\":\"This is a Test\",\"attributesToSearchOn\":[\"attribute1\",\"attribute2\"]}";
+
+        assertThat(classToTest.toString(), is(equalTo(expected)));
+    }
+
+    @Test
     void toStringEveryParameters() {
         SearchRequest classToTest =
                 new SearchRequest("This is a Test")
@@ -113,6 +126,7 @@ class SearchRequestTest {
                         .setLimit(900)
                         .setAttributesToRetrieve(new String[] {"bubble"})
                         .setAttributesToHighlight(new String[] {"highlight"})
+                        .setAttributesToSearchOn(new String[] {"searchOn"})
                         .setAttributesToCrop(new String[] {"crop"})
                         .setCropLength(900)
                         .setFilter(new String[] {"test='test'"})
@@ -126,6 +140,7 @@ class SearchRequestTest {
         assertThat(classToTest.getLimit(), is(equalTo(900)));
         assertThat(classToTest.getAttributesToRetrieve()[0], is(equalTo("bubble")));
         assertThat(classToTest.getAttributesToHighlight()[0], is(equalTo("highlight")));
+        assertThat(classToTest.getAttributesToSearchOn()[0], is(equalTo("searchOn")));
         assertThat(classToTest.getAttributesToCrop()[0], is(equalTo("crop")));
         assertThat(classToTest.getCropMarker(), is(nullValue()));
         assertThat(classToTest.getHighlightPreTag(), is(nullValue()));
@@ -149,6 +164,7 @@ class SearchRequestTest {
                         .offset(200)
                         .attributesToRetrieve(new String[] {"bubble"})
                         .attributesToHighlight(new String[] {"highlight"})
+                        .attributesToSearchOn(new String[] {"searchOn"})
                         .attributesToCrop(new String[] {"crop"})
                         .cropLength(900)
                         .filter(new String[] {"test='test'"})
@@ -163,6 +179,7 @@ class SearchRequestTest {
         assertThat(classToTest.getLimit(), is(equalTo(900)));
         assertThat(classToTest.getAttributesToRetrieve()[0], is(equalTo("bubble")));
         assertThat(classToTest.getAttributesToHighlight()[0], is(equalTo("highlight")));
+        assertThat(classToTest.getAttributesToSearchOn()[0], is(equalTo("searchOn")));
         assertThat(classToTest.getAttributesToCrop()[0], is(equalTo("crop")));
         assertThat(classToTest.getCropMarker(), is(nullValue()));
         assertThat(classToTest.getHighlightPreTag(), is(nullValue()));
@@ -185,6 +202,7 @@ class SearchRequestTest {
                         .setLimit(900)
                         .setAttributesToRetrieve(new String[] {"bubble"})
                         .setAttributesToHighlight(new String[] {"highlight"})
+                        .setAttributesToSearchOn(new String[] {"searchOn"})
                         .setAttributesToCrop(new String[] {"crop"})
                         .setCropLength(900)
                         .setCropMarker("123")
@@ -201,7 +219,7 @@ class SearchRequestTest {
                         .setPage(0)
                         .setHitsPerPage(0);
         String expectedToString =
-                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"matchingStrategy\":\"all\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}";
+                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"attributesToSearchOn\":[\"searchOn\"],\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"matchingStrategy\":\"all\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}";
 
         assertThat(classToTest.getQ(), is(equalTo("This is a Test")));
         assertThat(classToTest.getOffset(), is(equalTo(200)));
@@ -212,6 +230,7 @@ class SearchRequestTest {
         assertThat(classToTest.getHighlightPostTag(), is(equalTo("zyx")));
         assertThat(classToTest.getAttributesToRetrieve()[0], is(equalTo("bubble")));
         assertThat(classToTest.getAttributesToHighlight()[0], is(equalTo("highlight")));
+        assertThat(classToTest.getAttributesToSearchOn()[0], is(equalTo("searchOn")));
         assertThat(classToTest.getAttributesToCrop()[0], is(equalTo("crop")));
         assertThat(classToTest.getFilter(), is(nullValue()));
         assertThat(classToTest.getFilterArray().length, is(equalTo(2)));
@@ -234,6 +253,7 @@ class SearchRequestTest {
                         .offset(200)
                         .attributesToRetrieve(new String[] {"bubble"})
                         .attributesToHighlight(new String[] {"highlight"})
+                        .attributesToSearchOn(new String[] {"searchOn"})
                         .attributesToCrop(new String[] {"crop"})
                         .cropLength(900)
                         .cropMarker("123")
@@ -251,7 +271,7 @@ class SearchRequestTest {
                         .hitsPerPage(0)
                         .build();
         String expectedToString =
-                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"matchingStrategy\":\"all\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}";
+                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"attributesToSearchOn\":[\"searchOn\"],\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"matchingStrategy\":\"all\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}";
 
         assertThat(classToTest.getQ(), is(equalTo("This is a Test")));
         assertThat(classToTest.getOffset(), is(equalTo(200)));
@@ -262,6 +282,7 @@ class SearchRequestTest {
         assertThat(classToTest.getHighlightPostTag(), is(equalTo("zyx")));
         assertThat(classToTest.getAttributesToRetrieve()[0], is(equalTo("bubble")));
         assertThat(classToTest.getAttributesToHighlight()[0], is(equalTo("highlight")));
+        assertThat(classToTest.getAttributesToSearchOn()[0], is(equalTo("searchOn")));
         assertThat(classToTest.getAttributesToCrop()[0], is(equalTo("crop")));
         assertThat(classToTest.getFilter(), is(equalTo(null)));
         assertThat(classToTest.getFilterArray().length, is(equalTo(2)));
@@ -284,6 +305,7 @@ class SearchRequestTest {
                         .offset(200)
                         .attributesToRetrieve(new String[] {"bubble"})
                         .attributesToHighlight(new String[] {"highlight"})
+                        .attributesToSearchOn(new String[] {"searchOn"})
                         .attributesToCrop(new String[] {"crop"})
                         .cropLength(900)
                         .cropMarker("123")
@@ -301,7 +323,7 @@ class SearchRequestTest {
                         .hitsPerPage(0)
                         .build();
         String expectedToString =
-                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}";
+                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"attributesToSearchOn\":[\"searchOn\"],\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}";
 
         assertThat(classToTest.getQ(), is(equalTo("This is a Test")));
         assertThat(classToTest.getOffset(), is(equalTo(200)));
@@ -312,6 +334,7 @@ class SearchRequestTest {
         assertThat(classToTest.getHighlightPostTag(), is(equalTo("zyx")));
         assertThat(classToTest.getAttributesToRetrieve()[0], is(equalTo("bubble")));
         assertThat(classToTest.getAttributesToHighlight()[0], is(equalTo("highlight")));
+        assertThat(classToTest.getAttributesToSearchOn()[0], is(equalTo("searchOn")));
         assertThat(classToTest.getAttributesToCrop()[0], is(equalTo("crop")));
         assertThat(classToTest.getFilter(), is(equalTo(null)));
         assertThat(classToTest.getFilterArray().length, is(equalTo(2)));
