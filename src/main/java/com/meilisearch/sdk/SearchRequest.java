@@ -62,6 +62,36 @@ public class SearchRequest {
         return setQ(q);
     }
 
+    public SearchRequest setAttributesToRetrieve(String... attributesToRetrieve) {
+        this.attributesToRetrieve = attributesToRetrieve;
+        return this;
+    }
+
+    public SearchRequest setAttributesToCrop(String... attributesToCrop) {
+        this.attributesToCrop = attributesToCrop;
+        return this;
+    }
+
+    public SearchRequest setAttributesToHighlight(String... attributesToHighlight) {
+        this.attributesToHighlight = attributesToHighlight;
+        return this;
+    }
+
+    public SearchRequest setFilter(String... filter) {
+        this.filter = filter;
+        return this;
+    }
+
+    public SearchRequest setFacets(String... facets) {
+        this.facets = facets;
+        return this;
+    }
+
+    public SearchRequest setSort(String... sort) {
+        this.sort = sort;
+        return this;
+    }
+
     /**
      * Method that returns the JSON String of the SearchRequest
      *
@@ -95,5 +125,39 @@ public class SearchRequest {
                         .putOpt("filter", this.filterArray);
 
         return jsonObject.toString();
+    }
+
+    /** The SearchRequestBuilder class is used to override default lombok setter builder methods */
+    public static class SearchRequestBuilder {
+
+        public SearchRequestBuilder attributesToRetrieve(String... attributesToRetrieve) {
+            this.attributesToRetrieve = attributesToRetrieve;
+            return this;
+        }
+
+        public SearchRequestBuilder attributesToCrop(String... attributesToCrop) {
+            this.attributesToCrop = attributesToCrop;
+            return this;
+        }
+
+        public SearchRequestBuilder attributesToHighlight(String... attributesToHighlight) {
+            this.attributesToHighlight = attributesToHighlight;
+            return this;
+        }
+
+        public SearchRequestBuilder filter(String... filter) {
+            this.filter = filter;
+            return this;
+        }
+
+        public SearchRequestBuilder facets(String... facets) {
+            this.facets = facets;
+            return this;
+        }
+
+        public SearchRequestBuilder sort(String... sort) {
+            this.sort = sort;
+            return this;
+        }
     }
 }

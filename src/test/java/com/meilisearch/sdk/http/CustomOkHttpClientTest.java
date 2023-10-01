@@ -246,7 +246,7 @@ class CustomOkHttpClientTest {
 
     @Test
     void customConfigWithCustomAnalyticsHasBoth() throws Exception {
-        Config newConfig = new Config("host", "key", new String[] {"MyApp v1.44"});
+        Config newConfig = new Config("host", "key", "MyApp v1.44");
 
         assertThat(
                 newConfig.getHeaders().get("User-Agent").toString(),

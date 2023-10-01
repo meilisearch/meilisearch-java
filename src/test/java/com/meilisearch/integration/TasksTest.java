@@ -149,8 +149,8 @@ public class TasksTest extends AbstractIT {
                 new TasksQuery()
                         .setLimit(limit)
                         .setFrom(from)
-                        .setStatuses(new String[] {"enqueued", "succeeded"})
-                        .setTypes(new String[] {"indexDeletion"});
+                        .setStatuses("enqueued", "succeeded")
+                        .setTypes("indexDeletion");
         TasksResults result = client.getTasks(query);
 
         assertThat(result.getLimit(), is(equalTo(limit)));
@@ -162,8 +162,7 @@ public class TasksTest extends AbstractIT {
     /** Test Cancel Task */
     @Test
     public void testClientCancelTask() throws Exception {
-        CancelTasksQuery query =
-                new CancelTasksQuery().setStatuses(new String[] {"enqueued", "succeeded"});
+        CancelTasksQuery query = new CancelTasksQuery().setStatuses("enqueued", "succeeded");
 
         TaskInfo task = client.cancelTasks(query);
 
@@ -181,9 +180,9 @@ public class TasksTest extends AbstractIT {
         CancelTasksQuery query =
                 new CancelTasksQuery()
                         .setUids(new int[] {0, 1, 2})
-                        .setStatuses(new String[] {"enqueued", "succeeded"})
-                        .setTypes(new String[] {"indexDeletion"})
-                        .setIndexUids(new String[] {"index"})
+                        .setStatuses("enqueued", "succeeded")
+                        .setTypes("indexDeletion")
+                        .setIndexUids("index")
                         .setBeforeEnqueuedAt(date);
 
         TaskInfo task = client.cancelTasks(query);
@@ -198,8 +197,7 @@ public class TasksTest extends AbstractIT {
     /** Test Delete Task */
     @Test
     public void testClientDeleteTask() throws Exception {
-        DeleteTasksQuery query =
-                new DeleteTasksQuery().setStatuses(new String[] {"enqueued", "succeeded"});
+        DeleteTasksQuery query = new DeleteTasksQuery().setStatuses("enqueued", "succeeded");
 
         TaskInfo task = client.deleteTasks(query);
 
@@ -217,9 +215,9 @@ public class TasksTest extends AbstractIT {
         DeleteTasksQuery query =
                 new DeleteTasksQuery()
                         .setUids(new int[] {0, 1, 2})
-                        .setStatuses(new String[] {"enqueued", "succeeded"})
-                        .setTypes(new String[] {"indexDeletion"})
-                        .setIndexUids(new String[] {"index"})
+                        .setStatuses("enqueued", "succeeded")
+                        .setTypes("indexDeletion")
+                        .setIndexUids("index")
                         .setBeforeEnqueuedAt(date);
 
         TaskInfo task = client.deleteTasks(query);

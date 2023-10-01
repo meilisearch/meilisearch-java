@@ -29,5 +29,33 @@ public class TaskDetails {
     protected int deletedTasks;
     protected SwapIndexesParams[] swaps;
 
+    public void setRankingRules(String... rankingRules) {
+        this.rankingRules = rankingRules;
+    }
+
+    public void setSearchableAttributes(String... searchableAttributes) {
+        this.searchableAttributes = searchableAttributes;
+    }
+
+    public void setDisplayedAttributes(String... displayedAttributes) {
+        this.displayedAttributes = displayedAttributes;
+    }
+
+    public void setFilterableAttributes(String... filterableAttributes) {
+        this.filterableAttributes = filterableAttributes;
+    }
+
+    public void setSortableAttributes(String... sortableAttributes) {
+        this.sortableAttributes = sortableAttributes;
+    }
+
+    public void setStopWords(String... stopWords) {
+        this.stopWords = stopWords;
+    }
+
+    public void setSwaps(SwapIndexesParams... swaps) {
+        this.swaps = swaps;
+    }
+
     public TaskDetails() {}
 }

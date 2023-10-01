@@ -26,6 +26,26 @@ public class CancelTasksQuery {
 
     public CancelTasksQuery() {}
 
+    public CancelTasksQuery setUids(int... uids) {
+        this.uids = uids;
+        return this;
+    }
+
+    public CancelTasksQuery setStatuses(String... statuses) {
+        this.statuses = statuses;
+        return this;
+    }
+
+    public CancelTasksQuery setTypes(String... types) {
+        this.types = types;
+        return this;
+    }
+
+    public CancelTasksQuery setIndexUids(String... indexUids) {
+        this.indexUids = indexUids;
+        return this;
+    }
+
     public String toQuery() {
         URLBuilder urlb =
                 new URLBuilder()

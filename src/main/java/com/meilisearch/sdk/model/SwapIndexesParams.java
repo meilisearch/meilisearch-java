@@ -11,5 +11,10 @@ import lombok.experimental.Accessors;
 public class SwapIndexesParams {
     protected String[] indexes;
 
+    public SwapIndexesParams setIndexes(String... indexes) {
+        this.indexes = indexes;
+        return this;
+    }
+
     public SwapIndexesParams() {}
 }

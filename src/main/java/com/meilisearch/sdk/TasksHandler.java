@@ -172,9 +172,9 @@ public class TasksHandler {
             newIndexUid[param.getIndexUids().length] = indexUid;
             param.setIndexUids(newIndexUid);
         } else if (param != null) {
-            param.setIndexUids(new String[] {indexUid});
+            param.setIndexUids(indexUid);
         } else {
-            param = new TasksQuery().setIndexUids(new String[] {indexUid});
+            param = new TasksQuery().setIndexUids(indexUid);
         }
         return param;
     }

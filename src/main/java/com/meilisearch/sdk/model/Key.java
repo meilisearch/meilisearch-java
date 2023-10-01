@@ -27,13 +27,19 @@ public class Key {
 
     protected String key = null;
 
-    @Setter
     @Accessors(chain = true)
     protected String[] actions = null;
 
-    @Setter
+    public void setActions(final String... actions) {
+        this.actions = actions;
+    }
+
     @Accessors(chain = true)
     protected String[] indexes = null;
+
+    public void setIndexes(final String... indexes) {
+        this.indexes = indexes;
+    }
 
     @Setter
     @Accessors(chain = true)

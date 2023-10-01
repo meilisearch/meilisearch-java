@@ -149,8 +149,8 @@ public class KeysTest extends AbstractIT {
     @Test
     public void testClientCreateDefaultKey() throws Exception {
         Key keyInfo = new Key();
-        keyInfo.setIndexes(new String[] {"*"});
-        keyInfo.setActions(new String[] {"*"});
+        keyInfo.setIndexes("*");
+        keyInfo.setActions("*");
         keyInfo.setExpiresAt(null);
 
         Key key = client.createKey(keyInfo);
@@ -169,8 +169,8 @@ public class KeysTest extends AbstractIT {
     @Test
     public void testClientCreateDefaultKeyWithJacksonJsonHandler() throws Exception {
         Key keyInfo = new Key();
-        keyInfo.setIndexes(new String[] {"*"});
-        keyInfo.setActions(new String[] {"*"});
+        keyInfo.setIndexes("*");
+        keyInfo.setActions("*");
         keyInfo.setExpiresAt(null);
 
         Key key = clientJackson.createKey(keyInfo);
@@ -190,8 +190,8 @@ public class KeysTest extends AbstractIT {
     public void testClientCreateKeyWithDescription() throws Exception {
         Key keyInfo = new Key();
         keyInfo.setDescription("testClientCreateKey");
-        keyInfo.setIndexes(new String[] {"*"});
-        keyInfo.setActions(new String[] {"*"});
+        keyInfo.setIndexes("*");
+        keyInfo.setActions("*");
         keyInfo.setExpiresAt(null);
 
         Key key = client.createKey(keyInfo);
@@ -213,8 +213,8 @@ public class KeysTest extends AbstractIT {
         Date dateParsed = format.parse("2042-01-30");
 
         Key keyInfo = new Key();
-        keyInfo.setIndexes(new String[] {"*"});
-        keyInfo.setActions(new String[] {"*"});
+        keyInfo.setIndexes("*");
+        keyInfo.setActions("*");
         keyInfo.setExpiresAt(dateParsed);
 
         Key key = client.createKey(keyInfo);
@@ -233,8 +233,8 @@ public class KeysTest extends AbstractIT {
     @Test
     public void testClientCreateKeyWithWilcardedAction() throws Exception {
         Key keyInfo = new Key();
-        keyInfo.setIndexes(new String[] {"*"});
-        keyInfo.setActions(new String[] {"documents.*"});
+        keyInfo.setIndexes("*");
+        keyInfo.setActions("documents.*");
         keyInfo.setExpiresAt(null);
 
         Key key = client.createKey(keyInfo);
@@ -257,8 +257,8 @@ public class KeysTest extends AbstractIT {
         Key keyInfo = new Key();
         keyInfo.setName("Key");
         keyInfo.setDescription("Description Key To Update - test");
-        keyInfo.setIndexes(new String[] {"*"});
-        keyInfo.setActions(new String[] {"search"});
+        keyInfo.setIndexes("*");
+        keyInfo.setActions("search");
         keyInfo.setExpiresAt(dateParsed);
 
         KeyUpdate keyChanges = new KeyUpdate();
@@ -291,8 +291,8 @@ public class KeysTest extends AbstractIT {
         Key keyInfo = new Key();
         keyInfo.setName("Key");
         keyInfo.setDescription("Description Key To Update - test");
-        keyInfo.setIndexes(new String[] {"*"});
-        keyInfo.setActions(new String[] {"search"});
+        keyInfo.setIndexes("*");
+        keyInfo.setActions("search");
         keyInfo.setExpiresAt(dateParsed);
 
         KeyUpdate keyChanges = new KeyUpdate();
@@ -320,8 +320,8 @@ public class KeysTest extends AbstractIT {
     @Test
     public void testClientDeleteKey() throws Exception {
         Key keyInfo = new Key();
-        keyInfo.setIndexes(new String[] {"*"});
-        keyInfo.setActions(new String[] {"*"});
+        keyInfo.setIndexes("*");
+        keyInfo.setActions("*");
         keyInfo.setExpiresAt(null);
 
         Key createKey = client.createKey(keyInfo);
@@ -334,8 +334,8 @@ public class KeysTest extends AbstractIT {
     @Test
     public void testClientDeleteKeyWithUid() throws Exception {
         Key keyInfo = new Key();
-        keyInfo.setIndexes(new String[] {"*"});
-        keyInfo.setActions(new String[] {"*"});
+        keyInfo.setIndexes("*");
+        keyInfo.setActions("*");
         keyInfo.setExpiresAt(null);
 
         Key createKey = client.createKey(keyInfo);

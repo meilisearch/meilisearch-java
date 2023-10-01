@@ -236,9 +236,7 @@ public class ClientTest extends AbstractIT {
         indexA.waitForTask(taskAddDocumentIndexA.getTaskUid());
 
         SwapIndexesParams[] params =
-                new SwapIndexesParams[] {
-                    new SwapIndexesParams().setIndexes(new String[] {indexUidA, indexUidB})
-                };
+                new SwapIndexesParams[] {new SwapIndexesParams().setIndexes(indexUidA, indexUidB)};
         TaskInfo task = client.swapIndexes(params);
         client.waitForTask(task.getTaskUid());
 

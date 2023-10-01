@@ -62,16 +62,14 @@ public class SettingsTest extends AbstractIT {
         Index index = createIndex("updateSettingsRankingRules");
         Settings settings = index.getSettings();
         settings.setRankingRules(
-                new String[] {
-                    "typo",
-                    "words",
-                    "sort",
-                    "proximity",
-                    "attribute",
-                    "exactness",
-                    "release_date:desc",
-                    "rank:desc"
-                });
+                "typo",
+                "words",
+                "sort",
+                "proximity",
+                "attribute",
+                "exactness",
+                "release_date:desc",
+                "rank:desc");
         index.waitForTask(index.updateSettings(settings).getTaskUid());
         Settings newSettings = index.getSettings();
         assertThat(newSettings.getRankingRules(), is(arrayWithSize(8)));
@@ -100,7 +98,7 @@ public class SettingsTest extends AbstractIT {
     public void testUpdateSettingsSort() throws Exception {
         Index index = createIndex("updateSettingsSort");
         Settings settings = index.getSettings();
-        settings.setSortableAttributes(new String[] {"title", "year"});
+        settings.setSortableAttributes("title", "year");
 
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
@@ -116,8 +114,8 @@ public class SettingsTest extends AbstractIT {
         Settings settings = index.getSettings();
 
         TypoTolerance typoTolerance = new TypoTolerance();
-        typoTolerance.setDisableOnWords(new String[] {"and"});
-        typoTolerance.setDisableOnAttributes(new String[] {"title"});
+        typoTolerance.setDisableOnWords("and");
+        typoTolerance.setDisableOnAttributes("title");
         settings.setTypoTolerance(typoTolerance);
 
         index.waitForTask(index.updateSettings(settings).getTaskUid());
@@ -134,23 +132,20 @@ public class SettingsTest extends AbstractIT {
     public void testUpdateMultipleSettingsInARow() throws Exception {
         Index index = createIndex("updateMultipleSettingsInARow");
         Settings settingsDisplayedAttr = new Settings();
-        settingsDisplayedAttr.setDisplayedAttributes(
-                new String[] {"title", "overview", "genres", "release_date"});
+        settingsDisplayedAttr.setDisplayedAttributes("title", "overview", "genres", "release_date");
         index.waitForTask(index.updateSettings(settingsDisplayedAttr).getTaskUid());
         Settings newSettingsDisplayedAttr = index.getSettings();
 
         Settings settingsRankingRules = new Settings();
         settingsRankingRules.setRankingRules(
-                new String[] {
-                    "typo",
-                    "words",
-                    "sort",
-                    "proximity",
-                    "attribute",
-                    "exactness",
-                    "release_date:desc",
-                    "rank:desc"
-                });
+                "typo",
+                "words",
+                "sort",
+                "proximity",
+                "attribute",
+                "exactness",
+                "release_date:desc",
+                "rank:desc");
         index.waitForTask(index.updateSettings(settingsRankingRules).getTaskUid());
         Settings newSettingsRankingRules = index.getSettings();
 
@@ -699,8 +694,8 @@ public class SettingsTest extends AbstractIT {
         Index index = createIndex("testUpdateTypoTolerance");
         TypoTolerance newTypoTolerance = new TypoTolerance();
         newTypoTolerance.setEnabled(true);
-        newTypoTolerance.setDisableOnWords(new String[] {"and"});
-        newTypoTolerance.setDisableOnAttributes(new String[] {"title"});
+        newTypoTolerance.setDisableOnWords("and");
+        newTypoTolerance.setDisableOnAttributes("title");
 
         HashMap<String, Integer> minWordSizeTypos =
                 new HashMap<String, Integer>() {
@@ -731,8 +726,8 @@ public class SettingsTest extends AbstractIT {
     public void testPartialUpdateTypoTolerance() throws Exception {
         Index index = createIndex("testUpdateTypoTolerance");
         TypoTolerance newTypoTolerance = new TypoTolerance();
-        newTypoTolerance.setDisableOnWords(new String[] {"the"});
-        newTypoTolerance.setDisableOnAttributes(new String[] {"title"});
+        newTypoTolerance.setDisableOnWords("the");
+        newTypoTolerance.setDisableOnAttributes("title");
 
         index.waitForTask(index.updateTypoToleranceSettings(newTypoTolerance).getTaskUid());
         TypoTolerance updatedTypoTolerance = index.getTypoToleranceSettings();
@@ -758,8 +753,8 @@ public class SettingsTest extends AbstractIT {
         TypoTolerance initialTypoTolerance = index.getTypoToleranceSettings();
         TypoTolerance newTypoTolerance = new TypoTolerance();
         newTypoTolerance.setEnabled(true);
-        newTypoTolerance.setDisableOnWords(new String[] {"and"});
-        newTypoTolerance.setDisableOnAttributes(new String[] {"title"});
+        newTypoTolerance.setDisableOnWords("and");
+        newTypoTolerance.setDisableOnAttributes("title");
         HashMap<String, Integer> minWordSizeTypos =
                 new HashMap<String, Integer>() {
                     {

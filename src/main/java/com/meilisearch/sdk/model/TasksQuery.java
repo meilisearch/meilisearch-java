@@ -31,6 +31,26 @@ public class TasksQuery {
 
     public TasksQuery() {}
 
+    public TasksQuery setStatuses(String... statuses) {
+        this.statuses = statuses;
+        return this;
+    }
+
+    public TasksQuery setTypes(String... types) {
+        this.types = types;
+        return this;
+    }
+
+    public TasksQuery setIndexUids(String... indexUids) {
+        this.indexUids = indexUids;
+        return this;
+    }
+
+    public TasksQuery setCanceledBy(int... canceledBy) {
+        this.canceledBy = canceledBy;
+        return this;
+    }
+
     public String toQuery() {
         URLBuilder urlb =
                 new URLBuilder()

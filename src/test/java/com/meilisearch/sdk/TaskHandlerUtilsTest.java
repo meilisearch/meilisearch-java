@@ -23,7 +23,7 @@ class TaskHandlerUtilsTest {
     void addIndexUidToQueryWithParam() {
         final Config config = new Config("http://localhost:7700", "masterKey");
         TasksHandler classToTest = new TasksHandler(config);
-        TasksQuery param = new TasksQuery().setIndexUids(new String[] {});
+        TasksQuery param = new TasksQuery().setIndexUids();
         TasksQuery query = classToTest.addIndexUidToQuery("indexName", param);
 
         assertThat(query.toQuery(), is(equalTo("?indexUids=indexName")));
@@ -33,7 +33,7 @@ class TaskHandlerUtilsTest {
     void addIndexUidToQueryWithOneIndexUid() {
         final Config config = new Config("http://localhost:7700", "masterKey");
         TasksHandler classToTest = new TasksHandler(config);
-        TasksQuery param = new TasksQuery().setIndexUids(new String[] {"indexName2"});
+        TasksQuery param = new TasksQuery().setIndexUids("indexName2");
         TasksQuery query = classToTest.addIndexUidToQuery("indexName1", param);
 
         assertThat(query.toQuery(), is(equalTo("?indexUids=indexName2,indexName1")));
@@ -45,10 +45,7 @@ class TaskHandlerUtilsTest {
         TasksHandler classToTest = new TasksHandler(config);
         TasksQuery param =
                 new TasksQuery()
-                        .setIndexUids(
-                                new String[] {
-                                    "indexName2", "indexName3", "indexName4", "indexName5"
-                                });
+                        .setIndexUids("indexName2", "indexName3", "indexName4", "indexName5");
         TasksQuery query = classToTest.addIndexUidToQuery("indexName1", param);
 
         assertThat(

@@ -19,5 +19,13 @@ public class TypoTolerance {
     protected String[] disableOnWords;
     protected String[] disableOnAttributes;
 
+    public void setDisableOnWords(String... disableOnWords) {
+        this.disableOnWords = disableOnWords;
+    }
+
+    public void setDisableOnAttributes(String... disableOnAttributes) {
+        this.disableOnAttributes = disableOnAttributes;
+    }
+
     public TypoTolerance() {}
 }
