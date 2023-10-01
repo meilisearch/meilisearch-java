@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * Meilisearch search common response data structure
  *
- * <p>https://www.meilisearch.com/docs/references/search
+ * <p><a href="https://www.meilisearch.com/docs/references/search">https://www.meilisearch.com/docs/references/search</a>
  */
 public interface Searchable {
     ArrayList<HashMap<String, Object>> getHits();

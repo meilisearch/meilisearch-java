@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Class covering the Meilisearch Document API
  *
- * <p>https://www.meilisearch.com/docs/reference/api/documents
+ * <p><a href="https://www.meilisearch.com/docs/reference/api/documents">https://www.meilisearch.com/docs/reference/api/documents</a>
  */
 class Documents {
     private final HttpClient httpClient;

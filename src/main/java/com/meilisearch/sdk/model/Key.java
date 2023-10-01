@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 /**
  * Data structure of Meilisearch response for a Key
  *
- * <p>https://www.meilisearch.com/docs/reference/api/keys
+ * <p><a href="https://www.meilisearch.com/docs/reference/api/keys">https://www.meilisearch.com/docs/reference/api/keys</a>
  */
 @Getter
 @JsonInclude(Include.NON_NULL)

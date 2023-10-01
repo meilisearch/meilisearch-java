@@ -8,7 +8,7 @@ import lombok.ToString;
 /**
  * Meilisearch search response data structure for limited pagination
  *
- * <p>https://www.meilisearch.com/docs/learn/front_end/pagination#numbered-page-selectors
+ * <p><a href="https://www.meilisearch.com/docs/learn/front_end/pagination#numbered-page-selectors">https://www.meilisearch.com/docs/learn/front_end/pagination#numbered-page-selectors</a>
  */
 @Getter
 @ToString

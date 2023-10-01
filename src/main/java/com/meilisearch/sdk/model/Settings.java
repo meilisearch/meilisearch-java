@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 /**
  * Meilisearch settings data structure
  *
- * <p>Refer https://www.meilisearch.com/docs/reference/api/settings
+ * <p>Refer <a href="https://www.meilisearch.com/docs/reference/api/settings">https://www.meilisearch.com/docs/reference/api/settings</a>
  */
 @Getter
 @Setter

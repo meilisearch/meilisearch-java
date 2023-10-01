@@ -10,7 +10,7 @@ import java.util.HashMap;
 /**
  * Class covering the Meilisearch Index API.
  *
- * <p>https://www.meilisearch.com/docs/reference/api/indexes
+ * <p><a href="https://www.meilisearch.com/docs/reference/api/indexes">https://www.meilisearch.com/docs/reference/api/indexes</a>
  */
 class IndexesHandler {
     private final HttpClient httpClient;

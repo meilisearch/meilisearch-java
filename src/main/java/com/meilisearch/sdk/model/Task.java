@@ -7,7 +7,7 @@ import lombok.Getter;
 /**
  * Data structure of Meilisearch response for a Task
  *
- * <p>https://www.meilisearch.com/docs/reference/api/tasks
+ * <p><a href="https://www.meilisearch.com/docs/reference/api/tasks">https://www.meilisearch.com/docs/reference/api/tasks</a>
  */
 @Getter
 public class Task {

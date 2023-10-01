@@ -7,7 +7,7 @@ import com.meilisearch.sdk.model.Stats;
 /**
  * Class providing information on the Meilisearch instance
  *
- * <p>https://www.meilisearch.com/docs/reference/api/keys
+ * <p><a href="https://www.meilisearch.com/docs/reference/api/keys">https://www.meilisearch.com/docs/reference/api/keys</a>
  */
 public class InstanceHandler {
     private final HttpClient httpClient;
