@@ -57,7 +57,7 @@ public class Config {
      * @param apiKey API key to pass to the header of requests sent to Meilisearch
      * @param clientAgents List of customized agents to be passed to User-Agent header.
      */
-    public Config(String hostUrl, String apiKey, String[] clientAgents) {
+    public Config(String hostUrl, String apiKey, String... clientAgents) {
         this(hostUrl, apiKey, new GsonJsonHandler(), clientAgents);
     }
 
@@ -69,7 +69,7 @@ public class Config {
      * @param jsonHandler JsonHandler to parse or write JSON
      * @param clientAgents List of customized agents to be passed to User-Agent header.
      */
-    public Config(String hostUrl, String apiKey, JsonHandler jsonHandler, String[] clientAgents) {
+    public Config(String hostUrl, String apiKey, JsonHandler jsonHandler, String... clientAgents) {
         this.hostUrl = hostUrl;
         this.apiKey = apiKey;
         this.headers = configHeaders(clientAgents);
@@ -86,7 +86,7 @@ public class Config {
         return "Bearer " + apiKey;
     }
 
-    private Map<String, String> configHeaders(String[] clientAgents) {
+    private Map<String, String> configHeaders(String... clientAgents) {
         List<String> list = new ArrayList<String>(Arrays.asList(clientAgents));
         list.add(0, Version.getQualifiedVersion());
 

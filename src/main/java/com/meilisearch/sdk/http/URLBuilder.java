@@ -45,7 +45,7 @@ public class URLBuilder {
         return this;
     }
 
-    public URLBuilder addParameter(String parameter, String[] value) {
+    public URLBuilder addParameter(String parameter, String... value) {
         if (value != null && value.length > 0) {
             addSeparator();
             params.append(parameter);

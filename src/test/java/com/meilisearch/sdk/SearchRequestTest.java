@@ -67,7 +67,7 @@ class SearchRequestTest {
                 new SearchRequest("This is a Test")
                         .setOffset(200)
                         .setLimit(900)
-                        .setAttributesToRetrieve(new String[] {"bubble"});
+                        .setAttributesToRetrieve("bubble");
         String expected =
                 "{\"q\":\"This is a Test\",\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"limit\":900}";
 
@@ -79,7 +79,7 @@ class SearchRequestTest {
         SearchRequest classToTest =
                 SearchRequest.builder()
                         .q("This is a Test")
-                        .attributesToRetrieve(new String[] {"bubble"})
+                        .attributesToRetrieve("bubble")
                         .limit(900)
                         .offset(200)
                         .build();
@@ -111,13 +111,13 @@ class SearchRequestTest {
                 new SearchRequest("This is a Test")
                         .setOffset(200)
                         .setLimit(900)
-                        .setAttributesToRetrieve(new String[] {"bubble"})
-                        .setAttributesToHighlight(new String[] {"highlight"})
-                        .setAttributesToCrop(new String[] {"crop"})
+                        .setAttributesToRetrieve("bubble")
+                        .setAttributesToHighlight("highlight")
+                        .setAttributesToCrop("crop")
                         .setCropLength(900)
-                        .setFilter(new String[] {"test='test'"})
-                        .setFacets(new String[] {"facets"})
-                        .setSort(new String[] {"sort"})
+                        .setFilter("test='test'")
+                        .setFacets("facets")
+                        .setSort("sort")
                         .setPage(10)
                         .setHitsPerPage(2);
 
@@ -147,13 +147,13 @@ class SearchRequestTest {
                         .q("This is a Test")
                         .limit(900)
                         .offset(200)
-                        .attributesToRetrieve(new String[] {"bubble"})
-                        .attributesToHighlight(new String[] {"highlight"})
-                        .attributesToCrop(new String[] {"crop"})
+                        .attributesToRetrieve("bubble")
+                        .attributesToHighlight("highlight")
+                        .attributesToCrop("crop")
                         .cropLength(900)
-                        .filter(new String[] {"test='test'"})
-                        .facets(new String[] {"facets"})
-                        .sort(new String[] {"sort"})
+                        .filter("test='test'")
+                        .facets("facets")
+                        .sort("sort")
                         .page(10)
                         .hitsPerPage(2)
                         .build();
@@ -183,9 +183,9 @@ class SearchRequestTest {
                 new SearchRequest("This is a Test")
                         .setOffset(200)
                         .setLimit(900)
-                        .setAttributesToRetrieve(new String[] {"bubble"})
-                        .setAttributesToHighlight(new String[] {"highlight"})
-                        .setAttributesToCrop(new String[] {"crop"})
+                        .setAttributesToRetrieve("bubble")
+                        .setAttributesToHighlight("highlight")
+                        .setAttributesToCrop("crop")
                         .setCropLength(900)
                         .setCropMarker("123")
                         .setHighlightPreTag("abc")
@@ -196,8 +196,8 @@ class SearchRequestTest {
                                     new String[] {"test='test'"}, new String[] {"test1='test1'"}
                                 })
                         .setShowMatchesPosition(true)
-                        .setFacets(new String[] {"facets"})
-                        .setSort(new String[] {"sort"})
+                        .setFacets("facets")
+                        .setSort("sort")
                         .setPage(0)
                         .setHitsPerPage(0);
         String expectedToString =
@@ -232,9 +232,9 @@ class SearchRequestTest {
                         .q("This is a Test")
                         .limit(900)
                         .offset(200)
-                        .attributesToRetrieve(new String[] {"bubble"})
-                        .attributesToHighlight(new String[] {"highlight"})
-                        .attributesToCrop(new String[] {"crop"})
+                        .attributesToRetrieve("bubble")
+                        .attributesToHighlight("highlight")
+                        .attributesToCrop("crop")
                         .cropLength(900)
                         .cropMarker("123")
                         .highlightPreTag("abc")
@@ -245,8 +245,8 @@ class SearchRequestTest {
                                     new String[] {"test='test'"}, new String[] {"test1='test1'"}
                                 })
                         .showMatchesPosition(true)
-                        .facets(new String[] {"facets"})
-                        .sort(new String[] {"sort"})
+                        .facets("facets")
+                        .sort("sort")
                         .page(0)
                         .hitsPerPage(0)
                         .build();
@@ -282,9 +282,9 @@ class SearchRequestTest {
                         .q("This is a Test")
                         .limit(900)
                         .offset(200)
-                        .attributesToRetrieve(new String[] {"bubble"})
-                        .attributesToHighlight(new String[] {"highlight"})
-                        .attributesToCrop(new String[] {"crop"})
+                        .attributesToRetrieve("bubble")
+                        .attributesToHighlight("highlight")
+                        .attributesToCrop("crop")
                         .cropLength(900)
                         .cropMarker("123")
                         .highlightPreTag("abc")
@@ -295,8 +295,8 @@ class SearchRequestTest {
                                     new String[] {"test='test'"}, new String[] {"test1='test1'"}
                                 })
                         .showMatchesPosition(true)
-                        .facets(new String[] {"facets"})
-                        .sort(new String[] {"sort"})
+                        .facets("facets")
+                        .sort("sort")
                         .page(0)
                         .hitsPerPage(0)
                         .build();

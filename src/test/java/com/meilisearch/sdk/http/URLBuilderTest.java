@@ -62,14 +62,14 @@ public class URLBuilderTest {
 
     @Test
     void addParameterStringStringArray() {
-        classToTest.addParameter("parameter1", new String[] {"1", "a"});
+        classToTest.addParameter("parameter1", "1", "a");
         assertThat(classToTest.getParams().toString(), is(equalTo("?parameter1=1,a")));
 
-        classToTest.addParameter("parameter2", new String[] {"2", "b"});
+        classToTest.addParameter("parameter2", "2", "b");
         assertThat(
                 classToTest.getParams().toString(), is(equalTo("?parameter1=1,a&parameter2=2,b")));
 
-        classToTest.addParameter("parameter3", new String[] {"3", "c"});
+        classToTest.addParameter("parameter3", "3", "c");
         assertThat(
                 classToTest.getParams().toString(),
                 is(equalTo("?parameter1=1,a&parameter2=2,b&parameter3=3,c")));

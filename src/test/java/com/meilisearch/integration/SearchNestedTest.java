@@ -83,17 +83,14 @@ public class SearchNestedTest extends AbstractIT {
         Index index = client.index(indexUid);
         GsonJsonHandler jsonGson = new GsonJsonHandler();
         Settings newSettings = new Settings();
-        newSettings.setSortableAttributes(new String[] {"info.reviewNb"});
+        newSettings.setSortableAttributes("info.reviewNb");
 
         TestData<Movie> testData = this.getTestData(NESTED_MOVIES, Movie.class);
         TaskInfo task = index.addDocuments(testData.getRaw());
         index.waitForTask(task.getTaskUid());
         index.waitForTask(index.updateSettings(newSettings).getTaskUid());
         SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("An Awesome")
-                        .sort(new String[] {"info.reviewNb:desc"})
-                        .build();
+                SearchRequest.builder().q("An Awesome").sort("info.reviewNb:desc").build();
 
         Results searchResultGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -108,18 +105,15 @@ public class SearchNestedTest extends AbstractIT {
         Index index = client.index(indexUid);
         GsonJsonHandler jsonGson = new GsonJsonHandler();
         Settings newSettings = new Settings();
-        newSettings.setSearchableAttributes(new String[] {"title", "info.comment"});
-        newSettings.setSortableAttributes(new String[] {"info.reviewNb"});
+        newSettings.setSearchableAttributes("title", "info.comment");
+        newSettings.setSortableAttributes("info.reviewNb");
 
         TestData<Movie> testData = this.getTestData(NESTED_MOVIES, Movie.class);
         TaskInfo task = index.addDocuments(testData.getRaw());
         index.waitForTask(task.getTaskUid());
         index.waitForTask(index.updateSettings(newSettings).getTaskUid());
         SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("An Awesome")
-                        .sort(new String[] {"info.reviewNb:desc"})
-                        .build();
+                SearchRequest.builder().q("An Awesome").sort("info.reviewNb:desc").build();
         Results searchResultGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
         assertThat(searchResultGson.hits, is(arrayWithSize(1)));

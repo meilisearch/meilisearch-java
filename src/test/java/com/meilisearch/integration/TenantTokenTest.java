@@ -101,7 +101,7 @@ public class TenantTokenTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
 
         Settings settings = index.getSettings();
-        settings.setFilterableAttributes(new String[] {"id"});
+        settings.setFilterableAttributes("id");
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchResult searchResult = tokenClient.index(indexUid).search("");

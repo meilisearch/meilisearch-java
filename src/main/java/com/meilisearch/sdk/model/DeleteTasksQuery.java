@@ -29,6 +29,31 @@ public class DeleteTasksQuery {
 
     public DeleteTasksQuery() {}
 
+    public DeleteTasksQuery setUids(int... uids) {
+        this.uids = uids;
+        return this;
+    }
+
+    public DeleteTasksQuery setStatuses(String... statuses) {
+        this.statuses = statuses;
+        return this;
+    }
+
+    public DeleteTasksQuery setTypes(String... types) {
+        this.types = types;
+        return this;
+    }
+
+    public DeleteTasksQuery setIndexUids(String... indexUids) {
+        this.indexUids = indexUids;
+        return this;
+    }
+
+    public DeleteTasksQuery setCanceledBy(int... canceledBy) {
+        this.canceledBy = canceledBy;
+        return this;
+    }
+
     public String toQuery() {
         URLBuilder urlb =
                 new URLBuilder()
