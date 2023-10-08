@@ -151,7 +151,8 @@ public class TasksHandler {
             status = task.getStatus();
             try {
                 Thread.sleep(intervalInMs);
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 throw new MeilisearchTimeoutException();
             }
             elapsedTime = new Date().getTime() - startTime;
