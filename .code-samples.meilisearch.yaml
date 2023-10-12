@@ -364,7 +364,7 @@ search_parameter_guide_matching_strategy_2: |-
   SearchRequest searchRequest = SearchRequest.builder().q("big fat liar").matchingStrategy(MatchingStrategy.ALL).build();
   client.index("movies").search(searchRequest);
 search_parameter_guide_attributes_to_search_on_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("videogame").attributesToSearchOn(new String[] {"overview"});
+  SearchRequest searchRequest = SearchRequest.builder().q("adventure").attributesToSearchOn(new String[] {"overview"});
   client.index("movies").searchRequest(searchRequest);
 synonyms_guide_1: |-
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
