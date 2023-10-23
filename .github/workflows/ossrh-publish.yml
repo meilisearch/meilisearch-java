@@ -30,15 +30,15 @@ jobs:
         run: |
           echo "${{secrets.SIGNING_SECRET_KEY_RING_FILE}}" > ~/.gradle/secring.gpg.b64
           base64 -d ~/.gradle/secring.gpg.b64 > ~/.gradle/secring.gpg
-      - name: Publish
-        run: ./gradlew publishToSonatype -Psigning.keyId=${{secrets.SIGNING_KEY_ID}} -Psigning.password=${{secrets.SIGNING_PASSWORD}} -Psigning.secretKeyRingFile=$(echo ~/.gradle/secring.gpg)
+      - name: Publish, close and release Nexus Repository
+        run: ./gradlew publishToSonatype closeAndReleaseStagingRepository -Psigning.keyId=${{secrets.SIGNING_KEY_ID}} -Psigning.password=${{secrets.SIGNING_PASSWORD}} -Psigning.secretKeyRingFile=$(echo ~/.gradle/secring.gpg)
         env:
           OSSRH_USERNAME: ${{secrets.OSSRH_USERNAME}}
           OSSRH_PASSWORD: ${{secrets.OSSRH_PASSWORD}}
           SONATYPE_STAGING_PROFILE_ID: ${{secrets.SONATYPE_STAGING_PROFILE_ID}}
-      - name: Close and release Nexus Repository
-        run: ./gradlew closeAndReleaseStagingRepository --debug
-        env:
-          OSSRH_USERNAME: ${{secrets.OSSRH_USERNAME}}
-          OSSRH_PASSWORD: ${{secrets.OSSRH_PASSWORD}}
-          SONATYPE_STAGING_PROFILE_ID: ${{secrets.SONATYPE_STAGING_PROFILE_ID}}
+      # - name: Close and release Nexus Repository
+      #   run: ./gradlew closeAndReleaseStagingRepository --debug
+      #   env:
+      #     OSSRH_USERNAME: ${{secrets.OSSRH_USERNAME}}
+      #     OSSRH_PASSWORD: ${{secrets.OSSRH_PASSWORD}}
+      #     SONATYPE_STAGING_PROFILE_ID: ${{secrets.SONATYPE_STAGING_PROFILE_ID}}
