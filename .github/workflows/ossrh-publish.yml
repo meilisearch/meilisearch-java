@@ -35,8 +35,10 @@ jobs:
         env:
           OSSRH_USERNAME: ${{secrets.OSSRH_USERNAME}}
           OSSRH_PASSWORD: ${{secrets.OSSRH_PASSWORD}}
+          SONATYPE_STAGING_PROFILE_ID: ${{secrets.SONATYPE_STAGING_PROFILE_ID}}
       - name: Close and release Nexus Repository
         run: ./gradlew closeAndReleaseStagingRepository --debug
         env:
           OSSRH_USERNAME: ${{secrets.OSSRH_USERNAME}}
           OSSRH_PASSWORD: ${{secrets.OSSRH_PASSWORD}}
+          SONATYPE_STAGING_PROFILE_ID: ${{secrets.SONATYPE_STAGING_PROFILE_ID}}
