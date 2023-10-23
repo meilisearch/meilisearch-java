@@ -140,6 +140,51 @@ public class SearchTest extends AbstractIT {
         assertThat(resGson.hits[0].getGenres(), is(nullValue()));
     }
 
+    @Test
+    public void testAttributeToSearchOnSuccess() throws Exception {
+        String indexUid = "SearchOnAttributesSuccess";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SearchRequest searchRequest =
+                SearchRequest.builder()
+                        .q("videogame")
+                        .attributesToSearchOn(new String[] {"overview"})
+                        .build();
+
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+
+        assertThat(resGson.hits, is(arrayWithSize(1)));
+        assertThat(resGson.hits[0].getOverview(), instanceOf(String.class));
+    }
+
+    @Test
+    public void testAttributeToSearchOnNoResult() throws Exception {
+        String indexUid = "SearchOnAttributesNoResult";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SearchRequest searchRequest =
+                SearchRequest.builder()
+                        .q("videogame")
+                        .attributesToSearchOn(new String[] {"title"})
+                        .build();
+
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+
+        assertThat(resGson.hits, is(arrayWithSize(0)));
+    }
+
     /** Test search crop */
     @Test
     public void testSearchCrop() throws Exception {
