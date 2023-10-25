@@ -51,7 +51,7 @@ configurations {
 dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
 	implementation 'com.google.code.gson:gson:2.10.1'
-	implementation 'org.json:json:20230618'
+	implementation 'org.json:json:20231013'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
 	api 'com.squareup.okhttp3:okhttp:[4.10.0,5.0.0)'
 
@@ -69,10 +69,10 @@ dependencies {
 	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.2'
 
 	// Lombok
-	compileOnly 'org.projectlombok:lombok:1.18.28'
-	annotationProcessor 'org.projectlombok:lombok:1.18.28'
-	testCompileOnly 'org.projectlombok:lombok:1.18.28'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+	compileOnly 'org.projectlombok:lombok:1.18.30'
+	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+	testCompileOnly 'org.projectlombok:lombok:1.18.30'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 
 	// Jwt
 	implementation 'com.auth0:java-jwt:4.4.0'
