@@ -12,7 +12,7 @@ plugins {
 	id 'maven-publish'
 	id 'signing'
 	id 'jacoco'
-	id 'io.codearte.nexus-staging' version '0.30.0'
+	id 'io.github.gradle-nexus.publish-plugin' version "1.3.0"
 	id "com.diffplug.spotless" version "6.13.0"
 }
 
@@ -170,6 +170,20 @@ publishing {
 	}
 }
 
+nexusPublishing {
+	packageGroup = "com.meilisearch"
+
+	repositories {
+		sonatype {
+			nexusUrl.set(uri("https://oss.sonatype.org/service/local/"))
+
+			username = System.getenv('OSSRH_USERNAME')
+			password = System.getenv('OSSRH_PASSWORD')
+			stagingProfileId = System.getenv('SONATYPE_STAGING_PROFILE_ID')
+		}
+	}
+}
+
 signing {
 	sign publishing.publications.mavenJava
 }
@@ -180,12 +194,6 @@ javadoc {
 	}
 }
 
-nexusStaging {
-	packageGroup = "com.meilisearch"
-	serverUrl = "https://oss.sonatype.org/service/local/"
-	username System.getenv('OSSRH_USERNAME')
-	password System.getenv('OSSRH_PASSWORD')
-}
 spotless {
 
 	java {
