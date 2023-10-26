@@ -3,6 +3,11 @@ package com.meilisearch.sdk.model;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Enum for Task Status
+ *
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks#status">API specification</a>
+ */
 public enum TaskStatus {
     @SerializedName("enqueued")
     ENQUEUED("enqueued"),

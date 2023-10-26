@@ -9,7 +9,8 @@ import lombok.experimental.Accessors;
 /**
  * Data structure of a query parameter for tasks route
  *
- * <p>https://www.meilisearch.com/docs/reference/api/tasks#query-parameters
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks#query-parameters-2">API
+ *     specification</a>
  */
 @Setter
 @Getter

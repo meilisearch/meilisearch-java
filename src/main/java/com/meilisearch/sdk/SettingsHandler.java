@@ -10,9 +10,10 @@ import com.meilisearch.sdk.model.TypoTolerance;
 import java.util.Map;
 
 /**
- * Class covering the Meilisearch Settings API {@link Settings}
+ * Class covering the Meilisearch Settings API
  *
- * <p>https://www.meilisearch.com/docs/reference/api/settings
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/settings">API specification</a>
+ * @see Settings
  */
 public class SettingsHandler {
     private final HttpClient httpClient;
