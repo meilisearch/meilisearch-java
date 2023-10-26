@@ -10,7 +10,7 @@ import com.meilisearch.sdk.model.Results;
 /**
  * Class covering the Meilisearch Key API
  *
- * <p>https://www.meilisearch.com/docs/reference/api/keys
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/keys">API specification</a>
  */
 public class KeysHandler {
     private final HttpClient httpClient;

@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 /**
  * Data structure for updating a Key
  *
- * <p>https://www.meilisearch.com/docs/reference/api/keys
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/keys">API specification</a>
  */
 @Getter
 public class KeyUpdate {

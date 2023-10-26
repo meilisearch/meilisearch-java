@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Class covering the Meilisearch Task API
  *
- * <p>https://www.meilisearch.com/docs/reference/api/tasks
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks">API specification</a>
  */
 public class TasksHandler {
     private final HttpClient httpClient;
