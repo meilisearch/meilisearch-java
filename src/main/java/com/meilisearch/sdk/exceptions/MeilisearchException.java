@@ -6,7 +6,7 @@ import lombok.Setter;
 /** Generic class for Meilisearch Exception handling */
 @Getter
 @Setter
-public class MeilisearchException extends Exception {
+public class MeilisearchException extends RuntimeException {
 
     String error;
     String name;
