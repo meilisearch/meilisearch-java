@@ -217,6 +217,18 @@ public class Client {
     }
 
     /**
+     * Triggers the creation of a Meilisearch snapshot.
+     *
+     * @return Meilisearch API response as TaskInfo
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/snapshots">API
+     *     specification</a>
+     */
+    public TaskInfo createSnapshot() throws  MeilisearchException {
+        return config.httpClient.post("/snapshots", "", TaskInfo.class);
+    }
+
+    /**
      * Gets the status and availability of a Meilisearch instance
      *
      * @return String containing the status of the Meilisearch instance from Meilisearch API

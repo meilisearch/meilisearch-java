@@ -297,6 +297,17 @@ public class ClientTest extends AbstractIT {
         assertThat(dump.getType(), is(equalTo("dumpCreation")));
     }
 
+    /** Test call to create snapshot */
+    @Test
+    public void testCreateSnapshot() throws Exception {
+        TaskInfo task = client.createSnapshot();
+        client.waitForTask(task.getTaskUid());
+        Task snapshot = client.getTask(task.getTaskUid());
+
+        assertThat(task.getStatus(), is(equalTo(TaskStatus.ENQUEUED)));
+        assertThat(snapshot.getType(), is(equalTo("dumpCreation")));
+    }
+
     /**
      * Test the exclusion of transient fields.
      *
