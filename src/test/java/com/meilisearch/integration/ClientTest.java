@@ -305,7 +305,7 @@ public class ClientTest extends AbstractIT {
         Task snapshot = client.getTask(task.getTaskUid());
 
         assertThat(task.getStatus(), is(equalTo(TaskStatus.ENQUEUED)));
-        assertThat(snapshot.getType(), is(equalTo("dumpCreation")));
+        assertThat(snapshot.getType(), is(equalTo("snapshotCreation")));
     }
 
     /**
