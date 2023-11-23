@@ -221,10 +221,9 @@ public class Client {
      *
      * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
-     * @see <a href="https://www.meilisearch.com/docs/reference/api/snapshots">API
-     *     specification</a>
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/snapshots">API specification</a>
      */
-    public TaskInfo createSnapshot() throws  MeilisearchException {
+    public TaskInfo createSnapshot() throws MeilisearchException {
         return config.httpClient.post("/snapshots", "", TaskInfo.class);
     }
 
