@@ -48,8 +48,7 @@ class GsonJsonHandlerTest {
 
         assertThat(content, matchesPattern("\\{[^}]*}"));
 
-        Map<String, String> values = Arrays.stream(content.substring(1, content.length() - 1).split(","))
-            .map(String::trim)
+        Map<String, String> values = Arrays.stream(content.substring(1, content.length() - 1).split(",")).map(String::trim)
             .map(s -> Stream.of(s.split(":")).map(String::trim).map(i -> i.substring(1, i.length() - 1)).collect(Collectors.toList()))
             .collect(Collectors.toMap(i -> i.get(0), i -> i.get(1)));
 
@@ -121,8 +120,6 @@ class GsonJsonHandlerTest {
         assertThat(result, containsString("\"expiresAt\":null"));
     }
 
-    // TODO - multiple keys?
-
     @Test
     void deserialize() {
         assertDoesNotThrow(() -> classToTest.decode("{}", Movie.class));
@@ -150,10 +147,8 @@ class GsonJsonHandlerTest {
 
     @Test
     void deserializeMap() throws Exception {
-        String mapString =
-            "{\"commitSha\":\"b46889b5f0f2f8b91438a08a358ba8f05fc09fc1\",\"commitDate\":\"2019-11-15T09:51:54.278247+00:00\",\"pkgVersion\":\"0.1.1\"}";
-        HashMap<String, String> decode =
-            classToTest.decode(mapString, HashMap.class, String.class, String.class);
+        String mapString = "{\"commitSha\":\"b46889b5f0f2f8b91438a08a358ba8f05fc09fc1\",\"commitDate\":\"2019-11-15T09:51:54.278247+00:00\",\"pkgVersion\":\"0.1.1\"}";
+        HashMap<String, String> decode = classToTest.decode(mapString, HashMap.class, String.class, String.class);
 
         assertThat(decode, notNullValue());
         assertThat(decode, aMapWithSize(3));
@@ -213,18 +208,9 @@ class GsonJsonHandlerTest {
     @Test
     void decodeKeyWithAllFieldsSet() {
         String timestamp = "2023-11-23T21:29:16.123Z";
-        String input =
-            "{\n"
-                + "  \"key\":\"foo\",\n"
-                + "  \"uid\":\"foo123\",\n"
-                + "  \"name\":\"Foo\",\n"
-                + "  \"description\":\"Foo bar\",\n"
-                + "  \"actions\":[\"*\"],\n"
-                + "  \"indexes\":[\"*\"],\n"
-                + "  \"expiresAt\":null,\n"
-                + "  \"createdAt\":\"" + timestamp + "\",\n"
-                + "  \"updatedAt\":\"" + timestamp + "\"\n"
-                + "}\n";
+        String input = "{\"key\":\"foo\",\"uid\":\"foo123\",\"name\":\"Foo\",\"description\":\"Foo bar\","
+            + "\"actions\":[\"*\"],\"indexes\":[\"*\"],\"expiresAt\":null,\"createdAt\":\"" + timestamp + "\","
+            + "\"updatedAt\":\"" + timestamp + "\"}";
 
         Key key = classToTest.decode(input, Key.class);
 
