@@ -13,14 +13,13 @@ import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.Key;
 
 public class GsonJsonHandler implements JsonHandler {
-    private Gson gson;
+
+    private final Gson gson;
 
     public GsonJsonHandler() {
-        this.gson = new Gson();
-    }
-
-    public GsonJsonHandler(Gson gson) {
-        this.gson = gson;
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Key.class, new GsonKeyTypeAdapter());
+        this.gson = builder.create();
     }
 
     @Override
@@ -28,22 +27,7 @@ public class GsonJsonHandler implements JsonHandler {
         if (o != null && o.getClass() == String.class) {
             return (String) o;
         }
-        // TODO: review later
-        // This is a workaround to encode the Key class properly
-        if (o != null && o.getClass() == Key.class) {
-            GsonBuilder builder = new GsonBuilder();
-            this.gson = builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
 
-            Key key = (Key) o;
-            if (key.getExpiresAt() == null) {
-                JsonElement jsonElement = gson.toJsonTree(o);
-                JsonObject jsonObject = jsonElement.getAsJsonObject();
-                jsonObject.add("expiresAt", JsonNull.INSTANCE);
-                o = jsonObject;
-                this.gson =
-                        builder.serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
-            }
-        }
         try {
             return gson.toJson(o);
         } catch (Exception e) {
@@ -54,7 +38,7 @@ public class GsonJsonHandler implements JsonHandler {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters)
-            throws MeilisearchException {
+        throws MeilisearchException {
         if (o == null) {
             throw new JsonDecodingException("Response to deserialize is null");
         }
