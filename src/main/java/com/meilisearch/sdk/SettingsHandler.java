@@ -515,6 +515,44 @@ public class SettingsHandler {
                 settingsPath(uid).addSubroute("faceting").getURL(), TaskInfo.class);
     }
 
+    /**
+     * Gets the dictionary settings of the index
+     *
+     * @param uid Index identifier
+     * @return an array of strings that contains the dictionary
+     * @throws MeilisearchException if an error occurs
+     */
+    String[] getDictionarySettings(String uid) throws MeilisearchException {
+        return httpClient.get(settingsPath(uid).addSubroute("dictionary").getURL(), String[].class);
+    }
+
+    /**
+     * Updates the dictionary settings of the index
+     *
+     * @param uid Index identifier
+     * @param dictionary an array of strings that contains the new dictionary settings
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo updateDictionarySettings(String uid, String[] dictionary) throws MeilisearchException {
+        return httpClient.put(
+                settingsPath(uid).addSubroute("dictionary").getURL(),
+                dictionary == null ? httpClient.jsonHandler.encode(dictionary) : dictionary,
+                TaskInfo.class);
+    }
+
+    /**
+     * Resets the dictionary settings of the index
+     *
+     * @param uid Index identifier
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo resetDictionarySettings(String uid) throws MeilisearchException {
+        return httpClient.delete(
+                settingsPath(uid).addSubroute("dictionary").getURL(), TaskInfo.class);
+    }
+
     /** Creates an URLBuilder for the constant route settings */
     private URLBuilder settingsPath(String uid) {
         return new URLBuilder("/indexes").addSubroute(uid).addSubroute("/settings");

@@ -833,6 +833,43 @@ public class Index implements Serializable {
     }
 
     /**
+     * Gets the dictionary settings of the index
+     *
+     * @return dictionary of a given uid as String
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/settings#get-dictionary">API
+     *     specification</a>
+     */
+    public String[] getDictionarySettings() throws MeilisearchException {
+        return this.settingsHandler.getDictionarySettings(this.uid);
+    }
+
+    /**
+     * Updates the dictionary settings of the index
+     *
+     * @param dictionary An array of strings that contains the dictionary.
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/settings#update-dictionary">API
+     *     specification</a>
+     */
+    public TaskInfo updateDictionarySettings(String[] dictionary) throws MeilisearchException {
+        return this.settingsHandler.updateDictionarySettings(this.uid, dictionary);
+    }
+
+    /**
+     * Resets the dictionary settings of the index
+     *
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/settings#reset-dictionary">API
+     *     specification</a>
+     */
+    public TaskInfo resetDictionarySettings() throws MeilisearchException {
+        return this.settingsHandler.resetDictionarySettings(this.uid);
+    }
+
+    /**
      * Gets extended information and metrics about indexes and the Meilisearch database
      *
      * @return Meilisearch API response
