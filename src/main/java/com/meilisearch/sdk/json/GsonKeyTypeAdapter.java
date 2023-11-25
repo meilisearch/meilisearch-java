@@ -15,31 +15,42 @@ import java.util.List;
 
 public class GsonKeyTypeAdapter extends TypeAdapter<Key> {
 
+    private static final String KEY_NAME = "name";
+    private static final String KEY_DESCRIPTION = "description";
+    private static final String KEY_UID = "uid";
+    private static final String KEY_KEY = "key";
+    private static final String KEY_ACTIONS = "actions";
+    private static final String KEY_INDEXES = "indexes";
+    private static final String KEY_EXPIRES_AT = "expiresAt";
+    private static final String KEY_CREATED_AT = "createdAt";
+    private static final String KEY_UPDATED_AT = "updatedAt";
     private static final DateFormat DATE_FORMAT =
         new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     @Override
     public void write(JsonWriter writer, Key key) throws IOException {
         boolean serializeNulls = writer.getSerializeNulls();
-
-        writer.beginObject();
         writer.setSerializeNulls(true);
-        writeOptionalString(writer, "name", key.getName());
-        writeOptionalString(writer, "description", key.getDescription());
-        writeOptionalString(writer, "uid", key.getUid());
-        writeOptionalString(writer, "key", key.getKey());
-        writeStringArray(writer, "actions", key.getActions());
-        writeStringArray(writer, "indexes", key.getIndexes());
-        if (key.getExpiresAt() == null) {
-            writeNull(writer, "expiresAt");
-        } else {
-            writeDate(writer, "expiresAt", key.getExpiresAt());
-        }
-        writeDate(writer, "createdAt", key.getCreatedAt());
-        writeDate(writer, "updatedAt", key.getUpdatedAt());
-        writer.endObject();
 
-        writer.setSerializeNulls(serializeNulls);
+        try {
+            writeStartObject(writer);
+            writeString(writer, KEY_NAME, key.getName());
+            writeString(writer, KEY_DESCRIPTION, key.getDescription());
+            writeString(writer, KEY_UID, key.getUid());
+            writeString(writer, KEY_KEY, key.getKey());
+            writeStringArray(writer, KEY_ACTIONS, key.getActions());
+            writeStringArray(writer, KEY_INDEXES, key.getIndexes());
+            if (key.getExpiresAt() != null) {
+                writeDate(writer, KEY_EXPIRES_AT, key.getExpiresAt());
+            } else {
+                writeNull(writer, KEY_EXPIRES_AT);
+            }
+            writeDate(writer, KEY_CREATED_AT, key.getCreatedAt());
+            writeDate(writer, KEY_UPDATED_AT, key.getUpdatedAt());
+            writeEndObject(writer);
+        } finally {
+            writer.setSerializeNulls(serializeNulls);
+        }
     }
 
     @Override
@@ -49,106 +60,129 @@ public class GsonKeyTypeAdapter extends TypeAdapter<Key> {
         }
 
         Key key = new Key();
-        reader.beginObject();
+        readStartObject(reader);
         while (reader.peek() != JsonToken.END_OBJECT) {
-            String name = reader.nextName();
-            switch (name) {
-                case "name":
+            switch (reader.nextName()) {
+                case KEY_NAME:
                     key.setName(readString(reader));
                     break;
-                case "description":
+                case KEY_DESCRIPTION:
                     key.setDescription(readString(reader));
                     break;
-                case "uid":
+                case KEY_UID:
                     key.setUid(readString(reader));
                     break;
-                case "key":
+                case KEY_KEY:
                     key.setKey(readString(reader));
                     break;
-                case "actions":
+                case KEY_ACTIONS:
                     key.setActions(readStringArray(reader));
                     break;
-                case "indexes":
+                case KEY_INDEXES:
                     key.setIndexes(readStringArray(reader));
                     break;
-                case "expiresAt":
+                case KEY_EXPIRES_AT:
                     key.setExpiresAt(readDate(reader));
                     break;
-                case "createdAt":
+                case KEY_CREATED_AT:
                     key.setCreatedAt(readDate(reader));
                     break;
-                case "updatedAt":
+                case KEY_UPDATED_AT:
                     key.setUpdatedAt(readDate(reader));
                     break;
                 default:
-                    discardNext(reader);
+                    readAndDiscard(reader);
                     break;
             }
         }
-
-        reader.endObject();
+        readEndObject(reader);
         return key;
     }
 
-    private String readString(JsonReader reader) throws IOException {
-        if (reader.peek() == JsonToken.NULL) {
-            reader.nextNull();
-            return null;
-        }
-        return reader.nextString();
+    private void writeStartObject(JsonWriter writer) throws IOException {
+        writer.beginObject();
     }
 
-    private String[] readStringArray(JsonReader reader) throws IOException {
-        List<String> values = new ArrayList<>();
-        reader.beginArray();
-        while (reader.peek() != JsonToken.END_ARRAY) {
-            values.add(reader.nextString());
-        }
-        reader.endArray();
-        return values.toArray(new String[0]);
+    private void writeEndObject(JsonWriter writer) throws IOException {
+        writer.endObject();
     }
 
-    private Date readDate(JsonReader reader) throws IOException {
-        if (reader.peek() == JsonToken.NULL) {
-            reader.nextNull();
-            return null;
-        }
-        String value = reader.nextString();
-        return Date.from(Instant.parse(value));
+    private void writeNull(JsonWriter writer, String key) throws IOException {
+        writer.name(key).nullValue();
     }
 
-    private JsonWriter writeNull(JsonWriter writer, String key) throws IOException {
-        return writer.name(key).nullValue();
-    }
-
-    private JsonWriter writeOptionalString(JsonWriter writer, String key, String value) throws IOException {
+    private void writeString(JsonWriter writer, String key, String value) throws IOException {
         if (value == null) {
-            return writer;
+            return;
         }
-        return writer.name(key).value(value);
+        writer.name(key).value(value);
     }
 
-    private JsonWriter writeStringArray(JsonWriter writer, String key, String[] value) throws IOException {
+    private void writeStringArray(JsonWriter writer, String key, String[] value) throws IOException {
         if (value == null) {
-            return writer;
+            return;
         }
 
         writer.name(key).beginArray();
         for (String item : value) {
             writer.value(item);
         }
-        return writer.endArray();
+        writer.endArray();
     }
 
-    private JsonWriter writeDate(JsonWriter writer, String key, Date value) throws IOException {
+    private void writeDate(JsonWriter writer, String key, Date value) throws IOException {
         if (value == null) {
-            return writer;
+            return;
         }
-        return writer.name(key).value(DATE_FORMAT.format(value));
+        writer.name(key).value(DATE_FORMAT.format(value));
     }
 
-    private JsonReader discardNext(JsonReader reader) throws IOException {
+    private void readStartObject(JsonReader reader) throws IOException {
+        reader.beginObject();
+    }
+
+    private void readEndObject(JsonReader reader) throws IOException {
+        reader.endObject();
+    }
+
+    private String readString(JsonReader reader) throws IOException {
+        return nullOrElse(reader, JsonReader::nextString);
+    }
+
+    private String[] readStringArray(JsonReader reader) throws IOException {
+        return nullOrElse(reader, r -> {
+            List<String> values = new ArrayList<>();
+            r.beginArray();
+            while (r.peek() != JsonToken.END_ARRAY) {
+                values.add(r.nextString());
+            }
+            r.endArray();
+            return values.toArray(new String[0]);
+        });
+    }
+
+    private Date readDate(JsonReader reader) throws IOException {
+        return nullOrElse(reader, r -> parseDate(r.nextString()));
+    }
+
+    private void readAndDiscard(JsonReader reader) throws IOException {
         reader.skipValue();
-        return reader;
+    }
+
+    private <T> T nullOrElse(JsonReader reader, ReaderFn<T> fn) throws IOException {
+        if (reader.peek() == JsonToken.NULL) {
+            reader.nextNull();
+            return null;
+        }
+
+        return fn.apply(reader);
+    }
+
+    private Date parseDate(String value) {
+        return Date.from(Instant.parse(value));
+    }
+
+    private interface ReaderFn<T> {
+        T apply(JsonReader reader) throws IOException;
     }
 }
