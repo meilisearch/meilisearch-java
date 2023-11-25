@@ -55,48 +55,46 @@ public class GsonKeyTypeAdapter extends TypeAdapter<Key> {
 
     @Override
     public Key read(JsonReader reader) throws IOException {
-        if (reader.peek() == JsonToken.NULL) {
-            return null;
-        }
-
-        Key key = new Key();
-        readStartObject(reader);
-        while (reader.peek() != JsonToken.END_OBJECT) {
-            switch (reader.nextName()) {
-                case KEY_NAME:
-                    key.setName(readString(reader));
-                    break;
-                case KEY_DESCRIPTION:
-                    key.setDescription(readString(reader));
-                    break;
-                case KEY_UID:
-                    key.setUid(readString(reader));
-                    break;
-                case KEY_KEY:
-                    key.setKey(readString(reader));
-                    break;
-                case KEY_ACTIONS:
-                    key.setActions(readStringArray(reader));
-                    break;
-                case KEY_INDEXES:
-                    key.setIndexes(readStringArray(reader));
-                    break;
-                case KEY_EXPIRES_AT:
-                    key.setExpiresAt(readDate(reader));
-                    break;
-                case KEY_CREATED_AT:
-                    key.setCreatedAt(readDate(reader));
-                    break;
-                case KEY_UPDATED_AT:
-                    key.setUpdatedAt(readDate(reader));
-                    break;
-                default:
-                    readAndDiscard(reader);
-                    break;
+        return nullOrElse(reader, r -> {
+            Key key = new Key();
+            readStartObject(r);
+            while (r.peek() != JsonToken.END_OBJECT) {
+                switch (r.nextName()) {
+                    case KEY_NAME:
+                        key.setName(readString(r));
+                        break;
+                    case KEY_DESCRIPTION:
+                        key.setDescription(readString(r));
+                        break;
+                    case KEY_UID:
+                        key.setUid(readString(r));
+                        break;
+                    case KEY_KEY:
+                        key.setKey(readString(r));
+                        break;
+                    case KEY_ACTIONS:
+                        key.setActions(readStringArray(r));
+                        break;
+                    case KEY_INDEXES:
+                        key.setIndexes(readStringArray(r));
+                        break;
+                    case KEY_EXPIRES_AT:
+                        key.setExpiresAt(readDate(r));
+                        break;
+                    case KEY_CREATED_AT:
+                        key.setCreatedAt(readDate(r));
+                        break;
+                    case KEY_UPDATED_AT:
+                        key.setUpdatedAt(readDate(r));
+                        break;
+                    default:
+                        readAndDiscard(r);
+                        break;
+                }
             }
-        }
-        readEndObject(reader);
-        return key;
+            readEndObject(r);
+            return key;
+        });
     }
 
     private void writeStartObject(JsonWriter writer) throws IOException {
@@ -169,7 +167,11 @@ public class GsonKeyTypeAdapter extends TypeAdapter<Key> {
         reader.skipValue();
     }
 
-    private <T> T nullOrElse(JsonReader reader, ReaderFn<T> fn) throws IOException {
+    private Date parseDate(String value) {
+        return Date.from(Instant.parse(value));
+    }
+
+    private <T> T nullOrElse(JsonReader reader, ReadValueFunction<T> fn) throws IOException {
         if (reader.peek() == JsonToken.NULL) {
             reader.nextNull();
             return null;
@@ -178,11 +180,8 @@ public class GsonKeyTypeAdapter extends TypeAdapter<Key> {
         return fn.apply(reader);
     }
 
-    private Date parseDate(String value) {
-        return Date.from(Instant.parse(value));
-    }
+    private interface ReadValueFunction<T> {
 
-    private interface ReaderFn<T> {
         T apply(JsonReader reader) throws IOException;
     }
 }
