@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.Getter;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 class GsonJsonHandlerTest {
@@ -206,6 +208,23 @@ class GsonJsonHandlerTest {
     }
 
     @Test
+    void decodeKeyWithNullIndexes() {
+        Key key = classToTest.decode("{\"indexes\":null}", Key.class);
+
+        assertThat(key, is(notNullValue()));
+        assertThat(key.getIndexes(), is(nullValue()));
+    }
+
+    @Test
+    void decodeKeyWithEmptyArrayActions() {
+        Key key = classToTest.decode("{\"actions\":[]}", Key.class);
+
+        assertThat(key, is(notNullValue()));
+        assertThat(key.getActions(), is(notNullValue()));
+        assertThat(key.getActions(), is(arrayWithSize(0)));
+    }
+
+    @Test
     void decodeKeyWithAllFieldsSet() {
         String timestamp = "2023-11-23T21:29:16.123Z";
         String input = "{\"key\":\"foo\",\"uid\":\"foo123\",\"name\":\"Foo\",\"description\":\"Foo bar\","
@@ -226,6 +245,26 @@ class GsonJsonHandlerTest {
         assertThat(key.getExpiresAt(), is(nullValue()));
         assertThat(key.getCreatedAt(), is(equalTo(Date.from(Instant.parse(timestamp)))));
         assertThat(key.getKey(), is(equalTo("foo")));
+    }
 
+    @Test
+    void decodeNullAsKey() {
+        Key result = classToTest.decode("null", Key.class);
+
+        assertThat(result, is(nullValue()));
+    }
+
+    @Test
+    void decodeNestedKeyWhereValueIsNull() {
+        Container result = classToTest.decode("{\"key\":null,\"enabled\":true}", Container.class);
+
+        assertThat(result.getKey(), is(nullValue()));
+        assertThat(result.getEnabled(), is(equalTo(true)));
+    }
+
+    @Getter
+    private static class Container {
+        private Key key;
+        private Boolean enabled;
     }
 }
