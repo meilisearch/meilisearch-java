@@ -35,7 +35,7 @@ public class GsonJsonHandler implements JsonHandler {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters)
-        throws MeilisearchException {
+            throws MeilisearchException {
         if (o == null) {
             throw new JsonDecodingException("Response to deserialize is null");
         }

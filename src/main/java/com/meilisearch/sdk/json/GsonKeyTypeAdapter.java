@@ -24,8 +24,7 @@ public class GsonKeyTypeAdapter extends TypeAdapter<Key> {
     private static final String KEY_EXPIRES_AT = "expiresAt";
     private static final String KEY_CREATED_AT = "createdAt";
     private static final String KEY_UPDATED_AT = "updatedAt";
-    private static final DateFormat DATE_FORMAT =
-        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     @Override
     public void write(JsonWriter writer, Key key) throws IOException {
@@ -55,46 +54,48 @@ public class GsonKeyTypeAdapter extends TypeAdapter<Key> {
 
     @Override
     public Key read(JsonReader reader) throws IOException {
-        return nullOrElse(reader, r -> {
-            Key key = new Key();
-            readStartObject(r);
-            while (r.peek() != JsonToken.END_OBJECT) {
-                switch (r.nextName()) {
-                    case KEY_NAME:
-                        key.setName(readString(r));
-                        break;
-                    case KEY_DESCRIPTION:
-                        key.setDescription(readString(r));
-                        break;
-                    case KEY_UID:
-                        key.setUid(readString(r));
-                        break;
-                    case KEY_KEY:
-                        key.setKey(readString(r));
-                        break;
-                    case KEY_ACTIONS:
-                        key.setActions(readStringArray(r));
-                        break;
-                    case KEY_INDEXES:
-                        key.setIndexes(readStringArray(r));
-                        break;
-                    case KEY_EXPIRES_AT:
-                        key.setExpiresAt(readDate(r));
-                        break;
-                    case KEY_CREATED_AT:
-                        key.setCreatedAt(readDate(r));
-                        break;
-                    case KEY_UPDATED_AT:
-                        key.setUpdatedAt(readDate(r));
-                        break;
-                    default:
-                        readAndDiscard(r);
-                        break;
-                }
-            }
-            readEndObject(r);
-            return key;
-        });
+        return nullOrElse(
+                reader,
+                r -> {
+                    Key key = new Key();
+                    readStartObject(r);
+                    while (r.peek() != JsonToken.END_OBJECT) {
+                        switch (r.nextName()) {
+                            case KEY_NAME:
+                                key.setName(readString(r));
+                                break;
+                            case KEY_DESCRIPTION:
+                                key.setDescription(readString(r));
+                                break;
+                            case KEY_UID:
+                                key.setUid(readString(r));
+                                break;
+                            case KEY_KEY:
+                                key.setKey(readString(r));
+                                break;
+                            case KEY_ACTIONS:
+                                key.setActions(readStringArray(r));
+                                break;
+                            case KEY_INDEXES:
+                                key.setIndexes(readStringArray(r));
+                                break;
+                            case KEY_EXPIRES_AT:
+                                key.setExpiresAt(readDate(r));
+                                break;
+                            case KEY_CREATED_AT:
+                                key.setCreatedAt(readDate(r));
+                                break;
+                            case KEY_UPDATED_AT:
+                                key.setUpdatedAt(readDate(r));
+                                break;
+                            default:
+                                readAndDiscard(r);
+                                break;
+                        }
+                    }
+                    readEndObject(r);
+                    return key;
+                });
     }
 
     private void writeStartObject(JsonWriter writer) throws IOException {
@@ -116,7 +117,8 @@ public class GsonKeyTypeAdapter extends TypeAdapter<Key> {
         writer.name(key).value(value);
     }
 
-    private void writeStringArray(JsonWriter writer, String key, String[] value) throws IOException {
+    private void writeStringArray(JsonWriter writer, String key, String[] value)
+            throws IOException {
         if (value == null) {
             return;
         }
@@ -148,15 +150,17 @@ public class GsonKeyTypeAdapter extends TypeAdapter<Key> {
     }
 
     private String[] readStringArray(JsonReader reader) throws IOException {
-        return nullOrElse(reader, r -> {
-            List<String> values = new ArrayList<>();
-            r.beginArray();
-            while (r.peek() != JsonToken.END_ARRAY) {
-                values.add(r.nextString());
-            }
-            r.endArray();
-            return values.toArray(new String[0]);
-        });
+        return nullOrElse(
+                reader,
+                r -> {
+                    List<String> values = new ArrayList<>();
+                    r.beginArray();
+                    while (r.peek() != JsonToken.END_ARRAY) {
+                        values.add(r.nextString());
+                    }
+                    r.endArray();
+                    return values.toArray(new String[0]);
+                });
     }
 
     private Date readDate(JsonReader reader) throws IOException {

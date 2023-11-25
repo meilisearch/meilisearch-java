@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.Getter;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 class GsonJsonHandlerTest {
@@ -50,9 +49,16 @@ class GsonJsonHandlerTest {
 
         assertThat(content, matchesPattern("\\{[^}]*}"));
 
-        Map<String, String> values = Arrays.stream(content.substring(1, content.length() - 1).split(",")).map(String::trim)
-            .map(s -> Stream.of(s.split(":")).map(String::trim).map(i -> i.substring(1, i.length() - 1)).collect(Collectors.toList()))
-            .collect(Collectors.toMap(i -> i.get(0), i -> i.get(1)));
+        Map<String, String> values =
+                Arrays.stream(content.substring(1, content.length() - 1).split(","))
+                        .map(String::trim)
+                        .map(
+                                s ->
+                                        Stream.of(s.split(":"))
+                                                .map(String::trim)
+                                                .map(i -> i.substring(1, i.length() - 1))
+                                                .collect(Collectors.toList()))
+                        .collect(Collectors.toMap(i -> i.get(0), i -> i.get(1)));
 
         assertThat(values, is(aMapWithSize(3)));
         assertThat(values.get("id"), is(equalTo("foo")));
@@ -62,12 +68,16 @@ class GsonJsonHandlerTest {
 
     @Test
     void encodeThrowsJsonEncodingExceptionWhenGsonThrowsException() {
-        assertThrows(JsonEncodingException.class, () -> classToTest.encode(new JsonElement() {
-            @Override
-            public JsonElement deepCopy() {
-                return null;
-            }
-        }));
+        assertThrows(
+                JsonEncodingException.class,
+                () ->
+                        classToTest.encode(
+                                new JsonElement() {
+                                    @Override
+                                    public JsonElement deepCopy() {
+                                        return null;
+                                    }
+                                }));
     }
 
     @Test
@@ -108,8 +118,8 @@ class GsonJsonHandlerTest {
         key.setUid("foo123");
         key.setName("Foo");
         key.setDescription("Foo bar");
-        key.setActions(new String[]{"*"});
-        key.setIndexes(new String[]{"*"});
+        key.setActions(new String[] {"*"});
+        key.setIndexes(new String[] {"*"});
 
         String result = classToTest.encode(key);
 
@@ -149,8 +159,10 @@ class GsonJsonHandlerTest {
 
     @Test
     void deserializeMap() throws Exception {
-        String mapString = "{\"commitSha\":\"b46889b5f0f2f8b91438a08a358ba8f05fc09fc1\",\"commitDate\":\"2019-11-15T09:51:54.278247+00:00\",\"pkgVersion\":\"0.1.1\"}";
-        HashMap<String, String> decode = classToTest.decode(mapString, HashMap.class, String.class, String.class);
+        String mapString =
+                "{\"commitSha\":\"b46889b5f0f2f8b91438a08a358ba8f05fc09fc1\",\"commitDate\":\"2019-11-15T09:51:54.278247+00:00\",\"pkgVersion\":\"0.1.1\"}";
+        HashMap<String, String> decode =
+                classToTest.decode(mapString, HashMap.class, String.class, String.class);
 
         assertThat(decode, notNullValue());
         assertThat(decode, aMapWithSize(3));
@@ -227,9 +239,14 @@ class GsonJsonHandlerTest {
     @Test
     void decodeKeyWithAllFieldsSet() {
         String timestamp = "2023-11-23T21:29:16.123Z";
-        String input = "{\"key\":\"foo\",\"uid\":\"foo123\",\"name\":\"Foo\",\"description\":\"Foo bar\","
-            + "\"actions\":[\"*\"],\"indexes\":[\"*\"],\"expiresAt\":null,\"createdAt\":\"" + timestamp + "\","
-            + "\"updatedAt\":\"" + timestamp + "\"}";
+        String input =
+                "{\"key\":\"foo\",\"uid\":\"foo123\",\"name\":\"Foo\",\"description\":\"Foo bar\","
+                        + "\"actions\":[\"*\"],\"indexes\":[\"*\"],\"expiresAt\":null,\"createdAt\":\""
+                        + timestamp
+                        + "\","
+                        + "\"updatedAt\":\""
+                        + timestamp
+                        + "\"}";
 
         Key key = classToTest.decode(input, Key.class);
 
