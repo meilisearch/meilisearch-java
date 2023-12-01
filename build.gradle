@@ -13,7 +13,7 @@ plugins {
 	id 'signing'
 	id 'jacoco'
 	id 'io.github.gradle-nexus.publish-plugin' version "1.3.0"
-	id "com.diffplug.spotless" version "6.13.0"
+	id "com.diffplug.spotless" version "6.23.2"
 }
 
 group = 'com.meilisearch.sdk'
