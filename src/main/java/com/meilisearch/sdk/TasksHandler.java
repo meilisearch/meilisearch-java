@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Class covering the Meilisearch Task API
  *
- * <p>https://www.meilisearch.com/docs/reference/api/tasks
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks">API specification</a>
  */
 public class TasksHandler {
     private final HttpClient httpClient;
@@ -151,7 +151,8 @@ public class TasksHandler {
             status = task.getStatus();
             try {
                 Thread.sleep(intervalInMs);
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 throw new MeilisearchTimeoutException();
             }
             elapsedTime = new Date().getTime() - startTime;

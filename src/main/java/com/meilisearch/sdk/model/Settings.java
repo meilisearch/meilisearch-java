@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 /**
  * Meilisearch settings data structure
  *
- * <p>Refer https://www.meilisearch.com/docs/reference/api/settings
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/settings">API specification</a>
  */
 @Getter
 @Setter
@@ -26,6 +26,7 @@ public class Settings {
     protected TypoTolerance typoTolerance;
     protected Pagination pagination;
     protected Faceting faceting;
+    protected String[] dictionary;
 
     public Settings() {}
 }

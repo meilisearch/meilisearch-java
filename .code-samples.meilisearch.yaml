@@ -280,6 +280,12 @@ update_faceting_settings_1: |-
   client.index("books").updateFacetingSettings(newFaceting);
 reset_faceting_settings_1: |-
   client.index("books").resetFacetingSettings();
+get_dictionary_1: |-
+  client.index("books").getDictionarySettings();
+update_dictionary_1: |-
+  client.index("books").updateDictionarySettings(new String[] {"J. R. R.", "W. E. B."});
+reset_dictionary_1: |-
+  client.index("books").resetDictionarySettings();
 get_index_stats_1: |-
   client.index("movies").getStats();
 get_indexes_stats_1: |-
@@ -363,6 +369,9 @@ search_parameter_guide_matching_strategy_1: |-
 search_parameter_guide_matching_strategy_2: |-
   SearchRequest searchRequest = SearchRequest.builder().q("big fat liar").matchingStrategy(MatchingStrategy.ALL).build();
   client.index("movies").search(searchRequest);
+search_parameter_guide_attributes_to_search_on_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("adventure").attributesToSearchOn(new String[] {"overview"});
+  client.index("movies").searchRequest(searchRequest);
 synonyms_guide_1: |-
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("great", new String[] {"fantastic"});
@@ -399,7 +408,7 @@ getting_started_add_documents_md: |-
   <dependency>
     <groupId>com.meilisearch.sdk</groupId>
     <artifactId>meilisearch-java</artifactId>
-    <version>0.11.2</version>
+    <version>0.11.5</version>
     <type>pom</type>
   </dependency>
   ```
@@ -407,7 +416,7 @@ getting_started_add_documents_md: |-
   **Gradle**
   Add the following line to the `dependencies` section of your `build.gradle`:
   ```groovy
-  implementation 'com.meilisearch.sdk:meilisearch-java:0.11.2'
+  implementation 'com.meilisearch.sdk:meilisearch-java:0.11.5'
   ```
 
   ```java
@@ -569,6 +578,8 @@ landing_getting_started_1: |-
   );
 post_dump_1: |-
   client.createDump();
+create_snapshot_1: |-
+  client.createSnapshot();
 phrase_search_1: |-
   client.index("movies").search("\"african american\" horror");
 sorting_guide_update_sortable_attributes_1: |-

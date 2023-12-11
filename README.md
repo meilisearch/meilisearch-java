@@ -28,7 +28,7 @@
 
 **Meilisearch** is an open-source search engine. [Learn more about Meilisearch.](https://github.com/meilisearch/meilisearch)
 
-## Table of Contents <!-- omit in toc -->
+## Table of Contents <!-- omit in TOC -->
 
 - [📖 Documentation](#-documentation)
 - [⚡ Supercharge your Meilisearch experience](#-supercharge-your-meilisearch-experience)
@@ -63,7 +63,7 @@ Add the following code to the `<dependencies>` section of your project:
 <dependency>
   <groupId>com.meilisearch.sdk</groupId>
   <artifactId>meilisearch-java</artifactId>
-  <version>0.11.2</version>
+  <version>0.11.5</version>
   <type>pom</type>
 </dependency>
 ```
@@ -73,7 +73,7 @@ Add the following code to the `<dependencies>` section of your project:
 Add the following line to the `dependencies` section of your `build.gradle`:
 
 ```groovy
-implementation 'com.meilisearch.sdk:meilisearch-java:0.11.2'
+implementation 'com.meilisearch.sdk:meilisearch-java:0.11.5'
 ```
 
 :warning: `meilisearch-java` also requires `okhttp` as a peer dependency.

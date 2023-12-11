@@ -8,7 +8,8 @@ import lombok.experimental.Accessors;
 /**
  * Data structure of the query parameters of the documents route when retrieving multiple documents
  *
- * <p>https://www.meilisearch.com/docs/reference/api/documents#query-parameters
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/documents#query-parameters">API
+ *     specification</a>
  */
 @Setter
 @Getter
