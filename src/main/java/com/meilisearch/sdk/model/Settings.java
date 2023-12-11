@@ -26,6 +26,7 @@ public class Settings {
     protected TypoTolerance typoTolerance;
     protected Pagination pagination;
     protected Faceting faceting;
+    protected String[] dictionary;
 
     public Settings() {}
 }
