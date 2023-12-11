@@ -280,6 +280,12 @@ update_faceting_settings_1: |-
   client.index("books").updateFacetingSettings(newFaceting);
 reset_faceting_settings_1: |-
   client.index("books").resetFacetingSettings();
+get_dictionary_1: |-
+  client.index("books").getDictionarySettings();
+update_dictionary_1: |-
+  client.index("books").updateDictionarySettings(new String[] {"J. R. R.", "W. E. B."});
+reset_dictionary_1: |-
+  client.index("books").resetDictionarySettings();
 get_index_stats_1: |-
   client.index("movies").getStats();
 get_indexes_stats_1: |-
@@ -572,6 +578,8 @@ landing_getting_started_1: |-
   );
 post_dump_1: |-
   client.createDump();
+create_snapshot_1: |-
+  client.createSnapshot();
 phrase_search_1: |-
   client.index("movies").search("\"african american\" horror");
 sorting_guide_update_sortable_attributes_1: |-
