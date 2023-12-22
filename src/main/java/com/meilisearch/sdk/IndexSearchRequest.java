@@ -31,6 +31,7 @@ public class IndexSearchRequest {
     private String[] sort;
     protected Integer page;
     protected Integer hitsPerPage;
+    protected Boolean showRankingScore;
 
     /**
      * Constructor for MultiSearchRequest for building search queries with the default values:
@@ -87,7 +88,8 @@ public class IndexSearchRequest {
                         .putOpt("attributesToCrop", this.attributesToCrop)
                         .putOpt("attributesToHighlight", this.attributesToHighlight)
                         .putOpt("filter", this.filter)
-                        .putOpt("filter", this.filterArray);
+                        .putOpt("filter", this.filterArray)
+                        .putOpt("showRankingScore", this.showRankingScore);
 
         return jsonObject.toString();
     }
