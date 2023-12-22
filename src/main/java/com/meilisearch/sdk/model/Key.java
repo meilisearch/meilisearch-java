@@ -13,13 +13,12 @@ import lombok.experimental.Accessors;
  * @see <a href="https://www.meilisearch.com/docs/reference/api/keys">API specification</a>
  */
 @Getter
+@Setter
 @JsonInclude(Include.NON_NULL)
 public class Key {
-    @Setter
     @Accessors(chain = true)
     protected String name = null;
 
-    @Setter
     @Accessors(chain = true)
     protected String description = null;
 
@@ -27,15 +26,12 @@ public class Key {
 
     protected String key = null;
 
-    @Setter
     @Accessors(chain = true)
     protected String[] actions = null;
 
-    @Setter
     @Accessors(chain = true)
     protected String[] indexes = null;
 
-    @Setter
     @Accessors(chain = true)
     @JsonInclude(Include.ALWAYS)
     protected Date expiresAt = null;
