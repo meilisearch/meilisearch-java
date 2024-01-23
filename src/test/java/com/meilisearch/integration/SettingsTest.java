@@ -989,6 +989,38 @@ public class SettingsTest extends AbstractIT {
     }
 
     @Test
+    @DisplayName("Test initial pagination settings with param")
+    public void testInitialPaginationSettingsWithParam() throws Exception {
+        Index index = createIndex("testInitialPaginationSettingsWithParam");
+
+        int MaxTotalHitsTypos = 100;
+        Pagination newPagination = new Pagination(MaxTotalHitsTypos);
+        index.waitForTask(index.updatePaginationSettings(newPagination).getTaskUid());
+        Pagination updatedPagination = index.getPaginationSettings();
+
+        assertThat(updatedPagination.getMaxTotalHits(), is(equalTo(100)));
+    }
+
+    @Test
+    @DisplayName("Test reset pagination settings when constructor with param")
+    public void testResetPaginationSettingsWhenConstructorWithParam() throws Exception {
+        Index index = createIndex("testResetPaginationSettingsWhenConstructorWithParam");
+
+        Pagination initialPagination = index.getPaginationSettings();
+        int MaxTotalHitsTypos = 100;
+        Pagination newPagination = new Pagination(MaxTotalHitsTypos);
+        index.waitForTask(index.updatePaginationSettings(newPagination).getTaskUid());
+        Pagination updatedPagination = index.getPaginationSettings();
+
+        index.waitForTask(index.resetPaginationSettings().getTaskUid());
+        Pagination paginationAfterReset = index.getPaginationSettings();
+
+        assertThat(initialPagination.getMaxTotalHits(), is(equalTo(1000)));
+        assertThat(updatedPagination.getMaxTotalHits(), is(equalTo(100)));
+        assertThat(paginationAfterReset.getMaxTotalHits(), is(equalTo(1000)));
+    }
+
+    @Test
     @DisplayName("Test reset pagination settings")
     public void testResetPaginationSettings() throws Exception {
         Index index = createIndex("testResetPaginationSettings");
