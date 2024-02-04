@@ -1089,6 +1089,57 @@ public class SettingsTest extends AbstractIT {
         assertThat(facetingAfterReset.getMaxValuesPerFacet(), is(equalTo(100)));
     }
 
+    /** Tests of the proximity precision setting methods */
+    @Test
+    @DisplayName("Test get proximity precision settings by uid")
+    public void testGetProximityPrecisionSettings() throws Exception {
+        Index index = createIndex("testGetProximityPrecisionSettings");
+        Settings initialSettings = index.getSettings();
+        String initialProximityPrecision = index.getProximityPrecisionSettings();
+
+        assertThat(initialProximityPrecision, is(equalTo(initialSettings.getProximityPrecision())));
+    }
+
+    @Test
+    @DisplayName("Test update proximity precision settings")
+    public void testUpdateProximityPrecisionSettings() throws Exception {
+        Index index = createIndex("testUpdateProximityPrecisionSettings");
+        String initialProximityPrecision = index.getProximityPrecisionSettings();
+        String newProximityPrecision = "byAttribute";
+
+        index.waitForTask(
+            index.updateProximityPrecisionSettings(newProximityPrecision).getTaskUid());
+        String updatedProximityPrecision = index.getProximityPrecisionSettings();
+
+        assertThat(updatedProximityPrecision, is(equalTo(newProximityPrecision)));
+        assertThat(updatedProximityPrecision, is(not(equalTo(initialProximityPrecision))));
+    }
+
+    @Test
+    @DisplayName("Test reset proximity precision settings")
+    public void testResetProximityPrecisionSettings() throws Exception {
+        Index index = createIndex("testResetProximityPrecisionSettings");
+        String initialProximityPrecision = index.getProximityPrecisionSettings();
+        String newProximityPrecision = "byAttribute";
+
+        index.waitForTask(
+            index.updateProximityPrecisionSettings(newProximityPrecision).getTaskUid());
+        String updatedProximityPrecision = index.getProximityPrecisionSettings();
+
+        index.waitForTask(index.resetProximityPrecisionSettings().getTaskUid());
+        String proximityPrecisionAfterReset = index.getProximityPrecisionSettings();
+
+        assertThat(updatedProximityPrecision, is(equalTo(newProximityPrecision)));
+        assertThat(updatedProximityPrecision, is(not(equalTo(initialProximityPrecision))));
+        assertThat(proximityPrecisionAfterReset, is(not(equalTo(updatedProximityPrecision))));
+        assertThat(
+            proximityPrecisionAfterReset,
+            is(equalTo(initialProximityPrecision))); // Resetting proximity precision
+        // changes it back to the default
+        // "byWord"
+    }
+
+
     private Index createIndex(String indexUid) throws Exception {
         Index index = client.index(indexUid);
         TaskInfo updateInfo = index.addDocuments(testData.getRaw());
