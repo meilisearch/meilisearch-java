@@ -1108,7 +1108,7 @@ public class SettingsTest extends AbstractIT {
         String newProximityPrecision = "byAttribute";
 
         index.waitForTask(
-            index.updateProximityPrecisionSettings(newProximityPrecision).getTaskUid());
+                index.updateProximityPrecisionSettings(newProximityPrecision).getTaskUid());
         String updatedProximityPrecision = index.getProximityPrecisionSettings();
 
         assertThat(updatedProximityPrecision, is(equalTo(newProximityPrecision)));
@@ -1123,7 +1123,7 @@ public class SettingsTest extends AbstractIT {
         String newProximityPrecision = "byAttribute";
 
         index.waitForTask(
-            index.updateProximityPrecisionSettings(newProximityPrecision).getTaskUid());
+                index.updateProximityPrecisionSettings(newProximityPrecision).getTaskUid());
         String updatedProximityPrecision = index.getProximityPrecisionSettings();
 
         index.waitForTask(index.resetProximityPrecisionSettings().getTaskUid());
@@ -1133,12 +1133,11 @@ public class SettingsTest extends AbstractIT {
         assertThat(updatedProximityPrecision, is(not(equalTo(initialProximityPrecision))));
         assertThat(proximityPrecisionAfterReset, is(not(equalTo(updatedProximityPrecision))));
         assertThat(
-            proximityPrecisionAfterReset,
-            is(equalTo(initialProximityPrecision))); // Resetting proximity precision
+                proximityPrecisionAfterReset,
+                is(equalTo(initialProximityPrecision))); // Resetting proximity precision
         // changes it back to the default
         // "byWord"
     }
-
 
     private Index createIndex(String indexUid) throws Exception {
         Index index = client.index(indexUid);

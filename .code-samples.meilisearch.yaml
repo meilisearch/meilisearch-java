@@ -286,6 +286,12 @@ update_dictionary_1: |-
   client.index("books").updateDictionarySettings(new String[] {"J. R. R.", "W. E. B."});
 reset_dictionary_1: |-
   client.index("books").resetDictionarySettings();
+get_proximity_precision_settings_1: |-
+  client.index("books").getProximityPrecisionSettings();
+update_proximity_precision_settings_1: |-
+  client.index("books").updateProximityPrecisionSettings("byAttribute");
+reset_proximity_precision_settings_1: |-
+  client.index("books").resetProximityPrecisionSettings();
 get_index_stats_1: |-
   client.index("movies").getStats();
 get_indexes_stats_1: |-
