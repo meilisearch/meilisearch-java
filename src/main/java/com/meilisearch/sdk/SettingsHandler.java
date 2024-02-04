@@ -553,6 +553,51 @@ public class SettingsHandler {
                 settingsPath(uid).addSubroute("dictionary").getURL(), TaskInfo.class);
     }
 
+    /**
+     * Gets the proximity precision level of the index
+     *
+     * @param uid Index identifier
+     * @return a string of the proximity precision level
+     * @throws MeilisearchException if an error occurs
+     */
+    String getProximityPrecisionSettings(String uid) throws MeilisearchException {
+        String response =
+                httpClient.get(
+                        settingsPath(uid).addSubroute("proximity-precision").getURL(),
+                        String.class);
+        return response.substring(1, response.length() - 1);
+    }
+
+    /**
+     * Updates the proximity precision level of the index
+     *
+     * @param uid Index identifier
+     * @param proximityPrecision a String that contains the new proximity precision level settings
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo updateProximityPrecisionSettings(String uid, String proximityPrecision)
+            throws MeilisearchException {
+        return httpClient.put(
+                settingsPath(uid).addSubroute("proximity-precision").getURL(),
+                proximityPrecision == null
+                        ? httpClient.jsonHandler.encode(proximityPrecision)
+                        : "\"" + proximityPrecision + "\"",
+                TaskInfo.class);
+    }
+
+    /**
+     * Resets the proximity precision level of the index
+     *
+     * @param uid Index identifier
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo resetProximityPrecisionSettings(String uid) throws MeilisearchException {
+        return httpClient.delete(
+                settingsPath(uid).addSubroute("proximity-precision").getURL(), TaskInfo.class);
+    }
+
     /** Creates an URLBuilder for the constant route settings */
     private URLBuilder settingsPath(String uid) {
         return new URLBuilder("/indexes").addSubroute(uid).addSubroute("/settings");

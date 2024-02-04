@@ -870,6 +870,47 @@ public class Index implements Serializable {
     }
 
     /**
+     * Gets the proximity precision level of the index
+     *
+     * @return proximity precision level of a given uid as String
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#get-proximity-precision-settings">API
+     *     specification</a>
+     */
+    public String getProximityPrecisionSettings() throws MeilisearchException {
+        return this.settingsHandler.getProximityPrecisionSettings(this.uid);
+    }
+
+    /**
+     * Updates the proximity precision level of the index
+     *
+     * @param proximityPrecision A String: the proximity precision level.
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#update-proximity-precision-settings">API
+     *     specification</a>
+     */
+    public TaskInfo updateProximityPrecisionSettings(String proximityPrecision)
+            throws MeilisearchException {
+        return this.settingsHandler.updateProximityPrecisionSettings(this.uid, proximityPrecision);
+    }
+
+    /**
+     * Resets the proximity precision level of the index
+     *
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#reset-proximity-precision-settings">API
+     *     specification</a>
+     */
+    public TaskInfo resetProximityPrecisionSettings() throws MeilisearchException {
+        return this.settingsHandler.resetProximityPrecisionSettings(this.uid);
+    }
+
+    /**
      * Gets extended information and metrics about indexes and the Meilisearch database
      *
      * @return Meilisearch API response
