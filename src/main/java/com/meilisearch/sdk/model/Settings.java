@@ -27,6 +27,7 @@ public class Settings {
     protected Pagination pagination;
     protected Faceting faceting;
     protected String[] dictionary;
+    protected String proximityPrecision;
 
     public Settings() {}
 }
