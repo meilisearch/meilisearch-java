@@ -134,9 +134,10 @@ public class TasksHandler {
      * @param taskUid Identifier of the Task
      * @param timeoutInMs number of milliseconds before throwing an Exception
      * @param intervalInMs number of milliseconds before requesting the status again
-     * @throws MeilisearchException if timeout is reached
+     * @throws MeilisearchTimeoutException if timeout is reached
      */
-    void waitForTask(int taskUid, int timeoutInMs, int intervalInMs) throws MeilisearchException {
+    void waitForTask(int taskUid, int timeoutInMs, int intervalInMs)
+            throws MeilisearchTimeoutException {
         Task task;
         TaskStatus status = null;
         long startTime = new Date().getTime();
