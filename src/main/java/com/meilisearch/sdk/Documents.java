@@ -109,6 +109,13 @@ class Documents {
      */
     <T> Results<T> getDocuments(String uid, DocumentsQuery param, Class<T> targetClass)
             throws MeilisearchException {
+        if (param.getFilter() != null) {
+            return httpClient.post(
+                    documentPathWithFetch(uid).getURL(),
+                    param.toString(),
+                    Results.class,
+                    targetClass);
+        }
         return httpClient.<Results>get(
                 documentPath(uid).addQuery(param.toQuery()).getURL(), Results.class, targetClass);
     }
@@ -133,6 +140,10 @@ class Documents {
      * @throws MeilisearchException if an error occurs
      */
     String getRawDocuments(String uid, DocumentsQuery param) throws MeilisearchException {
+        if (param.getFilter() != null) {
+            return httpClient.post(
+                    documentPathWithFetch(uid).getURL(), param.toString(), String.class);
+        }
         return httpClient.<String>get(
                 documentPath(uid).addQuery(param.toQuery()).getURL(), String.class);
     }
@@ -212,6 +223,10 @@ class Documents {
     /** Creates an URLBuilder for the constant route documents. */
     private URLBuilder documentPath(String uid) {
         return new URLBuilder().addSubroute("indexes").addSubroute(uid).addSubroute("documents");
+    }
+
+    private URLBuilder documentPathWithFetch(String uid) {
+        return documentPath(uid).addSubroute("fetch");
     }
 
     /** Creates an URLBuilder for the constant route documents */

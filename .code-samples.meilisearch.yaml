@@ -25,8 +25,14 @@ get_one_document_1: |-
   DocumentQuery query = new DocumentQuery().setFields(new String[] {"id", "title", "poster", "release_date"});
   client.index("movies").getDocument("25684", query);
 get_documents_1: |-
-  DocumentsQuery query = new DocumentsQuery().setLimit(2);
-  client.index("movies").getDocuments(query);
+  DocumentsQuery query = new DocumentsQuery().setLimit(2).setFilter(new String[] {"genres = action"});
+  client.index("movies").getDocuments(query, TargetClassName.class);
+get_documents_post_1: |-
+  DocumentsQuery query = new DocumentsQuery()
+    .setFilter(new String[] {"(rating > 3 AND (genres = Adventure OR genres = Fiction)) AND language = English"})
+    .setFields(new String[] {"title", "genres", "rating", "language"})
+    .setLimit(3);
+  client.index("movies").getDocuments(query, TargetClassName.class);
 add_or_replace_documents_1: |-
   client.index("movies").addDocuments("[{"
     + "\"id\": 287947,"
