@@ -3,6 +3,7 @@ package com.meilisearch.integration;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItemInArray;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -22,6 +23,7 @@ import com.meilisearch.sdk.utils.Movie;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.hamcrest.Matchers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,15 +32,16 @@ import org.junit.jupiter.api.Test;
 
 @Tag("integration")
 public class DocumentsTest extends AbstractIT {
-    @BeforeEach
-    public void initialize() {
-        this.setUp();
-        this.setUpJacksonClient();
-    }
 
     @AfterAll
     static void cleanMeilisearch() {
         cleanup();
+    }
+
+    @BeforeEach
+    public void initialize() {
+        this.setUp();
+        this.setUpJacksonClient();
     }
 
     /** Test Add single document */
@@ -469,6 +472,46 @@ public class DocumentsTest extends AbstractIT {
         assertThat(movies[0].getId(), is(notNullValue()));
         assertThat(movies[0].getTitle(), is(notNullValue()));
         assertThat(movies[0].getGenres(), is(nullValue()));
+        assertThat(movies[0].getLanguage(), is(nullValue()));
+        assertThat(movies[0].getOverview(), is(nullValue()));
+        assertThat(movies[0].getPoster(), is(nullValue()));
+        assertThat(movies[0].getRelease_date(), is(nullValue()));
+    }
+
+    /** Test GetDocuments with limit, offset, specified fields and specified filter */
+    @Test
+    void testGetDocumentsLimitAndOffsetAndSpecifiedFieldsAndSpecifiedFilter() throws Exception {
+        String indexUid = "GetDocumentsLimitAndOffsetAndSpecifiedFieldsAndSpecifiedFilter";
+        int limit = 2;
+        int offset = 0;
+        List<String> fields = Arrays.asList("id", "title", "genres");
+        List<String> filters = Arrays.asList("(genres = Horror OR genres = Action)");
+
+        DocumentsQuery query =
+                new DocumentsQuery()
+                        .setLimit(limit)
+                        .setOffset(offset)
+                        .setFields(fields.toArray(new String[0]))
+                        .setFilter(filters.toArray(new String[0]));
+        Index index = client.index(indexUid);
+
+        String[] filterAttributes = {"genres"};
+        index.waitForTask(index.updateFilterableAttributesSettings(filterAttributes).getTaskUid());
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+        Results<Movie> result = index.getDocuments(query, Movie.class);
+        Movie[] movies = result.getResults();
+
+        assertThat(movies, is(arrayWithSize(limit)));
+        assertThat(movies[0].getId(), is(notNullValue()));
+        assertThat(movies[0].getTitle(), is(notNullValue()));
+        assertThat(movies[0].getGenres(), is(notNullValue()));
+        assertThat(
+                movies[0].getGenres(),
+                hasItemInArray(Matchers.anyOf(equalTo("Horror"), equalTo("Action"))));
         assertThat(movies[0].getLanguage(), is(nullValue()));
         assertThat(movies[0].getOverview(), is(nullValue()));
         assertThat(movies[0].getPoster(), is(nullValue()));
