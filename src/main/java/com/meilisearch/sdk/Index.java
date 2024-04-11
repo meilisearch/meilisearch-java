@@ -227,7 +227,7 @@ public class Index implements Serializable {
                 jsonSubArray.put(j, jsonDocumentsArray.get(i + j));
             }
             arrayResponses.add(
-                    this.documents.addDocuments(this.uid, jsonSubArray.toString(), primaryKey));
+                    this.documents.addDocuments(this.uid, jsonSubArray.toString(), primaryKey, null));
         }
         return arrayResponses.toArray(new TaskInfo[arrayResponses.size()]);
     }
