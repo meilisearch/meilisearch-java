@@ -143,6 +143,7 @@ class Documents {
      * @param uid Partial index identifier for the document
      * @param document String containing the document to add
      * @param primaryKey PrimaryKey of the document
+     * @param csvDelimiter CSV delimiter of the document
      * @return Meilisearch's TaskInfo API response
      * @throws MeilisearchException if the client request causes an error
      */
