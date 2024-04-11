@@ -187,7 +187,7 @@ public class Index implements Serializable {
     /**
      * Adds/Replaces documents in the index
      *
-     * @param document Document to add in JSON string format
+     * @param document Document to add in CSV string format
      * @param primaryKey PrimaryKey of the document to add
      * @param csvDelimiter Custom delimiter to use for the document being added
      * @return TaskInfo Meilisearch API response
