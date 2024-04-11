@@ -166,7 +166,7 @@ public class Index implements Serializable {
      *     specification</a>
      */
     public TaskInfo addDocuments(String document) throws MeilisearchException {
-        return this.documents.addDocuments(this.uid, document, null);
+        return this.documents.addDocuments(this.uid, document, null, null);
     }
 
     /**
@@ -181,7 +181,23 @@ public class Index implements Serializable {
      *     specification</a>
      */
     public TaskInfo addDocuments(String document, String primaryKey) throws MeilisearchException {
-        return this.documents.addDocuments(this.uid, document, primaryKey);
+        return this.documents.addDocuments(this.uid, document, primaryKey, null);
+    }
+
+    /**
+     * Adds/Replaces documents in the index
+     *
+     * @param document Document to add in JSON string format
+     * @param primaryKey PrimaryKey of the document to add
+     * @param csvDelimiter Custom delimiter to use for the document being added
+     * @return TaskInfo Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/documents#add-or-replace-documents">API
+     *     specification</a>
+     */
+    public TaskInfo addDocuments(String document, String primaryKey, String csvDelimiter) throws MeilisearchException {
+        return this.documents.addDocuments(this.uid, document, primaryKey, csvDelimiter);
     }
 
     /**
