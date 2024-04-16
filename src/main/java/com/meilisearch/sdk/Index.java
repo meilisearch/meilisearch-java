@@ -196,7 +196,8 @@ public class Index implements Serializable {
      *     href="https://www.meilisearch.com/docs/reference/api/documents#add-or-replace-documents">API
      *     specification</a>
      */
-    public TaskInfo addDocuments(String document, String primaryKey, String csvDelimiter) throws MeilisearchException {
+    public TaskInfo addDocuments(String document, String primaryKey, String csvDelimiter)
+            throws MeilisearchException {
         return this.documents.addDocuments(this.uid, document, primaryKey, csvDelimiter);
     }
 
@@ -227,7 +228,8 @@ public class Index implements Serializable {
                 jsonSubArray.put(j, jsonDocumentsArray.get(i + j));
             }
             arrayResponses.add(
-                    this.documents.addDocuments(this.uid, jsonSubArray.toString(), primaryKey, null));
+                    this.documents.addDocuments(
+                            this.uid, jsonSubArray.toString(), primaryKey, null));
         }
         return arrayResponses.toArray(new TaskInfo[arrayResponses.size()]);
     }

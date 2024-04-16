@@ -73,6 +73,44 @@ public class DocumentsTest extends AbstractIT {
         assertThat(movies[0].getGenres()[1], is(equalTo("Drama")));
     }
 
+    /** Test Add single document with Custom csv delimiter */
+    @Test
+    public void testAddDocumentsSingleCsv() throws Exception {
+
+        String indexUid = "AddDocumentsSingleCsv";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        String singleDocument = this.gson.toJson(testData.getData().get(0));
+
+        // Create the custom csv delimiter here
+        String customDelimiter = ";";
+        String csvData = "[" + singleDocument.replaceAll(",", customDelimiter) + "]";
+
+        // TODO: what should the PK be?
+        TaskInfo task = index.addDocuments(singleDocument, "", customDelimiter);
+
+        index.waitForTask(task.getTaskUid());
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
+
+        String expectedOverview =
+                "The near future, a time when both hope and hardships drive humanity to look to the stars and beyond. While a mysterious phenomenon menaces to destroy life on planet Earth, astronaut Roy McBride undertakes a mission across the immensity of space and its many perils to uncover the truth about a lost expedition that decades before boldly faced emptiness and silence in search of the unknown.";
+        assertThat(movies, is(arrayWithSize(1)));
+        assertThat(movies[0].getId(), is(equalTo("419704")));
+        assertThat(movies[0].getTitle(), is(equalTo("Ad Astra")));
+        assertThat(
+                movies[0].getPoster(),
+                is(equalTo("https://image.tmdb.org/t/p/original/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg")));
+        assertThat(movies[0].getOverview(), is(equalTo(expectedOverview)));
+        assertThat(movies[0].getRelease_date(), is(equalTo("2019-09-17")));
+        assertThat(movies[0].getLanguage(), is(equalTo("en")));
+        assertThat(movies[0].getGenres(), is(notNullValue()));
+        assertThat(movies[0].getGenres(), is(arrayWithSize(2)));
+        assertThat(movies[0].getGenres()[0], is(equalTo("Science Fiction")));
+        assertThat(movies[0].getGenres()[1], is(equalTo("Drama")));
+    }
+
     /** Test add Documents with primaryKey */
     @Test
     public void testAddDocumentsWithSuppliedPrimaryKey() throws Exception {
