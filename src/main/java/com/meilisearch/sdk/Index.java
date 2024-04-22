@@ -283,6 +283,7 @@ public class Index implements Serializable {
      *
      * @param document Document to update in CSV string format
      * @param primaryKey PrimaryKey of the document
+     * @param csvDelimiter Custom delimiter to use for the document being added
      * @return TaskInfo Meilisearch API response
      * @throws MeilisearchException if an error occurs
      * @see <a

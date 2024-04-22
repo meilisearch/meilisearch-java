@@ -73,7 +73,6 @@ public class DocumentsTest extends AbstractIT {
         assertThat(movies[0].getGenres()[1], is(equalTo("Drama")));
     }
 
-
     /** Test add Documents with primaryKey */
     @Test
     public void testAddDocumentsWithSuppliedPrimaryKey() throws Exception {
