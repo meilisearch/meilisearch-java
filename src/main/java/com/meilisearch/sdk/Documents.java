@@ -168,11 +168,14 @@ class Documents {
      * @return Meilisearch's TaskInfo API response
      * @throws MeilisearchException if the client request causes an error
      */
-    TaskInfo updateDocuments(String uid, String document, String primaryKey)
+    TaskInfo updateDocuments(String uid, String document, String primaryKey, String csvDelimiter)
             throws MeilisearchException {
         URLBuilder urlb = documentPath(uid);
         if (primaryKey != null) {
             urlb.addParameter("primaryKey", primaryKey);
+        }
+        if (csvDelimiter != null) {
+            urlb.addParameter("csvDelimiter", csvDelimiter);
         }
         return httpClient.put(urlb.getURL(), document, TaskInfo.class);
     }
