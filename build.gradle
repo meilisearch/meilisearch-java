@@ -51,7 +51,7 @@ configurations {
 dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
 	implementation 'com.google.code.gson:gson:2.10.1'
-	implementation 'org.json:json:20240205'
+	implementation 'org.json:json:20240303'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
 	api 'com.squareup.okhttp3:okhttp:[4.10.0,5.0.0)'
 
@@ -61,18 +61,18 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:4.9.0'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
-	testImplementation 'com.squareup.okio:okio:3.8.0'
+	testImplementation 'com.squareup.okio:okio:3.9.0'
 	testImplementation 'com.squareup.okhttp3:okhttp:4.12.0'
-	testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
+	testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.16.1'
+	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.17.0'
 
 	// Lombok
-	compileOnly 'org.projectlombok:lombok:1.18.30'
-	annotationProcessor 'org.projectlombok:lombok:1.18.30'
-	testCompileOnly 'org.projectlombok:lombok:1.18.30'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+	compileOnly 'org.projectlombok:lombok:1.18.32'
+	annotationProcessor 'org.projectlombok:lombok:1.18.32'
+	testCompileOnly 'org.projectlombok:lombok:1.18.32'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
 
 	// Jwt
 	implementation 'com.auth0:java-jwt:4.4.0'
