@@ -32,7 +32,7 @@ get_documents_post_1: |-
     .setFilter(new String[] {"(rating > 3 AND (genres = Adventure OR genres = Fiction)) AND language = English"})
     .setFields(new String[] {"title", "genres", "rating", "language"})
     .setLimit(3);
-  client.index("movies").getDocuments(query, TargetClassName.class);
+  client.index("books").getDocuments(query, TargetClassName.class);
 add_or_replace_documents_1: |-
   client.index("movies").addDocuments("[{"
     + "\"id\": 287947,"
