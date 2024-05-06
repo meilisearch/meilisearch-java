@@ -420,7 +420,7 @@ getting_started_add_documents_md: |-
   <dependency>
     <groupId>com.meilisearch.sdk</groupId>
     <artifactId>meilisearch-java</artifactId>
-    <version>0.11.8</version>
+    <version>0.11.9</version>
     <type>pom</type>
   </dependency>
   ```
@@ -428,7 +428,7 @@ getting_started_add_documents_md: |-
   **Gradle**
   Add the following line to the `dependencies` section of your `build.gradle`:
   ```groovy
-  implementation 'com.meilisearch.sdk:meilisearch-java:0.11.8'
+  implementation 'com.meilisearch.sdk:meilisearch-java:0.11.9'
   ```
 
   ```java
