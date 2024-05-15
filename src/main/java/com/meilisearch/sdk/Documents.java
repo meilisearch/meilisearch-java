@@ -154,14 +154,18 @@ class Documents {
      * @param uid Partial index identifier for the document
      * @param document String containing the document to add
      * @param primaryKey PrimaryKey of the document
+     * @param csvDelimiter CSV delimiter of the document
      * @return Meilisearch's TaskInfo API response
      * @throws MeilisearchException if the client request causes an error
      */
-    TaskInfo addDocuments(String uid, String document, String primaryKey)
+    TaskInfo addDocuments(String uid, String document, String primaryKey, String csvDelimiter)
             throws MeilisearchException {
         URLBuilder urlb = documentPath(uid);
         if (primaryKey != null) {
             urlb.addParameter("primaryKey", primaryKey);
+        }
+        if (csvDelimiter != null) {
+            urlb.addParameter("csvDelimiter", csvDelimiter);
         }
         return httpClient.post(urlb.getURL(), document, TaskInfo.class);
     }
@@ -175,11 +179,14 @@ class Documents {
      * @return Meilisearch's TaskInfo API response
      * @throws MeilisearchException if the client request causes an error
      */
-    TaskInfo updateDocuments(String uid, String document, String primaryKey)
+    TaskInfo updateDocuments(String uid, String document, String primaryKey, String csvDelimiter)
             throws MeilisearchException {
         URLBuilder urlb = documentPath(uid);
         if (primaryKey != null) {
             urlb.addParameter("primaryKey", primaryKey);
+        }
+        if (csvDelimiter != null) {
+            urlb.addParameter("csvDelimiter", csvDelimiter);
         }
         return httpClient.put(urlb.getURL(), document, TaskInfo.class);
     }
