@@ -602,4 +602,46 @@ public class SettingsHandler {
     private URLBuilder settingsPath(String uid) {
         return new URLBuilder("/indexes").addSubroute(uid).addSubroute("/settings");
     }
+
+    /**
+     * Gets the search cutoff value of the index
+     *
+     * @param uid Index identifier
+     * @return an integer of the search cutoff value
+     * @throws MeilisearchException if an error occurs
+     */
+    Integer getSearchCutoffMsSettings(String uid) throws MeilisearchException {
+        String response =
+                httpClient.get(
+                        settingsPath(uid).addSubroute("search-cutoff-ms").getURL(), String.class);
+        return response.equals("null") ? null : Integer.valueOf(response);
+    }
+
+    /**
+     * Updates the search cutoff value of the index
+     *
+     * @param uid Index identifier
+     * @param milliseconds an Integer that contains the new search cutoff value
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo updateSearchCutoffMsSettings(String uid, Integer milliseconds)
+            throws MeilisearchException {
+        return httpClient.put(
+                settingsPath(uid).addSubroute("search-cutoff-ms").getURL(),
+                milliseconds == null ? httpClient.jsonHandler.encode(milliseconds) : milliseconds,
+                TaskInfo.class);
+    }
+
+    /**
+     * Resets the search cutoff value of the index
+     *
+     * @param uid Index identifier
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo resetSearchCutoffMsSettings(String uid) throws MeilisearchException {
+        return httpClient.delete(
+                settingsPath(uid).addSubroute("search-cutoff-ms").getURL(), TaskInfo.class);
+    }
 }

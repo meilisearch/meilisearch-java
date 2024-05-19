@@ -1034,4 +1034,43 @@ public class Index implements Serializable {
         Index retrievedIndex = httpClient.get(requestQuery, Index.class);
         this.primaryKey = retrievedIndex.getPrimaryKey();
     }
+
+    /**
+     * Gets the search cutoff value of the index
+     *
+     * @return Integer search cutoff value in milliseconds
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/settings#get-search-cutoff">API
+     *     specification</a>
+     */
+    public Integer getSearchCutoffMsSettings() throws MeilisearchException {
+        return this.settingsHandler.getSearchCutoffMsSettings(this.uid);
+    }
+
+    /**
+     * Updates the search cutoff value of the index
+     *
+     * @param milliseconds An Integer: the search cutoff value in milliseconds.
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#update-search-cutoff">API
+     *     specification</a>
+     */
+    public TaskInfo updateSearchCutoffMsSettings(Integer milliseconds) throws MeilisearchException {
+        return this.settingsHandler.updateSearchCutoffMsSettings(this.uid, milliseconds);
+    }
+
+    /**
+     * Resets the search cutoff value of the index
+     *
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#reset-search-cutoff">API
+     *     specification</a>
+     */
+    public TaskInfo resetSearchCutoffMsSettings() throws MeilisearchException {
+        return this.settingsHandler.resetSearchCutoffMsSettings(this.uid);
+    }
 }
