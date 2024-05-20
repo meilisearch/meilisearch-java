@@ -1139,6 +1139,54 @@ public class SettingsTest extends AbstractIT {
         // "byWord"
     }
 
+    /** Tests of the search cutoff setting methods */
+    @Test
+    @DisplayName("Test get search cutoff ms settings by uid")
+    public void testGetSearchCutoffMsSettings() throws Exception {
+        Index index = createIndex("testGetSearchCutoffMsSettings");
+        Settings initialSettings = index.getSettings();
+        Integer initialSearchCutoffMs = index.getSearchCutoffMsSettings();
+
+        assertThat(initialSearchCutoffMs, is(equalTo(initialSettings.getSearchCutoffMs())));
+    }
+
+    @Test
+    @DisplayName("Test update search cutoff ms settings")
+    public void testUpdateSearchCutoffMsSettings() throws Exception {
+        Index index = createIndex("testUpdateSearchCutoffMsSettings");
+        Integer initialSearchCutoffMs = index.getSearchCutoffMsSettings();
+        Integer newSearchCutoffMs = 150;
+
+        index.waitForTask(index.updateSearchCutoffMsSettings(newSearchCutoffMs).getTaskUid());
+        Integer updatedSearchCutoffMs = index.getSearchCutoffMsSettings();
+
+        assertThat(updatedSearchCutoffMs, is(equalTo(newSearchCutoffMs)));
+        assertThat(updatedSearchCutoffMs, is(not(equalTo(initialSearchCutoffMs))));
+    }
+
+    @Test
+    @DisplayName("Test reset search cutoff ms settings")
+    public void testResetSearchCutoffMsSettings() throws Exception {
+        Index index = createIndex("testResetSearchCutoffMsSettings");
+        Integer initialSearchCutoffMs = index.getSearchCutoffMsSettings();
+        Integer newSearchCutoffMs = 150;
+
+        index.waitForTask(index.updateSearchCutoffMsSettings(newSearchCutoffMs).getTaskUid());
+        Integer updatedSearchCutoffMs = index.getSearchCutoffMsSettings();
+
+        index.waitForTask(index.resetSearchCutoffMsSettings().getTaskUid());
+        Integer SearchCutoffMsAfterReset = index.getSearchCutoffMsSettings();
+
+        assertThat(updatedSearchCutoffMs, is(equalTo(newSearchCutoffMs)));
+        assertThat(updatedSearchCutoffMs, is(not(equalTo(initialSearchCutoffMs))));
+        assertThat(SearchCutoffMsAfterReset, is(not(equalTo(updatedSearchCutoffMs))));
+        assertThat(
+                SearchCutoffMsAfterReset,
+                is(equalTo(initialSearchCutoffMs))); // Resetting search cutoff
+        // changes it back to the default
+        // null -> 1500ms
+    }
+
     private Index createIndex(String indexUid) throws Exception {
         Index index = client.index(indexUid);
         TaskInfo updateInfo = index.addDocuments(testData.getRaw());

@@ -166,7 +166,7 @@ update_settings_1: |-
   TypoTolerance typoTolerance = new TypoTolerance();
   typoTolerance.setMinWordSizeForTypos(minWordSizeTypos);
   settings.setTypoTolerance(typoTolerance);
-
+  settings.setSearchCutoffMs(150);
   client.index("movies").updateSettings(settings);
 reset_settings_1: |-
   client.index("movies").resetSettings();
@@ -298,6 +298,12 @@ update_proximity_precision_settings_1: |-
   client.index("books").updateProximityPrecisionSettings("byAttribute");
 reset_proximity_precision_settings_1: |-
   client.index("books").resetProximityPrecisionSettings();
+get_search_cutoff_1: |-
+  client.index("movies").getSearchCutoffMsSettings();
+update_search_cutoff_1: |-
+  client.index("movies").updateSearchCutoffMsSettings(150);
+reset_search_cutoff_1: |-
+  client.index("movies").resetSearchCutoffMsSettings();
 get_index_stats_1: |-
   client.index("movies").getStats();
 get_indexes_stats_1: |-

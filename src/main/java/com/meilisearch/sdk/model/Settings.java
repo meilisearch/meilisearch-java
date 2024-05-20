@@ -28,6 +28,7 @@ public class Settings {
     protected Faceting faceting;
     protected String[] dictionary;
     protected String proximityPrecision;
+    protected Integer searchCutoffMs;
 
     public Settings() {}
 }
