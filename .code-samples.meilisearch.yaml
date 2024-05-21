@@ -629,6 +629,12 @@ update_sortable_attributes_1: |-
   client.index("books").updateSortableAttributesSettings(new String[] {"price", "author"});
 reset_sortable_attributes_1: |-
   client.index("books").resetSortableAttributesSettings();
+facet_search_1: |-
+  FacetSearchRequest fsr = FacetSearchRequest.builder().facetName("genres").facetQuery("Drama").filter(new String[]{"rating > 3"}).build();
+  client.index("books").facetSearch(fsr);
+facet_search_3: |-
+  FacetSearchRequest fsr = FacetSearchRequest.builder().facetName("genres").facetQuery("c").build();
+  client.index("books").facetSearch(fsr);
 search_parameter_guide_sort_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("science fiction").sort(new String[] {"price:asc"}).build();
   client.index("search_parameter_guide_sort_1").search(searchRequest);
