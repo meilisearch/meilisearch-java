@@ -48,7 +48,7 @@ public class JacksonJsonHandler implements JsonHandler {
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters)
+    public <T> T decode(Object o, Class<T> targetClass, Class<?>... parameters)
             throws MeilisearchException {
         if (o == null) {
             throw new JsonDecodingException("Response to deserialize is null");
@@ -58,7 +58,7 @@ public class JacksonJsonHandler implements JsonHandler {
         }
         try {
             if (parameters == null || parameters.length == 0) {
-                return (T) mapper.readValue((String) o, targetClass);
+                return mapper.readValue((String) o, targetClass);
             } else {
                 return mapper.readValue(
                         (String) o,
