@@ -286,6 +286,20 @@ update_faceting_settings_1: |-
   client.index("books").updateFacetingSettings(newFaceting);
 reset_faceting_settings_1: |-
   client.index("books").resetFacetingSettings();
+get_separator_tokens_1: |-
+  client.index("articles").getSeparatorTokensSettings();
+update_separator_tokens_1: |-
+  String[] newSeparatorTokens = { "|", "&hellip;" };
+  client.index("articles").updateSeparatorTokensSettings(newSeparatorTokens);
+reset_separator_tokens_1: |-
+  client.index("articles").resetSeparatorTokensSettings();
+get_non_separator_tokens_1: |-
+  client.index("articles").getNonSeparatorTokensSettings();
+update_non_separator_tokens_1: |-
+  String[] newSeparatorTokens = { "@", "#" };
+  client.index("articles").updateNonSeparatorTokensSettings(newSeparatorTokens);
+reset_non_separator_tokens_1: |-
+    client.index("articles").resetNonSeparatorTokensSettings();
 get_dictionary_1: |-
   client.index("books").getDictionarySettings();
 update_dictionary_1: |-

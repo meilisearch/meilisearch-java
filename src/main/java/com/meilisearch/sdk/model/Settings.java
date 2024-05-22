@@ -29,6 +29,8 @@ public class Settings {
     protected String[] dictionary;
     protected String proximityPrecision;
     protected Integer searchCutoffMs;
+    protected String[] separatorTokens;
+    protected String[] nonSeparatorTokens;
 
     public Settings() {}
 }

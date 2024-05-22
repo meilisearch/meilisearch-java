@@ -1194,4 +1194,131 @@ public class SettingsTest extends AbstractIT {
 
         return index;
     }
+
+    /** Tests of the separator tokens setting methods */
+    @Test
+    @DisplayName("Test get separator tokens settings by uid")
+    public void testGetSeparatorTokensSettings() throws Exception {
+        Index index = createIndex("testGetSeparatorTokensSettings");
+        Settings initialSettings = index.getSettings();
+        String[] initialSeparatorTokens = index.getSeparatorTokensSettings();
+
+        assertThat(
+                initialSeparatorTokens,
+                is(arrayWithSize(initialSettings.getSeparatorTokens().length)));
+        assertThat(initialSeparatorTokens, is(equalTo(initialSettings.getSeparatorTokens())));
+    }
+
+    @Test
+    @DisplayName("Test update separator tokens settings")
+    public void testUpdateSeparatorTokensSettings() throws Exception {
+        Index index = createIndex("testUpdateSeparatorTokensSettings");
+        String[] initialSeparatorTokens = index.getSeparatorTokensSettings();
+
+        String[] newSeparatorTokens = {"|", "&hellip;"};
+
+        index.waitForTask(index.updateSeparatorTokensSettings(newSeparatorTokens).getTaskUid());
+        String[] updatedSeparatorTokens = index.getSeparatorTokensSettings();
+
+        Arrays.sort(newSeparatorTokens);
+        Arrays.sort(updatedSeparatorTokens);
+
+        assertThat(updatedSeparatorTokens, is(arrayWithSize(newSeparatorTokens.length)));
+        assertThat(updatedSeparatorTokens, is(equalTo(newSeparatorTokens)));
+        assertThat(updatedSeparatorTokens, is(not(arrayWithSize(initialSeparatorTokens.length))));
+    }
+
+    @Test
+    @DisplayName("Test reset separator tokens settings")
+    public void testResetSeparatorTokensSettings() throws Exception {
+        Index index = createIndex("testResetSeparatorTokensSettings");
+        String[] initialSeparatorTokens = index.getSeparatorTokensSettings();
+        String[] newSeparatorTokens = {"|", "&hellip;"};
+
+        index.waitForTask(index.updateSeparatorTokensSettings(newSeparatorTokens).getTaskUid());
+        String[] updatedSeparatorTokens = index.getSeparatorTokensSettings();
+
+        index.waitForTask(index.resetSeparatorTokensSettings().getTaskUid());
+        String[] separatorTokensAfterReset = index.getSeparatorTokensSettings();
+
+        Arrays.sort(initialSeparatorTokens);
+        Arrays.sort(newSeparatorTokens);
+        Arrays.sort(updatedSeparatorTokens);
+        Arrays.sort(separatorTokensAfterReset);
+
+        assertThat(updatedSeparatorTokens, is(arrayWithSize(newSeparatorTokens.length)));
+        assertThat(updatedSeparatorTokens, is(equalTo(newSeparatorTokens)));
+        assertThat(updatedSeparatorTokens, is(not(arrayWithSize(initialSeparatorTokens.length))));
+        assertThat(
+                separatorTokensAfterReset, is(not(arrayWithSize(updatedSeparatorTokens.length))));
+        assertThat(separatorTokensAfterReset, is(arrayWithSize(initialSeparatorTokens.length)));
+        assertThat(separatorTokensAfterReset, is(equalTo(initialSeparatorTokens)));
+    }
+
+    /** Tests of the non-separator tokens setting methods */
+    @Test
+    @DisplayName("Test get non-separator tokens settings by uid")
+    public void testGetNonSeparatorTokensSettings() throws Exception {
+        Index index = createIndex("testGetNonSeparatorTokensSettings");
+        Settings initialSettings = index.getSettings();
+        String[] initialNonSeparatorTokens = index.getNonSeparatorTokensSettings();
+
+        assertThat(
+                initialNonSeparatorTokens,
+                is(arrayWithSize(initialSettings.getNonSeparatorTokens().length)));
+        assertThat(initialNonSeparatorTokens, is(equalTo(initialSettings.getNonSeparatorTokens())));
+    }
+
+    @Test
+    @DisplayName("Test update non-separator tokens settings")
+    public void testUpdateNonSeparatorTokensSettings() throws Exception {
+        Index index = createIndex("testUpdateNonSeparatorTokensSettings");
+        String[] initialNonSeparatorTokens = index.getNonSeparatorTokensSettings();
+        String[] newNonSeparatorTokens = {"@", "#"};
+
+        index.waitForTask(
+                index.updateNonSeparatorTokensSettings(newNonSeparatorTokens).getTaskUid());
+        String[] updatedNonSeparatorTokens = index.getNonSeparatorTokensSettings();
+
+        Arrays.sort(newNonSeparatorTokens);
+        Arrays.sort(updatedNonSeparatorTokens);
+
+        assertThat(updatedNonSeparatorTokens, is(arrayWithSize(newNonSeparatorTokens.length)));
+        assertThat(updatedNonSeparatorTokens, is(equalTo(newNonSeparatorTokens)));
+        assertThat(
+                updatedNonSeparatorTokens,
+                is(not(arrayWithSize(initialNonSeparatorTokens.length))));
+    }
+
+    @Test
+    @DisplayName("Test reset non-separator tokens settings")
+    public void testResetNonSeparatorTokensSettings() throws Exception {
+        Index index = createIndex("testResetNonSeparatorTokensSettings");
+        String[] initialNonSeparatorTokens = index.getNonSeparatorTokensSettings();
+        String[] newNonSeparatorTokens = {"@", "#"};
+
+        index.waitForTask(
+                index.updateNonSeparatorTokensSettings(newNonSeparatorTokens).getTaskUid());
+        String[] updatedNonSeparatorTokens = index.getNonSeparatorTokensSettings();
+
+        index.waitForTask(index.resetNonSeparatorTokensSettings().getTaskUid());
+        String[] nonSeparatorTokensAfterReset = index.getNonSeparatorTokensSettings();
+
+        Arrays.sort(initialNonSeparatorTokens);
+        Arrays.sort(newNonSeparatorTokens);
+        Arrays.sort(updatedNonSeparatorTokens);
+        Arrays.sort(nonSeparatorTokensAfterReset);
+
+        assertThat(updatedNonSeparatorTokens, is(arrayWithSize(newNonSeparatorTokens.length)));
+        assertThat(updatedNonSeparatorTokens, is(equalTo(newNonSeparatorTokens)));
+        assertThat(
+                updatedNonSeparatorTokens,
+                is(not(arrayWithSize(initialNonSeparatorTokens.length))));
+        assertThat(
+                nonSeparatorTokensAfterReset,
+                is(not(arrayWithSize(updatedNonSeparatorTokens.length))));
+        assertThat(
+                nonSeparatorTokensAfterReset, is(arrayWithSize(initialNonSeparatorTokens.length)));
+        assertThat(nonSeparatorTokensAfterReset, is(equalTo(initialNonSeparatorTokens)));
+    }
 }

@@ -644,4 +644,84 @@ public class SettingsHandler {
         return httpClient.delete(
                 settingsPath(uid).addSubroute("search-cutoff-ms").getURL(), TaskInfo.class);
     }
+
+    /**
+     * Gets the separator tokens of the index
+     *
+     * @param uid Index identifier
+     * @return separator tokens of a given uid as String
+     * @throws MeilisearchException if an error occurs
+     */
+    public String[] getSeparatorTokensSettings(String uid) {
+        return httpClient.get(
+                settingsPath(uid).addSubroute("separator-tokens").getURL(), String[].class);
+    }
+
+    /**
+     * Updates the separator tokens settings of the index
+     *
+     * @param uid Index identifier
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo updateSeparatorTokensSettings(String uid, String[] separatorTokens) {
+        return httpClient.put(
+                settingsPath(uid).addSubroute("separator-tokens").getURL(),
+                separatorTokens == null
+                        ? httpClient.jsonHandler.encode(separatorTokens)
+                        : separatorTokens,
+                TaskInfo.class);
+    }
+
+    /**
+     * Resets the separator tokens settings of the index
+     *
+     * @param uid Index identifier
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo resetSeparatorTokensSettings(String uid) {
+        return httpClient.delete(
+                settingsPath(uid).addSubroute("separator-tokens").getURL(), TaskInfo.class);
+    }
+
+    /**
+     * Gets the non-separator tokens of the index
+     *
+     * @param uid Index identifier
+     * @return non-separator tokens of a given uid as String
+     * @throws MeilisearchException if an error occurs
+     */
+    public String[] getNonSeparatorTokensSettings(String uid) {
+        return httpClient.get(
+                settingsPath(uid).addSubroute("non-separator-tokens").getURL(), String[].class);
+    }
+
+    /**
+     * Updates the non-separator tokens settings of the index
+     *
+     * @param uid Index identifier
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo updateNonSeparatorTokensSettings(String uid, String[] separatorTokens) {
+        return httpClient.put(
+                settingsPath(uid).addSubroute("non-separator-tokens").getURL(),
+                separatorTokens == null
+                        ? httpClient.jsonHandler.encode(separatorTokens)
+                        : separatorTokens,
+                TaskInfo.class);
+    }
+
+    /**
+     * Resets the non-separator tokens settings of the index
+     *
+     * @param uid Index identifier
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo resetNonSeparatorTokensSettings(String uid) {
+        return httpClient.delete(
+                settingsPath(uid).addSubroute("non-separator-tokens").getURL(), TaskInfo.class);
+    }
 }
