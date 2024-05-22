@@ -283,6 +283,10 @@ get_faceting_settings_1: |-
 update_faceting_settings_1: |-
   Faceting newFaceting = new Faceting();
   newFaceting.setMaxValuesPerFacet(2);
+  HashMap<String, FacetSortValue> facetSortValues = new HashMap<>();
+  facetSortValues.put("*", FacetSortValue.ALPHA);
+  facetSortValues.put("genres", FacetSortValue.COUNT);
+  newFaceting.setSortFacetValuesBy(facetSortValues);
   client.index("books").updateFacetingSettings(newFaceting);
 reset_faceting_settings_1: |-
   client.index("books").resetFacetingSettings();
@@ -532,6 +536,9 @@ getting_started_configure_settings: |-
 getting_started_faceting: |-
   Faceting newFaceting = new Faceting();
   newFaceting.setMaxValuesPerFacet(2);
+  HashMap<String, FacetSortValue> facetSortValues = new HashMap<>();
+  facetSortValues.put("*", FacetSortValue.COUNT);
+  newFaceting.setSortFacetValuesBy(facetSortValues);
   client.index("movies").updateFacetingSettings(newFaceting);
 getting_started_pagination: |-
   Pagination newPagination = new Pagination();
@@ -629,6 +636,12 @@ update_sortable_attributes_1: |-
   client.index("books").updateSortableAttributesSettings(new String[] {"price", "author"});
 reset_sortable_attributes_1: |-
   client.index("books").resetSortableAttributesSettings();
+facet_search_2: |-
+  Faceting newFaceting = new Faceting();
+  HashMap<String, FacetSortValue> facetSortValues = new HashMap<>();
+  facetSortValues.put("genres", FacetSortValue.COUNT);
+  newFaceting.setSortFacetValuesBy(facetSortValues);
+  client.index("books").updateFacetingSettings(newFaceting);
 search_parameter_guide_sort_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("science fiction").sort(new String[] {"price:asc"}).build();
   client.index("search_parameter_guide_sort_1").search(searchRequest);
