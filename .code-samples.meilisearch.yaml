@@ -630,7 +630,7 @@ update_sortable_attributes_1: |-
 reset_sortable_attributes_1: |-
   client.index("books").resetSortableAttributesSettings();
 facet_search_1: |-
-  FacetSearchRequest fsr = FacetSearchRequest.builder().facetName("genres").facetQuery("Drama").filter(new String[]{"rating > 3"}).build();
+  FacetSearchRequest fsr = FacetSearchRequest.builder().facetName("genres").facetQuery("fiction").filter(new String[]{"rating > 3"}).build();
   client.index("books").facetSearch(fsr);
 facet_search_3: |-
   FacetSearchRequest fsr = FacetSearchRequest.builder().facetName("genres").facetQuery("c").build();
