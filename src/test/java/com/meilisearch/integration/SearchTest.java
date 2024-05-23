@@ -3,6 +3,7 @@ package com.meilisearch.integration;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasLength;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
@@ -317,6 +318,28 @@ public class SearchTest extends AbstractIT {
 
         assertThat(searchResult.getHits(), hasSize(20));
         assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(21)));
+    }
+
+    /** Test search with show ranking score */
+    @Test
+    public void testSearchWithShowRankingScore() throws Exception {
+        String indexUid = "SearchRankingScore";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SearchRequest searchRequest =
+                SearchRequest.builder().q("and").showRankingScore(true).build();
+
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+
+        assertThat(resGson.hits, is(arrayWithSize(20)));
+        assertThat(resGson.hits[0].getRankingScore(), instanceOf(Double.class));
+        assertThat(resGson.hits[0].getRankingScore(), is(greaterThanOrEqualTo(0.0)));
     }
 
     /** Test search with phrase */

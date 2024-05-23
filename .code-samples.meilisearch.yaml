@@ -394,6 +394,9 @@ search_parameter_guide_matching_strategy_2: |-
 search_parameter_guide_attributes_to_search_on_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("adventure").attributesToSearchOn(new String[] {"overview"});
   client.index("movies").searchRequest(searchRequest);
+search_parameter_guide_show_ranking_score_1: |-
+  SearchRequest searchRequest =  SearchRequest.builder().q("dragon").showRankingScore(true).build();
+  client.index("movies").search(searchRequest);
 synonyms_guide_1: |-
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("great", new String[] {"fantastic"});
@@ -636,12 +639,18 @@ update_sortable_attributes_1: |-
   client.index("books").updateSortableAttributesSettings(new String[] {"price", "author"});
 reset_sortable_attributes_1: |-
   client.index("books").resetSortableAttributesSettings();
+facet_search_1: |-
+  FacetSearchRequest fsr = FacetSearchRequest.builder().facetName("genres").facetQuery("fiction").filter(new String[]{"rating > 3"}).build();
+  client.index("books").facetSearch(fsr);
 facet_search_2: |-
   Faceting newFaceting = new Faceting();
   HashMap<String, FacetSortValue> facetSortValues = new HashMap<>();
   facetSortValues.put("genres", FacetSortValue.COUNT);
   newFaceting.setSortFacetValuesBy(facetSortValues);
   client.index("books").updateFacetingSettings(newFaceting);
+facet_search_3: |-
+  FacetSearchRequest fsr = FacetSearchRequest.builder().facetName("genres").facetQuery("c").build();
+  client.index("books").facetSearch(fsr);
 search_parameter_guide_sort_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("science fiction").sort(new String[] {"price:asc"}).build();
   client.index("search_parameter_guide_sort_1").search(searchRequest);
