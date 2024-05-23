@@ -1,7 +1,21 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
-import com.meilisearch.sdk.model.*;
+import com.meilisearch.sdk.model.DocumentQuery;
+import com.meilisearch.sdk.model.DocumentsQuery;
+import com.meilisearch.sdk.model.FacetSearchable;
+import com.meilisearch.sdk.model.Faceting;
+import com.meilisearch.sdk.model.IndexStats;
+import com.meilisearch.sdk.model.Pagination;
+import com.meilisearch.sdk.model.Results;
+import com.meilisearch.sdk.model.SearchResult;
+import com.meilisearch.sdk.model.Searchable;
+import com.meilisearch.sdk.model.Settings;
+import com.meilisearch.sdk.model.Task;
+import com.meilisearch.sdk.model.TaskInfo;
+import com.meilisearch.sdk.model.TasksQuery;
+import com.meilisearch.sdk.model.TasksResults;
+import com.meilisearch.sdk.model.TypoTolerance;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +37,7 @@ public class Index implements Serializable {
     @ToString.Exclude protected transient Documents documents;
     @ToString.Exclude protected transient TasksHandler tasksHandler;
     @ToString.Exclude protected transient Search search;
+    @ToString.Exclude protected transient FacetSearch facetSearch;
     @ToString.Exclude protected transient SettingsHandler settingsHandler;
     @ToString.Exclude protected transient InstanceHandler instanceHandler;
 
@@ -36,6 +51,7 @@ public class Index implements Serializable {
         this.documents = new Documents(config);
         this.tasksHandler = new TasksHandler(config);
         this.search = new Search(config);
+        this.facetSearch = new FacetSearch(config);
         this.settingsHandler = new SettingsHandler(config);
         this.instanceHandler = new InstanceHandler(config);
     }
@@ -409,6 +425,32 @@ public class Index implements Serializable {
      */
     public Searchable search(SearchRequest searchRequest) throws MeilisearchException {
         return this.search.search(this.uid, searchRequest);
+    }
+
+    /**
+     * Performs a Facet Search in the index
+     *
+     * <p>Ensure that FacetName is set in the FacetSearchRequest and note that facet search requires
+     * attributes to the filterableAttributes list.
+     *
+     * @param facetSearchRequest FacetSearchRequest FacetSearchRequest
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/facet_search#perform-a-facet-search">API
+     *     specification</a>
+     * @see Index#getFilterableAttributesSettings() getFilterableAttributesSettings
+     * @see Index#updateFilterableAttributesSettings(String[]) updateFilterableAttributesSettings
+     * @since 1.3
+     */
+    public FacetSearchable facetSearch(FacetSearchRequest facetSearchRequest)
+            throws MeilisearchException {
+        return this.facetSearch.facetSearch(this.uid, facetSearchRequest);
+    }
+
+    public String rawFacetSearch(FacetSearchRequest facetSearchRequest)
+            throws MeilisearchException {
+        return this.facetSearch.rawSearch(this.uid, facetSearchRequest);
     }
 
     public String rawSearch(String query) throws MeilisearchException {
