@@ -143,7 +143,7 @@ public class TasksHandler {
         long elapsedTime = 0;
 
         while (status == null
-                || (!status.equals(TaskStatus.SUCCEEDED) && !status.equals(TaskStatus.FAILED))) {
+                || (status.equals(TaskStatus.ENQUEUED) || status.equals(TaskStatus.PROCESSING))) {
             if (elapsedTime >= timeoutInMs) {
                 throw new MeilisearchTimeoutException();
             }
