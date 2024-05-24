@@ -26,6 +26,7 @@ import com.meilisearch.sdk.model.Searchable;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
+import java.util.HashMap;
 import java.util.HashSet;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -340,6 +341,32 @@ public class SearchTest extends AbstractIT {
         assertThat(resGson.hits, is(arrayWithSize(20)));
         assertThat(resGson.hits[0].getRankingScore(), instanceOf(Double.class));
         assertThat(resGson.hits[0].getRankingScore(), is(greaterThanOrEqualTo(0.0)));
+    }
+
+    /** Test search with show ranking score details */
+    @Test
+    public void testSearchWithShowRankingScoreDetails() throws Exception {
+        String indexUid = "SearchRankingScoreDetails";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SearchRequest searchRequest =
+                SearchRequest.builder().q("and").showRankingScoreDetails(true).build();
+
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+
+        assertThat(resGson.hits, is(arrayWithSize(20)));
+        assertThat(resGson.hits[0].getRankingScoreDetails(), is(instanceOf(HashMap.class)));
+        assertThat(resGson.hits[0].getRankingScoreDetails().get("words"), is(not(nullValue())));
+        assertThat(resGson.hits[0].getRankingScoreDetails().get("typo"), is(not(nullValue())));
+        assertThat(resGson.hits[0].getRankingScoreDetails().get("proximity"), is(not(nullValue())));
+        assertThat(resGson.hits[0].getRankingScoreDetails().get("exactness"), is(not(nullValue())));
+        assertThat(resGson.hits[0].getRankingScoreDetails().get("attribute"), is(not(nullValue())));
     }
 
     /** Test search with phrase */

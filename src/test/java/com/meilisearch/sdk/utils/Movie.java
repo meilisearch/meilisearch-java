@@ -14,6 +14,7 @@ public class Movie {
     private Movie _formatted;
     private HashMap<String, List<Match>> _matchesPosition;
     private Double _rankingScore;
+    private HashMap<String, Object> _rankingScoreDetails;
 
     public class Match {
         public int start;
@@ -122,6 +123,10 @@ public class Movie {
 
     public Double getRankingScore() {
         return _rankingScore;
+    }
+
+    public HashMap<String, Object> getRankingScoreDetails() {
+        return _rankingScoreDetails;
     }
 
     public Movie setMatchesInfo(HashMap<String, List<Match>> _matchesPosition) {
