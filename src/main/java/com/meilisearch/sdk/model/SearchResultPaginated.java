@@ -21,6 +21,7 @@ public class SearchResultPaginated implements Searchable {
     protected int totalPages;
     ArrayList<HashMap<String, Object>> hits;
     Object facetDistribution;
+    HashMap<String, FacetRating> facetStats;
     int processingTimeMs;
     String query;
 

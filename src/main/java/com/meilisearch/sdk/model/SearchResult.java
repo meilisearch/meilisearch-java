@@ -16,6 +16,7 @@ import lombok.ToString;
 public class SearchResult implements Searchable {
     ArrayList<HashMap<String, Object>> hits;
     Object facetDistribution;
+    HashMap<String, FacetRating> facetStats;
     int processingTimeMs;
     String query;
     int offset;
