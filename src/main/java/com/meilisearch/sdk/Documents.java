@@ -6,6 +6,7 @@ import com.meilisearch.sdk.model.DocumentQuery;
 import com.meilisearch.sdk.model.DocumentsQuery;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.TaskInfo;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -214,6 +215,25 @@ class Documents {
     TaskInfo deleteDocuments(String uid, List<String> identifiers) throws MeilisearchException {
         URLBuilder urlb = documentPath(uid).addSubroute("delete-batch");
         return httpClient.post(urlb.getURL(), identifiers, TaskInfo.class);
+    }
+
+    /**
+     * Deletes the documents matching the given filter
+     *
+     * @param uid Partial index identifier for the requested documents
+     * @param filter filter to match the documents on
+     * @return Meilisearch's TaskInfo API response
+     * @throws MeilisearchException if the client request causes an error
+     */
+    TaskInfo deleteDocumentsByFilter(String uid, String filter) throws MeilisearchException {
+        if (filter == null || filter.isEmpty()) {
+            throw new MeilisearchException(
+                    "Null or blank filter not allowed while deleting documents");
+        }
+        HashMap<String, String> filterMap = new HashMap<>();
+        filterMap.put("filter", filter);
+        URLBuilder urlb = documentPath(uid).addSubroute("delete");
+        return httpClient.post(urlb.getURL(), filterMap, TaskInfo.class);
     }
 
     /**

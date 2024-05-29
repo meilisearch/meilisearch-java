@@ -381,9 +381,26 @@ public class Index implements Serializable {
      * @see <a
      *     href="https://www.meilisearch.com/docs/reference/api/documents#delete-documents-by-batch">API
      *     specification</a>
+     * @see com.meilisearch.sdk.Index#deleteDocumentsByFilter(String) Delete documents using filter
      */
+    @Deprecated
     public TaskInfo deleteDocuments(List<String> documentsIdentifiers) throws MeilisearchException {
         return this.documents.deleteDocuments(this.uid, documentsIdentifiers);
+    }
+
+    /**
+     * Deletes list of documents from the index using the given filter
+     *
+     * @param filter filter to match the documents to delete
+     * @return TaskInfo Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/documents#delete-documents-by-filter">API
+     *     specification</a>
+     * @since 1.2
+     */
+    public TaskInfo deleteDocumentsByFilter(String filter) throws MeilisearchException {
+        return this.documents.deleteDocumentsByFilter(this.uid, filter);
     }
 
     /**

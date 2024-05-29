@@ -61,6 +61,9 @@ delete_documents_by_batch_1: |-
     "437035",
     "363869"
   }));
+delete_documents_by_filter_1: |-
+  String filter = "genres = action OR genres = adventure";
+  client.index("movies").deleteDocumentsByFilter(filter);
 search_post_1: |-
   client.index("movies").search("American ninja");
 get_all_tasks_1: |-

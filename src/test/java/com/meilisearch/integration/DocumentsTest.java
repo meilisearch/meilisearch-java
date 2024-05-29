@@ -668,6 +668,45 @@ public class DocumentsTest extends AbstractIT {
                 movies[1].getId(), movies[4].getId(), movies[10].getId(), movies[16].getId());
     }
 
+    /** Test deleteDocumentsByFilter */
+    @Test
+    public void testDeleteDocumentsByFilter() throws Exception {
+
+        String indexUid = "DeleteDocumentsByFilter";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+        index.waitForTask(task.getTaskUid());
+
+        Results<Movie> result = index.getDocuments(Movie.class);
+        Movie[] movies = result.getResults();
+        assertThat(movies, is(arrayWithSize(20)));
+
+        index.waitForTask(
+                index.updateFilterableAttributesSettings(new String[] {"genres"}).getTaskUid());
+
+        String deleteFilter = "genres = action OR genres = adventure";
+
+        task = index.deleteDocumentsByFilter(deleteFilter);
+        index.waitForTask(task.getTaskUid());
+
+        movies = index.getDocuments(Movie.class).getResults();
+
+        boolean noActionOrAdventureMovie =
+                Arrays.stream(movies)
+                        .noneMatch(
+                                movie ->
+                                        Arrays.stream(movie.getGenres())
+                                                .anyMatch(
+                                                        genre ->
+                                                                genre.equals("action")
+                                                                        || genre.equals(
+                                                                                "adventure")));
+
+        assertThat(noActionOrAdventureMovie, is(equalTo(true)));
+    }
+
     /** Test deleteAllDocuments */
     @Test
     public void testDeleteAllDocuments() throws Exception {
