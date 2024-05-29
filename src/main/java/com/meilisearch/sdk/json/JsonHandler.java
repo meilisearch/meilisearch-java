@@ -19,6 +19,6 @@ public interface JsonHandler {
      * @return the deserialized object
      * @throws MeilisearchException wrapped exceptions of the used json library
      */
-    <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters)
+    <T> T decode(Object o, Class<T> targetClass, Class<?>... parameters)
             throws MeilisearchException;
 }

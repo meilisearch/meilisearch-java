@@ -34,7 +34,7 @@ public class GsonJsonHandler implements JsonHandler {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T decode(Object o, Class<?> targetClass, Class<?>... parameters)
+    public <T> T decode(Object o, Class<T> targetClass, Class<?>... parameters)
             throws MeilisearchException {
         if (o == null) {
             throw new JsonDecodingException("Response to deserialize is null");
@@ -44,10 +44,10 @@ public class GsonJsonHandler implements JsonHandler {
         }
         try {
             if (parameters == null || parameters.length == 0) {
-                return gson.<T>fromJson((String) o, targetClass);
+                return gson.fromJson((String) o, targetClass);
             } else {
                 TypeToken<?> parameterized = TypeToken.getParameterized(targetClass, parameters);
-                return gson.<T>fromJson((String) o, parameterized.getType());
+                return gson.fromJson((String) o, parameterized.getType());
             }
         } catch (JsonSyntaxException e) {
             throw new JsonDecodingException(e);
