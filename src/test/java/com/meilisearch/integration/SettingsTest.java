@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.emptyArray;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
@@ -15,6 +16,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.model.FacetSortValue;
 import com.meilisearch.sdk.model.Faceting;
 import com.meilisearch.sdk.model.Pagination;
 import com.meilisearch.sdk.model.Settings;
@@ -1051,6 +1053,11 @@ public class SettingsTest extends AbstractIT {
 
         assertThat(initialSettings.getFaceting().getMaxValuesPerFacet(), is(equalTo(100)));
         assertThat(initialFaceting.getMaxValuesPerFacet(), is(notNullValue()));
+        assertThat(initialFaceting.getSortFacetValuesBy(), is(notNullValue()));
+        assertThat(initialSettings.getFaceting().getSortFacetValuesBy(), instanceOf(HashMap.class));
+        assertThat(
+                initialSettings.getFaceting().getSortFacetValuesBy().get("*"),
+                is(FacetSortValue.ALPHA));
     }
 
     @Test
@@ -1060,12 +1067,17 @@ public class SettingsTest extends AbstractIT {
         Faceting newFaceting = new Faceting();
 
         int MaxValuesPerFacetTypos = 200;
+        HashMap<String, FacetSortValue> facetSortValues = new HashMap<>();
+        facetSortValues.put("*", FacetSortValue.COUNT);
 
         newFaceting.setMaxValuesPerFacet(MaxValuesPerFacetTypos);
+        newFaceting.setSortFacetValuesBy(facetSortValues);
         index.waitForTask(index.updateFacetingSettings(newFaceting).getTaskUid());
         Faceting updatedFaceting = index.getFacetingSettings();
 
         assertThat(updatedFaceting.getMaxValuesPerFacet(), is(equalTo(200)));
+        assertThat(updatedFaceting.getSortFacetValuesBy(), instanceOf(HashMap.class));
+        assertThat(updatedFaceting.getSortFacetValuesBy().get("*"), is(FacetSortValue.COUNT));
     }
 
     @Test
@@ -1077,7 +1089,10 @@ public class SettingsTest extends AbstractIT {
         Faceting newFaceting = new Faceting();
 
         int MaxValuesPerFacetTypos = 200;
+        HashMap<String, FacetSortValue> facetSortValues = new HashMap<>();
+        facetSortValues.put("*", FacetSortValue.COUNT);
         newFaceting.setMaxValuesPerFacet(MaxValuesPerFacetTypos);
+        newFaceting.setSortFacetValuesBy(facetSortValues);
         index.waitForTask(index.updateFacetingSettings(newFaceting).getTaskUid());
         Faceting updatedFaceting = index.getFacetingSettings();
 
@@ -1087,6 +1102,10 @@ public class SettingsTest extends AbstractIT {
         assertThat(initialFaceting.getMaxValuesPerFacet(), is(equalTo(100)));
         assertThat(updatedFaceting.getMaxValuesPerFacet(), is(equalTo(200)));
         assertThat(facetingAfterReset.getMaxValuesPerFacet(), is(equalTo(100)));
+
+        assertThat(initialFaceting.getSortFacetValuesBy().get("*"), is(FacetSortValue.ALPHA));
+        assertThat(updatedFaceting.getSortFacetValuesBy().get("*"), is(FacetSortValue.COUNT));
+        assertThat(facetingAfterReset.getSortFacetValuesBy().get("*"), is(FacetSortValue.ALPHA));
     }
 
     /** Tests of the proximity precision setting methods */

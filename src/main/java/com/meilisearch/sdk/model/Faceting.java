@@ -1,5 +1,6 @@
 package com.meilisearch.sdk.model;
 
+import java.util.HashMap;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,6 +8,7 @@ import lombok.Setter;
 @Getter
 public class Faceting {
     protected int maxValuesPerFacet;
+    protected HashMap<String, FacetSortValue> sortFacetValuesBy;
 
     public Faceting() {}
 }

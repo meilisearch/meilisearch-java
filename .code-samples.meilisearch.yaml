@@ -286,6 +286,10 @@ get_faceting_settings_1: |-
 update_faceting_settings_1: |-
   Faceting newFaceting = new Faceting();
   newFaceting.setMaxValuesPerFacet(2);
+  HashMap<String, FacetSortValue> facetSortValues = new HashMap<>();
+  facetSortValues.put("*", FacetSortValue.ALPHA);
+  facetSortValues.put("genres", FacetSortValue.COUNT);
+  newFaceting.setSortFacetValuesBy(facetSortValues);
   client.index("books").updateFacetingSettings(newFaceting);
 reset_faceting_settings_1: |-
   client.index("books").resetFacetingSettings();
@@ -555,6 +559,9 @@ getting_started_configure_settings: |-
 getting_started_faceting: |-
   Faceting newFaceting = new Faceting();
   newFaceting.setMaxValuesPerFacet(2);
+  HashMap<String, FacetSortValue> facetSortValues = new HashMap<>();
+  facetSortValues.put("*", FacetSortValue.COUNT);
+  newFaceting.setSortFacetValuesBy(facetSortValues);
   client.index("movies").updateFacetingSettings(newFaceting);
 getting_started_pagination: |-
   Pagination newPagination = new Pagination();
@@ -655,6 +662,12 @@ reset_sortable_attributes_1: |-
 facet_search_1: |-
   FacetSearchRequest fsr = FacetSearchRequest.builder().facetName("genres").facetQuery("fiction").filter(new String[]{"rating > 3"}).build();
   client.index("books").facetSearch(fsr);
+facet_search_2: |-
+  Faceting newFaceting = new Faceting();
+  HashMap<String, FacetSortValue> facetSortValues = new HashMap<>();
+  facetSortValues.put("genres", FacetSortValue.COUNT);
+  newFaceting.setSortFacetValuesBy(facetSortValues);
+  client.index("books").updateFacetingSettings(newFaceting);
 facet_search_3: |-
   FacetSearchRequest fsr = FacetSearchRequest.builder().facetName("genres").facetQuery("c").build();
   client.index("books").facetSearch(fsr);
