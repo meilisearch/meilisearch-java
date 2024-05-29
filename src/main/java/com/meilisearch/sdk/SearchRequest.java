@@ -38,6 +38,7 @@ public class SearchRequest {
     protected Integer page;
     protected Integer hitsPerPage;
     protected Boolean showRankingScore;
+    protected Boolean showRankingScoreDetails;
 
     /**
      * Constructor for SearchRequest for building search queries with the default values: offset: 0,
@@ -96,7 +97,8 @@ public class SearchRequest {
                         .putOpt("attributesToSearchOn", this.attributesToSearchOn)
                         .putOpt("filter", this.filter)
                         .putOpt("filter", this.filterArray)
-                        .putOpt("showRankingScore", this.showRankingScore);
+                        .putOpt("showRankingScore", this.showRankingScore)
+                        .putOpt("showRankingScoreDetails", this.showRankingScoreDetails);
 
         return jsonObject.toString();
     }

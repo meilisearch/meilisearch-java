@@ -32,6 +32,7 @@ public class IndexSearchRequest {
     protected Integer page;
     protected Integer hitsPerPage;
     protected Boolean showRankingScore;
+    protected Boolean showRankingScoreDetails;
 
     /**
      * Constructor for MultiSearchRequest for building search queries with the default values:
@@ -89,7 +90,8 @@ public class IndexSearchRequest {
                         .putOpt("attributesToHighlight", this.attributesToHighlight)
                         .putOpt("filter", this.filter)
                         .putOpt("filter", this.filterArray)
-                        .putOpt("showRankingScore", this.showRankingScore);
+                        .putOpt("showRankingScore", this.showRankingScore)
+                        .putOpt("showRankingScoreDetails", this.showRankingScoreDetails);
 
         return jsonObject.toString();
     }
