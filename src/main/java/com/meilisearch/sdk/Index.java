@@ -948,6 +948,88 @@ public class Index implements Serializable {
     }
 
     /**
+     * Gets the separator tokens of the index
+     *
+     * @return separator tokens of a given uid as String
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#get-separator-tokens">API
+     *     specification</a>
+     */
+    public String[] getSeparatorTokensSettings() throws MeilisearchException {
+        return this.settingsHandler.getSeparatorTokensSettings(this.uid);
+    }
+
+    /**
+     * Updates the separator tokens settings of the index
+     *
+     * @param separatorTokens An array of strings that contains the separator tokens.
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#update-separator-tokens">API
+     *     specification</a>
+     */
+    public TaskInfo updateSeparatorTokensSettings(String[] separatorTokens)
+            throws MeilisearchException {
+        return this.settingsHandler.updateSeparatorTokensSettings(this.uid, separatorTokens);
+    }
+
+    /**
+     * Resets the separator tokens settings of the index
+     *
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#reset-separator-tokens">API
+     *     specification</a>
+     */
+    public TaskInfo resetSeparatorTokensSettings() throws MeilisearchException {
+        return this.settingsHandler.resetSeparatorTokensSettings(this.uid);
+    }
+
+    /**
+     * Gets the non-separator tokens of the index
+     *
+     * @return non-separator tokens of a given uid as String
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#get-non-separator-tokens">API
+     *     specification</a>
+     */
+    public String[] getNonSeparatorTokensSettings() throws MeilisearchException {
+        return this.settingsHandler.getNonSeparatorTokensSettings(this.uid);
+    }
+
+    /**
+     * Updates the non-separator tokens settings of the index
+     *
+     * @param separatorTokens An array of strings that contains the non-separator tokens.
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#update-non-separator-tokens">API
+     *     specification</a>
+     */
+    public TaskInfo updateNonSeparatorTokensSettings(String[] separatorTokens)
+            throws MeilisearchException {
+        return this.settingsHandler.updateNonSeparatorTokensSettings(this.uid, separatorTokens);
+    }
+
+    /**
+     * Resets the non-separator tokens settings of the index
+     *
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#reset-non-separator-tokens">API
+     *     specification</a>
+     */
+    public TaskInfo resetNonSeparatorTokensSettings() throws MeilisearchException {
+        return this.settingsHandler.resetNonSeparatorTokensSettings(this.uid);
+    }
+
+    /**
      * Gets the proximity precision level of the index
      *
      * @return proximity precision level of a given uid as String
