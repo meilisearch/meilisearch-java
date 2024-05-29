@@ -16,6 +16,7 @@ public class MultiSearchResult implements Searchable {
     String indexUid;
     ArrayList<HashMap<String, Object>> hits;
     Object facetDistribution;
+    HashMap<String, FacetRating> facetStats;
     int processingTimeMs;
     String query;
     int offset;

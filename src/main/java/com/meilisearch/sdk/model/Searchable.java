@@ -13,6 +13,8 @@ public interface Searchable {
 
     Object getFacetDistribution();
 
+    HashMap<String, FacetRating> getFacetStats();
+
     int getProcessingTimeMs();
 
     String getQuery();

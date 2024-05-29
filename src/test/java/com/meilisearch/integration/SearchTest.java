@@ -18,6 +18,7 @@ import com.meilisearch.sdk.IndexSearchRequest;
 import com.meilisearch.sdk.MultiSearchRequest;
 import com.meilisearch.sdk.SearchRequest;
 import com.meilisearch.sdk.json.GsonJsonHandler;
+import com.meilisearch.sdk.model.FacetRating;
 import com.meilisearch.sdk.model.MatchingStrategy;
 import com.meilisearch.sdk.model.MultiSearchResult;
 import com.meilisearch.sdk.model.SearchResult;
@@ -26,6 +27,7 @@ import com.meilisearch.sdk.model.Searchable;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
+import java.util.HashMap;
 import java.util.HashSet;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -446,6 +448,33 @@ public class SearchTest extends AbstractIT {
 
         assertThat(searchResult.getHits(), hasSize(1));
         assertThat(searchResult.getFacetDistribution(), is(not(nullValue())));
+    }
+
+    /** Test search facet stats */
+    @Test
+    public void testSearchFacetStats() throws Exception {
+        String indexUid = "SearchFacetStats";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        Settings settings = index.getSettings();
+
+        settings.setFilterableAttributes(new String[] {"title", "id"});
+        index.waitForTask(index.updateSettings(settings).getTaskUid());
+
+        SearchRequest searchRequest =
+                SearchRequest.builder().q("knight").facets(new String[] {"*"}).build();
+
+        Searchable searchResult = index.search(searchRequest);
+
+        assertThat(searchResult.getHits(), hasSize(1));
+        assertThat(searchResult.getFacetStats(), is(instanceOf(HashMap.class)));
+        assertThat(searchResult.getFacetStats().get("id"), is(instanceOf(FacetRating.class)));
+        assertThat(searchResult.getFacetStats().get("id").getMin(), is(Double.valueOf(155.0)));
     }
 
     /** Test search sort */
