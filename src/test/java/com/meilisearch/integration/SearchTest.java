@@ -266,7 +266,7 @@ public class SearchTest extends AbstractIT {
 
         assertThat(resGson.hits, is(arrayWithSize(20)));
         assertThat(
-                resGson.hits[0].getFormatted().getTitle(),
+                resGson.hits[3].getFormatted().getTitle(),
                 is(
                         equalTo(
                                 "Birds of Prey (<em>and</em> the Fantabulous Emancipation of One Harley Quinn)")));
@@ -296,7 +296,7 @@ public class SearchTest extends AbstractIT {
 
         assertThat(resGson.hits, is(arrayWithSize(20)));
         assertThat(
-                resGson.hits[0].getFormatted().getTitle(),
+                resGson.hits[3].getFormatted().getTitle(),
                 is(
                         equalTo(
                                 "Birds of Prey ((⊃｡•́‿•̀｡)⊃ and ⊂(´• ω •`⊂) the Fantabulous Emancipation of One Harley Quinn)")));
@@ -526,16 +526,14 @@ public class SearchTest extends AbstractIT {
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
         assertThat(resGson.hits, is(arrayWithSize(20)));
-        assertThat(resGson.hits[0].getId(), is(equalTo("495764")));
+        assertThat(resGson.hits[0].getId(), is(equalTo("38700")));
+        assertThat(resGson.hits[0].getTitle(), is(equalTo("Bad Boys for Life")));
+        assertThat(resGson.hits[2].getId(), is(equalTo("495764")));
         assertThat(
-                resGson.hits[0].getTitle(),
+                resGson.hits[2].getTitle(),
                 is(
                         equalTo(
                                 "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)")));
-        assertThat(resGson.hits[1].getId(), is(equalTo("671")));
-        assertThat(
-                resGson.hits[1].getTitle(),
-                is(equalTo("Harry Potter and the Philosopher's Stone")));
     }
 
     /** Test search sort */
@@ -561,16 +559,12 @@ public class SearchTest extends AbstractIT {
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
         assertThat(resGson.hits, is(arrayWithSize(20)));
-        assertThat(resGson.hits[0].getId(), is(equalTo("671")));
-        assertThat(
-                resGson.hits[0].getTitle(),
-                is(equalTo("Harry Potter and the Philosopher's Stone")));
-        assertThat(resGson.hits[1].getId(), is(equalTo("495764")));
+        assertThat(resGson.hits[0].getId(), is(equalTo("38700")));
+        assertThat(resGson.hits[0].getTitle(), is(equalTo("Bad Boys for Life")));
+        assertThat(resGson.hits[1].getId(), is(equalTo("671")));
         assertThat(
                 resGson.hits[1].getTitle(),
-                is(
-                        equalTo(
-                                "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)")));
+                is(equalTo("Harry Potter and the Philosopher's Stone")));
     }
 
     /** Test search sort */
