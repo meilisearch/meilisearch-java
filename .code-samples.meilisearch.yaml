@@ -417,6 +417,9 @@ search_parameter_guide_show_ranking_score_1: |-
 search_parameter_guide_show_ranking_score_details_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("dragon").showRankingScoreDetails(true).build();
   client.index("movies").search(searchRequest);
+search_parameter_reference_ranking_score_threshold_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("badman").rankingScoreThreshold(0.2).build();
+  client.index("movies").search(searchRequest);
 synonyms_guide_1: |-
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("great", new String[] {"fantastic"});
