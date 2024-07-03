@@ -7,7 +7,9 @@ public enum MatchingStrategy {
     @SerializedName("all")
     ALL("all"),
     @SerializedName("last")
-    LAST("last");
+    LAST("last"),
+    @SerializedName("frequency")
+    FREQUENCY("frequency");
 
     public final String matchingStrategy;
 
