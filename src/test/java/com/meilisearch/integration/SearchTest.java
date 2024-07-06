@@ -322,6 +322,28 @@ public class SearchTest extends AbstractIT {
         assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(21)));
     }
 
+    /** Test search with frequency matching strategy */
+    @Test
+    public void testSearchWithFrequencyMatchingStrategy() throws Exception {
+        String indexUid = "SearchFrequencyMatchingStrategy";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SearchRequest searchRequest =
+                SearchRequest.builder()
+                        .q("white shirt")
+                        .matchingStrategy(MatchingStrategy.FREQUENCY)
+                        .build();
+
+        SearchResult searchResult = (SearchResult) index.search(searchRequest);
+
+        assertThat(searchResult.getHits(), hasSize(4));
+    }
+
     /** Test search with show ranking score */
     @Test
     public void testSearchWithShowRankingScore() throws Exception {

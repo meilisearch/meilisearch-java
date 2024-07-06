@@ -408,6 +408,9 @@ search_parameter_guide_matching_strategy_1: |-
 search_parameter_guide_matching_strategy_2: |-
   SearchRequest searchRequest = SearchRequest.builder().q("big fat liar").matchingStrategy(MatchingStrategy.ALL).build();
   client.index("movies").search(searchRequest);
+search_parameter_guide_matching_strategy_3: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("white shirt").matchingStrategy(MatchingStrategy.FREQUENCY).build();
+  client.index("movies").search(searchRequest);
 search_parameter_guide_attributes_to_search_on_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("adventure").attributesToSearchOn(new String[] {"overview"});
   client.index("movies").searchRequest(searchRequest);
