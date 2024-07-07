@@ -70,12 +70,6 @@ public class Search {
      * @throws MeilisearchException Search Exception or Client Error
      */
     Searchable search(String uid, SearchRequest sr) throws MeilisearchException {
-        if (sr != null
-                && sr.rankingScoreThreshold != null
-                && (sr.rankingScoreThreshold > 1.0 || sr.rankingScoreThreshold < 0)) {
-            throw new MeilisearchException(
-                    "Ranking score threshold must be between 0 and 1.0 inclusive");
-        }
         if (sr != null && (sr.getPage() != null || sr.getHitsPerPage() != null)) {
             return httpClient.jsonHandler.decode(rawSearch(uid, sr), SearchResultPaginated.class);
         }
