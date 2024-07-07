@@ -392,6 +392,33 @@ public class SearchTest extends AbstractIT {
         assertThat(resGson.hits[0].getRankingScoreDetails().get("attribute"), is(not(nullValue())));
     }
 
+    /** Test search with ranking score threshold */
+    @Test
+    public void testSearchWithRankingScoreThreshold() throws Exception {
+        String indexUid = "SearchRankingScoreThreshold";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SearchRequest searchRequest =
+                SearchRequest.builder()
+                        .q("and")
+                        .showRankingScore(true)
+                        .rankingScoreThreshold(0.9)
+                        .limit(20)
+                        .build();
+
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+
+        assertThat(resGson.hits, is(arrayWithSize(1)));
+        assertThat(resGson.hits[0].getRankingScore(), instanceOf(Double.class));
+        assertThat(resGson.hits[0].getRankingScore(), is(greaterThanOrEqualTo(0.9)));
+    }
+
     /** Test search with phrase */
     @Test
     public void testSearchPhrase() throws Exception {
@@ -774,6 +801,46 @@ public class SearchTest extends AbstractIT {
             assertThat(searchResult.getOffset(), is(equalTo(0)));
             assertThat(searchResult.getLimit(), is(equalTo(20)));
             assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(1)));
+        }
+    }
+
+    /** Test multisearch with ranking score threshold */
+    @Test
+    public void testMultiSearchWithRankingScoreThreshold() throws Exception {
+        HashSet<String> indexUids = new HashSet<>();
+        indexUids.add("MultiSearch1");
+        indexUids.add("MultiSearch2");
+
+        for (String indexUid : indexUids) {
+            Index index = client.index(indexUid);
+
+            TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+            TaskInfo task = index.addDocuments(testData.getRaw());
+
+            index.waitForTask(task.getTaskUid());
+        }
+
+        MultiSearchRequest search = new MultiSearchRequest();
+
+        for (String indexUid : indexUids) {
+            search.addQuery(
+                    new IndexSearchRequest(indexUid)
+                            .setQuery("batman")
+                            .setShowRankingScore(true)
+                            .setRankingScoreThreshold(0.98)
+                            .setLimit(20));
+        }
+
+        MultiSearchResult[] results = client.multiSearch(search).getResults();
+
+        assertThat(results.length, is(2));
+
+        for (MultiSearchResult searchResult : results) {
+            assertThat(indexUids.contains(searchResult.getIndexUid()), is(true));
+            assertThat(
+                    searchResult.getHits().get(0).get("_rankingScore"), instanceOf(Double.class));
+            Double rankingScore = (Double) searchResult.getHits().get(0).get("_rankingScore");
+            assertThat(rankingScore, is(greaterThanOrEqualTo(0.98)));
         }
     }
 }
