@@ -1,4 +1,4 @@
-package com.meilisearch.sdk;
+package com.meilisearch.sdk.model;
 
 import lombok.Getter;
 import lombok.Setter;
