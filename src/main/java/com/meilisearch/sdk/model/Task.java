@@ -1,6 +1,5 @@
 package com.meilisearch.sdk.model;
 
-import com.meilisearch.sdk.TaskError;
 import java.util.Date;
 import lombok.Getter;
 
