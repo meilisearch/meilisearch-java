@@ -1,10 +1,12 @@
 package com.meilisearch.integration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -101,10 +103,10 @@ public class TasksTest extends AbstractIT {
         Task task = client.getTask(taskInfo.getTaskUid());
 
         assertThat(task.getError(), is(notNullValue()));
-        assertThat(task.getError().getCode(), is(notNullValue()));
-        assertThat(task.getError().getType(), is(notNullValue()));
-        assertThat(task.getError().getLink(), is(notNullValue()));
-        assertThat(task.getError().getMessage(), is(notNullValue()));
+        assertThat(task.getError().getCode(), not(blankOrNullString()));
+        assertThat(task.getError().getType(), not(blankOrNullString()));
+        assertThat(task.getError().getLink(), not(blankOrNullString()));
+        assertThat(task.getError().getMessage(), not(blankOrNullString()));
     }
 
     /** Test Get Task Error Values When Adding Documents */
@@ -124,10 +126,10 @@ public class TasksTest extends AbstractIT {
         Task task = client.getTask(taskInfoAddDocuments.getTaskUid());
 
         assertThat(task.getError(), is(notNullValue()));
-        assertThat(task.getError().getCode(), is(notNullValue()));
-        assertThat(task.getError().getType(), is(notNullValue()));
-        assertThat(task.getError().getLink(), is(notNullValue()));
-        assertThat(task.getError().getMessage(), is(notNullValue()));
+        assertThat(task.getError().getCode(), not(blankOrNullString()));
+        assertThat(task.getError().getType(), not(blankOrNullString()));
+        assertThat(task.getError().getLink(), not(blankOrNullString()));
+        assertThat(task.getError().getMessage(), not(blankOrNullString()));
     }
 
     /** Test Get Tasks with limit and from */
