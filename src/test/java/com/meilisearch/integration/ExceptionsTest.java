@@ -8,10 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.sdk.Client;
 import com.meilisearch.sdk.Config;
-import com.meilisearch.sdk.TaskError;
 import com.meilisearch.sdk.exceptions.APIError;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
 import com.meilisearch.sdk.exceptions.MeilisearchCommunicationException;
+import com.meilisearch.sdk.model.TaskError;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -60,8 +60,8 @@ public class ExceptionsTest extends AbstractIT {
     @Test
     public void testTaskErrorGetters() {
         TaskError error = new TaskError();
-        error.setTaskErrorCode("wrong field");
-        assertThat(error.getTaskErrorCode(), is(equalTo("wrong field")));
+        error.setCode("wrong field");
+        assertThat(error.getCode(), is(equalTo("wrong field")));
     }
 
     /** Test MeilisearchApiException is thrown on Meilisearch bad request */
