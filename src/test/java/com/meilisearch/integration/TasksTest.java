@@ -88,6 +88,48 @@ public class TasksTest extends AbstractIT {
         assertThat(result.getResults().length, is(notNullValue()));
     }
 
+    /** Test Get Task Error Values */
+    @Test
+    public void testClientGetTaskErrorValues() throws Exception {
+        String indexUid = "CheckTaskErrorValues";
+        Index index = client.index(indexUid);
+
+        // Deleting all documents from an index that does not exist results in a task error.
+        TaskInfo taskInfo = index.deleteAllDocuments();
+        index.waitForTask(taskInfo.getTaskUid());
+
+        Task task = client.getTask(taskInfo.getTaskUid());
+
+        assertThat(task.getError(), is(notNullValue()));
+        assertThat(task.getError().getCode(), is(notNullValue()));
+        assertThat(task.getError().getType(), is(notNullValue()));
+        assertThat(task.getError().getLink(), is(notNullValue()));
+        assertThat(task.getError().getMessage(), is(notNullValue()));
+    }
+
+    /** Test Get Task Error Values When Adding Documents */
+    @Test
+    public void testClientGetTaskErrorWhenAddingDocuments() throws Exception {
+        String indexUid = "CheckTaskErrorWhenAddingDocuments";
+        Index index = client.index(indexUid);
+
+        TaskInfo taskInfo = client.createIndex(indexUid);
+        client.waitForTask(taskInfo.getTaskUid());
+
+        String json = "{\"identifyer\": 1, \"name\": \"Donald Duck\"}";
+        // Adding a document with a wrong identifier results in a task error.
+        TaskInfo taskInfoAddDocuments = index.addDocuments(json, "identifier");
+        client.waitForTask(taskInfoAddDocuments.getTaskUid());
+
+        Task task = client.getTask(taskInfoAddDocuments.getTaskUid());
+
+        assertThat(task.getError(), is(notNullValue()));
+        assertThat(task.getError().getCode(), is(notNullValue()));
+        assertThat(task.getError().getType(), is(notNullValue()));
+        assertThat(task.getError().getLink(), is(notNullValue()));
+        assertThat(task.getError().getMessage(), is(notNullValue()));
+    }
+
     /** Test Get Tasks with limit and from */
     @Test
     public void testClientGetTasksLimitAndFrom() throws Exception {
