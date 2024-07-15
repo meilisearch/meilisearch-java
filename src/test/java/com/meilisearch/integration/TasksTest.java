@@ -1,10 +1,12 @@
 package com.meilisearch.integration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -86,6 +88,48 @@ public class TasksTest extends AbstractIT {
         assertThat(result.getFrom(), is(notNullValue()));
         assertThat(result.getNext(), is(notNullValue()));
         assertThat(result.getResults().length, is(notNullValue()));
+    }
+
+    /** Test Get Task Error Values */
+    @Test
+    public void testClientGetTaskErrorValues() throws Exception {
+        String indexUid = "CheckTaskErrorValues";
+        Index index = client.index(indexUid);
+
+        // Deleting all documents from an index that does not exist results in a task error.
+        TaskInfo taskInfo = index.deleteAllDocuments();
+        index.waitForTask(taskInfo.getTaskUid());
+
+        Task task = client.getTask(taskInfo.getTaskUid());
+
+        assertThat(task.getError(), is(notNullValue()));
+        assertThat(task.getError().getCode(), not(blankOrNullString()));
+        assertThat(task.getError().getType(), not(blankOrNullString()));
+        assertThat(task.getError().getLink(), not(blankOrNullString()));
+        assertThat(task.getError().getMessage(), not(blankOrNullString()));
+    }
+
+    /** Test Get Task Error Values When Adding Documents */
+    @Test
+    public void testClientGetTaskErrorWhenAddingDocuments() throws Exception {
+        String indexUid = "CheckTaskErrorWhenAddingDocuments";
+        Index index = client.index(indexUid);
+
+        TaskInfo taskInfo = client.createIndex(indexUid);
+        client.waitForTask(taskInfo.getTaskUid());
+
+        String json = "{\"identifyer\": 1, \"name\": \"Donald Duck\"}";
+        // Adding a document with a wrong identifier results in a task error.
+        TaskInfo taskInfoAddDocuments = index.addDocuments(json, "identifier");
+        client.waitForTask(taskInfoAddDocuments.getTaskUid());
+
+        Task task = client.getTask(taskInfoAddDocuments.getTaskUid());
+
+        assertThat(task.getError(), is(notNullValue()));
+        assertThat(task.getError().getCode(), not(blankOrNullString()));
+        assertThat(task.getError().getType(), not(blankOrNullString()));
+        assertThat(task.getError().getLink(), not(blankOrNullString()));
+        assertThat(task.getError().getMessage(), not(blankOrNullString()));
     }
 
     /** Test Get Tasks with limit and from */
