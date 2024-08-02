@@ -1,21 +1,9 @@
 package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
-import com.meilisearch.sdk.model.DocumentQuery;
-import com.meilisearch.sdk.model.DocumentsQuery;
-import com.meilisearch.sdk.model.FacetSearchable;
-import com.meilisearch.sdk.model.Faceting;
-import com.meilisearch.sdk.model.IndexStats;
-import com.meilisearch.sdk.model.Pagination;
-import com.meilisearch.sdk.model.Results;
-import com.meilisearch.sdk.model.SearchResult;
-import com.meilisearch.sdk.model.Searchable;
-import com.meilisearch.sdk.model.Settings;
-import com.meilisearch.sdk.model.Task;
-import com.meilisearch.sdk.model.TaskInfo;
-import com.meilisearch.sdk.model.TasksQuery;
-import com.meilisearch.sdk.model.TasksResults;
-import com.meilisearch.sdk.model.TypoTolerance;
+import com.meilisearch.sdk.http.URLBuilder;
+import com.meilisearch.sdk.model.*;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -1214,4 +1202,17 @@ public class Index implements Serializable {
     public TaskInfo resetSearchCutoffMsSettings() throws MeilisearchException {
         return this.settingsHandler.resetSearchCutoffMsSettings(this.uid);
     }
+
+    public SimilarDocumentsResults searchSimilarDocuments(SimilarDocumentRequest query)
+        throws MeilisearchException {
+        return this.config.httpClient.post(
+            new URLBuilder("/indexes")
+                .addSubroute(this.uid)
+                .addSubroute("/similar")
+                .getURL(),
+            query,
+            SimilarDocumentsResults.class
+        );
+    }
+
 }

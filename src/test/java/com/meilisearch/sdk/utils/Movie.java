@@ -15,6 +15,7 @@ public class Movie {
     private HashMap<String, List<Match>> _matchesPosition;
     private Double _rankingScore;
     private HashMap<String, Object> _rankingScoreDetails;
+    private HashMap<String, Object> _vectors;
 
     public class Match {
         public int start;

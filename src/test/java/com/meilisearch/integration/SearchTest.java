@@ -13,20 +13,12 @@ import static org.hamcrest.Matchers.nullValue;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
-import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.IndexSearchRequest;
-import com.meilisearch.sdk.MultiSearchRequest;
-import com.meilisearch.sdk.SearchRequest;
+import com.meilisearch.sdk.*;
 import com.meilisearch.sdk.json.GsonJsonHandler;
-import com.meilisearch.sdk.model.FacetRating;
-import com.meilisearch.sdk.model.MatchingStrategy;
-import com.meilisearch.sdk.model.MultiSearchResult;
-import com.meilisearch.sdk.model.SearchResult;
-import com.meilisearch.sdk.model.SearchResultPaginated;
-import com.meilisearch.sdk.model.Searchable;
-import com.meilisearch.sdk.model.Settings;
-import com.meilisearch.sdk.model.TaskInfo;
+import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.utils.Movie;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import org.junit.jupiter.api.AfterAll;
@@ -842,5 +834,42 @@ public class SearchTest extends AbstractIT {
             Double rankingScore = (Double) searchResult.getHits().get(0).get("_rankingScore");
             assertThat(rankingScore, is(greaterThanOrEqualTo(0.98)));
         }
+    }
+
+    @Test
+    public void testSimilarDocuments() throws Exception {
+        String indexUid = "SimilarDocuments";
+        Index index = client.index(indexUid);
+        HashMap<String, Embedders> embedders = new HashMap<>();
+
+        embedders.put(
+            "manual",
+            new Embedders()
+                .setSource("userProvided")
+                .setDimensions(3)
+        );
+
+        index.updateSettings(
+            new Settings()
+                .setEmbedders(embedders)
+        );
+
+        TestData<Movie> testData = this.getTestData(VECTOR_MOVIES, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SimilarDocumentsResults results = index.searchSimilarDocuments(
+            new SimilarDocumentRequest()
+                .setId("143")
+                .setEmbedder("manual")
+        );
+
+        ArrayList<HashMap<String, Object>> hits = results.getHits();
+        assertThat(hits.size(), is(4));
+        assertThat(hits.get(0).get("title"), is("Escape Room"));
+        assertThat(hits.get(1).get("title"), is("Captain Marvel"));
+        assertThat(hits.get(2).get("title"), is("How to Train Your Dragon: The Hidden World"));
+        assertThat(hits.get(3).get("title"), is("Shazam!"));
     }
 }
