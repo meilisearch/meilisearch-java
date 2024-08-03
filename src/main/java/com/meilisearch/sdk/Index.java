@@ -3,7 +3,6 @@ package com.meilisearch.sdk;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.URLBuilder;
 import com.meilisearch.sdk.model.*;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -1204,15 +1203,10 @@ public class Index implements Serializable {
     }
 
     public SimilarDocumentsResults searchSimilarDocuments(SimilarDocumentRequest query)
-        throws MeilisearchException {
+            throws MeilisearchException {
         return this.config.httpClient.post(
-            new URLBuilder("/indexes")
-                .addSubroute(this.uid)
-                .addSubroute("/similar")
-                .getURL(),
-            query,
-            SimilarDocumentsResults.class
-        );
+                new URLBuilder("/indexes").addSubroute(this.uid).addSubroute("/similar").getURL(),
+                query,
+                SimilarDocumentsResults.class);
     }
-
 }

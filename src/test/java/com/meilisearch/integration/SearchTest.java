@@ -17,7 +17,6 @@ import com.meilisearch.sdk.*;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.utils.Movie;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -842,28 +841,18 @@ public class SearchTest extends AbstractIT {
         Index index = client.index(indexUid);
         HashMap<String, Embedders> embedders = new HashMap<>();
 
-        embedders.put(
-            "manual",
-            new Embedders()
-                .setSource("userProvided")
-                .setDimensions(3)
-        );
+        embedders.put("manual", new Embedders().setSource("userProvided").setDimensions(3));
 
-        index.updateSettings(
-            new Settings()
-                .setEmbedders(embedders)
-        );
+        index.updateSettings(new Settings().setEmbedders(embedders));
 
         TestData<Movie> testData = this.getTestData(VECTOR_MOVIES, Movie.class);
         TaskInfo task = index.addDocuments(testData.getRaw());
 
         index.waitForTask(task.getTaskUid());
 
-        SimilarDocumentsResults results = index.searchSimilarDocuments(
-            new SimilarDocumentRequest()
-                .setId("143")
-                .setEmbedder("manual")
-        );
+        SimilarDocumentsResults results =
+                index.searchSimilarDocuments(
+                        new SimilarDocumentRequest().setId("143").setEmbedder("manual"));
 
         ArrayList<HashMap<String, Object>> hits = results.getHits();
         assertThat(hits.size(), is(4));

@@ -1,10 +1,9 @@
 package com.meilisearch.sdk.model;
 
-import lombok.Getter;
-import lombok.ToString;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * Meilisearch similar documents results data structure
@@ -22,4 +21,3 @@ public class SimilarDocumentsResults {
     int limit;
     int estimatedTotalHits;
 }
-
