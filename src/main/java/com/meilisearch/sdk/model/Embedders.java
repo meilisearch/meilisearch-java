@@ -9,10 +9,16 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 public class Embedders {
-    protected String source;
+    protected EmbedderSource source;
+    protected String url;
+    protected String apiKey;
     protected String model;
     protected String documentTemplate;
     protected Integer dimensions;
+    protected String revision;
+    protected String[] inputField;
+    protected EmbedderInputType inputType;
+    protected String query;
 
     public Embedders() {}
 }

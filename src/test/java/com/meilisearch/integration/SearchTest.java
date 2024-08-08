@@ -840,10 +840,13 @@ public class SearchTest extends AbstractIT {
         String indexUid = "SimilarDocuments";
         Index index = client.index(indexUid);
         HashMap<String, Embedders> embedders = new HashMap<>();
+        embedders.put(
+                "manual", new Embedders().setSource(EmbedderSource.USER_PROVIDED).setDimensions(3));
 
-        embedders.put("manual", new Embedders().setSource("userProvided").setDimensions(3));
+        Settings settings = new Settings();
+        settings.setEmbedders(embedders);
 
-        index.updateSettings(new Settings().setEmbedders(embedders));
+        index.updateSettings(settings);
 
         TestData<Movie> testData = this.getTestData(VECTOR_MOVIES, Movie.class);
         TaskInfo task = index.addDocuments(testData.getRaw());
