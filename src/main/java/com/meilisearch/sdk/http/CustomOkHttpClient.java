@@ -4,6 +4,7 @@ import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.exceptions.MeilisearchCommunicationException;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.exceptions.MeilisearchTimeoutException;
+import com.meilisearch.sdk.exceptions.MeilisearchUrlException;
 import com.meilisearch.sdk.http.request.HttpRequest;
 import com.meilisearch.sdk.http.response.HttpResponse;
 import java.io.IOException;
@@ -31,14 +32,16 @@ public class CustomOkHttpClient {
         this.client = new OkHttpClient();
     }
 
-    public <T> HttpResponse<T> execute(HttpRequest request) throws MeilisearchException {
+    public <T> HttpResponse<T> execute(HttpRequest request)
+            throws MeilisearchUrlException, MeilisearchTimeoutException,
+                    MeilisearchCommunicationException {
         try {
             Request okRequest = buildRequest(request);
             Response response = client.newCall(okRequest).execute();
 
             return buildResponse(response);
         } catch (MalformedURLException e) {
-            throw new MeilisearchException(e);
+            throw new MeilisearchUrlException(e);
         } catch (SocketTimeoutException e) {
             throw new MeilisearchTimeoutException(e);
         } catch (IOException e) {
