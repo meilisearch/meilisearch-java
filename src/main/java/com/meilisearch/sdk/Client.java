@@ -434,6 +434,10 @@ public class Client {
                 "/multi-search", search, Results.class, MultiSearchResult.class);
     }
 
+    public void experimentalFeatures(Map<String, Boolean> features) {
+        this.config.httpClient.patch("/experimental-features", features, Void.class);
+    }
+
     public String generateTenantToken(String apiKeyUid, Map<String, Object> searchRules)
             throws MeilisearchException {
         return this.generateTenantToken(apiKeyUid, searchRules, new TenantTokenOptions());
