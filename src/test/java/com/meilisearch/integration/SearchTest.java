@@ -837,7 +837,7 @@ public class SearchTest extends AbstractIT {
 
     @Test
     public void testSimilarDocuments() throws Exception {
-        HashMap<String, Boolean> features =new HashMap();
+        HashMap<String, Boolean> features = new HashMap();
         features.put("vectorStore", true);
         client.experimentalFeatures(features);
 
