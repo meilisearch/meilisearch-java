@@ -26,11 +26,13 @@ public abstract class AbstractIT {
 
     public static final String MOVIES_INDEX = "movies.json";
     public static final String NESTED_MOVIES = "nested_movies.json";
+    public static final String VECTOR_MOVIES = "vector_movies.json";
 
     public AbstractIT() {
         try {
             loadResource(MOVIES_INDEX);
             loadResource(NESTED_MOVIES);
+            loadResource(VECTOR_MOVIES);
         } catch (IOException e) {
             e.printStackTrace();
         }

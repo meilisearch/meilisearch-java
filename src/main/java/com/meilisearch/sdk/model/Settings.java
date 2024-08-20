@@ -31,6 +31,7 @@ public class Settings {
     protected Integer searchCutoffMs;
     protected String[] separatorTokens;
     protected String[] nonSeparatorTokens;
+    protected HashMap<String, Embedders> embedders;
 
     public Settings() {}
 }
