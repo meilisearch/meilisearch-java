@@ -823,7 +823,7 @@ multi_search_1: |-
 
   client.multiSearch(multiSearchRequest);
 get_similar_post_1:
-  SimilarDocumentRequest query =  new SimilarDocumentRequest()
+  SimilarDocumentRequest query = new SimilarDocumentRequest()
     .setId("143")
     .setEmbedder("manual");
   client.index("movies").searchSimilarDocuments(query)
