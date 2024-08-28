@@ -150,26 +150,21 @@ class Documents {
     }
 
     /**
-     * Adds/Replaces a document at the specified index uid
+     * Updates documents in the specified index using a function
      *
-     * @param uid Partial index identifier for the document
-     * @param document String containing the document to add
-     * @param primaryKey PrimaryKey of the document
-     * @param csvDelimiter CSV delimiter of the document
+     * @param uid Partial index identifier for the documents
+     * @param updateFunction Map containing the function to update documents
      * @return Meilisearch's TaskInfo API response
      * @throws MeilisearchException if the client request causes an error
      */
-    TaskInfo addDocuments(String uid, String document, String primaryKey, String csvDelimiter)
-            throws MeilisearchException {
-        URLBuilder urlb = documentPath(uid);
-        if (primaryKey != null) {
-            urlb.addParameter("primaryKey", primaryKey);
+    TaskInfo updateDocumentsByFunction(String uid, Map<String, Object> updateFunction) throws MeilisearchException {
+        if (updateFunction == null || updateFunction.isEmpty()) {
+        throw new MeilisearchException("Update function cannot be null or empty");
         }
-        if (csvDelimiter != null) {
-            urlb.addParameter("csvDelimiter", csvDelimiter);
-        }
-        return httpClient.post(urlb.getURL(), document, TaskInfo.class);
+        URLBuilder urlb = documentPath(uid).addSubroute("edit");
+        return httpClient.post(urlb.getURL(), updateFunction, TaskInfo.class);
     }
+
 
     /**
      * Replaces a document at the specified index uid
