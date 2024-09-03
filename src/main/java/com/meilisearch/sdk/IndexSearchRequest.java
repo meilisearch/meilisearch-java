@@ -88,9 +88,11 @@ public class IndexSearchRequest {
                         .put("sort", this.sort)
                         .put("page", this.page)
                         .put("hitsPerPage", this.hitsPerPage)
-                        .put("federationOptions", this.federationOptions != null
-                        ? this.federationOptions.toString()
-                        : null)
+                        .put(
+                                "federationOptions",
+                                this.federationOptions != null
+                                        ? this.federationOptions.toString()
+                                        : null)
                         .putOpt("attributesToCrop", this.attributesToCrop)
                         .putOpt("attributesToHighlight", this.attributesToHighlight)
                         .putOpt("filter", this.filter)

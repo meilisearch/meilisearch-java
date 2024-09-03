@@ -11,9 +11,9 @@ public class MultiSearchRequest {
     }
 
     /*
-     * Method to get Queries as a list 
+     * Method to get Queries as a list
      */
-    public ArrayList<IndexSearchRequest> getQueries(){
+    public ArrayList<IndexSearchRequest> getQueries() {
         return this.queries;
     }
 

@@ -813,9 +813,11 @@ public class SearchTest extends AbstractIT {
         }
         MultiSearchRequest search = new MultiSearchRequest();
         search.addQuery(new IndexSearchRequest("MultiSearch1").setQuery("batman"));
-        search.addQuery(new IndexSearchRequest("MultiSearch2").setQuery("batman")
-        .setFederationOptions(new FederationOptions().setWeight(0.9)));
-        
+        search.addQuery(
+                new IndexSearchRequest("MultiSearch2")
+                        .setQuery("batman")
+                        .setFederationOptions(new FederationOptions().setWeight(0.9)));
+
         MultiSearchFederation federation = new MultiSearchFederation();
         federation.setLimit(2);
         MultiSearchResult results = client.multiSearch(search, federation);
@@ -824,7 +826,7 @@ public class SearchTest extends AbstractIT {
         assertThat(results.getLimit(), is(2));
         ArrayList<HashMap<String, Object>> hits = results.getHits();
         assertThat(hits, hasSize(2));
-        for(HashMap<String, Object> record : hits){
+        for (HashMap<String, Object> record : hits) {
             assertThat(record.containsKey("_federation"), is(true));
         }
     }

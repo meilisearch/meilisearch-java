@@ -3,7 +3,7 @@ package com.meilisearch.sdk;
 import org.json.JSONObject;
 
 public class MultiSearchFederation {
-    
+
     private Integer limit;
     private Integer offset;
 
@@ -16,26 +16,24 @@ public class MultiSearchFederation {
         this.offset = offset;
         return this;
     }
-    
-    public Integer getLimit(){
+
+    public Integer getLimit() {
         return this.limit;
     }
 
-    public Integer getOffset(){
+    public Integer getOffset() {
         return this.offset;
     }
 
     /**
      * Method that returns the JSON String of the MultiSearchFederation
      *
-     * @return JSON String of the MultiSearchFederation 
+     * @return JSON String of the MultiSearchFederation
      */
     @Override
-    public String toString(){
+    public String toString() {
         JSONObject jsonObject =
-                new JSONObject()
-                .put("limit", this.limit)
-                .put("offset", this.offset);
+                new JSONObject().put("limit", this.limit).put("offset", this.offset);
         return jsonObject.toString();
     }
 }
