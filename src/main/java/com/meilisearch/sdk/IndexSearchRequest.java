@@ -34,6 +34,8 @@ public class IndexSearchRequest {
     protected Boolean showRankingScore;
     protected Boolean showRankingScoreDetails;
     protected Double rankingScoreThreshold;
+    private String[] attributesToSearchOn;
+
 
     /**
      * Constructor for MultiSearchRequest for building search queries with the default values:
@@ -93,7 +95,8 @@ public class IndexSearchRequest {
                         .putOpt("filter", this.filterArray)
                         .putOpt("showRankingScore", this.showRankingScore)
                         .putOpt("showRankingScoreDetails", this.showRankingScoreDetails)
-                        .putOpt("rankingScoreThreshold", this.rankingScoreThreshold);
+                        .putOpt("rankingScoreThreshold", this.rankingScoreThreshold)
+                        .putOpt("attributesToSearchOn", this.attributesToSearchOn);
 
         return jsonObject.toString();
     }
