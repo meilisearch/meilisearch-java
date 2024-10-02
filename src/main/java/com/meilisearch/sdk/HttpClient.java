@@ -133,14 +133,14 @@ public class HttpClient {
      */
     <S, T> T patch(String api, S body, Class<T> targetClass) throws MeilisearchException {
         HttpRequest requestConfig = request.create(HttpMethod.PATCH, api, this.headers, body);
-        HttpResponse<T> httpRequest = this.client.patch(requestConfig);
-        HttpResponse<T> httpResponse = response.create(httpRequest, targetClass);
+        HttpResponse<T> httpResponse = this.client.patch(requestConfig);
 
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
                     jsonHandler.decode(httpResponse.getContent(), APIError.class));
         }
-        return httpResponse.getContent();
+
+        return response.create(httpResponse, targetClass).getContent();
     }
 
     /**
