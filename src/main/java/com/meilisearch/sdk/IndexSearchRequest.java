@@ -35,7 +35,7 @@ public class IndexSearchRequest {
     protected Boolean showRankingScoreDetails;
     protected Double rankingScoreThreshold;
     private String[] attributesToSearchOn;
-
+    private FederationOptions federationOptions;
 
     /**
      * Constructor for MultiSearchRequest for building search queries with the default values:
@@ -89,6 +89,11 @@ public class IndexSearchRequest {
                         .put("sort", this.sort)
                         .put("page", this.page)
                         .put("hitsPerPage", this.hitsPerPage)
+                        .put(
+                                "federationOptions",
+                                this.federationOptions != null
+                                        ? this.federationOptions.toString()
+                                        : null)
                         .putOpt("attributesToCrop", this.attributesToCrop)
                         .putOpt("attributesToHighlight", this.attributesToHighlight)
                         .putOpt("filter", this.filter)

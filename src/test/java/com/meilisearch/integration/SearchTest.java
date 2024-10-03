@@ -795,6 +795,42 @@ public class SearchTest extends AbstractIT {
         }
     }
 
+    /*
+     * Test the federation parameter in multi search method
+     */
+    @Test
+    public void testFederation() throws Exception {
+        HashSet<String> indexUids = new HashSet();
+        indexUids.add("MultiSearch1");
+        indexUids.add("MultiSearch2");
+        for (String indexUid : indexUids) {
+            Index index = client.index(indexUid);
+
+            TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+            TaskInfo task = index.addDocuments(testData.getRaw());
+
+            index.waitForTask(task.getTaskUid());
+        }
+        MultiSearchRequest search = new MultiSearchRequest();
+        search.addQuery(new IndexSearchRequest("MultiSearch1").setQuery("batman"));
+        search.addQuery(
+                new IndexSearchRequest("MultiSearch2")
+                        .setQuery("batman")
+                        .setFederationOptions(new FederationOptions().setWeight(0.9)));
+
+        MultiSearchFederation federation = new MultiSearchFederation();
+        federation.setLimit(2);
+        MultiSearchResult results = client.multiSearch(search, federation);
+
+        assertThat(results.getEstimatedTotalHits(), is(2));
+        assertThat(results.getLimit(), is(2));
+        ArrayList<HashMap<String, Object>> hits = results.getHits();
+        assertThat(hits, hasSize(2));
+        for (HashMap<String, Object> record : hits) {
+            assertThat(record.containsKey("_federation"), is(true));
+        }
+    }
+
     /** Test multisearch with ranking score threshold */
     @Test
     public void testMultiSearchWithRankingScoreThreshold() throws Exception {
