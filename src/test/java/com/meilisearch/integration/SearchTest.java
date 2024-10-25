@@ -410,6 +410,33 @@ public class SearchTest extends AbstractIT {
         assertThat(resGson.hits[0].getRankingScore(), is(greaterThanOrEqualTo(0.9)));
     }
 
+     /**Test with show distinct */
+     @Test
+     public void testSearchWithDistinct() throws Exception {
+        String indexUid = "SearchDistinct";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        Settings settings = index.getSettings();
+
+        settings.setFilterableAttributes(new String[] {"language"});
+        index.waitForTask(index.updateSettings(settings).getTaskUid());
+
+        SearchRequest searchRequest =
+                SearchRequest.builder()
+                        .q("")
+                        .distinct("language")
+                        .build();
+
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+        assertThat(resGson.hits, is(arrayWithSize(4)));  
+    }
+
     /** Test search with phrase */
     @Test
     public void testSearchPhrase() throws Exception {
