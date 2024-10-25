@@ -410,9 +410,9 @@ public class SearchTest extends AbstractIT {
         assertThat(resGson.hits[0].getRankingScore(), is(greaterThanOrEqualTo(0.9)));
     }
 
-     /**Test with show distinct */
-     @Test
-     public void testSearchWithDistinct() throws Exception {
+    /** Test with show distinct */
+    @Test
+    public void testSearchWithDistinct() throws Exception {
         String indexUid = "SearchDistinct";
         Index index = client.index(indexUid);
         GsonJsonHandler jsonGson = new GsonJsonHandler();
@@ -427,14 +427,10 @@ public class SearchTest extends AbstractIT {
         settings.setFilterableAttributes(new String[] {"language"});
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("")
-                        .distinct("language")
-                        .build();
+        SearchRequest searchRequest = SearchRequest.builder().q("").distinct("language").build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
-        assertThat(resGson.hits, is(arrayWithSize(4)));  
+        assertThat(resGson.hits, is(arrayWithSize(4)));
     }
 
     /** Test search with phrase */
@@ -922,10 +918,7 @@ public class SearchTest extends AbstractIT {
         MultiSearchRequest search = new MultiSearchRequest();
 
         for (String indexUid : indexUids) {
-            search.addQuery(
-                    new IndexSearchRequest(indexUid)
-                            .setQuery("")
-                            .setDistinct("language"));
+            search.addQuery(new IndexSearchRequest(indexUid).setQuery("").setDistinct("language"));
         }
 
         MultiSearchResult[] results = client.multiSearch(search).getResults();
@@ -933,8 +926,8 @@ public class SearchTest extends AbstractIT {
         assertThat(results.length, is(2));
 
         for (MultiSearchResult searchResult : results) {
-             assertThat(indexUids.contains(searchResult.getIndexUid()), is(true));
-             assertThat(searchResult.getHits().size(),  is(4));
+            assertThat(indexUids.contains(searchResult.getIndexUid()), is(true));
+            assertThat(searchResult.getHits().size(), is(4));
         }
     }
 
