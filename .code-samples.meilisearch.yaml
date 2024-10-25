@@ -423,6 +423,16 @@ search_parameter_guide_show_ranking_score_details_1: |-
 search_parameter_reference_ranking_score_threshold_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("badman").rankingScoreThreshold(0.2).build();
   client.index("INDEX_NAME").search(searchRequest);
+search_parameter_reference_distinct_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("QUERY TERMS").distinct("ATTRIBUTE_A").build();
+  client.index("INDEX_NAME").search(searchRequest);
+distinct_attribute_guide_filterable_1: |-
+  Settings settings = new Settings();
+  settings.setFilterableAttributes(new String[] {"language", "title"});
+  client.index("movies").updateSettings(settings);
+distinct_attribute_guide_distinct_parameter_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("and").distinct("language").build();
+  client.index("movies").search(searchRequest);
 synonyms_guide_1: |-
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("great", new String[] {"fantastic"});
