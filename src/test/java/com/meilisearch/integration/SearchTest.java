@@ -904,4 +904,33 @@ public class SearchTest extends AbstractIT {
         assertThat(hits.get(2).get("title"), is("How to Train Your Dragon: The Hidden World"));
         assertThat(hits.get(3).get("title"), is("Shazam!"));
     }
+
+    /** Test Search with locales */
+    @Test
+    public void testSearchWithLocales() throws Exception {
+        String indexUid = "SearchLocales";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(NESTED_MOVIES, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        Settings settings = index.getSettings();
+
+        LocalizedAttribute localizedAttribute = new LocalizedAttribute();
+        localizedAttribute.setAttributePatterns(new String[] {"title", "comment"});
+        localizedAttribute.setLocales(new String[] {"fra", "eng"});
+        settings.setLocalizedAttributes(new LocalizedAttribute[] {localizedAttribute});
+
+        index.waitForTask(index.updateSettings(settings).getTaskUid());
+
+        SearchRequest searchRequest =
+                SearchRequest.builder().q("french").locales(new String[] {"fra", "eng"}).build();
+
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+
+        assertThat(resGson.hits, is(arrayWithSize(2)));
+    }
 }

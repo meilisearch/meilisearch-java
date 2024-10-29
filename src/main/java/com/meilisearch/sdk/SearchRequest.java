@@ -40,6 +40,7 @@ public class SearchRequest {
     protected Boolean showRankingScore;
     protected Boolean showRankingScoreDetails;
     protected Double rankingScoreThreshold;
+    protected String[] locales;
 
     /**
      * Constructor for SearchRequest for building search queries with the default values: offset: 0,
@@ -100,7 +101,8 @@ public class SearchRequest {
                         .putOpt("filter", this.filterArray)
                         .putOpt("showRankingScore", this.showRankingScore)
                         .putOpt("showRankingScoreDetails", this.showRankingScoreDetails)
-                        .putOpt("rankingScoreThreshold", this.rankingScoreThreshold);
+                        .putOpt("rankingScoreThreshold", this.rankingScoreThreshold)
+                        .putOpt("locales", this.locales);
 
         return jsonObject.toString();
     }

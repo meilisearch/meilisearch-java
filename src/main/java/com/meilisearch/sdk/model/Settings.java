@@ -32,6 +32,7 @@ public class Settings {
     protected String[] separatorTokens;
     protected String[] nonSeparatorTokens;
     protected HashMap<String, Embedders> embedders;
+    protected LocalizedAttribute[] localizedAttributes;
 
     public Settings() {}
 }
