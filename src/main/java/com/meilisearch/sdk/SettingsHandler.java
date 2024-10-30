@@ -3,6 +3,7 @@ package com.meilisearch.sdk;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.URLBuilder;
 import com.meilisearch.sdk.model.Faceting;
+import com.meilisearch.sdk.model.LocalizedAttribute;
 import com.meilisearch.sdk.model.Pagination;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
@@ -264,6 +265,36 @@ public class SettingsHandler {
     TaskInfo resetDisplayedAttributesSettings(String uid) throws MeilisearchException {
         return httpClient.delete(
                 settingsPath(uid).addSubroute("displayed-attributes").getURL(), TaskInfo.class);
+    }
+
+    /**
+     * Gets the localized attributes of the index
+     *
+     * @param uid Index identifier
+     * @return an array of localizedattributes that contains attributes of the index to display
+     * @throws MeilisearchException if an error occurs
+     */
+    LocalizedAttribute[] getLocalizedAttributes(String uid) throws MeilisearchException {
+        return httpClient.get(
+                settingsPath(uid).addSubroute("localized-attributes").getURL(),
+                LocalizedAttribute[].class);
+    }
+
+    // javadoc
+    TaskInfo updateLocalizedAttributesSettings(String uid, LocalizedAttribute[] localizedAttributes)
+            throws MeilisearchException {
+        return httpClient.put(
+                settingsPath(uid).addSubroute("localized-attributes").getURL(),
+                localizedAttributes == null
+                        ? httpClient.jsonHandler.encode(localizedAttributes)
+                        : localizedAttributes,
+                TaskInfo.class);
+    }
+
+    // javadoc
+    TaskInfo resetLocalizedAttributesSettings(String uid) throws MeilisearchException {
+        return httpClient.delete(
+                settingsPath(uid).addSubroute("localized-attributes").getURL(), TaskInfo.class);
     }
 
     /**
