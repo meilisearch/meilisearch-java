@@ -566,7 +566,7 @@ public class SettingsTest extends AbstractIT {
                 index.updateLocalizedAttributesSettings(newLocalizedAttributes).getTaskUid());
         LocalizedAttribute[] updatedLocalizedAttributes = index.getLocalizedAttributesSettings();
 
-        index.waitForTask(index.resetDisplayedAttributesSettings().getTaskUid());
+        index.waitForTask(index.resetLocalizedAttributesSettings().getTaskUid());
         LocalizedAttribute[] localizedAttributesAfterReset = index.getLocalizedAttributesSettings();
 
         assertThat(updatedLocalizedAttributes, is(arrayWithSize(newLocalizedAttributes.length)));
@@ -1055,6 +1055,39 @@ public class SettingsTest extends AbstractIT {
         assertThat(resetDistinctAttribute, is(not(equalTo(updatedDistinctAttribute))));
         assertThat(updatedDistinctAttribute, is(not(equalTo(initialDistinctAttribute))));
         assertThat(resetDistinctAttribute, is(equalTo(initialDistinctAttribute)));
+    }
+
+    @Test
+    @DisplayName("Test update localized attribute settings when null is passed")
+    public void testUpdateLocalizedAttributeSettingsUsingNull() throws Exception {
+        Index index = createIndex("testUpdateLocalizedAttributesSettingsUsingNull");
+        LocalizedAttribute[] initialLocalizedAttributes = index.getLocalizedAttributesSettings();
+        LocalizedAttribute firstAttribute = new LocalizedAttribute();
+        LocalizedAttribute secondAttribute = new LocalizedAttribute();
+
+        firstAttribute.setAttributePatterns(new String[] {"title", "description"});
+        firstAttribute.setLocales(new String[] {"eng", "fra"});
+
+        secondAttribute.setAttributePatterns(new String[] {"genre", "release_date"});
+        secondAttribute.setLocales(new String[] {"rus"});
+
+        LocalizedAttribute[] newLocalizedAttributes =
+                new LocalizedAttribute[] {firstAttribute, secondAttribute};
+
+        index.waitForTask(
+                index.updateLocalizedAttributesSettings(newLocalizedAttributes).getTaskUid());
+        LocalizedAttribute[] updatedLocalizedAttributes = index.getLocalizedAttributesSettings();
+
+        index.waitForTask(index.updateLocalizedAttributesSettings(null).getTaskUid());
+        LocalizedAttribute[] resetLocalizedAttributes = index.getLocalizedAttributesSettings();
+
+        assertThat(
+                updatedLocalizedAttributes,
+                is(not(equalTo(initialLocalizedAttributes))));
+        assertThat(
+                resetLocalizedAttributes,
+                is(not(arrayWithSize(updatedLocalizedAttributes.length))));
+        assertThat(resetLocalizedAttributes, is(equalTo(initialLocalizedAttributes)));
     }
 
     /** Tests of the pagination setting methods */
