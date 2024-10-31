@@ -280,7 +280,15 @@ public class SettingsHandler {
                 LocalizedAttribute[].class);
     }
 
-    // javadoc
+    /**
+     * Updates the localized attributes of the index.
+     *
+     * @param uid Index identifier
+     * @param localizedAttributes an array of LocalizedAttributes that contain patterns and locales
+     *     settings
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
     TaskInfo updateLocalizedAttributesSettings(String uid, LocalizedAttribute[] localizedAttributes)
             throws MeilisearchException {
         return httpClient.put(
@@ -291,7 +299,13 @@ public class SettingsHandler {
                 TaskInfo.class);
     }
 
-    // javadoc
+    /**
+     * Resets the localized attributes of the index
+     *
+     * @param uid Index identifier
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
     TaskInfo resetLocalizedAttributesSettings(String uid) throws MeilisearchException {
         return httpClient.delete(
                 settingsPath(uid).addSubroute("localized-attributes").getURL(), TaskInfo.class);
