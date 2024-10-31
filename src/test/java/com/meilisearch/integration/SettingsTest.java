@@ -1081,9 +1081,7 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateLocalizedAttributesSettings(null).getTaskUid());
         LocalizedAttribute[] resetLocalizedAttributes = index.getLocalizedAttributesSettings();
 
-        assertThat(
-                updatedLocalizedAttributes,
-                is(not(equalTo(initialLocalizedAttributes))));
+        assertThat(updatedLocalizedAttributes, is(not(equalTo(initialLocalizedAttributes))));
         assertThat(
                 resetLocalizedAttributes,
                 is(not(arrayWithSize(updatedLocalizedAttributes.length))));

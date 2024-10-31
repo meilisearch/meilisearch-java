@@ -423,19 +423,6 @@ search_parameter_guide_show_ranking_score_details_1: |-
 search_parameter_reference_ranking_score_threshold_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("badman").rankingScoreThreshold(0.2).build();
   client.index("INDEX_NAME").search(searchRequest);
-search_parameter_reference_locales_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("進撃の巨人").locales(new String[]{"jpn"}).build();
-  client.index("INDEX_NAME").search(searchRequest);
-get_localized_attribute_settings_1: |-
-  client.index("INDEX_NAME").getLocalizedAttributesSettings();
-update_localized_attribute_settings_1: |-
-  client.index("INDEX_NAME").updateLocalizedAttributesSettings(
-    new LocalizedAttributes[] {
-    //this contructor not yet working
-    }
-  );
-reset_localized_attribute_settings_1: |-
-  client.index("INDEX_NAME").resetLocalizedAttributesSettings();
 synonyms_guide_1: |-
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("great", new String[] {"fantastic"});
@@ -840,3 +827,18 @@ get_similar_post_1:
     .setId("143")
     .setEmbedder("manual");
   client.index("movies").searchSimilarDocuments(query)
+search_parameter_reference_locales_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("進撃の巨人").locales(new String[]{"jpn"}).build();
+  client.index("INDEX_NAME").search(searchRequest);
+get_localized_attribute_settings_1: |-
+  client.index("INDEX_NAME").getLocalizedAttributesSettings();
+update_localized_attribute_settings_1: |-
+  LocalizedAttribute attribute = new LocalizedAttribute();
+  attribute.setAttributePatterns(new String[] {"jpn"});
+  attribute.setLocales(new String[] {"*_ja"});
+
+  client.index("INDEX_NAME").updateLocalizedAttributesSettings(
+    new LocalizedAttributes[] {attribute}
+  );
+reset_localized_attribute_settings_1: |-
+  client.index("INDEX_NAME").resetLocalizedAttributesSettings();
