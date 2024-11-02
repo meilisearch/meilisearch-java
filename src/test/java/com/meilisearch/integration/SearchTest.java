@@ -933,4 +933,52 @@ public class SearchTest extends AbstractIT {
 
         assertThat(resGson.hits, is(arrayWithSize(2)));
     }
+
+    /** Test multisearch with locales */
+    @Test
+    public void testMultiSearchWithLocales() throws Exception {
+        HashSet<String> indexUids = new HashSet<String>();
+        indexUids.add("LocaleSearch1");
+        indexUids.add("LocaleSearch2");
+
+        for (String indexUid : indexUids) {
+            Index index = client.index(indexUid);
+
+            TestData<Movie> testData = this.getTestData(NESTED_MOVIES, Movie.class);
+            TaskInfo task = index.addDocuments(testData.getRaw());
+
+            index.waitForTask(task.getTaskUid());
+
+            Settings settings = index.getSettings();
+
+            LocalizedAttribute localizedAttribute = new LocalizedAttribute();
+            localizedAttribute.setAttributePatterns(new String[] {"title", "comment"});
+            localizedAttribute.setLocales(new String[] {"fra", "eng"});
+            settings.setLocalizedAttributes(new LocalizedAttribute[] {localizedAttribute});
+
+            index.waitForTask(index.updateSettings(settings).getTaskUid());
+        }
+
+        MultiSearchRequest search = new MultiSearchRequest();
+
+        search.addQuery(
+                new IndexSearchRequest("LocaleSearch1")
+                        .setQuery("")
+                        .setLocales(
+                                new String[] {"eng"})); 
+        search.addQuery(
+                new IndexSearchRequest("LocaleSearch2")
+                        .setQuery("french")
+                        .setLocales(new String[] {"fra"}));
+
+        MultiSearchResult[] results = client.multiSearch(search).getResults();
+
+        assertThat(results.length, is(2));
+
+        for (MultiSearchResult searchResult : results) {
+            assertThat(indexUids.contains(searchResult.getIndexUid()), is(true));
+        }
+        assertThat(results[0].getHits().size(), is(7));
+        assertThat(results[1].getHits().size(), is(2));
+    }
 }
