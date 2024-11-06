@@ -964,8 +964,7 @@ public class SearchTest extends AbstractIT {
         search.addQuery(
                 new IndexSearchRequest("LocaleSearch1")
                         .setQuery("")
-                        .setLocales(
-                                new String[] {"eng"})); 
+                        .setLocales(new String[] {"eng"}));
         search.addQuery(
                 new IndexSearchRequest("LocaleSearch2")
                         .setQuery("french")
