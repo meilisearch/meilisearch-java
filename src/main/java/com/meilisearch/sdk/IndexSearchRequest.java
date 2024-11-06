@@ -37,12 +37,14 @@ public class IndexSearchRequest {
     private String[] attributesToSearchOn;
     private FederationOptions federationOptions;
     protected String[] locales;
+    protected String distinct;
 
     /**
      * Constructor for MultiSearchRequest for building search queries with the default values:
      * offset: 0, limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
      * attributesToHighlight: null, filter: null, showMatchesPosition: false, facets: null, sort:
      * null, showRankingScore: false, showRankingScoreDetails: false, rankingScoreThreshold: null
+     * distinct: null
      *
      * @param indexUid uid of the requested index String
      */
@@ -103,7 +105,8 @@ public class IndexSearchRequest {
                         .putOpt("showRankingScoreDetails", this.showRankingScoreDetails)
                         .putOpt("rankingScoreThreshold", this.rankingScoreThreshold)
                         .putOpt("attributesToSearchOn", this.attributesToSearchOn)
-                        .putOpt("locales", this.locales);
+                        .putOpt("locales", this.locales)
+                        .putOpt("distinct", this.distinct);
 
         return jsonObject.toString();
     }

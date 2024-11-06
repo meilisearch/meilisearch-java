@@ -134,7 +134,8 @@ class SearchRequestTest {
                         .setSort(new String[] {"sort"})
                         .setPage(10)
                         .setHitsPerPage(2)
-                        .setLocales(new String[] {"eng"});
+                        .setLocales(new String[] {"eng"})
+                        .setDistinct("distinct");
 
         assertThat(classToTest.getQ(), is(equalTo("This is a Test")));
         assertThat(classToTest.getOffset(), is(equalTo(200)));
@@ -155,6 +156,7 @@ class SearchRequestTest {
         assertThat(classToTest.getPage(), is(equalTo(10)));
         assertThat(classToTest.getHitsPerPage(), is(equalTo(2)));
         assertThat(classToTest.getLocales()[0], is(equalTo("eng")));
+        assertThat(classToTest.getDistinct(), is(equalTo("distinct")));
     }
 
     @Test
@@ -175,6 +177,7 @@ class SearchRequestTest {
                         .page(10)
                         .hitsPerPage(2)
                         .locales(new String[] {"eng"})
+                        .distinct("distinct")
                         .build();
 
         assertThat(classToTest.getQ(), is(equalTo("This is a Test")));
@@ -196,6 +199,7 @@ class SearchRequestTest {
         assertThat(classToTest.getPage(), is(equalTo(10)));
         assertThat(classToTest.getHitsPerPage(), is(equalTo(2)));
         assertThat(classToTest.getLocales()[0], is(equalTo("eng")));
+        assertThat(classToTest.getDistinct(), is(equalTo("distinct")));
     }
 
     @Test
@@ -222,9 +226,10 @@ class SearchRequestTest {
                         .setSort(new String[] {"sort"})
                         .setPage(0)
                         .setHitsPerPage(0)
+                        .setDistinct("distinct")
                         .setLocales(new String[] {"eng"});
         String expectedToString =
-                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"attributesToSearchOn\":[\"searchOn\"],\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"locales\":[\"eng\"],\"matchingStrategy\":\"all\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}";
+                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"attributesToSearchOn\":[\"searchOn\"],\"distinct\":\"distinct\",\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"locales\":[\"eng\"],\"matchingStrategy\":\"all\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}";
 
         assertThat(classToTest.getQ(), is(equalTo("This is a Test")));
         assertThat(classToTest.getOffset(), is(equalTo(200)));
@@ -247,6 +252,7 @@ class SearchRequestTest {
         assertThat(classToTest.getPage(), is(equalTo(0)));
         assertThat(classToTest.getHitsPerPage(), is(equalTo(0)));
         assertThat(classToTest.getLocales()[0], is(equalTo("eng")));
+        assertThat(classToTest.getDistinct(), is(equalTo("distinct")));
         assertThat(classToTest.toString(), is(equalTo(expectedToString)));
     }
 
@@ -276,9 +282,10 @@ class SearchRequestTest {
                         .page(0)
                         .hitsPerPage(0)
                         .locales(new String[] {"eng"})
+                        .distinct("distinct")
                         .build();
         String expectedToString =
-                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"attributesToSearchOn\":[\"searchOn\"],\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"locales\":[\"eng\"],\"matchingStrategy\":\"all\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}";
+                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"attributesToSearchOn\":[\"searchOn\"],\"distinct\":\"distinct\",\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"locales\":[\"eng\"],\"matchingStrategy\":\"all\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}";
 
         assertThat(classToTest.getQ(), is(equalTo("This is a Test")));
         assertThat(classToTest.getOffset(), is(equalTo(200)));
@@ -301,6 +308,7 @@ class SearchRequestTest {
         assertThat(classToTest.getPage(), is(equalTo(0)));
         assertThat(classToTest.getHitsPerPage(), is(equalTo(0)));
         assertThat(classToTest.getLocales()[0], is(equalTo("eng")));
+        assertThat(classToTest.getDistinct(), is(equalTo("distinct")));
         assertThat(classToTest.toString(), is(equalTo(expectedToString)));
     }
 
@@ -329,9 +337,10 @@ class SearchRequestTest {
                         .sort(new String[] {"sort"})
                         .page(0)
                         .hitsPerPage(0)
+                        .distinct("distinct")
                         .build();
         String expectedToString =
-                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"attributesToSearchOn\":[\"searchOn\"],\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}";
+                "{\"attributesToRetrieve\":[\"bubble\"],\"offset\":200,\"cropMarker\":\"123\",\"hitsPerPage\":0,\"attributesToSearchOn\":[\"searchOn\"],\"distinct\":\"distinct\",\"sort\":[\"sort\"],\"highlightPreTag\":\"abc\",\"facets\":[\"facets\"],\"filter\":[[\"test='test'\"],[\"test1='test1'\"]],\"q\":\"This is a Test\",\"showMatchesPosition\":true,\"limit\":900,\"cropLength\":900,\"highlightPostTag\":\"zyx\",\"attributesToHighlight\":[\"highlight\"],\"page\":0,\"attributesToCrop\":[\"crop\"]}";
 
         assertThat(classToTest.getQ(), is(equalTo("This is a Test")));
         assertThat(classToTest.getOffset(), is(equalTo(200)));
@@ -351,6 +360,7 @@ class SearchRequestTest {
         assertThat(classToTest.getFacets()[0], is(equalTo("facets")));
         assertThat(classToTest.getSort()[0], is(equalTo("sort")));
         assertThat(classToTest.getCropLength(), is(equalTo(900)));
+        assertThat(classToTest.getDistinct(), is(equalTo("distinct")));
         assertThat(classToTest.toString(), is(equalTo(expectedToString)));
     }
 }
