@@ -410,6 +410,29 @@ public class SearchTest extends AbstractIT {
         assertThat(resGson.hits[0].getRankingScore(), is(greaterThanOrEqualTo(0.9)));
     }
 
+    /** Test with show distinct */
+    @Test
+    public void testSearchWithDistinct() throws Exception {
+        String indexUid = "SearchDistinct";
+        Index index = client.index(indexUid);
+        GsonJsonHandler jsonGson = new GsonJsonHandler();
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        Settings settings = index.getSettings();
+
+        settings.setFilterableAttributes(new String[] {"language"});
+        index.waitForTask(index.updateSettings(settings).getTaskUid());
+
+        SearchRequest searchRequest = SearchRequest.builder().q("").distinct("language").build();
+
+        Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
+        assertThat(resGson.hits, is(arrayWithSize(4)));
+    }
+
     /** Test search with phrase */
     @Test
     public void testSearchPhrase() throws Exception {
@@ -868,6 +891,43 @@ public class SearchTest extends AbstractIT {
                     searchResult.getHits().get(0).get("_rankingScore"), instanceOf(Double.class));
             Double rankingScore = (Double) searchResult.getHits().get(0).get("_rankingScore");
             assertThat(rankingScore, is(greaterThanOrEqualTo(0.98)));
+        }
+    }
+
+    /** Test multisearch with distinct */
+    @Test
+    public void testMultiSearchWithDistinct() throws Exception {
+        HashSet<String> indexUids = new HashSet<String>();
+        indexUids.add("MultiSearch1");
+        indexUids.add("MultiSearch2");
+
+        for (String indexUid : indexUids) {
+            Index index = client.index(indexUid);
+
+            TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+            TaskInfo task = index.addDocuments(testData.getRaw());
+
+            Settings settings = new Settings();
+            settings.setFilterableAttributes(new String[] {"language", "title"});
+
+            index.waitForTask(index.updateSettings(settings).getTaskUid());
+
+            index.waitForTask(task.getTaskUid());
+        }
+
+        MultiSearchRequest search = new MultiSearchRequest();
+
+        for (String indexUid : indexUids) {
+            search.addQuery(new IndexSearchRequest(indexUid).setQuery("").setDistinct("language"));
+        }
+
+        MultiSearchResult[] results = client.multiSearch(search).getResults();
+
+        assertThat(results.length, is(2));
+
+        for (MultiSearchResult searchResult : results) {
+            assertThat(indexUids.contains(searchResult.getIndexUid()), is(true));
+            assertThat(searchResult.getHits().size(), is(4));
         }
     }
 
