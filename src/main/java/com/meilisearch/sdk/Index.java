@@ -698,6 +698,46 @@ public class Index implements Serializable {
     }
 
     /**
+     * Gets the localized attributes of the index
+     *
+     * @return localized attributes of a given uid as LocalizedAttribute
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#get-localized-attributes">API
+     *     specification</a>
+     */
+    public LocalizedAttribute[] getLocalizedAttributesSettings() throws MeilisearchException {
+        return this.settingsHandler.getLocalizedAttributes(this.uid);
+    }
+
+    /**
+     * Updates the localized attributes of the index
+     *
+     * @param localizedAttributes An array of localized attributes that contains attributes of an
+     *     index to display
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#update-localized-attribute-settings">API
+     *     specification</a>
+     */
+    public TaskInfo updateLocalizedAttributesSettings(LocalizedAttribute[] localizedAttributes)
+            throws MeilisearchException {
+        return this.settingsHandler.updateLocalizedAttributesSettings(
+                this.uid, localizedAttributes);
+    }
+
+    /**
+     * Resets the localized attributes of the index
+     *
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    public TaskInfo resetLocalizedAttributesSettings() throws MeilisearchException {
+        return this.settingsHandler.resetLocalizedAttributesSettings(this.uid);
+    }
+
+    /**
      * Gets the filterable attributes of the index
      *
      * @return filterable attributes of a given uid as String

@@ -36,6 +36,7 @@ public class IndexSearchRequest {
     protected Double rankingScoreThreshold;
     private String[] attributesToSearchOn;
     private FederationOptions federationOptions;
+    protected String[] locales;
     protected String distinct;
 
     /**
@@ -104,6 +105,7 @@ public class IndexSearchRequest {
                         .putOpt("showRankingScoreDetails", this.showRankingScoreDetails)
                         .putOpt("rankingScoreThreshold", this.rankingScoreThreshold)
                         .putOpt("attributesToSearchOn", this.attributesToSearchOn)
+                        .putOpt("locales", this.locales)
                         .putOpt("distinct", this.distinct);
 
         return jsonObject.toString();
