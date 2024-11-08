@@ -20,6 +20,8 @@ import com.meilisearch.sdk.utils.Movie;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -929,6 +931,46 @@ public class SearchTest extends AbstractIT {
             assertThat(indexUids.contains(searchResult.getIndexUid()), is(true));
             assertThat(searchResult.getHits().size(), is(4));
         }
+    }
+
+    @Test
+    public void testMultiSearchWithMergeFacets() {
+        Index moviesIndex = client.index("movies");    
+        Index nestedMoviesIndex = client.index("nestedMovies");    
+
+        TestData<Movie> testData = this.getTestData(NESTED_MOVIES, Movie.class);
+        TaskInfo task1 = nestedMoviesIndex.addDocuments(testData.getRaw());
+
+        nestedMoviesIndex.waitForTask(task1.getTaskUid());
+
+        Settings settings = new Settings();
+        settings.setFilterableAttributes(new String[] {"id", "title"});
+        settings.setSortableAttributes(new String[]{"id"});
+
+        moviesIndex.waitForTask(moviesIndex.updateSettings(settings).getTaskUid());
+
+        TestData<Movie> moviesTestData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task2 = moviesIndex.addDocuments(moviesTestData.getRaw());
+
+        moviesIndex.waitForTask(task2.getTaskUid());
+
+        MultiSearchRequest search = new MultiSearchRequest();
+
+        search.addQuery(new IndexSearchRequest("movies").setQuery("Hobbit"));
+        search.addQuery(new IndexSearchRequest("nestedMovies").setQuery("Hobbit"));
+
+        MultiSearchFederation federation = new MultiSearchFederation();
+        federation.setLimit(20);
+        federation.setOffset(0);
+        federation.setMergeFacets(new MergeFacets(10));
+        Map<String, String[]> facetsByIndex = new HashMap<String, String[]>();
+        facetsByIndex.put("nestedMovies",new String[]{"title"});
+        facetsByIndex.put("movies", new String[] {"title", "id"});
+        federation.setFacetsByIndex(facetsByIndex);
+
+        MultiSearchResult[] results = client.multiSearch(search).getResults();
+
+        assertThat(results.length, is(2));
     }
 
     @Test
