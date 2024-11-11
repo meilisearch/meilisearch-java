@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class FacetsByIndexInfo {
-    private Object distribution;
+    private HashMap<String, HashMap<String, Integer>> distribution;
     private HashMap<String, FacetRating> stats;
 }

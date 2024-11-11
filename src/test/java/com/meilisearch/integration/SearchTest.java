@@ -933,6 +933,96 @@ public class SearchTest extends AbstractIT {
     }
 
     @Test
+    public void testMultiSearchWithFacetsByIndex() {
+        HashSet<String> indexUids = new HashSet<String>();
+        indexUids.add("movies");
+        indexUids.add("nestedMovies");
+
+        for (String indexUid : indexUids) {
+
+            Index index = client.index(indexUid);
+
+            TestData<Movie> nestedTestData = this.getTestData(NESTED_MOVIES, Movie.class);
+            TaskInfo task1 = index.addDocuments(nestedTestData.getRaw());
+
+            index.waitForTask(task1.getTaskUid());
+
+            Settings settings = new Settings();
+            settings.setFilterableAttributes(new String[] {"id", "title"});
+            settings.setSortableAttributes(new String[] {"id"});
+
+            index.waitForTask(index.updateSettings(settings).getTaskUid());
+
+            TestData<Movie> moviesTestData = this.getTestData(MOVIES_INDEX, Movie.class);
+            TaskInfo task2 = index.addDocuments(moviesTestData.getRaw());
+
+            index.waitForTask(task2.getTaskUid());
+        }
+
+        MultiSearchRequest search = new MultiSearchRequest();
+
+        for (String indexUid : indexUids) {
+            search.addQuery(new IndexSearchRequest(indexUid).setQuery("Hobbit"));
+        }
+
+        MultiSearchFederation federation = new MultiSearchFederation();
+        federation.setLimit(20);
+        federation.setOffset(0);
+        Map<String, String[]> facetsByIndex = new HashMap<String, String[]>();
+        facetsByIndex.put("nestedMovies", new String[] {"title"});
+        facetsByIndex.put("movies", new String[] {"title", "id"});
+        federation.setFacetsByIndex(facetsByIndex);
+
+        MultiSearchResult results = client.multiSearch(search, federation);
+
+        assertThat(results.getHits().size(), is(4));
+
+        HashMap<String, FacetRating> facetStats = results.getFacetStats();
+        HashMap<String, HashMap<String, Integer>> facetDistribution =
+                results.getFacetDistribution();
+
+        HashMap<String, FacetsByIndexInfo> facetsByIndexInfo = results.getFacetsByIndex();
+
+        assertThat(facetDistribution, is(nullValue()));
+        assertThat(facetStats, is(nullValue()));
+        assertThat(facetsByIndexInfo, is(not(nullValue())));
+
+        for (String indexUid : indexUids) {
+            FacetsByIndexInfo indexInfo = facetsByIndexInfo.get(indexUid);
+            assertThat(indexInfo.getDistribution(), is(not(nullValue())));
+            assertThat(indexInfo.getStats(), is(not(nullValue())));
+        }
+
+        HashMap<String, HashMap<String, Integer>> moviesIndexDistribution =
+                facetsByIndexInfo.get("movies").getDistribution();
+
+        assertThat(moviesIndexDistribution.get("id"), is(not(nullValue())));
+        assertThat(moviesIndexDistribution.get("id").get("2"), is(equalTo(1)));
+        assertThat(moviesIndexDistribution.get("id").get("5"), is(equalTo(1)));
+        assertThat(moviesIndexDistribution.get("title"), is(not(nullValue())));
+        assertThat(moviesIndexDistribution.get("title").get("Hobbit"), is(equalTo(1)));
+        assertThat(moviesIndexDistribution.get("title").get("The Hobbit"), is(equalTo(1)));
+
+        HashMap<String, FacetRating> moviesFacetRating = facetsByIndexInfo.get("movies").getStats();
+        FacetRating idMoviesFacetRating = moviesFacetRating.get("id");
+
+        assertThat(idMoviesFacetRating, is(not(nullValue())));
+        assertThat(idMoviesFacetRating.getMin(), is(equalTo(2.0)));
+        assertThat(idMoviesFacetRating.getMax(), is(equalTo(5.0)));
+
+        HashMap<String, HashMap<String, Integer>> nestedMoviesIndexDistribution =
+                facetsByIndexInfo.get("nestedMovies").getDistribution();
+
+        assertThat(nestedMoviesIndexDistribution.get("title"), is(not(nullValue())));
+        assertThat(nestedMoviesIndexDistribution.get("title").get("Hobbit"), is(equalTo(1)));
+        assertThat(nestedMoviesIndexDistribution.get("title").get("The Hobbit"), is(equalTo(1)));
+
+        HashMap<String, FacetRating> nestedMoviesFacetRating =
+                facetsByIndexInfo.get("nestedMovies").getStats();
+        assertThat(nestedMoviesFacetRating.size(), is(equalTo((0))));
+    }
+
+    @Test
     public void testMultiSearchWithMergeFacets() {
         HashSet<String> indexUids = new HashSet<String>();
         indexUids.add("movies");
@@ -979,7 +1069,8 @@ public class SearchTest extends AbstractIT {
         assertThat(results.getHits().size(), is(4));
 
         HashMap<String, FacetRating> facetStats = results.getFacetStats();
-        HashMap<String, HashMap<String, Integer>> facetDistribution = results.getFacetDistribution();
+        HashMap<String, HashMap<String, Integer>> facetDistribution =
+                results.getFacetDistribution();
 
         assertThat(facetDistribution, is(not(nullValue())));
         assertThat(facetStats, is(not(nullValue())));
