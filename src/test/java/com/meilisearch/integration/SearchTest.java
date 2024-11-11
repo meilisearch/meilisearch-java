@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -935,42 +934,67 @@ public class SearchTest extends AbstractIT {
 
     @Test
     public void testMultiSearchWithMergeFacets() {
-        Index moviesIndex = client.index("movies");    
-        Index nestedMoviesIndex = client.index("nestedMovies");    
+        HashSet<String> indexUids = new HashSet<String>();
+        indexUids.add("movies");
+        indexUids.add("nestedMovies");
 
-        TestData<Movie> testData = this.getTestData(NESTED_MOVIES, Movie.class);
-        TaskInfo task1 = nestedMoviesIndex.addDocuments(testData.getRaw());
+        for (String indexUid : indexUids) {
 
-        nestedMoviesIndex.waitForTask(task1.getTaskUid());
+            Index index = client.index(indexUid);
 
-        Settings settings = new Settings();
-        settings.setFilterableAttributes(new String[] {"id", "title"});
-        settings.setSortableAttributes(new String[]{"id"});
+            TestData<Movie> nestedTestData = this.getTestData(NESTED_MOVIES, Movie.class);
+            TaskInfo task1 = index.addDocuments(nestedTestData.getRaw());
 
-        moviesIndex.waitForTask(moviesIndex.updateSettings(settings).getTaskUid());
+            index.waitForTask(task1.getTaskUid());
 
-        TestData<Movie> moviesTestData = this.getTestData(MOVIES_INDEX, Movie.class);
-        TaskInfo task2 = moviesIndex.addDocuments(moviesTestData.getRaw());
+            Settings settings = new Settings();
+            settings.setFilterableAttributes(new String[] {"id", "title"});
+            settings.setSortableAttributes(new String[] {"id"});
 
-        moviesIndex.waitForTask(task2.getTaskUid());
+            index.waitForTask(index.updateSettings(settings).getTaskUid());
+
+            TestData<Movie> moviesTestData = this.getTestData(MOVIES_INDEX, Movie.class);
+            TaskInfo task2 = index.addDocuments(moviesTestData.getRaw());
+
+            index.waitForTask(task2.getTaskUid());
+        }
 
         MultiSearchRequest search = new MultiSearchRequest();
 
-        search.addQuery(new IndexSearchRequest("movies").setQuery("Hobbit"));
-        search.addQuery(new IndexSearchRequest("nestedMovies").setQuery("Hobbit"));
+        for (String indexUid : indexUids) {
+            search.addQuery(new IndexSearchRequest(indexUid).setQuery("Hobbit"));
+        }
 
         MultiSearchFederation federation = new MultiSearchFederation();
         federation.setLimit(20);
         federation.setOffset(0);
         federation.setMergeFacets(new MergeFacets(10));
         Map<String, String[]> facetsByIndex = new HashMap<String, String[]>();
-        facetsByIndex.put("nestedMovies",new String[]{"title"});
+        facetsByIndex.put("nestedMovies", new String[] {"title"});
         facetsByIndex.put("movies", new String[] {"title", "id"});
         federation.setFacetsByIndex(facetsByIndex);
 
-        MultiSearchResult[] results = client.multiSearch(search).getResults();
+        MultiSearchResult results = client.multiSearch(search, federation);
 
-        assertThat(results.length, is(2));
+        assertThat(results.getHits().size(), is(4));
+
+        HashMap<String, FacetRating> facetStats = results.getFacetStats();
+        HashMap<String, HashMap<String, Integer>> facetDistribution = results.getFacetDistribution();
+
+        assertThat(facetDistribution, is(not(nullValue())));
+        assertThat(facetStats, is(not(nullValue())));
+        assertThat(results.getFacetsByIndex(), is(nullValue()));
+
+        FacetRating idFacet = facetStats.get("id");
+
+        assertThat(idFacet.getMin(), is(equalTo(2.0)));
+        assertThat(idFacet.getMax(), is(equalTo(5.0)));
+
+        assertThat(facetDistribution.get("id").get("2"), is(equalTo(1)));
+        assertThat(facetDistribution.get("id").get("5"), is(equalTo(1)));
+
+        assertThat(facetDistribution.get("title").get("Hobbit"), is(equalTo(2)));
+        assertThat(facetDistribution.get("title").get("The Hobbit"), is(equalTo(2)));
     }
 
     @Test

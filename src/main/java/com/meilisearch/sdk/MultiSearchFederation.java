@@ -1,10 +1,8 @@
 package com.meilisearch.sdk;
 
 import java.util.Map;
-
-import org.json.JSONObject;
-
 import lombok.Getter;
+import org.json.JSONObject;
 
 @Getter
 public class MultiSearchFederation {
