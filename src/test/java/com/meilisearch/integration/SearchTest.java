@@ -686,12 +686,10 @@ public class SearchTest extends AbstractIT {
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
         assertThat(resGson.hits, is(arrayWithSize(20)));
-        assertThat(resGson.hits[0].getId(), is(equalTo("155")));
-        assertThat(resGson.hits[0].getTitle(), is(equalTo("The Dark Knight")));
-        assertThat(resGson.hits[1].getId(), is(equalTo("671")));
-        assertThat(
-                resGson.hits[1].getTitle(),
-                is(equalTo("Harry Potter and the Philosopher's Stone")));
+        assertThat(resGson.hits[0].getId(), is(equalTo("2")));
+        assertThat(resGson.hits[0].getTitle(), is(equalTo("Hobbit")));
+        assertThat(resGson.hits[1].getId(), is(equalTo("155")));
+        assertThat(resGson.hits[1].getTitle(), is(equalTo("The Dark Knight")));
     }
 
     /** Test search matches */
@@ -729,7 +727,7 @@ public class SearchTest extends AbstractIT {
         assertThat(searchResult.getHits(), hasSize(20));
         assertThat(searchResult.getPage(), is(equalTo(1)));
         assertThat(searchResult.getHitsPerPage(), is(equalTo(20)));
-        assertThat(searchResult.getTotalHits(), is(equalTo(30)));
+        assertThat(searchResult.getTotalHits(), is(equalTo(31)));
         assertThat(searchResult.getTotalPages(), is(equalTo(2)));
     }
 
@@ -750,8 +748,8 @@ public class SearchTest extends AbstractIT {
         assertThat(searchResult.getHits(), hasSize(2));
         assertThat(searchResult.getPage(), is(equalTo(2)));
         assertThat(searchResult.getHitsPerPage(), is(equalTo(2)));
-        assertThat(searchResult.getTotalHits(), is(equalTo(30)));
-        assertThat(searchResult.getTotalPages(), is(equalTo(15)));
+        assertThat(searchResult.getTotalHits(), is(equalTo(31)));
+        assertThat(searchResult.getTotalPages(), is(equalTo(16)));
     }
 
     /** Test place holder search */
