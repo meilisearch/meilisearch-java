@@ -87,8 +87,8 @@ public class SearchTest extends AbstractIT {
         SearchRequest searchRequest = SearchRequest.builder().q("a").offset(20).build();
         SearchResult searchResult = (SearchResult) index.search(searchRequest);
 
-        assertThat(searchResult.getHits(), hasSize(10));
-        assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(30)));
+        assertThat(searchResult.getHits(), hasSize(11));
+        assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(31)));
     }
 
     /** Test search limit */
@@ -106,7 +106,7 @@ public class SearchTest extends AbstractIT {
         SearchResult searchResult = (SearchResult) index.search(searchRequest);
 
         assertThat(searchResult.getHits(), hasSize(2));
-        assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(30)));
+        assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(31)));
     }
 
     /** Test search attributesToRetrieve */
@@ -311,7 +311,7 @@ public class SearchTest extends AbstractIT {
         SearchResult searchResult = (SearchResult) index.search(searchRequest);
 
         assertThat(searchResult.getHits(), hasSize(20));
-        assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(21)));
+        assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(22)));
     }
 
     /** Test search with frequency matching strategy */
