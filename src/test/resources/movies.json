@@ -396,5 +396,17 @@
 		  "Thriller",
 		  "Drama"
 	   ]
+	},
+	{
+		"id": 2,
+		"title": "Hobbit",
+		"poster": "https://www.imdb.com/title/tt0903624/mediaviewer/rm3577719808/?ref_=tt_ov_i",
+		"overview": "A reluctant Hobbit, Bilbo Baggins, sets out to the Lonely Mountain with a spirited group of dwarves to reclaim their mountain home and the gold within it from the dragon Smaug.",
+		"release_date": "2021-12-14",
+		"language": "en",
+		"genres": [
+			"Adventure",
+			"Fantasy"
+		]
 	}
 ]

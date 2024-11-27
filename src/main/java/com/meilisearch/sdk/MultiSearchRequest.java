@@ -1,7 +1,6 @@
 package com.meilisearch.sdk;
 
 import java.util.ArrayList;
-import lombok.*;
 
 public class MultiSearchRequest {
     private ArrayList<IndexSearchRequest> queries;
