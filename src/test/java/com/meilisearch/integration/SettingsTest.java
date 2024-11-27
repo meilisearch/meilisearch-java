@@ -18,6 +18,7 @@ import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.model.FacetSortValue;
 import com.meilisearch.sdk.model.Faceting;
+import com.meilisearch.sdk.model.LocalizedAttribute;
 import com.meilisearch.sdk.model.Pagination;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
@@ -445,7 +446,7 @@ public class SettingsTest extends AbstractIT {
 
         assertThat(
                 initialDisplayedAttributes,
-                is(arrayWithSize(initialSettings.getSearchableAttributes().length)));
+                is(arrayWithSize(initialSettings.getDisplayedAttributes().length)));
         assertThat(
                 initialDisplayedAttributes, is(equalTo(initialSettings.getDisplayedAttributes())));
     }
@@ -490,6 +491,99 @@ public class SettingsTest extends AbstractIT {
         assertThat(
                 displayedAttributesAfterReset,
                 is(not(arrayWithSize(updatedDisplayedAttributes.length))));
+    }
+
+    /** Tests of the localization attributes setting methods */
+    @Test
+    @DisplayName("Test get localized attributes settings by uid")
+    public void testGetLocalizedAttributesSettings() throws Exception {
+        Index index = createIndex("testGetLocalizedAttributesSettings");
+        Settings initialSettings = index.getSettings();
+        LocalizedAttribute[] initialLocalizedAttributes = index.getLocalizedAttributesSettings();
+
+        assertThat(
+                initialLocalizedAttributes, is(equalTo(initialSettings.getLocalizedAttributes())));
+        assertThat(
+                initialLocalizedAttributes, is(equalTo(initialSettings.getLocalizedAttributes())));
+    }
+
+    @Test
+    @DisplayName("Test update localized attributes settings")
+    public void testUpdateLocalizedAttributesSettings() throws Exception {
+        Index index = createIndex("testUpdateLocalizedAttributesSettings");
+        LocalizedAttribute[] initialLocalizedAttributes = index.getLocalizedAttributesSettings();
+
+        LocalizedAttribute firstAttribute = new LocalizedAttribute();
+        LocalizedAttribute secondAttribute = new LocalizedAttribute();
+
+        firstAttribute.setAttributePatterns(new String[] {"title", "description"});
+        firstAttribute.setLocales(new String[] {"eng", "fra"});
+
+        secondAttribute.setAttributePatterns(new String[] {"genre", "release_date"});
+        secondAttribute.setLocales(new String[] {"rus"});
+
+        LocalizedAttribute[] newLocalizedAttributes =
+                new LocalizedAttribute[] {firstAttribute, secondAttribute};
+
+        index.waitForTask(
+                index.updateLocalizedAttributesSettings(newLocalizedAttributes).getTaskUid());
+        LocalizedAttribute[] updatedLocalizedAttributes = index.getLocalizedAttributesSettings();
+
+        assertThat(updatedLocalizedAttributes, is(arrayWithSize(newLocalizedAttributes.length)));
+        assertThat(
+                updatedLocalizedAttributes[0].getAttributePatterns(),
+                is(equalTo(newLocalizedAttributes[0].getAttributePatterns())));
+        assertThat(
+                updatedLocalizedAttributes[0].getLocales(),
+                is(equalTo(newLocalizedAttributes[0].getLocales())));
+        assertThat(
+                updatedLocalizedAttributes[1].getAttributePatterns(),
+                is(equalTo(newLocalizedAttributes[1].getAttributePatterns())));
+        assertThat(
+                updatedLocalizedAttributes[1].getLocales(),
+                is(equalTo(newLocalizedAttributes[1].getLocales())));
+        assertThat(updatedLocalizedAttributes, is(not(equalTo(initialLocalizedAttributes))));
+    }
+
+    @Test
+    @DisplayName("Test reset localized attributes settings")
+    public void testResetLocalizedAttributesSettings() throws Exception {
+        Index index = createIndex("testResetLocalizedAttributesSettings");
+        LocalizedAttribute[] initialLocalizedAttributes = index.getLocalizedAttributesSettings();
+        LocalizedAttribute firstAttribute = new LocalizedAttribute();
+        LocalizedAttribute secondAttribute = new LocalizedAttribute();
+
+        firstAttribute.setAttributePatterns(new String[] {"title", "description"});
+        firstAttribute.setLocales(new String[] {"eng", "fra"});
+
+        secondAttribute.setAttributePatterns(new String[] {"genre", "release_date"});
+        secondAttribute.setLocales(new String[] {"rus"});
+
+        LocalizedAttribute[] newLocalizedAttributes =
+                new LocalizedAttribute[] {firstAttribute, secondAttribute};
+
+        index.waitForTask(
+                index.updateLocalizedAttributesSettings(newLocalizedAttributes).getTaskUid());
+        LocalizedAttribute[] updatedLocalizedAttributes = index.getLocalizedAttributesSettings();
+
+        index.waitForTask(index.resetLocalizedAttributesSettings().getTaskUid());
+        LocalizedAttribute[] localizedAttributesAfterReset = index.getLocalizedAttributesSettings();
+
+        assertThat(updatedLocalizedAttributes, is(arrayWithSize(newLocalizedAttributes.length)));
+        assertThat(
+                updatedLocalizedAttributes[0].getAttributePatterns(),
+                is(equalTo(newLocalizedAttributes[0].getAttributePatterns())));
+        assertThat(
+                updatedLocalizedAttributes[0].getLocales(),
+                is(equalTo(newLocalizedAttributes[0].getLocales())));
+        assertThat(
+                updatedLocalizedAttributes[1].getAttributePatterns(),
+                is(equalTo(newLocalizedAttributes[1].getAttributePatterns())));
+        assertThat(
+                updatedLocalizedAttributes[1].getLocales(),
+                is(equalTo(newLocalizedAttributes[1].getLocales())));
+        assertThat(updatedLocalizedAttributes, is(not(equalTo(initialLocalizedAttributes))));
+        assertThat(localizedAttributesAfterReset, is(not(equalTo(updatedLocalizedAttributes))));
     }
 
     /** Tests of the filterable attributes setting methods */
@@ -961,6 +1055,37 @@ public class SettingsTest extends AbstractIT {
         assertThat(resetDistinctAttribute, is(not(equalTo(updatedDistinctAttribute))));
         assertThat(updatedDistinctAttribute, is(not(equalTo(initialDistinctAttribute))));
         assertThat(resetDistinctAttribute, is(equalTo(initialDistinctAttribute)));
+    }
+
+    @Test
+    @DisplayName("Test update localized attribute settings when null is passed")
+    public void testUpdateLocalizedAttributeSettingsUsingNull() throws Exception {
+        Index index = createIndex("testUpdateLocalizedAttributesSettingsUsingNull");
+        LocalizedAttribute[] initialLocalizedAttributes = index.getLocalizedAttributesSettings();
+        LocalizedAttribute firstAttribute = new LocalizedAttribute();
+        LocalizedAttribute secondAttribute = new LocalizedAttribute();
+
+        firstAttribute.setAttributePatterns(new String[] {"title", "description"});
+        firstAttribute.setLocales(new String[] {"eng", "fra"});
+
+        secondAttribute.setAttributePatterns(new String[] {"genre", "release_date"});
+        secondAttribute.setLocales(new String[] {"rus"});
+
+        LocalizedAttribute[] newLocalizedAttributes =
+                new LocalizedAttribute[] {firstAttribute, secondAttribute};
+
+        index.waitForTask(
+                index.updateLocalizedAttributesSettings(newLocalizedAttributes).getTaskUid());
+        LocalizedAttribute[] updatedLocalizedAttributes = index.getLocalizedAttributesSettings();
+
+        index.waitForTask(index.updateLocalizedAttributesSettings(null).getTaskUid());
+        LocalizedAttribute[] resetLocalizedAttributes = index.getLocalizedAttributesSettings();
+
+        assertThat(updatedLocalizedAttributes, is(not(equalTo(initialLocalizedAttributes))));
+        assertThat(
+                resetLocalizedAttributes,
+                is(not(arrayWithSize(updatedLocalizedAttributes.length))));
+        assertThat(resetLocalizedAttributes, is(equalTo(initialLocalizedAttributes)));
     }
 
     /** Tests of the pagination setting methods */

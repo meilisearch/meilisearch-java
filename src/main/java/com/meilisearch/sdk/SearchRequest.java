@@ -40,6 +40,7 @@ public class SearchRequest {
     protected Boolean showRankingScore;
     protected Boolean showRankingScoreDetails;
     protected Double rankingScoreThreshold;
+    protected String[] locales;
     protected String distinct;
 
     /**
@@ -102,6 +103,7 @@ public class SearchRequest {
                         .putOpt("showRankingScore", this.showRankingScore)
                         .putOpt("showRankingScoreDetails", this.showRankingScoreDetails)
                         .putOpt("rankingScoreThreshold", this.rankingScoreThreshold)
+                        .putOpt("locales", this.locales)
                         .putOpt("distinct", this.distinct);
 
         return jsonObject.toString();
