@@ -838,7 +838,7 @@ distinct_attribute_guide_distinct_parameter_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("white shirt").distinct("sku").build();
   client.index("products").search(searchRequest);
 search_parameter_reference_locales_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("進撃の巨人").locales(new String[]{"jpn"}).build();
+  SearchRequest searchRequest = SearchRequest.builder().q("QUERY TEXT IN JAPANESE").locales(new String[]{"jpn"}).build();
   client.index("INDEX_NAME").search(searchRequest);
 get_localized_attribute_settings_1: |-
   client.index("INDEX_NAME").getLocalizedAttributesSettings();
