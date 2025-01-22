@@ -37,7 +37,7 @@ public class FacetSearch {
         return httpClient.post(requestQuery, fsr.toString(), String.class);
     }
 
-    FacetSearchable facetSearch(String uid, FacetSearchRequest fsr) throws MeilisearchException {
+    FacetSearchResult facetSearch(String uid, FacetSearchRequest fsr) throws MeilisearchException {
         return httpClient.jsonHandler.decode(rawSearch(uid, fsr), FacetSearchResult.class);
     }
 }

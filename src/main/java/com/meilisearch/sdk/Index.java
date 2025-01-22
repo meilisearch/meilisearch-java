@@ -447,7 +447,7 @@ public class Index implements Serializable {
      * @see Index#updateFilterableAttributesSettings(String[]) updateFilterableAttributesSettings
      * @since 1.3
      */
-    public FacetSearchable facetSearch(FacetSearchRequest facetSearchRequest)
+    public FacetSearchResult facetSearch(FacetSearchRequest facetSearchRequest)
             throws MeilisearchException {
         return this.facetSearch.facetSearch(this.uid, facetSearchRequest);
     }
