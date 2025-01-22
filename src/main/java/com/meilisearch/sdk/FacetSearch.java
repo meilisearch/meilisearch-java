@@ -2,7 +2,6 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.FacetSearchResult;
-import com.meilisearch.sdk.model.FacetSearchable;
 
 /**
  * Class used for performing facet searching on Meilisearch indexes
