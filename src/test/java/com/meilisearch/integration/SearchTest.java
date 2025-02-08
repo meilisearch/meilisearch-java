@@ -43,7 +43,8 @@ public class SearchTest extends AbstractIT {
     @BeforeEach
     public void initialize() {
         this.setUp();
-        if (testData == null) testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        if (testData == null)
+            testData = this.getTestData(MOVIES_INDEX, Movie.class);
     }
 
     @AfterAll
@@ -121,11 +122,10 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("a")
-                        .attributesToRetrieve(new String[] {"id", "title"})
-                        .build();
+        SearchRequest searchRequest = SearchRequest.builder()
+                .q("a")
+                .attributesToRetrieve(new String[] { "id", "title" })
+                .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -150,11 +150,10 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("videogame")
-                        .attributesToSearchOn(new String[] {"overview"})
-                        .build();
+        SearchRequest searchRequest = SearchRequest.builder()
+                .q("videogame")
+                .attributesToSearchOn(new String[] { "overview" })
+                .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -173,11 +172,10 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("videogame")
-                        .attributesToSearchOn(new String[] {"title"})
-                        .build();
+        SearchRequest searchRequest = SearchRequest.builder()
+                .q("videogame")
+                .attributesToSearchOn(new String[] { "title" })
+                .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -196,12 +194,11 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("and")
-                        .attributesToCrop(new String[] {"overview"})
-                        .cropLength(1)
-                        .build();
+        SearchRequest searchRequest = SearchRequest.builder()
+                .q("and")
+                .attributesToCrop(new String[] { "overview" })
+                .cropLength(1)
+                .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -222,13 +219,12 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("and")
-                        .attributesToCrop(new String[] {"overview"})
-                        .cropLength(1)
-                        .cropMarker("(ꈍᴗꈍ)")
-                        .build();
+        SearchRequest searchRequest = SearchRequest.builder()
+                .q("and")
+                .attributesToCrop(new String[] { "overview" })
+                .cropLength(1)
+                .cropMarker("(ꈍᴗꈍ)")
+                .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -248,11 +244,10 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("and")
-                        .attributesToHighlight(new String[] {"title"})
-                        .build();
+        SearchRequest searchRequest = SearchRequest.builder()
+                .q("and")
+                .attributesToHighlight(new String[] { "title" })
+                .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -276,13 +271,12 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("and")
-                        .attributesToHighlight(new String[] {"title"})
-                        .highlightPreTag("(⊃｡•́‿•̀｡)⊃ ")
-                        .highlightPostTag(" ⊂(´• ω •`⊂)")
-                        .build();
+        SearchRequest searchRequest = SearchRequest.builder()
+                .q("and")
+                .attributesToHighlight(new String[] { "title" })
+                .highlightPreTag("(⊃｡•́‿•̀｡)⊃ ")
+                .highlightPostTag(" ⊂(´• ω •`⊂)")
+                .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -305,8 +299,7 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder().q("and").matchingStrategy(MatchingStrategy.ALL).build();
+        SearchRequest searchRequest = SearchRequest.builder().q("and").matchingStrategy(MatchingStrategy.ALL).build();
 
         SearchResult searchResult = (SearchResult) index.search(searchRequest);
 
@@ -325,11 +318,10 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("white shirt")
-                        .matchingStrategy(MatchingStrategy.FREQUENCY)
-                        .build();
+        SearchRequest searchRequest = SearchRequest.builder()
+                .q("white shirt")
+                .matchingStrategy(MatchingStrategy.FREQUENCY)
+                .build();
 
         SearchResult searchResult = (SearchResult) index.search(searchRequest);
 
@@ -348,8 +340,7 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder().q("and").showRankingScore(true).build();
+        SearchRequest searchRequest = SearchRequest.builder().q("and").showRankingScore(true).build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -370,8 +361,7 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder().q("and").showRankingScoreDetails(true).build();
+        SearchRequest searchRequest = SearchRequest.builder().q("and").showRankingScoreDetails(true).build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -396,13 +386,12 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("and")
-                        .showRankingScore(true)
-                        .rankingScoreThreshold(0.9)
-                        .limit(20)
-                        .build();
+        SearchRequest searchRequest = SearchRequest.builder()
+                .q("and")
+                .showRankingScore(true)
+                .rankingScoreThreshold(0.9)
+                .limit(20)
+                .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -425,7 +414,7 @@ public class SearchTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        settings.setFilterableAttributes(new String[] {"language"});
+        settings.setFilterableAttributes(new String[] { "language" });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchRequest searchRequest = SearchRequest.builder().q("").distinct("language").build();
@@ -469,14 +458,13 @@ public class SearchTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        settings.setFilterableAttributes(new String[] {"title"});
+        settings.setFilterableAttributes(new String[] { "title" });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("and")
-                        .filter(new String[] {"title = \"The Dark Knight\""})
-                        .build();
+        SearchRequest searchRequest = SearchRequest.builder()
+                .q("and")
+                .filter(new String[] { "title = \"The Dark Knight\"" })
+                .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -499,14 +487,13 @@ public class SearchTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        settings.setFilterableAttributes(new String[] {"title", "id"});
+        settings.setFilterableAttributes(new String[] { "title", "id" });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("and")
-                        .filter(new String[] {"title = \"The Dark Knight\" OR id = 290859"})
-                        .build();
+        SearchRequest searchRequest = SearchRequest.builder()
+                .q("and")
+                .filter(new String[] { "title = \"The Dark Knight\" OR id = 290859" })
+                .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -528,11 +515,10 @@ public class SearchTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        settings.setFilterableAttributes(new String[] {"title"});
+        settings.setFilterableAttributes(new String[] { "title" });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder().q("knight").facets(new String[] {"*"}).build();
+        SearchRequest searchRequest = SearchRequest.builder().q("knight").facets(new String[] { "*" }).build();
 
         Searchable searchResult = index.search(searchRequest);
 
@@ -553,11 +539,10 @@ public class SearchTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        settings.setFilterableAttributes(new String[] {"title", "id"});
+        settings.setFilterableAttributes(new String[] { "title", "id" });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder().q("knight").facets(new String[] {"*"}).build();
+        SearchRequest searchRequest = SearchRequest.builder().q("knight").facets(new String[] { "*" }).build();
 
         Searchable searchResult = index.search(searchRequest);
 
@@ -581,11 +566,10 @@ public class SearchTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        settings.setSortableAttributes(new String[] {"title"});
+        settings.setSortableAttributes(new String[] { "title" });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder().q("and").sort(new String[] {"title:asc"}).build();
+        SearchRequest searchRequest = SearchRequest.builder().q("and").sort(new String[] { "title:asc" }).build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -614,11 +598,10 @@ public class SearchTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        settings.setSortableAttributes(new String[] {"id"});
+        settings.setSortableAttributes(new String[] { "id" });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder().q("and").sort(new String[] {"id:asc"}).build();
+        SearchRequest searchRequest = SearchRequest.builder().q("and").sort(new String[] { "id:asc" }).build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -645,14 +628,13 @@ public class SearchTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        settings.setSortableAttributes(new String[] {"id", "title"});
+        settings.setSortableAttributes(new String[] { "id", "title" });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder()
-                        .q("dark")
-                        .sort(new String[] {"id:asc", "title:asc"})
-                        .build();
+        SearchRequest searchRequest = SearchRequest.builder()
+                .q("dark")
+                .sort(new String[] { "id:asc", "title:asc" })
+                .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -677,11 +659,11 @@ public class SearchTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        settings.setSortableAttributes(new String[] {"id", "title"});
+        settings.setSortableAttributes(new String[] { "id", "title" });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder().q("").sort(new String[] {"id:asc", "title:asc"}).build();
+        SearchRequest searchRequest = SearchRequest.builder().q("").sort(new String[] { "id:asc", "title:asc" })
+                .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -703,8 +685,7 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder().q("and").showMatchesPosition(true).build();
+        SearchRequest searchRequest = SearchRequest.builder().q("and").showMatchesPosition(true).build();
         Searchable searchResult = index.search(searchRequest);
 
         assertThat(searchResult.getHits(), hasSize(20));
@@ -907,7 +888,7 @@ public class SearchTest extends AbstractIT {
             TaskInfo task = index.addDocuments(testData.getRaw());
 
             Settings settings = new Settings();
-            settings.setFilterableAttributes(new String[] {"language", "title"});
+            settings.setFilterableAttributes(new String[] { "language", "title" });
 
             index.waitForTask(index.updateSettings(settings).getTaskUid());
 
@@ -946,8 +927,8 @@ public class SearchTest extends AbstractIT {
             index.waitForTask(task1.getTaskUid());
 
             Settings settings = new Settings();
-            settings.setFilterableAttributes(new String[] {"id", "title"});
-            settings.setSortableAttributes(new String[] {"id"});
+            settings.setFilterableAttributes(new String[] { "id", "title" });
+            settings.setSortableAttributes(new String[] { "id" });
 
             index.waitForTask(index.updateSettings(settings).getTaskUid());
 
@@ -967,8 +948,8 @@ public class SearchTest extends AbstractIT {
         federation.setLimit(20);
         federation.setOffset(0);
         Map<String, String[]> facetsByIndex = new HashMap<String, String[]>();
-        facetsByIndex.put("nestedMovies", new String[] {"title"});
-        facetsByIndex.put("movies", new String[] {"title", "id"});
+        facetsByIndex.put("nestedMovies", new String[] { "title" });
+        facetsByIndex.put("movies", new String[] { "title", "id" });
         federation.setFacetsByIndex(facetsByIndex);
 
         MultiSearchResult results = client.multiSearch(search, federation);
@@ -976,8 +957,7 @@ public class SearchTest extends AbstractIT {
         assertThat(results.getHits().size(), is(4));
 
         HashMap<String, FacetRating> facetStats = results.getFacetStats();
-        HashMap<String, HashMap<String, Integer>> facetDistribution =
-                results.getFacetDistribution();
+        HashMap<String, HashMap<String, Integer>> facetDistribution = results.getFacetDistribution();
 
         HashMap<String, FacetsByIndexInfo> facetsByIndexInfo = results.getFacetsByIndex();
 
@@ -991,8 +971,8 @@ public class SearchTest extends AbstractIT {
             assertThat(indexInfo.getStats(), is(not(nullValue())));
         }
 
-        HashMap<String, HashMap<String, Integer>> moviesIndexDistribution =
-                facetsByIndexInfo.get("movies").getDistribution();
+        HashMap<String, HashMap<String, Integer>> moviesIndexDistribution = facetsByIndexInfo.get("movies")
+                .getDistribution();
 
         assertThat(moviesIndexDistribution.get("id"), is(not(nullValue())));
         assertThat(moviesIndexDistribution.get("id").get("2"), is(equalTo(1)));
@@ -1008,15 +988,14 @@ public class SearchTest extends AbstractIT {
         assertThat(idMoviesFacetRating.getMin(), is(equalTo(2.0)));
         assertThat(idMoviesFacetRating.getMax(), is(equalTo(5.0)));
 
-        HashMap<String, HashMap<String, Integer>> nestedMoviesIndexDistribution =
-                facetsByIndexInfo.get("nestedMovies").getDistribution();
+        HashMap<String, HashMap<String, Integer>> nestedMoviesIndexDistribution = facetsByIndexInfo.get("nestedMovies")
+                .getDistribution();
 
         assertThat(nestedMoviesIndexDistribution.get("title"), is(not(nullValue())));
         assertThat(nestedMoviesIndexDistribution.get("title").get("Hobbit"), is(equalTo(1)));
         assertThat(nestedMoviesIndexDistribution.get("title").get("The Hobbit"), is(equalTo(1)));
 
-        HashMap<String, FacetRating> nestedMoviesFacetRating =
-                facetsByIndexInfo.get("nestedMovies").getStats();
+        HashMap<String, FacetRating> nestedMoviesFacetRating = facetsByIndexInfo.get("nestedMovies").getStats();
         assertThat(nestedMoviesFacetRating.size(), is(equalTo((0))));
     }
 
@@ -1036,8 +1015,8 @@ public class SearchTest extends AbstractIT {
             index.waitForTask(task1.getTaskUid());
 
             Settings settings = new Settings();
-            settings.setFilterableAttributes(new String[] {"id", "title"});
-            settings.setSortableAttributes(new String[] {"id"});
+            settings.setFilterableAttributes(new String[] { "id", "title" });
+            settings.setSortableAttributes(new String[] { "id" });
 
             index.waitForTask(index.updateSettings(settings).getTaskUid());
 
@@ -1058,8 +1037,8 @@ public class SearchTest extends AbstractIT {
         federation.setOffset(0);
         federation.setMergeFacets(new MergeFacets(10));
         Map<String, String[]> facetsByIndex = new HashMap<String, String[]>();
-        facetsByIndex.put("nestedMovies", new String[] {"title"});
-        facetsByIndex.put("movies", new String[] {"title", "id"});
+        facetsByIndex.put("nestedMovies", new String[] { "title" });
+        facetsByIndex.put("movies", new String[] { "title", "id" });
         federation.setFacetsByIndex(facetsByIndex);
 
         MultiSearchResult results = client.multiSearch(search, federation);
@@ -1067,8 +1046,7 @@ public class SearchTest extends AbstractIT {
         assertThat(results.getHits().size(), is(4));
 
         HashMap<String, FacetRating> facetStats = results.getFacetStats();
-        HashMap<String, HashMap<String, Integer>> facetDistribution =
-                results.getFacetDistribution();
+        HashMap<String, HashMap<String, Integer>> facetDistribution = results.getFacetDistribution();
 
         assertThat(facetDistribution, is(not(nullValue())));
         assertThat(facetStats, is(not(nullValue())));
@@ -1088,10 +1066,6 @@ public class SearchTest extends AbstractIT {
 
     @Test
     public void testSimilarDocuments() throws Exception {
-        HashMap<String, Boolean> features = new HashMap();
-        features.put("vectorStore", true);
-        client.experimentalFeatures(features);
-
         String indexUid = "SimilarDocuments";
         Index index = client.index(indexUid);
         HashMap<String, Embedders> embedders = new HashMap<>();
@@ -1108,9 +1082,8 @@ public class SearchTest extends AbstractIT {
 
         index.waitForTask(task.getTaskUid());
 
-        SimilarDocumentsResults results =
-                index.searchSimilarDocuments(
-                        new SimilarDocumentRequest().setId("143").setEmbedder("manual"));
+        SimilarDocumentsResults results = index.searchSimilarDocuments(
+                new SimilarDocumentRequest().setId("143").setEmbedder("manual"));
 
         ArrayList<HashMap<String, Object>> hits = results.getHits();
         assertThat(hits.size(), is(4));
@@ -1135,14 +1108,14 @@ public class SearchTest extends AbstractIT {
         Settings settings = index.getSettings();
 
         LocalizedAttribute localizedAttribute = new LocalizedAttribute();
-        localizedAttribute.setAttributePatterns(new String[] {"title", "comment"});
-        localizedAttribute.setLocales(new String[] {"fra", "eng"});
-        settings.setLocalizedAttributes(new LocalizedAttribute[] {localizedAttribute});
+        localizedAttribute.setAttributePatterns(new String[] { "title", "comment" });
+        localizedAttribute.setLocales(new String[] { "fra", "eng" });
+        settings.setLocalizedAttributes(new LocalizedAttribute[] { localizedAttribute });
 
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
-        SearchRequest searchRequest =
-                SearchRequest.builder().q("french").locales(new String[] {"fra", "eng"}).build();
+        SearchRequest searchRequest = SearchRequest.builder().q("french").locales(new String[] { "fra", "eng" })
+                .build();
 
         Results resGson = jsonGson.decode(index.rawSearch(searchRequest), Results.class);
 
@@ -1167,9 +1140,9 @@ public class SearchTest extends AbstractIT {
             Settings settings = index.getSettings();
 
             LocalizedAttribute localizedAttribute = new LocalizedAttribute();
-            localizedAttribute.setAttributePatterns(new String[] {"title", "comment"});
-            localizedAttribute.setLocales(new String[] {"fra", "eng"});
-            settings.setLocalizedAttributes(new LocalizedAttribute[] {localizedAttribute});
+            localizedAttribute.setAttributePatterns(new String[] { "title", "comment" });
+            localizedAttribute.setLocales(new String[] { "fra", "eng" });
+            settings.setLocalizedAttributes(new LocalizedAttribute[] { localizedAttribute });
 
             index.waitForTask(index.updateSettings(settings).getTaskUid());
         }
@@ -1179,11 +1152,11 @@ public class SearchTest extends AbstractIT {
         search.addQuery(
                 new IndexSearchRequest("LocaleSearch1")
                         .setQuery("")
-                        .setLocales(new String[] {"eng"}));
+                        .setLocales(new String[] { "eng" }));
         search.addQuery(
                 new IndexSearchRequest("LocaleSearch2")
                         .setQuery("french")
-                        .setLocales(new String[] {"fra"}));
+                        .setLocales(new String[] { "fra" }));
 
         MultiSearchResult[] results = client.multiSearch(search).getResults();
 
