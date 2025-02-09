@@ -1,10 +1,16 @@
-package com.meilisearch.sdk.model;
+package com.meilisearch.sdk.model.batch.req;
 
 import com.meilisearch.sdk.http.URLBuilder;
 import java.util.Date;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+/**
+ * Data structure of a query parameter for batches route
+ *
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/batches#query-parameters">API
+ *     specification</a>
+ */
 @Data
 @Accessors(chain = true)
 public class BatchesQuery {
