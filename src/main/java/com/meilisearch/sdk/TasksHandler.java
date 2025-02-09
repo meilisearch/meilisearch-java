@@ -179,8 +179,7 @@ public class TasksHandler {
      */
     public CursorResults<Batch> getAllBatches(BatchesQuery batchesQuery) {
         String urlPath = batchPath().addQuery(batchesQuery.toQuery()).getURL();
-        BatchResults batchResults = httpClient.post(urlPath, null, BatchResults.class);
-        return batchResults.getBatchCursorResults();
+        return (CursorResults<Batch>) httpClient.get(urlPath, CursorResults.class, Batch.class);
     }
 
     /** Creates an URLBuilder for the constant route tasks */

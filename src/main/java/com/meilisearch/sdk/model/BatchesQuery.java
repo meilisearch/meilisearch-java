@@ -3,8 +3,10 @@ package com.meilisearch.sdk.model;
 import com.meilisearch.sdk.http.URLBuilder;
 import java.util.Date;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
+@Accessors(chain = true)
 public class BatchesQuery {
     private int[] uids;
     private int[] batchUids;
@@ -18,8 +20,8 @@ public class BatchesQuery {
     private Date afterStartedAt;
     private Date beforeFinishedAt;
     private Date afterFinishedAt;
-    private int limit;
-    private int from;
+    private int limit = -1;
+    private int from = -1;
 
     public String toQuery() {
         URLBuilder urlb =

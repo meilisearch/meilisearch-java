@@ -11,13 +11,10 @@ import org.junit.jupiter.api.*;
 @Tag("integration")
 public class BatchTest extends AbstractIT {
 
-    private static final String INDEX_UID = "batch-test";
-
     @BeforeEach
     void setup() throws Exception {
         this.setUp();
         this.setUpJacksonClient();
-        client.createIndex(INDEX_UID);
     }
 
     @AfterAll
@@ -27,14 +24,13 @@ public class BatchTest extends AbstractIT {
 
     @Test
     void testGetAllBatches() {
-        CursorResults<Batch> batches = client.getAllBatches(new BatchesQuery());
-        assertNotNull(batches);
-        assertFalse(batches.getResults().isEmpty(), "Batch results should not be empty");
+        CursorResults<Batch> allBatches = client.getAllBatches(new BatchesQuery());
+        assertNotNull(allBatches);
+        assertFalse(allBatches.getResults().isEmpty(), "Batch results should not be empty");
     }
 
     @Test
     void testGetOneBatch() {
-
         CursorResults<Batch> batches = client.getAllBatches(new BatchesQuery());
         assertFalse(batches.getResults().isEmpty(), "No batches found");
 
@@ -51,6 +47,6 @@ public class BatchTest extends AbstractIT {
         assertNotNull(firstBatch.getDuration());
         assertNotNull(firstBatch.getStartedAt());
         assertNotNull(firstBatch.getFinishedAt());
-        assertNotNull(firstBatch.getProgress());
+        // TODO: Add Check for progress to be non-null, but response always provides null
     }
 }

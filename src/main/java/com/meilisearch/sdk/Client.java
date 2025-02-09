@@ -354,12 +354,13 @@ public class Client {
     /**
      * Retrieves all batches based on the provided query parameters, with exception handling.
      *
-     * @param uid An instance of BatchesQuery containing filtering criteria.
+     * @param batchesQuery An instance of BatchesQuery containing filtering criteria.
      * @return A CursorResults object containing a list of Batch objects.
      * @throws MeilisearchException If an error occurs during the request.
      */
-    public CursorResults<Batch> getAllBatches(BatchesQuery uid) throws MeilisearchException {
-        return this.tasksHandler.getAllBatches(uid);
+    public CursorResults<Batch> getAllBatches(BatchesQuery batchesQuery)
+            throws MeilisearchException {
+        return this.tasksHandler.getAllBatches(batchesQuery);
     }
 
     /**
