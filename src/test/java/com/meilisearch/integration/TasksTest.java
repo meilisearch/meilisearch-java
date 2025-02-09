@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.meilisearch.integration.classes.AbstractIT;
@@ -16,7 +17,11 @@ import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.utils.Movie;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -201,6 +206,43 @@ public class TasksTest extends AbstractIT {
         assertThat(result.getFrom(), is(notNullValue()));
         assertThat(result.getNext(), is(notNullValue()));
         assertThat(result.getResults().length, is(notNullValue()));
+    }
+    /** Test Get Tasks in reverse order */
+    @Test
+    public void testGetTasksInReverse() {
+        String indexUid = "tasksOnReverseAt";
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+
+        TaskInfo taskA = client.index(indexUid).addDocuments(testData.getRaw());
+        TaskInfo taskB = client.index(indexUid).addDocuments(testData.getRaw());
+
+        client.waitForTask(taskA.getTaskUid());
+        client.waitForTask(taskB.getTaskUid());
+
+        List<Integer> originalTaskOrder =
+                Arrays.stream(
+                                client.getTasks(
+                                                new TasksQuery()
+                                                        .setIndexUids(new String[] {indexUid}))
+                                        .getResults())
+                        .map(Task::getUid)
+                        .collect(Collectors.toList());
+        List<Integer> reversedTaskOrder =
+                Arrays.stream(
+                                client.getTasks(
+                                                new TasksQuery()
+                                                        .setIndexUids(new String[] {indexUid})
+                                                        .setReverse(true))
+                                        .getResults())
+                        .map(Task::getUid)
+                        .collect(Collectors.toList());
+        assertIterableEquals(
+                originalTaskOrder,
+                reversedTaskOrder.stream()
+                        .sorted(Collections.reverseOrder())
+                        .collect(Collectors.toList()),
+                "The lists are not reversed versions of each other");
     }
 
     /** Test Cancel Task */
