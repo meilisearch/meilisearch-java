@@ -206,11 +206,11 @@ public class TasksTest extends AbstractIT {
         assertThat(result.getNext(), is(notNullValue()));
         assertThat(result.getResults().length, is(notNullValue()));
     }
-    /** Test Get Tasks in reverse order */
+    /** Test to check if task list is reversed when enabled */
     @Test
     public void testGetTasksInReverse() {
         String indexUid = "tasksOnReverseOrder";
-        Date date = Date.from(Instant.now());
+        Date currentTime = Date.from(Instant.now());
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
 
         TaskInfo taskA = client.index(indexUid).addDocuments(testData.getRaw());
@@ -220,9 +220,9 @@ public class TasksTest extends AbstractIT {
         client.waitForTask(taskB.getTaskUid());
 
         Task[] defaultTaskList =
-                client.getTasks(new TasksQuery().setAfterEnqueuedAt(date)).getResults();
+                client.getTasks(new TasksQuery().setAfterEnqueuedAt(currentTime)).getResults();
         Task[] reversedTaskList =
-                client.getTasks(new TasksQuery().setAfterEnqueuedAt(date).setReverse(true))
+                client.getTasks(new TasksQuery().setAfterEnqueuedAt(currentTime).setReverse(true))
                         .getResults();
 
         List<Integer> originalTaskOrder =
