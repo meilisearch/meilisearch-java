@@ -4,6 +4,8 @@ import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.exceptions.MeilisearchTimeoutException;
 import com.meilisearch.sdk.http.URLBuilder;
 import com.meilisearch.sdk.model.*;
+import com.meilisearch.sdk.model.batch.req.BatchesQuery;
+import com.meilisearch.sdk.model.batch.res.Batch;
 import java.util.Date;
 
 /**
@@ -159,9 +161,36 @@ public class TasksHandler {
         }
     }
 
+    /**
+     * Retrieves a batch by uid.
+     *
+     * @param uid The unique identifier of the batch.
+     * @return The Batch object corresponding to the given uid.
+     */
+    public Batch getBatch(int uid) {
+        String urlPath = batchPath().addSubroute(Integer.toString(uid)).getURL();
+        return httpClient.get(urlPath, Batch.class);
+    }
+
+    /**
+     * Retrieves all batches based on the provided query parameters.
+     *
+     * @param batchesQuery An instance of BatchesQuery containing filtering criteria.
+     * @return A CursorResults object containing a paginated list of Batch objects.
+     */
+    public CursorResults<Batch> getAllBatches(BatchesQuery batchesQuery) {
+        String urlPath = batchPath().addQuery(batchesQuery.toQuery()).getURL();
+        return (CursorResults<Batch>) httpClient.get(urlPath, CursorResults.class, Batch.class);
+    }
+
     /** Creates an URLBuilder for the constant route tasks */
     private URLBuilder tasksPath() {
         return new URLBuilder("/tasks");
+    }
+
+    /** Constructs a URLBuilder instance for the "/batches" API endpoint. */
+    private URLBuilder batchPath() {
+        return new URLBuilder("/batches");
     }
 
     /** Add index uid to index uids list in task query */
