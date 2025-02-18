@@ -7,20 +7,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.json.JsonHandler;
-import com.meilisearch.sdk.model.CancelTasksQuery;
-import com.meilisearch.sdk.model.DeleteTasksQuery;
-import com.meilisearch.sdk.model.IndexesQuery;
-import com.meilisearch.sdk.model.Key;
-import com.meilisearch.sdk.model.KeyUpdate;
-import com.meilisearch.sdk.model.KeysQuery;
-import com.meilisearch.sdk.model.MultiSearchResult;
-import com.meilisearch.sdk.model.Results;
-import com.meilisearch.sdk.model.Stats;
-import com.meilisearch.sdk.model.SwapIndexesParams;
-import com.meilisearch.sdk.model.Task;
-import com.meilisearch.sdk.model.TaskInfo;
-import com.meilisearch.sdk.model.TasksQuery;
-import com.meilisearch.sdk.model.TasksResults;
+import com.meilisearch.sdk.model.*;
+import com.meilisearch.sdk.model.batch.req.BatchesQuery;
+import com.meilisearch.sdk.model.batch.res.Batch;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -350,6 +339,29 @@ public class Client {
      */
     public void waitForTask(int uid) throws MeilisearchException {
         this.tasksHandler.waitForTask(uid);
+    }
+
+    /**
+     * Retrieves a batch by its unique identifier, with exception handling.
+     *
+     * @param uid The unique identifier of the batch.
+     * @return The Batch object corresponding to the given uid.
+     * @throws MeilisearchException If an error occurs during the request.
+     */
+    public Batch getBatch(int uid) throws MeilisearchException {
+        return this.tasksHandler.getBatch(uid);
+    }
+
+    /**
+     * Retrieves all batches based on the provided query parameters, with exception handling.
+     *
+     * @param batchesQuery An instance of BatchesQuery containing filtering criteria.
+     * @return A CursorResults object containing a list of Batch objects.
+     * @throws MeilisearchException If an error occurs during the request.
+     */
+    public CursorResults<Batch> getAllBatches(BatchesQuery batchesQuery)
+            throws MeilisearchException {
+        return this.tasksHandler.getAllBatches(batchesQuery);
     }
 
     /**
