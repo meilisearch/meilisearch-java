@@ -144,13 +144,14 @@ All the supported options are described in the [search parameters](https://www.m
 
 ```java
 import com.meilisearch.sdk.SearchRequest;
+import com.meilisearch.sdk.Searchable;
 
 // ...
 
-SearchResult results = index.search(
-  new SearchRequest("of")
-  .setShowMatchesPosition(true)
-  .setAttributesToHighlight(new String[]{"title"})
+Searchable results = (SearchResult) orderIndex.search(
+    new SearchRequest("of")
+        .setShowMatchesPosition(true)
+        .setAttributesToHighlight(new String[]{"title"})
 );
 System.out.println(results.getHits());
 ```
