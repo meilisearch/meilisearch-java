@@ -144,11 +144,10 @@ All the supported options are described in the [search parameters](https://www.m
 
 ```java
 import com.meilisearch.sdk.SearchRequest;
-import com.meilisearch.sdk.Searchable;
 
 // ...
 
-Searchable results = (SearchResult) orderIndex.search(
+SearchResult results = (SearchResult) orderIndex.search(
     new SearchRequest("of")
         .setShowMatchesPosition(true)
         .setAttributesToHighlight(new String[]{"title"})
@@ -220,7 +219,11 @@ index.search(
 #### Custom Search With Pagination <!-- omit in toc -->
 
 ```java
-index.search(
+import com.meilisearch.sdk.Searchable;
+
+// ...
+
+SearchResultPaginated results = (SearchResultPaginated) index.search(
     new SearchRequest("wonder")
         .setPage(1)
         .setHitsPerPage(20)
