@@ -217,6 +217,34 @@ index.search(
   "query": "wonder"
 }
 ```
+#### Custom Search With Pagination <!-- omit in toc -->
+
+```java
+index.search(
+    new SearchRequest("wonder")
+        .setPage(1)
+        .setHitsPerPage(20)
+);
+```
+
+```json
+{
+    "hits": [
+        {
+            "id": 2,
+            "title": "Wonder Woman",
+            "genres": ["Action","Adventure"]
+        }
+    ], 
+    "query": "wonder",
+    "processingTimeMs": 0,
+    "hitsPerPage": 20,
+    "page": 1,
+    "totalPages": 1,
+    "totalHits": 1
+}
+```
+
 ## 🛠 Customization
 
 ### JSON <!-- omit in toc -->
