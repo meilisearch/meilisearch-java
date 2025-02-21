@@ -219,7 +219,7 @@ index.search(
 #### Custom Search With Pagination <!-- omit in toc -->
 
 ```java
-import com.meilisearch.sdk.Searchable;
+import com.meilisearch.sdk.SearchResultPaginated;
 
 // ...
 
