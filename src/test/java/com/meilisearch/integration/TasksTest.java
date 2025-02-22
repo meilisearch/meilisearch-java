@@ -9,8 +9,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
@@ -229,7 +228,8 @@ public class TasksTest extends AbstractIT {
                 Arrays.stream(defaultTaskList).map(Task::getUid).collect(Collectors.toList());
         List<Integer> reversedTaskOrder =
                 Arrays.stream(reversedTaskList).map(Task::getUid).collect(Collectors.toList());
-
+        assertFalse(originalTaskOrder.isEmpty());
+        assertFalse(reversedTaskOrder.isEmpty());
         assertIterableEquals(
                 originalTaskOrder,
                 reversedTaskOrder.stream()
