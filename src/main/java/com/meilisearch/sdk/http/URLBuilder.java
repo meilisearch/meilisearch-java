@@ -67,12 +67,21 @@ public class URLBuilder {
 
     public URLBuilder addParameter(String parameter, Date value) {
         if (value != null) {
-            // Changed to utilise RFC 3339 format
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             addSeparator();
             params.append(parameter);
             params.append("=");
             params.append(formatter.format(value));
+        }
+        return this;
+    }
+
+    public URLBuilder addParameter(String parameter, Boolean value) {
+        if (value != null) {
+            addSeparator();
+            params.append(parameter);
+            params.append("=");
+            params.append(value);
         }
         return this;
     }

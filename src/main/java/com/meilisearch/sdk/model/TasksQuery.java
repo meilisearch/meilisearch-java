@@ -23,7 +23,7 @@ public class TasksQuery {
     private String[] types;
     private String[] indexUids;
     private int[] canceledBy;
-    private boolean reverse;
+    private Boolean reverse;
     private Date beforeEnqueuedAt;
     private Date afterEnqueuedAt;
     private Date beforeStartedAt;
@@ -49,7 +49,7 @@ public class TasksQuery {
                         .addParameter("afterStartedAt", this.getAfterStartedAt())
                         .addParameter("beforeFinishedAt", this.getBeforeFinishedAt())
                         .addParameter("afterFinishedAt", this.getAfterFinishedAt())
-                        .addParameter("reverse", String.valueOf(this.isReverse()));
+                        .addParameter("reverse", this.getReverse());
         return urlb.getURL();
     }
 }
