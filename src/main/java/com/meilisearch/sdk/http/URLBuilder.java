@@ -77,6 +77,13 @@ public class URLBuilder {
         return this;
     }
 
+    /**
+     * To add a boolean parameter to url
+     *
+     * @param parameter - parameter name
+     * @param value - value of the parameter
+     * @return - updated url object
+     */
     public URLBuilder addParameter(String parameter, Boolean value) {
         if (value != null) {
             addSeparator();

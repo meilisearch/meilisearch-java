@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.TimeZone;
 import org.junit.jupiter.api.BeforeEach;
@@ -103,25 +102,16 @@ public class URLBuilderTest {
         Date date = format.parse("2042-01-30T10:30:00-05:00");
 
         classToTest.addParameter("parameter1", date);
-        String parameterDate1 =
-                classToTest
-                        .getParams()
-                        .toString()
-                        .substring(12, classToTest.getParams().toString().length());
-
+        String parameterDate1 = classToTest.getParams().substring(12);
         assertDoesNotThrow(() -> format.parse(parameterDate1));
-        assertEquals(classToTest.getParams().toString(), "?parameter1=" + format.format(date));
+        assertEquals(classToTest.getParams().toString(), "?parameter1=2042-01-30T15:30:00Z");
 
         classToTest.addParameter("parameter2", date);
-        String parameterDate2 =
-                classToTest
-                        .getParams()
-                        .toString()
-                        .substring(34, classToTest.getParams().toString().length());
-        assertDoesNotThrow(() -> DateTimeFormatter.ISO_DATE.parse(parameterDate2));
-        assertThat(
+        String parameterDate2 = classToTest.getParams().substring(44);
+        assertDoesNotThrow(() -> format.parse(parameterDate2));
+        assertEquals(
                 classToTest.getParams().toString(),
-                is(equalTo("?parameter1=2042-01-30&parameter2=2042-01-30")));
+                "?parameter1=2042-01-30T15:30:00Z&parameter2=2042-01-30T15:30:00Z");
     }
 
     @Test
