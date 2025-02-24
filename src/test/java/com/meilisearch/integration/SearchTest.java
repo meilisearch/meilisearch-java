@@ -1088,10 +1088,6 @@ public class SearchTest extends AbstractIT {
 
     @Test
     public void testSimilarDocuments() throws Exception {
-        HashMap<String, Boolean> features = new HashMap();
-        features.put("vectorStore", true);
-        client.experimentalFeatures(features);
-
         String indexUid = "SimilarDocuments";
         Index index = client.index(indexUid);
         HashMap<String, Embedders> embedders = new HashMap<>();
