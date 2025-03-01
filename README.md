@@ -265,19 +265,6 @@ This SDK is compatible with the following JDK versions:
 |-------------|-------------------------|
 | v1.x        | JDK 8 and above         |
 
-### Recommended Java Version
-For optimal performance and security, we recommend using **Java 11 or later**.
-
-Ensure that your project is set to a compatible Java version in your `build.gradle`:
-
-```gradle
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8  // or JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_1_8  // or JavaVersion.VERSION_11
-}
-
-
-
 ## 💡 Learn more
 
 The following sections in our main documentation website may interest you:
