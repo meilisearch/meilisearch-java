@@ -9,14 +9,16 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.utils.Movie;
-import java.util.Date;
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -32,6 +34,7 @@ public class TasksTest extends AbstractIT {
         this.setUp();
         this.setUpJacksonClient();
         if (testData == null) testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
     @AfterAll
@@ -201,6 +204,38 @@ public class TasksTest extends AbstractIT {
         assertThat(result.getFrom(), is(notNullValue()));
         assertThat(result.getNext(), is(notNullValue()));
         assertThat(result.getResults().length, is(notNullValue()));
+    }
+    /** Test to check if task list is reversed when enabled */
+    @Test
+    public void testGetTasksInReverse() {
+        String indexUid = "tasksOnReverseOrder";
+        Date currentTime = Date.from(Instant.now());
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+
+        TaskInfo taskA = client.index(indexUid).addDocuments(testData.getRaw());
+        TaskInfo taskB = client.index(indexUid).addDocuments(testData.getRaw());
+
+        client.waitForTask(taskA.getTaskUid());
+        client.waitForTask(taskB.getTaskUid());
+
+        Task[] defaultTaskList =
+                client.getTasks(new TasksQuery().setAfterEnqueuedAt(currentTime)).getResults();
+        Task[] reversedTaskList =
+                client.getTasks(new TasksQuery().setAfterEnqueuedAt(currentTime).setReverse(true))
+                        .getResults();
+
+        List<Integer> originalTaskOrder =
+                Arrays.stream(defaultTaskList).map(Task::getUid).collect(Collectors.toList());
+        List<Integer> reversedTaskOrder =
+                Arrays.stream(reversedTaskList).map(Task::getUid).collect(Collectors.toList());
+        assertFalse(originalTaskOrder.isEmpty());
+        assertFalse(reversedTaskOrder.isEmpty());
+        assertIterableEquals(
+                originalTaskOrder,
+                reversedTaskOrder.stream()
+                        .sorted(Collections.reverseOrder())
+                        .collect(Collectors.toList()),
+                "The lists are not reversed versions of each other");
     }
 
     /** Test Cancel Task */
