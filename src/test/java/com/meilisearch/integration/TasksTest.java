@@ -205,34 +205,31 @@ public class TasksTest extends AbstractIT {
         assertThat(result.getNext(), is(notNullValue()));
         assertThat(result.getResults().length, is(notNullValue()));
     }
-    /** Test to check if task list is reversed when enabled */
+
     @Test
     public void testGetTasksInReverse() {
         String indexUid = "tasksOnReverseOrder";
         Date currentTime = Date.from(Instant.now());
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TasksQuery query = new TasksQuery().setAfterEnqueuedAt(currentTime);
+        TasksQuery queryWithReverseFlag =
+                new TasksQuery().setAfterEnqueuedAt(currentTime).setReverse(true);
 
-        TaskInfo taskA = client.index(indexUid).addDocuments(testData.getRaw());
-        TaskInfo taskB = client.index(indexUid).addDocuments(testData.getRaw());
+        client.index(indexUid).addDocuments(testData.getRaw());
+        client.waitForTask(client.index(indexUid).addDocuments(testData.getRaw()).getTaskUid());
+        List<Integer> tasks =
+                Arrays.stream(client.getTasks(query).getResults())
+                        .map(Task::getUid)
+                        .collect(Collectors.toList());
+        List<Integer> reversedTasks =
+                Arrays.stream(client.getTasks(queryWithReverseFlag).getResults())
+                        .map(Task::getUid)
+                        .collect(Collectors.toList());
 
-        client.waitForTask(taskA.getTaskUid());
-        client.waitForTask(taskB.getTaskUid());
-
-        Task[] defaultTaskList =
-                client.getTasks(new TasksQuery().setAfterEnqueuedAt(currentTime)).getResults();
-        Task[] reversedTaskList =
-                client.getTasks(new TasksQuery().setAfterEnqueuedAt(currentTime).setReverse(true))
-                        .getResults();
-
-        List<Integer> originalTaskOrder =
-                Arrays.stream(defaultTaskList).map(Task::getUid).collect(Collectors.toList());
-        List<Integer> reversedTaskOrder =
-                Arrays.stream(reversedTaskList).map(Task::getUid).collect(Collectors.toList());
-        assertFalse(originalTaskOrder.isEmpty());
-        assertFalse(reversedTaskOrder.isEmpty());
+        assertFalse(tasks.isEmpty());
         assertIterableEquals(
-                originalTaskOrder,
-                reversedTaskOrder.stream()
+                tasks,
+                reversedTasks.stream()
                         .sorted(Collections.reverseOrder())
                         .collect(Collectors.toList()),
                 "The lists are not reversed versions of each other");
