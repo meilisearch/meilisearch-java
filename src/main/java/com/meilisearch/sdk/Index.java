@@ -1249,4 +1249,41 @@ public class Index implements Serializable {
                 query,
                 SimilarDocumentsResults.class);
     }
+
+    /**
+     * Gets the embedders settings of the index
+     *
+     * @return a Map that contains all embedders settings
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/settings#get-embedders">API
+     *     specification</a>
+     */
+    public Map<String, Embedders> getEmbeddersSettings() throws MeilisearchException {
+        return this.settingsHandler.getEmbedders(this.uid);
+    }
+
+    /**
+     * Updates the embedders settings of the index
+     *
+     * @param embedders a Map that contains the new embedders settings
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/settings#update-embedders">API
+     *     specification</a>
+     */
+    public TaskInfo updateEmbeddersSettings(Map<String, Embedders> embedders) throws MeilisearchException {
+        return this.settingsHandler.updateEmbedders(this.uid, embedders);
+    }
+
+    /**
+     * Resets the embedders settings of the index
+     *
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/settings#reset-embedders">API
+     *     specification</a>
+     */
+    public TaskInfo resetEmbeddersSettings() throws MeilisearchException {
+        return this.settingsHandler.resetEmbedders(this.uid);
+    }
 }
