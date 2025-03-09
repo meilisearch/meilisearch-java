@@ -147,7 +147,7 @@ import com.meilisearch.sdk.SearchRequest;
 
 // ...
 
-SearchResult results = (SearchResult) orderIndex.search(
+SearchResult results = (SearchResult) index.search(
     new SearchRequest("of")
         .setShowMatchesPosition(true)
         .setAttributesToHighlight(new String[]{"title"})
