@@ -291,6 +291,12 @@ Client client = new Client(config);
 
 This package guarantees compatibility with [version v1.x of Meilisearch](https://github.com/meilisearch/meilisearch/releases/latest), but some features may not be present. Please check the [issues](https://github.com/meilisearch/meilisearch-java/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22+label%3Aenhancement) for more info.
 
+This SDK is compatible with the following JDK versions:
+
+| SDK Version | Supported Java Versions |
+|-------------|-------------------------|
+| v1.x        | JDK 8 and above         |
+
 ## 💡 Learn more
 
 The following sections in our main documentation website may interest you:
