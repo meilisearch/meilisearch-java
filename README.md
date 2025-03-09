@@ -147,10 +147,10 @@ import com.meilisearch.sdk.SearchRequest;
 
 // ...
 
-SearchResult results = index.search(
-  new SearchRequest("of")
-  .setShowMatchesPosition(true)
-  .setAttributesToHighlight(new String[]{"title"})
+SearchResult results = (SearchResult) index.search(
+    new SearchRequest("of")
+        .setShowMatchesPosition(true)
+        .setAttributesToHighlight(new String[]{"title"})
 );
 System.out.println(results.getHits());
 ```
@@ -216,6 +216,38 @@ index.search(
   "query": "wonder"
 }
 ```
+#### Custom Search With Pagination <!-- omit in toc -->
+
+```java
+import com.meilisearch.sdk.SearchResultPaginated;
+
+// ...
+
+SearchResultPaginated results = (SearchResultPaginated) index.search(
+    new SearchRequest("wonder")
+        .setPage(1)
+        .setHitsPerPage(20)
+);
+```
+
+```json
+{
+    "hits": [
+        {
+            "id": 2,
+            "title": "Wonder Woman",
+            "genres": ["Action","Adventure"]
+        }
+    ], 
+    "query": "wonder",
+    "processingTimeMs": 0,
+    "hitsPerPage": 20,
+    "page": 1,
+    "totalPages": 1,
+    "totalHits": 1
+}
+```
+
 ## 🛠 Customization
 
 ### JSON <!-- omit in toc -->
