@@ -2,6 +2,7 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.URLBuilder;
+import com.meilisearch.sdk.model.Embedders;
 import com.meilisearch.sdk.model.Faceting;
 import com.meilisearch.sdk.model.LocalizedAttribute;
 import com.meilisearch.sdk.model.Pagination;
@@ -768,5 +769,47 @@ public class SettingsHandler {
     public TaskInfo resetNonSeparatorTokensSettings(String uid) {
         return httpClient.delete(
                 settingsPath(uid).addSubroute("non-separator-tokens").getURL(), TaskInfo.class);
+    }
+
+    /**
+     * Gets the embedders settings of the index
+     *
+     * @param uid Index identifier
+     * @return a Map that contains all embedders settings
+     * @throws MeilisearchException if an error occurs
+     */
+    Map<String, Embedders> getEmbedders(String uid) throws MeilisearchException {
+        return httpClient.get(
+                settingsPath(uid).addSubroute("embedders").getURL(),
+                Map.class,
+                String.class,
+                Embedders.class);
+    }
+
+    /**
+     * Updates the embedders settings of the index
+     *
+     * @param uid Index identifier
+     * @param embedders a Map that contains the new embedders settings
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo updateEmbedders(String uid, Map<String, Embedders> embedders) throws MeilisearchException {
+        return httpClient.patch(
+                settingsPath(uid).addSubroute("embedders").getURL(),
+                embedders == null ? httpClient.jsonHandler.encode(embedders) : embedders,
+                TaskInfo.class);
+    }
+
+    /**
+     * Resets the embedders settings of the index
+     *
+     * @param uid Index identifier
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo resetEmbedders(String uid) throws MeilisearchException {
+        return httpClient.delete(
+                settingsPath(uid).addSubroute("embedders").getURL(), TaskInfo.class);
     }
 }
