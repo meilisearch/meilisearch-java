@@ -1,5 +1,6 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.model.Hybrid;
 import com.meilisearch.sdk.model.MatchingStrategy;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,7 @@ public class SearchRequest {
     protected Double rankingScoreThreshold;
     protected String[] locales;
     protected String distinct;
+    protected Hybrid hybrid;
 
     /**
      * Constructor for SearchRequest for building search queries with the default values: offset: 0,
@@ -105,6 +107,11 @@ public class SearchRequest {
                         .putOpt("rankingScoreThreshold", this.rankingScoreThreshold)
                         .putOpt("locales", this.locales)
                         .putOpt("distinct", this.distinct);
+
+        // Add hybrid parameter if it exists
+        if (this.hybrid != null) {
+            jsonObject.put("hybrid", this.hybrid.toJSONObject());
+        }
 
         return jsonObject.toString();
     }
