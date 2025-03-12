@@ -794,7 +794,8 @@ public class SettingsHandler {
      * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    TaskInfo updateEmbedders(String uid, Map<String, Embedders> embedders) throws MeilisearchException {
+    TaskInfo updateEmbedders(String uid, Map<String, Embedders> embedders)
+            throws MeilisearchException {
         return httpClient.patch(
                 settingsPath(uid).addSubroute("embedders").getURL(),
                 embedders == null ? httpClient.jsonHandler.encode(embedders) : embedders,

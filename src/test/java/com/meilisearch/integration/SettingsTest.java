@@ -16,8 +16,8 @@ import static org.hamcrest.Matchers.notNullValue;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
-import com.meilisearch.sdk.model.Embedders;
 import com.meilisearch.sdk.model.EmbedderSource;
+import com.meilisearch.sdk.model.Embedders;
 import com.meilisearch.sdk.model.FacetSortValue;
 import com.meilisearch.sdk.model.Faceting;
 import com.meilisearch.sdk.model.LocalizedAttribute;
@@ -1488,21 +1488,23 @@ public class SettingsTest extends AbstractIT {
         HashMap<String, Embedders> newEmbedders = new HashMap<>();
 
         // Test OpenAI embedder with apiKey and model
-        Embedders openAiEmbedder = new Embedders()
-            .setSource(EmbedderSource.OPEN_AI)
-            .setApiKey("test-api-key")
-            .setModel("text-embedding-ada-002")
-            .setDimensions(1536)
-            .setDocumentTemplate("OpenAI document: {{document}}")
-            .setDocumentTemplateMaxBytes(8000)
-            .setBinaryQuantized(true);
+        Embedders openAiEmbedder =
+                new Embedders()
+                        .setSource(EmbedderSource.OPEN_AI)
+                        .setApiKey("test-api-key")
+                        .setModel("text-embedding-ada-002")
+                        .setDimensions(1536)
+                        .setDocumentTemplate("OpenAI document: {{document}}")
+                        .setDocumentTemplateMaxBytes(8000)
+                        .setBinaryQuantized(true);
 
         // Test HuggingFace embedder with model and revision
-        Embedders huggingFaceEmbedder = new Embedders()
-            .setSource(EmbedderSource.HUGGING_FACE)
-            .setModel("sentence-transformers/all-MiniLM-L6-v2")
-            .setRevision("main")
-            .setDistribution("uniform");
+        Embedders huggingFaceEmbedder =
+                new Embedders()
+                        .setSource(EmbedderSource.HUGGING_FACE)
+                        .setModel("sentence-transformers/all-MiniLM-L6-v2")
+                        .setRevision("main")
+                        .setDistribution("uniform");
 
         // Test REST embedder with request and response
         Map<String, Object> request = new HashMap<>();
@@ -1515,25 +1517,26 @@ public class SettingsTest extends AbstractIT {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer test-token");
 
-        Embedders restEmbedder = new Embedders()
-            .setSource(EmbedderSource.REST)
-            .setApiKey("test-rest-key")
-            .setRequest(request)
-            .setResponse(response)
-            .setHeaders(headers)
-            .setDimensions(384);
+        Embedders restEmbedder =
+                new Embedders()
+                        .setSource(EmbedderSource.REST)
+                        .setApiKey("test-rest-key")
+                        .setRequest(request)
+                        .setResponse(response)
+                        .setHeaders(headers)
+                        .setDimensions(384);
 
         // Test Ollama embedder
-        Embedders ollamaEmbedder = new Embedders()
-            .setSource(EmbedderSource.OLLAMA)
-            .setModel("llama2")
-            .setApiKey("test-ollama-key")
-            .setDimensions(4096);
+        Embedders ollamaEmbedder =
+                new Embedders()
+                        .setSource(EmbedderSource.OLLAMA)
+                        .setModel("llama2")
+                        .setApiKey("test-ollama-key")
+                        .setDimensions(4096);
 
         // Test UserProvided embedder
-        Embedders userProvidedEmbedder = new Embedders()
-            .setSource(EmbedderSource.USER_PROVIDED)
-            .setDimensions(768);
+        Embedders userProvidedEmbedder =
+                new Embedders().setSource(EmbedderSource.USER_PROVIDED).setDimensions(768);
 
         // Add all embedders to the map
         newEmbedders.put("openai", openAiEmbedder);
@@ -1555,7 +1558,9 @@ public class SettingsTest extends AbstractIT {
         assertThat(retrievedOpenAi.getApiKey(), is(equalTo("test-api-key")));
         assertThat(retrievedOpenAi.getModel(), is(equalTo("text-embedding-ada-002")));
         assertThat(retrievedOpenAi.getDimensions(), is(equalTo(1536)));
-        assertThat(retrievedOpenAi.getDocumentTemplate(), is(equalTo("OpenAI document: {{document}}")));
+        assertThat(
+                retrievedOpenAi.getDocumentTemplate(),
+                is(equalTo("OpenAI document: {{document}}")));
         assertThat(retrievedOpenAi.getDocumentTemplateMaxBytes(), is(equalTo(8000)));
         assertThat(retrievedOpenAi.getBinaryQuantized(), is(equalTo(true)));
 
@@ -1596,9 +1601,8 @@ public class SettingsTest extends AbstractIT {
 
         // Create new embedders settings
         HashMap<String, Embedders> newEmbedders = new HashMap<>();
-        Embedders embedder = new Embedders()
-            .setSource(EmbedderSource.USER_PROVIDED)
-            .setDimensions(768);
+        Embedders embedder =
+                new Embedders().setSource(EmbedderSource.USER_PROVIDED).setDimensions(768);
         newEmbedders.put("test", embedder);
 
         // Update settings
