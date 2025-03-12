@@ -798,7 +798,7 @@ public class SettingsHandler {
             throws MeilisearchException {
         return httpClient.patch(
                 settingsPath(uid).addSubroute("embedders").getURL(),
-                embedders == null ? httpClient.jsonHandler.encode(embedders) : embedders,
+                embedders == null ? null : httpClient.jsonHandler.encode(embedders),
                 TaskInfo.class);
     }
 
