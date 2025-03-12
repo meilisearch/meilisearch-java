@@ -1271,7 +1271,8 @@ public class Index implements Serializable {
      * @see <a href="https://www.meilisearch.com/docs/reference/api/settings#update-embedders">API
      *     specification</a>
      */
-    public TaskInfo updateEmbeddersSettings(Map<String, Embedders> embedders) throws MeilisearchException {
+    public TaskInfo updateEmbeddersSettings(Map<String, Embedders> embedders)
+            throws MeilisearchException {
         return this.settingsHandler.updateEmbedders(this.uid, embedders);
     }
 
