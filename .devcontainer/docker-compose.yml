@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   package:
-    image: azul/zulu-openjdk:8-latest
+    image: mcr.microsoft.com/devcontainers/java:8
     tty: true
     stdin_open: true
     working_dir: /workspace
