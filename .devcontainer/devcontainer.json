@@ -1,0 +1,25 @@
+{
+  "name": "Meilisearch Java",
+  // "image": "mcr.microsoft.com/devcontainers/java:8",
+  "dockerComposeFile": "./docker-compose.yml",
+  "service": "package",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose"
+  // "customizations": {
+  //   "vscode": {
+  //     "extensions": [
+  //       "vscjava.vscode-java-pack"
+  //     ]
+  //   }
+  // }
+  // "features": {
+  //   "ghcr.io/devcontainers/features/java:1": {
+  //     "version": "none",
+  //     "installGradle": "true",
+  //     "installMaven": "true"
+  //   }
+  // }
+  // "forwardPorts": [
+  //   8080
+  // ]
+}
