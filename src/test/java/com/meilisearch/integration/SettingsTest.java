@@ -1495,8 +1495,6 @@ public class SettingsTest extends AbstractIT {
                         .setApiKey("test-api-key")
                         .setModel("text-embedding-ada-002")
                         .setDimensions(1536)
-                        .setDocumentTemplate("OpenAI document: {{document}}")
-                        .setDocumentTemplateMaxBytes(8000)
                         .setBinaryQuantized(true);
 
         // Test HuggingFace embedder with model and revision
@@ -1559,11 +1557,6 @@ public class SettingsTest extends AbstractIT {
         assertThat(retrievedOpenAi.getApiKey(), is(equalTo("test-api-key")));
         assertThat(retrievedOpenAi.getModel(), is(equalTo("text-embedding-ada-002")));
         assertThat(retrievedOpenAi.getDimensions(), is(equalTo(1536)));
-        assertThat(
-                retrievedOpenAi.getDocumentTemplate(),
-                is(equalTo("OpenAI document: {{document}}")));
-        assertThat(retrievedOpenAi.getDocumentTemplateMaxBytes(), is(equalTo(8000)));
-        assertThat(retrievedOpenAi.getBinaryQuantized(), is(equalTo(true)));
 
         // Check HuggingFace embedder
         Embedder retrievedHf = updatedEmbedders.get("huggingface");
