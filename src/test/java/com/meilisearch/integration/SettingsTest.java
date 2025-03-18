@@ -1602,7 +1602,7 @@ public class SettingsTest extends AbstractIT {
         Map<String, Embedder> initialEmbedders = index.getEmbeddersSettings();
 
         // Create new embedders settings
-        HashMap<String, Embedder> newEmbedders = new HashMap<>();
+        Map<String, Embedder> newEmbedders = new HashMap<>();
         Embedder embedder =
                 new Embedder().setSource(EmbedderSource.USER_PROVIDED).setDimensions(768);
         newEmbedders.put("test", embedder);
@@ -1611,15 +1611,13 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(index.updateEmbeddersSettings(newEmbedders).getTaskUid());
         Map<String, Embedder> updatedEmbedders = index.getEmbeddersSettings();
 
-        // Reset settings
-        index.waitForTask(index.resetEmbeddersSettings().getTaskUid());
-        Map<String, Embedder> resetEmbedders = index.getEmbeddersSettings();
-
         // Verify results
         assertThat(updatedEmbedders.size(), is(equalTo(1)));
         assertThat(updatedEmbedders.containsKey("test"), is(true));
 
-        // After reset, should be back to initial state
+        // Reset settings
+        index.waitForTask(index.resetEmbeddersSettings().getTaskUid());
+        Map<String, Embedder> resetEmbedders = index.getEmbeddersSettings();
         if (initialEmbedders == null) {
             assertThat(resetEmbedders == null || resetEmbedders.isEmpty(), is(true));
         } else {
