@@ -18,6 +18,7 @@ import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.model.EmbedderSource;
 import com.meilisearch.sdk.model.Embedder;
+import com.meilisearch.sdk.model.EmbedderDistribution;
 import com.meilisearch.sdk.model.FacetSortValue;
 import com.meilisearch.sdk.model.Faceting;
 import com.meilisearch.sdk.model.LocalizedAttribute;
@@ -1504,7 +1505,7 @@ public class SettingsTest extends AbstractIT {
                         .setSource(EmbedderSource.HUGGING_FACE)
                         .setModel("sentence-transformers/all-MiniLM-L6-v2")
                         .setRevision("main")
-                        .setDistribution("uniform");
+                        .setDistribution(EmbedderDistribution.uniform());
 
         // Test REST embedder with request and response
         Map<String, Object> request = new HashMap<>();
@@ -1569,7 +1570,8 @@ public class SettingsTest extends AbstractIT {
         assertThat(retrievedHf.getSource(), is(equalTo(EmbedderSource.HUGGING_FACE)));
         assertThat(retrievedHf.getModel(), is(equalTo("sentence-transformers/all-MiniLM-L6-v2")));
         assertThat(retrievedHf.getRevision(), is(equalTo("main")));
-        assertThat(retrievedHf.getDistribution(), is(equalTo("uniform")));
+        assertThat(retrievedHf.getDistribution().getMean(), is(equalTo(0.5)));
+        assertThat(retrievedHf.getDistribution().getSigma(), is(equalTo(0.5)));
 
         // Check REST embedder
         Embedder retrievedRest = updatedEmbedders.get("rest");
