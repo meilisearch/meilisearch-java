@@ -1507,11 +1507,11 @@ public class SettingsTest extends AbstractIT {
 
         // Test REST embedder with request and response
         Map<String, Object> request = new HashMap<>();
-        request.put("url", "https://api.example.com/embeddings");
-        request.put("method", "POST");
+        request.put("model", "MODEL_NAME");
+        request.put("input", "{{text}}");
 
         Map<String, Object> response = new HashMap<>();
-        response.put("embeddingsPath", "embeddings");
+        response.put("result", "{{embedding}}");
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer test-token");
