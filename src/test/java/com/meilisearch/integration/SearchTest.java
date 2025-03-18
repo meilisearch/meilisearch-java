@@ -1136,7 +1136,10 @@ public class SearchTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
 
         SearchRequest searchRequest =
-                SearchRequest.builder().vector(new Double[] {0.1, 0.6, 0.8}).build();
+                SearchRequest.builder()
+                        .vector(new Double[] {0.1, 0.6, 0.8})
+                        .hybrid(Hybrid.builder().semanticRatio(0.5).embedder("manual").build())
+                        .build();
 
         SearchResult searchResult = (SearchResult) index.search(searchRequest);
 
