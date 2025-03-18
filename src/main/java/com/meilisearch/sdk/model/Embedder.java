@@ -39,14 +39,26 @@ public class Embedder {
     /** Distribution configuration. Optional. */
     protected EmbedderDistribution distribution;
 
+    /** Request configuration. Mandatory only when using rest embedder, optional otherwise. */
+    protected Map<String, Object> request;
+
+    /** Response configuration. Mandatory only when using rest embedder, optional otherwise. */
+    protected Map<String, Object> response;
+
     /** Maximum bytes for document template. Optional. */
     protected Integer documentTemplateMaxBytes;
 
     /** Revision identifier. Optional: Only applicable for huggingFace. */
     protected String revision;
 
+    /** HTTP headers. Optional: Only applicable for rest. */
+    protected Map<String, String> headers;
+
     /** Whether to use binary quantization. Optional. */
     protected Boolean binaryQuantized;
+
+    /** URL for the embedder service. Optional. */
+    protected String url;
 
     /** Input fields for the embedder. Optional. */
     protected String[] inputField;

@@ -1517,7 +1517,8 @@ public class SettingsTest extends AbstractIT {
         headers.put("Authorization", "Bearer test-token");
 
         Embedder restEmbedder =
-                new RestEmbedder()
+                new Embedder()
+                        .setSource(EmbedderSource.REST)
                         .setUrl("https://api.example.com/embeddings")
                         .setRequest(request)
                         .setResponse(response)
