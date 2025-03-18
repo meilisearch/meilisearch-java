@@ -17,7 +17,6 @@ import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.model.Embedder;
-import com.meilisearch.sdk.model.EmbedderDistribution;
 import com.meilisearch.sdk.model.EmbedderSource;
 import com.meilisearch.sdk.model.FacetSortValue;
 import com.meilisearch.sdk.model.Faceting;
