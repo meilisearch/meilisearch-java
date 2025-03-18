@@ -1517,13 +1517,11 @@ public class SettingsTest extends AbstractIT {
         headers.put("Authorization", "Bearer test-token");
 
         Embedder restEmbedder =
-                new Embedder()
-                        .setSource(EmbedderSource.REST)
-                        .setApiKey("test-rest-key")
+                new RestEmbedder()
+                        .setUrl("https://api.example.com/embeddings")
                         .setRequest(request)
                         .setResponse(response)
-                        .setHeaders(headers)
-                        .setDimensions(384);
+                        .setHeaders(headers);
 
         // Test Ollama embedder
         Embedder ollamaEmbedder =
