@@ -17,7 +17,7 @@ import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.model.EmbedderSource;
-import com.meilisearch.sdk.model.Embedders;
+import com.meilisearch.sdk.model.Embedder;
 import com.meilisearch.sdk.model.FacetSortValue;
 import com.meilisearch.sdk.model.Faceting;
 import com.meilisearch.sdk.model.LocalizedAttribute;
@@ -1473,7 +1473,7 @@ public class SettingsTest extends AbstractIT {
     public void testGetEmbeddersSettings() throws Exception {
         Index index = createIndex("testGetEmbeddersSettings");
         Settings initialSettings = index.getSettings();
-        Map<String, Embedders> initialEmbedders = index.getEmbeddersSettings();
+        Map<String, Embedder> initialEmbedders = index.getEmbeddersSettings();
 
         assertThat(initialEmbedders, is(equalTo(initialSettings.getEmbedders())));
     }
@@ -1482,14 +1482,14 @@ public class SettingsTest extends AbstractIT {
     @DisplayName("Test update embedders settings")
     public void testUpdateEmbeddersSettings() throws Exception {
         Index index = createIndex("testUpdateEmbeddersSettings");
-        Map<String, Embedders> initialEmbedders = index.getEmbeddersSettings();
+        Map<String, Embedder> initialEmbedders = index.getEmbeddersSettings();
 
         // Create new embedders settings
-        HashMap<String, Embedders> newEmbedders = new HashMap<>();
+        HashMap<String, Embedder> newEmbedders = new HashMap<>();
 
         // Test OpenAI embedder with apiKey and model
-        Embedders openAiEmbedder =
-                new Embedders()
+        Embedder openAiEmbedder =
+                new Embedder()
                         .setSource(EmbedderSource.OPEN_AI)
                         .setApiKey("test-api-key")
                         .setModel("text-embedding-ada-002")
@@ -1499,8 +1499,8 @@ public class SettingsTest extends AbstractIT {
                         .setBinaryQuantized(true);
 
         // Test HuggingFace embedder with model and revision
-        Embedders huggingFaceEmbedder =
-                new Embedders()
+        Embedder huggingFaceEmbedder =
+                new Embedder()
                         .setSource(EmbedderSource.HUGGING_FACE)
                         .setModel("sentence-transformers/all-MiniLM-L6-v2")
                         .setRevision("main")
@@ -1517,8 +1517,8 @@ public class SettingsTest extends AbstractIT {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer test-token");
 
-        Embedders restEmbedder =
-                new Embedders()
+        Embedder restEmbedder =
+                new Embedder()
                         .setSource(EmbedderSource.REST)
                         .setApiKey("test-rest-key")
                         .setRequest(request)
@@ -1527,16 +1527,16 @@ public class SettingsTest extends AbstractIT {
                         .setDimensions(384);
 
         // Test Ollama embedder
-        Embedders ollamaEmbedder =
-                new Embedders()
+        Embedder ollamaEmbedder =
+                new Embedder()
                         .setSource(EmbedderSource.OLLAMA)
                         .setModel("llama2")
                         .setApiKey("test-ollama-key")
                         .setDimensions(4096);
 
         // Test UserProvided embedder
-        Embedders userProvidedEmbedder =
-                new Embedders().setSource(EmbedderSource.USER_PROVIDED).setDimensions(768);
+        Embedder userProvidedEmbedder =
+                new Embedder().setSource(EmbedderSource.USER_PROVIDED).setDimensions(768);
 
         // Add all embedders to the map
         newEmbedders.put("openai", openAiEmbedder);
@@ -1547,13 +1547,13 @@ public class SettingsTest extends AbstractIT {
 
         // Update settings
         index.waitForTask(index.updateEmbeddersSettings(newEmbedders).getTaskUid());
-        Map<String, Embedders> updatedEmbedders = index.getEmbeddersSettings();
+        Map<String, Embedder> updatedEmbedders = index.getEmbeddersSettings();
 
         // Verify results
         assertThat(updatedEmbedders.size(), is(equalTo(5)));
 
         // Check OpenAI embedder
-        Embedders retrievedOpenAi = updatedEmbedders.get("openai");
+        Embedder retrievedOpenAi = updatedEmbedders.get("openai");
         assertThat(retrievedOpenAi.getSource(), is(equalTo(EmbedderSource.OPEN_AI)));
         assertThat(retrievedOpenAi.getApiKey(), is(equalTo("test-api-key")));
         assertThat(retrievedOpenAi.getModel(), is(equalTo("text-embedding-ada-002")));
@@ -1565,14 +1565,14 @@ public class SettingsTest extends AbstractIT {
         assertThat(retrievedOpenAi.getBinaryQuantized(), is(equalTo(true)));
 
         // Check HuggingFace embedder
-        Embedders retrievedHf = updatedEmbedders.get("huggingface");
+        Embedder retrievedHf = updatedEmbedders.get("huggingface");
         assertThat(retrievedHf.getSource(), is(equalTo(EmbedderSource.HUGGING_FACE)));
         assertThat(retrievedHf.getModel(), is(equalTo("sentence-transformers/all-MiniLM-L6-v2")));
         assertThat(retrievedHf.getRevision(), is(equalTo("main")));
         assertThat(retrievedHf.getDistribution(), is(equalTo("uniform")));
 
         // Check REST embedder
-        Embedders retrievedRest = updatedEmbedders.get("rest");
+        Embedder retrievedRest = updatedEmbedders.get("rest");
         assertThat(retrievedRest.getSource(), is(equalTo(EmbedderSource.REST)));
         assertThat(retrievedRest.getApiKey(), is(equalTo("test-rest-key")));
         assertThat(retrievedRest.getRequest(), is(notNullValue()));
@@ -1581,14 +1581,14 @@ public class SettingsTest extends AbstractIT {
         assertThat(retrievedRest.getDimensions(), is(equalTo(384)));
 
         // Check Ollama embedder
-        Embedders retrievedOllama = updatedEmbedders.get("ollama");
+        Embedder retrievedOllama = updatedEmbedders.get("ollama");
         assertThat(retrievedOllama.getSource(), is(equalTo(EmbedderSource.OLLAMA)));
         assertThat(retrievedOllama.getModel(), is(equalTo("llama2")));
         assertThat(retrievedOllama.getApiKey(), is(equalTo("test-ollama-key")));
         assertThat(retrievedOllama.getDimensions(), is(equalTo(4096)));
 
         // Check UserProvided embedder
-        Embedders retrievedUser = updatedEmbedders.get("user");
+        Embedder retrievedUser = updatedEmbedders.get("user");
         assertThat(retrievedUser.getSource(), is(equalTo(EmbedderSource.USER_PROVIDED)));
         assertThat(retrievedUser.getDimensions(), is(equalTo(768)));
     }
@@ -1597,21 +1597,21 @@ public class SettingsTest extends AbstractIT {
     @DisplayName("Test reset embedders settings")
     public void testResetEmbeddersSettings() throws Exception {
         Index index = createIndex("testResetEmbeddersSettings");
-        Map<String, Embedders> initialEmbedders = index.getEmbeddersSettings();
+        Map<String, Embedder> initialEmbedders = index.getEmbeddersSettings();
 
         // Create new embedders settings
-        HashMap<String, Embedders> newEmbedders = new HashMap<>();
-        Embedders embedder =
-                new Embedders().setSource(EmbedderSource.USER_PROVIDED).setDimensions(768);
+        HashMap<String, Embedder> newEmbedders = new HashMap<>();
+        Embedder embedder =
+                new Embedder().setSource(EmbedderSource.USER_PROVIDED).setDimensions(768);
         newEmbedders.put("test", embedder);
 
         // Update settings
         index.waitForTask(index.updateEmbeddersSettings(newEmbedders).getTaskUid());
-        Map<String, Embedders> updatedEmbedders = index.getEmbeddersSettings();
+        Map<String, Embedder> updatedEmbedders = index.getEmbeddersSettings();
 
         // Reset settings
         index.waitForTask(index.resetEmbeddersSettings().getTaskUid());
-        Map<String, Embedders> resetEmbedders = index.getEmbeddersSettings();
+        Map<String, Embedder> resetEmbedders = index.getEmbeddersSettings();
 
         // Verify results
         assertThat(updatedEmbedders.size(), is(equalTo(1)));

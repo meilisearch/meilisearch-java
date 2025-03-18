@@ -2,7 +2,7 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.URLBuilder;
-import com.meilisearch.sdk.model.Embedders;
+import com.meilisearch.sdk.model.Embedder;
 import com.meilisearch.sdk.model.Faceting;
 import com.meilisearch.sdk.model.LocalizedAttribute;
 import com.meilisearch.sdk.model.Pagination;
@@ -778,12 +778,12 @@ public class SettingsHandler {
      * @return a Map that contains all embedders settings
      * @throws MeilisearchException if an error occurs
      */
-    Map<String, Embedders> getEmbedders(String uid) throws MeilisearchException {
+    Map<String, Embedder> getEmbedders(String uid) throws MeilisearchException {
         return httpClient.get(
                 settingsPath(uid).addSubroute("embedders").getURL(),
                 Map.class,
                 String.class,
-                Embedders.class);
+                Embedder.class);
     }
 
     /**
@@ -794,7 +794,7 @@ public class SettingsHandler {
      * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    TaskInfo updateEmbedders(String uid, Map<String, Embedders> embedders)
+    TaskInfo updateEmbedders(String uid, Map<String, Embedder> embedders)
             throws MeilisearchException {
         return httpClient.patch(
                 settingsPath(uid).addSubroute("embedders").getURL(),
