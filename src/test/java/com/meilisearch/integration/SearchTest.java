@@ -1116,6 +1116,36 @@ public class SearchTest extends AbstractIT {
         assertThat(hits.get(3).get("title"), is("Shazam!"));
     }
 
+    /** Test vector search */
+    @Test
+    public void testVectorSearch() throws Exception {
+        String indexUid = "testVectorSearch";
+        Index index = client.index(indexUid);
+        HashMap<String, Embedder> embedders = new HashMap<>();
+        embedders.put(
+                "manual", new Embedder().setSource(EmbedderSource.USER_PROVIDED).setDimensions(3));
+
+        Settings settings = new Settings();
+        settings.setEmbedders(embedders);
+
+        index.updateSettings(settings);
+
+        TestData<Movie> testData = this.getTestData(VECTOR_MOVIES, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SearchRequest searchRequest =
+                SearchRequest.builder().vector(new Double[] {0.1, 0.6, 0.8}).build();
+
+        SearchResult searchResult = (SearchResult) index.search(searchRequest);
+
+        assertThat(searchResult.getHits(), hasSize(5));
+        // The most similar document should be "Escape Room" since its vector [0.1, 0.6, 0.8]
+        assertThat(searchResult.getHits().get(0).get("id"), is("522681"));
+        assertThat(searchResult.getHits().get(0).get("title"), is("Escape Room"));
+    }
+
     /** Test Search with locales */
     @Test
     public void testSearchWithLocales() throws Exception {
