@@ -1090,9 +1090,9 @@ public class SearchTest extends AbstractIT {
     public void testSimilarDocuments() throws Exception {
         String indexUid = "SimilarDocuments";
         Index index = client.index(indexUid);
-        HashMap<String, Embedders> embedders = new HashMap<>();
+        HashMap<String, Embedder> embedders = new HashMap<>();
         embedders.put(
-                "manual", new Embedders().setSource(EmbedderSource.USER_PROVIDED).setDimensions(3));
+                "manual", new Embedder().setSource(EmbedderSource.USER_PROVIDED).setDimensions(3));
 
         Settings settings = new Settings();
         settings.setEmbedders(embedders);

@@ -1258,7 +1258,7 @@ public class Index implements Serializable {
      * @see <a href="https://www.meilisearch.com/docs/reference/api/settings#get-embedders">API
      *     specification</a>
      */
-    public Map<String, Embedders> getEmbeddersSettings() throws MeilisearchException {
+    public Map<String, Embedder> getEmbeddersSettings() throws MeilisearchException {
         return this.settingsHandler.getEmbedders(this.uid);
     }
 
@@ -1271,7 +1271,7 @@ public class Index implements Serializable {
      * @see <a href="https://www.meilisearch.com/docs/reference/api/settings#update-embedders">API
      *     specification</a>
      */
-    public TaskInfo updateEmbeddersSettings(Map<String, Embedders> embedders)
+    public TaskInfo updateEmbeddersSettings(Map<String, Embedder> embedders)
             throws MeilisearchException {
         return this.settingsHandler.updateEmbedders(this.uid, embedders);
     }

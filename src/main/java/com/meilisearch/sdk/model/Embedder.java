@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Embedders {
+public class Embedder {
     /** Source of the embedder. Accepts: ollama, rest, openAI, huggingFace and userProvided */
     protected EmbedderSource source;
 
@@ -37,7 +37,7 @@ public class Embedders {
     protected Integer dimensions;
 
     /** Distribution configuration. Optional. */
-    protected String distribution;
+    protected EmbedderDistribution distribution;
 
     /** Request configuration. Mandatory only when using rest embedder, optional otherwise. */
     protected Map<String, Object> request;
@@ -69,5 +69,5 @@ public class Embedders {
     /** Query for the embedder. Optional. */
     protected String query;
 
-    public Embedders() {}
+    public Embedder() {}
 }
