@@ -1597,24 +1597,22 @@ public class SettingsTest extends AbstractIT {
         // Create new embedders settings
         Map<String, Embedder> newEmbedders = new HashMap<>();
         Embedder embedder =
-                new Embedder().setSource(EmbedderSource.USER_PROVIDED).setDimensions(768);
+                new Embedder()
+                        .setSource(EmbedderSource.OPEN_AI)
+                        .setApiKey("test-api-key")
+                        .setModel("text-embedding-ada-002")
+                        .setDimensions(1536);
         newEmbedders.put("test", embedder);
 
         // Update settings
         index.waitForTask(index.updateEmbeddersSettings(newEmbedders).getTaskUid());
         Map<String, Embedder> updatedEmbedders = index.getEmbeddersSettings();
-
-        // Verify results
         assertThat(updatedEmbedders.size(), is(equalTo(1)));
         assertThat(updatedEmbedders.containsKey("test"), is(true));
 
         // Reset settings
         index.waitForTask(index.resetEmbeddersSettings().getTaskUid());
         Map<String, Embedder> resetEmbedders = index.getEmbeddersSettings();
-        if (initialEmbedders == null) {
-            assertThat(resetEmbedders == null || resetEmbedders.isEmpty(), is(true));
-        } else {
-            assertThat(resetEmbedders.size(), is(equalTo(initialEmbedders.size())));
-        }
+        assertThat(resetEmbedders.size(), is(equalTo(initialEmbedders.size())));
     }
 }
