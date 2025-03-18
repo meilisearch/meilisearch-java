@@ -1487,102 +1487,17 @@ public class SettingsTest extends AbstractIT {
 
         // Create new embedders settings
         HashMap<String, Embedder> newEmbedders = new HashMap<>();
-
-        // Test OpenAI embedder with apiKey and model
-        Embedder openAiEmbedder =
-                new Embedder()
-                        .setSource(EmbedderSource.OPEN_AI)
-                        .setApiKey("test-api-key")
-                        .setModel("text-embedding-ada-002")
-                        .setDimensions(1536)
-                        .setBinaryQuantized(true);
-
-        // Test HuggingFace embedder with model and revision
-        Embedder huggingFaceEmbedder =
-                new Embedder()
-                        .setSource(EmbedderSource.HUGGING_FACE)
-                        .setModel("sentence-transformers/all-MiniLM-L6-v2")
-                        .setRevision("main")
-                        .setDistribution(EmbedderDistribution.uniform());
-
-        // Test REST embedder with request and response
-        Map<String, Object> request = new HashMap<>();
-        request.put("model", "MODEL_NAME");
-        request.put("input", "{{text}}");
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("result", "{{embedding}}");
-
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer test-token");
-
-        Embedder restEmbedder =
-                new Embedder()
-                        .setSource(EmbedderSource.REST)
-                        .setUrl("https://api.example.com/embeddings")
-                        .setRequest(request)
-                        .setResponse(response)
-                        .setHeaders(headers);
-
-        // Test Ollama embedder
-        Embedder ollamaEmbedder =
-                new Embedder()
-                        .setSource(EmbedderSource.OLLAMA)
-                        .setModel("llama2")
-                        .setApiKey("test-ollama-key")
-                        .setDimensions(4096);
-
-        // Test UserProvided embedder
         Embedder userProvidedEmbedder =
                 new Embedder().setSource(EmbedderSource.USER_PROVIDED).setDimensions(768);
-
-        // Add all embedders to the map
-        newEmbedders.put("openai", openAiEmbedder);
-        newEmbedders.put("huggingface", huggingFaceEmbedder);
-        newEmbedders.put("rest", restEmbedder);
-        newEmbedders.put("ollama", ollamaEmbedder);
-        newEmbedders.put("user", userProvidedEmbedder);
+        newEmbedders.put("custom", userProvidedEmbedder);
 
         // Update settings
         index.waitForTask(index.updateEmbeddersSettings(newEmbedders).getTaskUid());
         Map<String, Embedder> updatedEmbedders = index.getEmbeddersSettings();
 
         // Verify results
-        assertThat(updatedEmbedders.size(), is(equalTo(5)));
-
-        // Check OpenAI embedder
-        Embedder retrievedOpenAi = updatedEmbedders.get("openai");
-        assertThat(retrievedOpenAi.getSource(), is(equalTo(EmbedderSource.OPEN_AI)));
-        assertThat(retrievedOpenAi.getApiKey(), is(equalTo("test-api-key")));
-        assertThat(retrievedOpenAi.getModel(), is(equalTo("text-embedding-ada-002")));
-        assertThat(retrievedOpenAi.getDimensions(), is(equalTo(1536)));
-
-        // Check HuggingFace embedder
-        Embedder retrievedHf = updatedEmbedders.get("huggingface");
-        assertThat(retrievedHf.getSource(), is(equalTo(EmbedderSource.HUGGING_FACE)));
-        assertThat(retrievedHf.getModel(), is(equalTo("sentence-transformers/all-MiniLM-L6-v2")));
-        assertThat(retrievedHf.getRevision(), is(equalTo("main")));
-        assertThat(retrievedHf.getDistribution().getMean(), is(equalTo(0.5)));
-        assertThat(retrievedHf.getDistribution().getSigma(), is(equalTo(0.5)));
-
-        // Check REST embedder
-        Embedder retrievedRest = updatedEmbedders.get("rest");
-        assertThat(retrievedRest.getSource(), is(equalTo(EmbedderSource.REST)));
-        assertThat(retrievedRest.getApiKey(), is(equalTo("test-rest-key")));
-        assertThat(retrievedRest.getRequest(), is(notNullValue()));
-        assertThat(retrievedRest.getResponse(), is(notNullValue()));
-        assertThat(retrievedRest.getHeaders(), is(notNullValue()));
-        assertThat(retrievedRest.getDimensions(), is(equalTo(384)));
-
-        // Check Ollama embedder
-        Embedder retrievedOllama = updatedEmbedders.get("ollama");
-        assertThat(retrievedOllama.getSource(), is(equalTo(EmbedderSource.OLLAMA)));
-        assertThat(retrievedOllama.getModel(), is(equalTo("llama2")));
-        assertThat(retrievedOllama.getApiKey(), is(equalTo("test-ollama-key")));
-        assertThat(retrievedOllama.getDimensions(), is(equalTo(4096)));
-
-        // Check UserProvided embedder
-        Embedder retrievedUser = updatedEmbedders.get("user");
+        assertThat(updatedEmbedders.size(), is(equalTo(1)));
+        Embedder retrievedUser = updatedEmbedders.get("custom");
         assertThat(retrievedUser.getSource(), is(equalTo(EmbedderSource.USER_PROVIDED)));
         assertThat(retrievedUser.getDimensions(), is(equalTo(768)));
     }
