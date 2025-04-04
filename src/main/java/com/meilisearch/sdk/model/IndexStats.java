@@ -22,8 +22,13 @@ public class IndexStats {
     public IndexStats() {}
 
     public IndexStats(
-            long numberOfDocuments, boolean isIndexing, Map<String, Integer> fieldDistribution,
-            long rawDocumentDbSize, long avgDocumentSize, long numberOfEmbeddedDocuments, long numberOfEmbeddings) {
+            long numberOfDocuments,
+            boolean isIndexing,
+            Map<String, Integer> fieldDistribution,
+            long rawDocumentDbSize,
+            long avgDocumentSize,
+            long numberOfEmbeddedDocuments,
+            long numberOfEmbeddings) {
         this.numberOfDocuments = numberOfDocuments;
         this.isIndexing = isIndexing;
         this.fieldDistribution = fieldDistribution;
