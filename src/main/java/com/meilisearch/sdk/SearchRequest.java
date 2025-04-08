@@ -45,11 +45,13 @@ public class SearchRequest {
     protected String distinct;
     protected Hybrid hybrid;
     protected Double[] vector;
+    protected Boolean retrieveVectors;
     /**
      * Constructor for SearchRequest for building search queries with the default values: offset: 0,
      * limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
      * attributesToHighlight: null, filter: null, showMatchesPosition: false, facets: null, sort:
-     * null, showRankingScore: false, showRankingScoreDetails: false, rankingScoreThreshold: null
+     * null, showRankingScore: false, showRankingScoreDetails: false, rankingScoreThreshold: null,
+     * retrieveVectors: false
      *
      * @param q Query String
      */
@@ -107,11 +109,11 @@ public class SearchRequest {
                         .putOpt("rankingScoreThreshold", this.rankingScoreThreshold)
                         .putOpt("locales", this.locales)
                         .putOpt("distinct", this.distinct)
-                        .putOpt("vector", this.vector);
+                        .putOpt("vector", this.vector)
+                        .putOpt("retrieveVectors", this.retrieveVectors);
 
-        // Add hybrid parameter if it exists
         if (this.hybrid != null) {
-            jsonObject.put("hybrid", this.hybrid.toJSONObject());
+            jsonObject.put("hybrid", new JSONObject(this.hybrid.toString()));
         }
 
         return jsonObject.toString();

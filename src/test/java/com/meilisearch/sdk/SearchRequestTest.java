@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.nullValue;
 import com.meilisearch.sdk.model.Hybrid;
 import com.meilisearch.sdk.model.MatchingStrategy;
 import org.junit.jupiter.api.Test;
+import org.json.JSONObject;
 
 class SearchRequestTest {
 
@@ -424,5 +425,14 @@ class SearchRequestTest {
 
         String expected = "{\"q\":\"This is a Test\",\"hybrid\":{\"embedder\":\"default\"}}";
         assertThat(classToTest.toString(), is(equalTo(expected)));
+    }
+
+    @Test
+    void toStringWithRetrieveVectors() {
+        SearchRequest searchRequest = new SearchRequest("test")
+                .setRetrieveVectors(true);
+        String result = searchRequest.toString();
+        JSONObject json = new JSONObject(result);
+        assertThat(json.getBoolean("retrieveVectors"), is(true));
     }
 }

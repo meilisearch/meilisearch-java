@@ -1149,6 +1149,48 @@ public class SearchTest extends AbstractIT {
         assertThat(searchResult.getHits().get(0).get("title"), is("Escape Room"));
     }
 
+    /** Test vector search with retrieveVectors option */
+    @Test
+    public void testVectorSearchWithRetrieveVectors() throws Exception {
+        String indexUid = "testVectorSearchWithRetrieveVectors";
+        Index index = client.index(indexUid);
+        HashMap<String, Embedder> embedders = new HashMap<>();
+        embedders.put(
+                "manual", new Embedder().setSource(EmbedderSource.USER_PROVIDED).setDimensions(3));
+
+        Settings settings = new Settings();
+        settings.setEmbedders(embedders);
+
+        index.updateSettings(settings);
+
+        TestData<Movie> testData = this.getTestData(VECTOR_MOVIES, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SearchRequest searchRequest =
+                SearchRequest.builder()
+                        .vector(new Double[] {0.1, 0.6, 0.8})
+                        .hybrid(Hybrid.builder().semanticRatio(0.5).embedder("manual").build())
+                        .retrieveVectors(true)
+                        .build();
+
+        SearchResult searchResult = (SearchResult) index.search(searchRequest);
+
+        assertThat(searchResult.getHits(), hasSize(5));
+        // The most similar document should be "Escape Room" since its vector [0.1, 0.6, 0.8]
+        assertThat(searchResult.getHits().get(0).get("id"), is("522681"));
+        assertThat(searchResult.getHits().get(0).get("title"), is("Escape Room"));
+
+        // Verify that vectors are returned in the response
+        Map<String, Object> escapeRoomHit = searchResult.getHits().get(0);
+        assertThat(escapeRoomHit.containsKey("_vectors"), is(true));
+
+        @SuppressWarnings("unchecked")
+        Map<String, Object> vectors = (Map<String, Object>) escapeRoomHit.get("_vectors");
+        assertThat(vectors.containsKey("manual"), is(true));
+    }
+
     /** Test Search with locales */
     @Test
     public void testSearchWithLocales() throws Exception {
