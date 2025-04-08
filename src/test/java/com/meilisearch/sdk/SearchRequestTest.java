@@ -7,8 +7,8 @@ import static org.hamcrest.Matchers.nullValue;
 
 import com.meilisearch.sdk.model.Hybrid;
 import com.meilisearch.sdk.model.MatchingStrategy;
-import org.junit.jupiter.api.Test;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Test;
 
 class SearchRequestTest {
 
@@ -429,8 +429,7 @@ class SearchRequestTest {
 
     @Test
     void toStringWithRetrieveVectors() {
-        SearchRequest searchRequest = new SearchRequest("test")
-                .setRetrieveVectors(true);
+        SearchRequest searchRequest = new SearchRequest("test").setRetrieveVectors(true);
         String result = searchRequest.toString();
         JSONObject json = new JSONObject(result);
         assertThat(json.getBoolean("retrieveVectors"), is(true));
