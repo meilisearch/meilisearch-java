@@ -14,11 +14,10 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 public class Settings {
-
     protected HashMap<String, String[]> synonyms;
     protected String[] stopWords;
     protected String[] rankingRules;
-    protected String[] filterableAttributes;
+    protected FilterableAttribute[] filterableAttributes;
     protected String distinctAttribute;
     protected String[] searchableAttributes;
     protected String[] displayedAttributes;
@@ -35,4 +34,11 @@ public class Settings {
     protected LocalizedAttribute[] localizedAttributes;
 
     public Settings() {}
+
+    public final void setFilterableAttributes(String[] settings) {
+        this.filterableAttributes = new FilterableAttribute[settings.length];
+        for (int i = 0; i < settings.length; i++) {
+            this.filterableAttributes[i] = new FilterableAttribute(settings[i]);
+        }
+    }
 }

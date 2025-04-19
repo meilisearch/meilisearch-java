@@ -5,6 +5,7 @@ import com.meilisearch.sdk.http.URLBuilder;
 import com.meilisearch.sdk.model.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
@@ -443,8 +444,8 @@ public class Index implements Serializable {
      * @see <a
      *     href="https://www.meilisearch.com/docs/reference/api/facet_search#perform-a-facet-search">API
      *     specification</a>
-     * @see Index#getFilterableAttributesSettings() getFilterableAttributesSettings
-     * @see Index#updateFilterableAttributesSettings(String[]) updateFilterableAttributesSettings
+     * @see Index#legacyGetFilterableAttributesSettings() getFilterableAttributesSettings
+     * @see Index#updateFilterableAttributesSettings(Object[]) updateFilterableAttributesSettings
      * @since 1.3
      */
     public FacetSearchable facetSearch(FacetSearchRequest facetSearchRequest)
@@ -746,25 +747,59 @@ public class Index implements Serializable {
      *     href="https://www.meilisearch.com/docs/reference/api/settings#get-filterable-attributes">API
      *     specification</a>
      */
-    public String[] getFilterableAttributesSettings() throws MeilisearchException {
+    public String[] legacyGetFilterableAttributesSettings() throws MeilisearchException {
+        FilterableAttribute[] attributes =
+                this.settingsHandler.getFilterableAttributesSettings(this.uid);
+        return Arrays.stream(this.settingsHandler.getFilterableAttributesSettings(this.uid))
+                .reduce(
+                        new ArrayList<String>(),
+                        (list, next) -> {
+                            list.addAll(Arrays.asList(next.getPatterns()));
+                            return list;
+                        },
+                        (a, b) -> {
+                            a.addAll(b);
+                            return a;
+                        })
+                .toArray(new String[0]);
+    }
+
+    public FilterableAttribute[] getFilterableAttributesSettings() throws MeilisearchException {
         return this.settingsHandler.getFilterableAttributesSettings(this.uid);
     }
 
     /**
-     * Updates the filterable attributes of the index. This will re-index all documents in the index
+     * Generic getFilterableAttributesSettings. Updates the filterable attributes of the index. This
+     * will re-index all documents in the index
      *
-     * @param filterableAttributes An array of strings containing the attributes that can be used as
-     *     filters at query time.
+     * @param filterableAttributes An array of FilterableAttributes or Strings containing the
+     *     attributes that can be used as filters at query time.
      * @return TaskInfo instance
-     * @throws MeilisearchException if an error occurs
+     * @throws MeilisearchException if an error occurs in the que
      * @see <a
      *     href="https://www.meilisearch.com/docs/reference/api/settings#update-filterable-attributes">API
      *     specification</a>
      */
-    public TaskInfo updateFilterableAttributesSettings(String[] filterableAttributes)
+    public <O> TaskInfo updateFilterableAttributesSettings(O[] filterableAttributes)
             throws MeilisearchException {
+        if (filterableAttributes == null)
+            return this.settingsHandler.updateFilterableAttributesSettings(this.uid, null);
+        else if (filterableAttributes.getClass().getComponentType() == FilterableAttribute.class)
+            return this.settingsHandler.updateFilterableAttributesSettings(
+                    this.uid, (FilterableAttribute[]) filterableAttributes);
+        else if (filterableAttributes.getClass().getComponentType() == String.class)
+            return this.updateFilterableAttributeSettingsLegacy((String[]) filterableAttributes);
+        else
+            throw new MeilisearchException(
+                    "filterableAttributes must be of type String or FilterableAttribute");
+    }
+
+    private TaskInfo updateFilterableAttributeSettingsLegacy(String[] filterableAttributes) {
         return this.settingsHandler.updateFilterableAttributesSettings(
-                this.uid, filterableAttributes);
+                this.uid,
+                Arrays.stream(filterableAttributes)
+                        .map(FilterableAttribute::new)
+                        .toArray(FilterableAttribute[]::new));
     }
 
     /**
