@@ -18,7 +18,7 @@ plugins {
 
 group = 'com.meilisearch.sdk'
 archivesBaseName = 'meilisearch-java'
-version = '0.14.3'
+version = '0.14.4'
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_1_8
