@@ -56,7 +56,7 @@ public class CustomOkHttpClient {
         Request.Builder builder = new Request.Builder();
         builder.url(url);
 
-        if (this.config.getApiKey() != null)
+        if (this.config.getApiKey() != null && !this.config.getApiKey().isEmpty())
             builder.addHeader("Authorization", this.config.getBearerApiKey());
 
         for (Map.Entry<String, String> entry : request.getHeaders().entrySet()) {
