@@ -455,7 +455,7 @@ typo_tolerance_guide_4: |-
 getting_started_add_documents: |-
   // For Maven:
   // Add the following code to the `<dependencies>` section of your project:
-  // 
+  //
   // <dependency>
   //   <groupId>com.meilisearch.sdk</groupId>
   //   <artifactId>meilisearch-java</artifactId>
