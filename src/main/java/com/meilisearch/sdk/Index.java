@@ -1242,6 +1242,15 @@ public class Index implements Serializable {
         return this.settingsHandler.resetSearchCutoffMsSettings(this.uid);
     }
 
+    /**
+     * Retrieves documents that are semantically similar to a given document
+     *
+     * @param query SimilarDocumentRequest containing parameters for the similar documents search
+     * @return SimilarDocumentsResults containing the search results
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/similar">API
+     *     specification</a>
+     */
     public SimilarDocumentsResults searchSimilarDocuments(SimilarDocumentRequest query)
             throws MeilisearchException {
         return this.config.httpClient.post(
