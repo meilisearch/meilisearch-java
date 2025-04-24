@@ -113,7 +113,7 @@ public class SearchRequest {
                         .putOpt("retrieveVectors", this.retrieveVectors);
 
         if (this.hybrid != null) {
-            jsonObject.put("hybrid", new JSONObject(this.hybrid.toString()));
+            jsonObject.put("hybrid", this.hybrid.toJSONObject());
         }
 
         return jsonObject.toString();
