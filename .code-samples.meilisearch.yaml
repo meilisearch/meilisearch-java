@@ -230,7 +230,7 @@ update_filterable_attributes_1: |-
   Map<String, Boolean> filtersTypes = new HashMap<>();
   filtersTypes.put("comparison",true);
   filtersTypes.put("equality",true);
-  settings.setFilterableAttributes(new FilterableAttributes[] {new FilterableAttributes("genres"), new FilterableAttributes(new String[]{"director"}, true, filters)});
+  settings.setFilterableAttributes(new FilterableAttribute[] {new FilterableAttribute("genres"), new FilterableAttribute(new String[]{"director"}, true, filters)});
   client.index("movies").updateSettings(settings);
 reset_filterable_attributes_1: |-
   client.index("movies").resetFilterableAttributesSettings();
