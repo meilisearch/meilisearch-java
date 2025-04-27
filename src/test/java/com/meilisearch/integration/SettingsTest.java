@@ -584,7 +584,7 @@ public class SettingsTest extends AbstractIT {
     public void testGetFilterableAttributesSettings() throws Exception {
         Index index = createIndex("testGetDisplayedAttributesSettings");
         Settings initialSettings = index.getSettings();
-        String[] initialFilterableAttributes = index.legacyGetFilterableAttributesSettings();
+        String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
 
         assertThat(
                 initialFilterableAttributes,
@@ -598,12 +598,12 @@ public class SettingsTest extends AbstractIT {
     @DisplayName("Test update filterable attributes settings")
     public void testUpdateFilterableAttributesSettings() throws Exception {
         Index index = createIndex("testUpdateDisplayedAttributesSettings");
-        String[] initialFilterableAttributes = index.legacyGetFilterableAttributesSettings();
+        String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
         String[] newFilterableAttributes = {"title", "description", "genre", "release_date"};
 
         index.waitForTask(
                 index.updateFilterableAttributesSettings(newFilterableAttributes).getTaskUid());
-        String[] updatedFilterableAttributes = index.legacyGetFilterableAttributesSettings();
+        String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
 
         assertThat(updatedFilterableAttributes, is(arrayWithSize(newFilterableAttributes.length)));
         assertThat(
@@ -618,17 +618,17 @@ public class SettingsTest extends AbstractIT {
     @DisplayName("Test reset filterable attributes settings")
     public void testResetFilterableAttributesSettings() throws Exception {
         Index index = createIndex("testUpdateDisplayedAttributesSettings");
-        String[] initialFilterableAttributes = index.legacyGetFilterableAttributesSettings();
+        String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
         String[] newFilterableAttributes = {
             "title", "description", "genres", "director", "release_date"
         };
 
         index.waitForTask(
                 index.updateFilterableAttributesSettings(newFilterableAttributes).getTaskUid());
-        String[] updatedFilterableAttributes = index.legacyGetFilterableAttributesSettings();
+        String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
 
         index.waitForTask(index.resetFilterableAttributesSettings().getTaskUid());
-        String[] filterableAttributesAfterReset = index.legacyGetFilterableAttributesSettings();
+        String[] filterableAttributesAfterReset = index.getFilterableAttributesSettings();
 
         assertThat(updatedFilterableAttributes, is(arrayWithSize(newFilterableAttributes.length)));
         assertThat(
@@ -650,7 +650,8 @@ public class SettingsTest extends AbstractIT {
     public void testGetFilterableAttributesSettingsNew() throws Exception {
         Index index = createIndex("testGetFilterableAttributesSettingsNew");
         Settings initialSettings = index.getSettings();
-        FilterableAttribute[] initialFilterableAttributes = index.getFilterableAttributesSettings();
+        FilterableAttribute[] initialFilterableAttributes =
+                index.getFullFilterableAttributesSettings();
 
         assertThat(
                 initialFilterableAttributes,
@@ -664,13 +665,14 @@ public class SettingsTest extends AbstractIT {
     @DisplayName("Test update filterable attributes settings (new method)")
     public void testUpdateFilterableAttributesSettingsNew() throws Exception {
         Index index = createIndex("testUpdateFilterableAttributesSettingsNew");
-        FilterableAttribute[] initialFilterableAttributes = index.getFilterableAttributesSettings();
+        FilterableAttribute[] initialFilterableAttributes =
+                index.getFullFilterableAttributesSettings();
         String[] newFilterableAttributes = {"title", "description", "genre", "release_date"};
 
         index.waitForTask(
                 index.updateFilterableAttributesSettings(newFilterableAttributes).getTaskUid());
-        String[] updatedFilterableAttributes = index.legacyGetFilterableAttributesSettings();
-        FilterableAttribute[] attributes = index.getFilterableAttributesSettings();
+        String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
+        FilterableAttribute[] attributes = index.getFullFilterableAttributesSettings();
         assertThat(attributes, is(arrayWithSize(newFilterableAttributes.length)));
         assertThat(updatedFilterableAttributes, is(arrayWithSize(newFilterableAttributes.length)));
         List<String> searchablePatterns = Arrays.asList(newFilterableAttributes);
@@ -690,18 +692,20 @@ public class SettingsTest extends AbstractIT {
     @DisplayName("Test reset filterable attributes settings (new method)")
     public void testResetFilterableAttributesSettingsNew() throws Exception {
         Index index = createIndex("testResetFilterableAttributesSettingsNew");
-        FilterableAttribute[] initialFilterableAttributes = index.getFilterableAttributesSettings();
+        FilterableAttribute[] initialFilterableAttributes =
+                index.getFullFilterableAttributesSettings();
         String[] newFilterableAttributes = {
             "title", "description", "genres", "director", "release_date"
         };
 
         index.waitForTask(
                 index.updateFilterableAttributesSettings(newFilterableAttributes).getTaskUid());
-        FilterableAttribute[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
+        FilterableAttribute[] updatedFilterableAttributes =
+                index.getFullFilterableAttributesSettings();
 
         index.waitForTask(index.resetFilterableAttributesSettings().getTaskUid());
         FilterableAttribute[] filterableAttributesAfterReset =
-                index.getFilterableAttributesSettings();
+                index.getFullFilterableAttributesSettings();
 
         assertThat(updatedFilterableAttributes, is(arrayWithSize(newFilterableAttributes.length)));
         List<String> searchablePatterns = Arrays.asList(newFilterableAttributes);
@@ -768,7 +772,7 @@ public class SettingsTest extends AbstractIT {
         String[] updatedSortableAttributes = index.getSortableAttributesSettings();
 
         index.waitForTask(index.resetFilterableAttributesSettings().getTaskUid());
-        String[] filterableAttributesAfterReset = index.legacyGetFilterableAttributesSettings();
+        String[] filterableAttributesAfterReset = index.getFilterableAttributesSettings();
 
         assertThat(updatedSortableAttributes, is(arrayWithSize(newSortableAttributes.length)));
         assertThat(
@@ -1085,15 +1089,15 @@ public class SettingsTest extends AbstractIT {
     @DisplayName("Test update filterable attributes settings when null is passed")
     public void testUpdateFilterableAttributesSettingsUsingNull() throws Exception {
         Index index = createIndex("testUpdateFilterableAttributesSettingsUsingNull");
-        String[] initialFilterableAttributes = index.legacyGetFilterableAttributesSettings();
+        String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
         String[] newFilterableAttributes = {"title", "genres", "cast", "release_date"};
 
         index.waitForTask(
                 index.updateFilterableAttributesSettings(newFilterableAttributes).getTaskUid());
-        String[] updatedFilterableAttributes = index.legacyGetFilterableAttributesSettings();
+        String[] updatedFilterableAttributes = index.getFilterableAttributesSettings();
 
         index.waitForTask(index.updateFilterableAttributesSettings(null).getTaskUid());
-        String[] resetFilterableAttributes = index.legacyGetFilterableAttributesSettings();
+        String[] resetFilterableAttributes = index.getFilterableAttributesSettings();
 
         assertThat(
                 resetFilterableAttributes,

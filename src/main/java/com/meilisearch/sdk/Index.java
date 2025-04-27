@@ -444,7 +444,7 @@ public class Index implements Serializable {
      * @see <a
      *     href="https://www.meilisearch.com/docs/reference/api/facet_search#perform-a-facet-search">API
      *     specification</a>
-     * @see Index#legacyGetFilterableAttributesSettings() getFilterableAttributesSettings
+     * @see Index#getFilterableAttributesSettings() getFilterableAttributesSettings
      * @see Index#updateFilterableAttributesSettings(Object[]) updateFilterableAttributesSettings
      * @since 1.3
      */
@@ -747,7 +747,7 @@ public class Index implements Serializable {
      *     href="https://www.meilisearch.com/docs/reference/api/settings#get-filterable-attributes">API
      *     specification</a>
      */
-    public String[] legacyGetFilterableAttributesSettings() throws MeilisearchException {
+    public String[] getFilterableAttributesSettings() throws MeilisearchException {
         FilterableAttribute[] attributes =
                 this.settingsHandler.getFilterableAttributesSettings(this.uid);
         return Arrays.stream(this.settingsHandler.getFilterableAttributesSettings(this.uid))
@@ -764,7 +764,16 @@ public class Index implements Serializable {
                 .toArray(new String[0]);
     }
 
-    public FilterableAttribute[] getFilterableAttributesSettings() throws MeilisearchException {
+    /**
+     * Gets the filterable attributes of the index, along with its filtration metadata.
+     *
+     * @return filterable attributes of a given uid as FilterableAttribute
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://meilisearch.notion.site/API-usage-Settings-to-opt-out-indexing-features-filterableAttributes-1764b06b651f80aba8bdf359b2df3ca8?pvs=74">API
+     *     Specification</a>
+     */
+    public FilterableAttribute[] getFullFilterableAttributesSettings() throws MeilisearchException {
         return this.settingsHandler.getFilterableAttributesSettings(this.uid);
     }
 
