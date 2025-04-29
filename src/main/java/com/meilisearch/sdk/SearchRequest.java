@@ -1,5 +1,6 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.model.Hybrid;
 import com.meilisearch.sdk.model.MatchingStrategy;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -42,12 +43,15 @@ public class SearchRequest {
     protected Double rankingScoreThreshold;
     protected String[] locales;
     protected String distinct;
-
+    protected Hybrid hybrid;
+    protected Double[] vector;
+    protected Boolean retrieveVectors;
     /**
      * Constructor for SearchRequest for building search queries with the default values: offset: 0,
      * limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
      * attributesToHighlight: null, filter: null, showMatchesPosition: false, facets: null, sort:
-     * null, showRankingScore: false, showRankingScoreDetails: false, rankingScoreThreshold: null
+     * null, showRankingScore: false, showRankingScoreDetails: false, rankingScoreThreshold: null,
+     * retrieveVectors: false
      *
      * @param q Query String
      */
@@ -104,7 +108,13 @@ public class SearchRequest {
                         .putOpt("showRankingScoreDetails", this.showRankingScoreDetails)
                         .putOpt("rankingScoreThreshold", this.rankingScoreThreshold)
                         .putOpt("locales", this.locales)
-                        .putOpt("distinct", this.distinct);
+                        .putOpt("distinct", this.distinct)
+                        .putOpt("vector", this.vector)
+                        .putOpt("retrieveVectors", this.retrieveVectors);
+
+        if (this.hybrid != null) {
+            jsonObject.put("hybrid", this.hybrid.toJSONObject());
+        }
 
         return jsonObject.toString();
     }
