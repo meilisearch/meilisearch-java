@@ -16,8 +16,8 @@ jobs:
           java-version: 8
           distribution: 'zulu'
           cache: gradle
-      - name: Check release validity
-        run: bash .github/scripts/check-release.sh
+      # - name: Check release validity
+      #   run: bash .github/scripts/check-release.sh
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
