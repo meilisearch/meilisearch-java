@@ -1481,7 +1481,7 @@ public class SettingsTest extends AbstractIT {
     @Test
     @DisplayName("Test update embedders settings")
     public void testUpdateEmbeddersSettings() throws Exception {
-        Index index = createEmptyIndex("testUpdateEmbeddersSettings");
+        Index index = createIndex("testUpdateEmbeddersSettings");
 
         // Update settings
         HashMap<String, Embedder> newEmbedders = new HashMap<>();
@@ -1503,7 +1503,7 @@ public class SettingsTest extends AbstractIT {
     @DisplayName("Test reset embedders settings")
     public void testResetEmbeddersSettings() throws Exception {
         // Create and set new embedders
-        Index index = createEmptyIndex("testResetEmbeddersSettings");
+        Index index = createIndex("testResetEmbeddersSettings");
         HashMap<String, Embedder> embedders = new HashMap<>();
         Embedder userProvidedEmbedder =
                 new Embedder().setSource(EmbedderSource.USER_PROVIDED).setDimensions(768);
