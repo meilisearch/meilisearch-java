@@ -32,8 +32,8 @@ public class SimilarDocumentRequest {
     @Override
     public String toString() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.putOpt("id", this.id);
-        jsonObject.putOpt("embedder", this.embedder);
+        jsonObject.put("id", this.id);
+        jsonObject.put("embedder", this.embedder);
         jsonObject.putOpt("attributesToRetrieve", this.attributesToRetrieve);
         jsonObject.putOpt("offset", this.offset);
         jsonObject.putOpt("limit", this.limit);
