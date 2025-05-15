@@ -3,7 +3,6 @@ package com.meilisearch.sdk;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -34,7 +33,7 @@ class SimilarDocumentRequestTest {
                 new SimilarDocumentRequest()
                         .setId("123")
                         .setEmbedder("custom")
-                        .setAttributesToRetrieve(new String[]{"title", "description"})
+                        .setAttributesToRetrieve(new String[] {"title", "description"})
                         .setOffset(10)
                         .setLimit(20)
                         .setFilter("genre = 'action'")
@@ -64,7 +63,7 @@ class SimilarDocumentRequestTest {
                 SimilarDocumentRequest.builder()
                         .id("123")
                         .embedder("custom")
-                        .attributesToRetrieve(new String[]{"title", "description"})
+                        .attributesToRetrieve(new String[] {"title", "description"})
                         .offset(10)
                         .limit(20)
                         .filter("genre = 'action'")
@@ -78,7 +77,7 @@ class SimilarDocumentRequestTest {
         assertThat(request.getEmbedder(), is(equalTo("custom")));
         assertThat(
                 request.getAttributesToRetrieve(),
-                is(equalTo(new String[]{"title", "description"})));
+                is(equalTo(new String[] {"title", "description"})));
         assertThat(request.getOffset(), is(equalTo(10)));
         assertThat(request.getLimit(), is(equalTo(20)));
         assertThat(request.getFilter(), is(equalTo("genre = 'action'")));
