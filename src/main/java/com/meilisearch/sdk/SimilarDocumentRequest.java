@@ -23,9 +23,6 @@ public class SimilarDocumentRequest {
 
     /**
      * Constructor for SimilarDocumentsRequest for building search request for similar documents
-     * with the default values: id null, embedder "default", attributesToRetrieve ["*"], offset 0,
-     * limit 20, filter null, showRankingScore false, showRankingScoreDetails false,
-     * rankingScoreThreshold null, retrieveVectors false
      */
     public SimilarDocumentRequest() {}
 
