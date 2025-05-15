@@ -11,174 +11,75 @@ import org.junit.jupiter.api.Test;
 class SimilarDocumentRequestTest {
 
     @Test
-    void toStringSimpleRequest() {
-        SimilarDocumentRequest classToTest = new SimilarDocumentRequest().setId("123");
+    void toStringDefaultValues() {
+        SimilarDocumentRequest request = new SimilarDocumentRequest();
+        JSONObject json = new JSONObject(request.toString());
 
-        JSONObject jsonObject = new JSONObject(classToTest.toString());
-        assertThat(jsonObject.getString("id"), is(equalTo("123")));
+        // only id and embedder should be absent (null) by default
+        assertThat(json.has("id"), is(false));
+        assertThat(json.has("embedder"), is(false));
+        assertThat(json.has("attributesToRetrieve"), is(false));
+        assertThat(json.has("offset"), is(false));
+        assertThat(json.has("limit"), is(false));
+        assertThat(json.has("filter"), is(false));
+        assertThat(json.has("showRankingScore"), is(false));
+        assertThat(json.has("showRankingScoreDetails"), is(false));
+        assertThat(json.has("rankingScoreThreshold"), is(false));
+        assertThat(json.has("retrieveVectors"), is(false));
     }
 
     @Test
-    void toStringWithEmbedder() {
-        SimilarDocumentRequest classToTest =
-                new SimilarDocumentRequest().setId("123").setEmbedder("custom");
+    void toStringAllParameters() {
+        SimilarDocumentRequest request = new SimilarDocumentRequest()
+                .setId("123")
+                .setEmbedder("custom")
+                .setAttributesToRetrieve(new String[]{"title", "description"})
+                .setOffset(10)
+                .setLimit(20)
+                .setFilter("genre = 'action'")
+                .setShowRankingScore(true)
+                .setShowRankingScoreDetails(true)
+                .setRankingScoreThreshold(0.5)
+                .setRetrieveVectors(true);
 
-        JSONObject jsonObject = new JSONObject(classToTest.toString());
-        assertThat(jsonObject.getString("id"), is(equalTo("123")));
-        assertThat(jsonObject.getString("embedder"), is(equalTo("custom")));
-    }
-
-    @Test
-    void toStringWithAttributesToRetrieve() {
-        SimilarDocumentRequest classToTest =
-                new SimilarDocumentRequest()
-                        .setId("123")
-                        .setAttributesToRetrieve(new String[] {"title", "description"});
-
-        JSONObject jsonObject = new JSONObject(classToTest.toString());
-        assertThat(jsonObject.getString("id"), is(equalTo("123")));
-        assertThat(
-                jsonObject.getJSONArray("attributesToRetrieve").getString(0), is(equalTo("title")));
-        assertThat(
-                jsonObject.getJSONArray("attributesToRetrieve").getString(1),
-                is(equalTo("description")));
-    }
-
-    @Test
-    void toStringWithOffsetAndLimit() {
-        SimilarDocumentRequest classToTest =
-                new SimilarDocumentRequest().setId("123").setOffset(10).setLimit(20);
-
-        JSONObject jsonObject = new JSONObject(classToTest.toString());
-        assertThat(jsonObject.getString("id"), is(equalTo("123")));
-        assertThat(jsonObject.getInt("offset"), is(equalTo(10)));
-        assertThat(jsonObject.getInt("limit"), is(equalTo(20)));
-    }
-
-    @Test
-    void toStringWithFilter() {
-        SimilarDocumentRequest classToTest =
-                new SimilarDocumentRequest().setId("123").setFilter("genre = 'action'");
-
-        JSONObject jsonObject = new JSONObject(classToTest.toString());
-        assertThat(jsonObject.getString("id"), is(equalTo("123")));
-        assertThat(jsonObject.getString("filter"), is(equalTo("genre = 'action'")));
-    }
-
-    @Test
-    void toStringWithShowRankingScore() {
-        SimilarDocumentRequest classToTest =
-                new SimilarDocumentRequest().setId("123").setShowRankingScore(true);
-
-        JSONObject jsonObject = new JSONObject(classToTest.toString());
-        assertThat(jsonObject.getString("id"), is(equalTo("123")));
-        assertThat(jsonObject.getBoolean("showRankingScore"), is(equalTo(true)));
-    }
-
-    @Test
-    void toStringWithShowRankingScoreDetails() {
-        SimilarDocumentRequest classToTest =
-                new SimilarDocumentRequest().setId("123").setShowRankingScoreDetails(true);
-
-        JSONObject jsonObject = new JSONObject(classToTest.toString());
-        assertThat(jsonObject.getString("id"), is(equalTo("123")));
-        assertThat(jsonObject.getBoolean("showRankingScoreDetails"), is(equalTo(true)));
-    }
-
-    @Test
-    void toStringWithRankingScoreThreshold() {
-        SimilarDocumentRequest classToTest =
-                new SimilarDocumentRequest().setId("123").setRankingScoreThreshold(0.5);
-
-        JSONObject jsonObject = new JSONObject(classToTest.toString());
-        assertThat(jsonObject.getString("id"), is(equalTo("123")));
-        assertThat(jsonObject.getDouble("rankingScoreThreshold"), is(equalTo(0.5)));
-    }
-
-    @Test
-    void toStringWithRetrieveVectors() {
-        SimilarDocumentRequest classToTest =
-                new SimilarDocumentRequest().setId("123").setRetrieveVectors(true);
-
-        JSONObject jsonObject = new JSONObject(classToTest.toString());
-        assertThat(jsonObject.getString("id"), is(equalTo("123")));
-        assertThat(jsonObject.getBoolean("retrieveVectors"), is(equalTo(true)));
-    }
-
-    @Test
-    void toStringWithAllParameters() {
-        SimilarDocumentRequest classToTest =
-                new SimilarDocumentRequest()
-                        .setId("123")
-                        .setEmbedder("custom")
-                        .setAttributesToRetrieve(new String[] {"title", "description"})
-                        .setOffset(10)
-                        .setLimit(20)
-                        .setFilter("genre = 'action'")
-                        .setShowRankingScore(true)
-                        .setShowRankingScoreDetails(true)
-                        .setRankingScoreThreshold(0.5)
-                        .setRetrieveVectors(true);
-
-        JSONObject jsonObject = new JSONObject(classToTest.toString());
-        assertThat(jsonObject.getString("id"), is(equalTo("123")));
-        assertThat(jsonObject.getString("embedder"), is(equalTo("custom")));
-        assertThat(
-                jsonObject.getJSONArray("attributesToRetrieve").getString(0), is(equalTo("title")));
-        assertThat(
-                jsonObject.getJSONArray("attributesToRetrieve").getString(1),
-                is(equalTo("description")));
-        assertThat(jsonObject.getInt("offset"), is(equalTo(10)));
-        assertThat(jsonObject.getInt("limit"), is(equalTo(20)));
-        assertThat(jsonObject.getString("filter"), is(equalTo("genre = 'action'")));
-        assertThat(jsonObject.getBoolean("showRankingScore"), is(equalTo(true)));
-        assertThat(jsonObject.getBoolean("showRankingScoreDetails"), is(equalTo(true)));
-        assertThat(jsonObject.getDouble("rankingScoreThreshold"), is(equalTo(0.5)));
-        assertThat(jsonObject.getBoolean("retrieveVectors"), is(equalTo(true)));
+        JSONObject json = new JSONObject(request.toString());
+        assertThat(json.getString("id"), is(equalTo("123")));
+        assertThat(json.getString("embedder"), is(equalTo("custom")));
+        assertThat(json.getJSONArray("attributesToRetrieve").getString(0), is(equalTo("title")));
+        assertThat(json.getJSONArray("attributesToRetrieve").getString(1), is(equalTo("description")));
+        assertThat(json.getInt("offset"), is(equalTo(10)));
+        assertThat(json.getInt("limit"), is(equalTo(20)));
+        assertThat(json.getString("filter"), is(equalTo("genre = 'action'")));
+        assertThat(json.getBoolean("showRankingScore"), is(equalTo(true)));
+        assertThat(json.getBoolean("showRankingScoreDetails"), is(equalTo(true)));
+        assertThat(json.getDouble("rankingScoreThreshold"), is(equalTo(0.5)));
+        assertThat(json.getBoolean("retrieveVectors"), is(equalTo(true)));
     }
 
     @Test
     void gettersAndSetters() {
-        SimilarDocumentRequest classToTest =
-                new SimilarDocumentRequest()
-                        .setId("123")
-                        .setEmbedder("custom")
-                        .setAttributesToRetrieve(new String[] {"title", "description"})
-                        .setOffset(10)
-                        .setLimit(20)
-                        .setFilter("genre = 'action'")
-                        .setShowRankingScore(true)
-                        .setShowRankingScoreDetails(true)
-                        .setRankingScoreThreshold(0.5)
-                        .setRetrieveVectors(true);
+        SimilarDocumentRequest request = SimilarDocumentRequest.builder()
+                .id("123")
+                .embedder("custom")
+                .attributesToRetrieve(new String[]{"title", "description"})
+                .offset(10)
+                .limit(20)
+                .filter("genre = 'action'")
+                .showRankingScore(true)
+                .showRankingScoreDetails(true)
+                .rankingScoreThreshold(0.5)
+                .retrieveVectors(true)
+                .build();
 
-        assertThat(classToTest.getId(), is(equalTo("123")));
-        assertThat(classToTest.getEmbedder(), is(equalTo("custom")));
-        assertThat(
-                classToTest.getAttributesToRetrieve(),
-                is(equalTo(new String[] {"title", "description"})));
-        assertThat(classToTest.getOffset(), is(equalTo(10)));
-        assertThat(classToTest.getLimit(), is(equalTo(20)));
-        assertThat(classToTest.getFilter(), is(equalTo("genre = 'action'")));
-        assertThat(classToTest.getShowRankingScore(), is(equalTo(true)));
-        assertThat(classToTest.getShowRankingScoreDetails(), is(equalTo(true)));
-        assertThat(classToTest.getRankingScoreThreshold(), is(equalTo(0.5)));
-        assertThat(classToTest.getRetrieveVectors(), is(equalTo(true)));
-    }
-
-    @Test
-    void defaultValues() {
-        SimilarDocumentRequest classToTest = new SimilarDocumentRequest();
-
-        assertThat(classToTest.getId(), is(nullValue()));
-        assertThat(classToTest.getEmbedder(), is(nullValue()));
-        assertThat(classToTest.getAttributesToRetrieve(), is(nullValue()));
-        assertThat(classToTest.getOffset(), is(nullValue()));
-        assertThat(classToTest.getLimit(), is(nullValue()));
-        assertThat(classToTest.getFilter(), is(nullValue()));
-        assertThat(classToTest.getShowRankingScore(), is(nullValue()));
-        assertThat(classToTest.getShowRankingScoreDetails(), is(nullValue()));
-        assertThat(classToTest.getRankingScoreThreshold(), is(nullValue()));
-        assertThat(classToTest.getRetrieveVectors(), is(nullValue()));
+        assertThat(request.getId(), is(equalTo("123")));
+        assertThat(request.getEmbedder(), is(equalTo("custom")));
+        assertThat(request.getAttributesToRetrieve(), is(equalTo(new String[]{"title", "description"})));
+        assertThat(request.getOffset(), is(equalTo(10)));
+        assertThat(request.getLimit(), is(equalTo(20)));
+        assertThat(request.getFilter(), is(equalTo("genre = 'action'")));
+        assertThat(request.getShowRankingScore(), is(equalTo(true)));
+        assertThat(request.getShowRankingScoreDetails(), is(equalTo(true)));
+        assertThat(request.getRankingScoreThreshold(), is(equalTo(0.5)));
+        assertThat(request.getRetrieveVectors(), is(equalTo(true)));
     }
 }
