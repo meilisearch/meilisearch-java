@@ -367,21 +367,6 @@ class SearchRequestTest {
     }
 
     @Test
-    void toStringWithHybrid() {
-        Hybrid hybrid = Hybrid.builder().semanticRatio(0.5).embedder("default").build();
-
-        SearchRequest classToTest = new SearchRequest("This is a Test").setHybrid(hybrid);
-
-        String expected =
-                "{\"q\":\"This is a Test\",\"hybrid\":{\"semanticRatio\":0.5,\"embedder\":\"default\"}}";
-        assertThat(classToTest.toString(), is(equalTo(expected)));
-
-        // Verify getters
-        assertThat(classToTest.getHybrid().getSemanticRatio(), is(equalTo(0.5)));
-        assertThat(classToTest.getHybrid().getEmbedder(), is(equalTo("default")));
-    }
-
-    @Test
     void toStringWithHybridUsingBuilder() {
         SearchRequest classToTest =
                 SearchRequest.builder()
