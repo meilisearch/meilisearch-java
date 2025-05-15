@@ -1248,8 +1248,7 @@ public class Index implements Serializable {
      * @param query SimilarDocumentRequest containing parameters for the similar documents search
      * @return SimilarDocumentsResults containing the search results
      * @throws MeilisearchException if an error occurs
-     * @see <a href="https://www.meilisearch.com/docs/reference/api/similar">API
-     *     specification</a>
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/similar">API specification</a>
      */
     public SimilarDocumentsResults searchSimilarDocuments(SimilarDocumentRequest query)
             throws MeilisearchException {

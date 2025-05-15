@@ -1,6 +1,7 @@
 package com.meilisearch.sdk.model;
 
-// @brunoocasali: I don't think we should use the fasterxml.jackson annotations across the library, since this should be customizable 🤔
+// @brunoocasali: I don't think we should use the fasterxml.jackson annotations across the library,
+// since this should be customizable 🤔
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
