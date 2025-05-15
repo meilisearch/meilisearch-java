@@ -30,23 +30,25 @@ class SimilarDocumentRequestTest {
 
     @Test
     void toStringAllParameters() {
-        SimilarDocumentRequest request = new SimilarDocumentRequest()
-                .setId("123")
-                .setEmbedder("custom")
-                .setAttributesToRetrieve(new String[]{"title", "description"})
-                .setOffset(10)
-                .setLimit(20)
-                .setFilter("genre = 'action'")
-                .setShowRankingScore(true)
-                .setShowRankingScoreDetails(true)
-                .setRankingScoreThreshold(0.5)
-                .setRetrieveVectors(true);
+        SimilarDocumentRequest request =
+                new SimilarDocumentRequest()
+                        .setId("123")
+                        .setEmbedder("custom")
+                        .setAttributesToRetrieve(new String[]{"title", "description"})
+                        .setOffset(10)
+                        .setLimit(20)
+                        .setFilter("genre = 'action'")
+                        .setShowRankingScore(true)
+                        .setShowRankingScoreDetails(true)
+                        .setRankingScoreThreshold(0.5)
+                        .setRetrieveVectors(true);
 
         JSONObject json = new JSONObject(request.toString());
         assertThat(json.getString("id"), is(equalTo("123")));
         assertThat(json.getString("embedder"), is(equalTo("custom")));
         assertThat(json.getJSONArray("attributesToRetrieve").getString(0), is(equalTo("title")));
-        assertThat(json.getJSONArray("attributesToRetrieve").getString(1), is(equalTo("description")));
+        assertThat(
+                json.getJSONArray("attributesToRetrieve").getString(1), is(equalTo("description")));
         assertThat(json.getInt("offset"), is(equalTo(10)));
         assertThat(json.getInt("limit"), is(equalTo(20)));
         assertThat(json.getString("filter"), is(equalTo("genre = 'action'")));
@@ -58,22 +60,25 @@ class SimilarDocumentRequestTest {
 
     @Test
     void gettersAndSetters() {
-        SimilarDocumentRequest request = SimilarDocumentRequest.builder()
-                .id("123")
-                .embedder("custom")
-                .attributesToRetrieve(new String[]{"title", "description"})
-                .offset(10)
-                .limit(20)
-                .filter("genre = 'action'")
-                .showRankingScore(true)
-                .showRankingScoreDetails(true)
-                .rankingScoreThreshold(0.5)
-                .retrieveVectors(true)
-                .build();
+        SimilarDocumentRequest request =
+                SimilarDocumentRequest.builder()
+                        .id("123")
+                        .embedder("custom")
+                        .attributesToRetrieve(new String[]{"title", "description"})
+                        .offset(10)
+                        .limit(20)
+                        .filter("genre = 'action'")
+                        .showRankingScore(true)
+                        .showRankingScoreDetails(true)
+                        .rankingScoreThreshold(0.5)
+                        .retrieveVectors(true)
+                        .build();
 
         assertThat(request.getId(), is(equalTo("123")));
         assertThat(request.getEmbedder(), is(equalTo("custom")));
-        assertThat(request.getAttributesToRetrieve(), is(equalTo(new String[]{"title", "description"})));
+        assertThat(
+                request.getAttributesToRetrieve(),
+                is(equalTo(new String[]{"title", "description"})));
         assertThat(request.getOffset(), is(equalTo(10)));
         assertThat(request.getLimit(), is(equalTo(20)));
         assertThat(request.getFilter(), is(equalTo("genre = 'action'")));
