@@ -24,11 +24,15 @@ public class GsonFilterableAttributeSerializer
         if (attribute == null) return false;
         Map<String, Boolean> filters = attribute.getFilter();
         if (filters == null) filters = new HashMap<>();
-        return (attribute.getPatterns() != null
+
+        boolean equalityAllowed   = !filters.containsKey("equality") || filters.get("equality");
+        boolean comparisonAllowed =  filters.getOrDefault("comparison", false);
+
+        return attribute.getPatterns() != null
                 && attribute.getPatterns().length == 1
                 && (attribute.getFacetSearch() == null || !attribute.getFacetSearch())
-                && (filters.containsKey("equality") && filters.get("equality"))
-                && (!filters.containsKey("comparison") || !filters.get("comparison")));
+                && equalityAllowed
+                && !comparisonAllowed;
     }
 
     private JsonElement serializeAttribute(FilterableAttribute attribute) {
