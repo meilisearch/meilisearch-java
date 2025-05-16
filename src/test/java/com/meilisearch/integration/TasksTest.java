@@ -142,7 +142,6 @@ public class TasksTest extends AbstractIT {
         int from = 2;
         TasksQuery query = new TasksQuery().setLimit(limit).setFrom(from);
         TasksResults result = client.getTasks(query);
-
         assertThat(result.getLimit(), is(equalTo(limit)));
         assertThat(result.getFrom(), is(equalTo(from)));
         assertThat(result.getFrom(), is(notNullValue()));
