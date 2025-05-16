@@ -43,7 +43,7 @@ public class GsonFilterableAttributeSerializerTest {
 
     @Test
     public void testNewDeserializationOutputArray() {
-        String input = "{attributePatterns:[\"attribute1\"]}";
+        String input = "{\"attributePatterns\":[\"attribute1\"]}";
         FilterableAttribute expectedOutput = new FilterableAttribute("attribute1");
         assertDeserializedOutputsEquals(
                 handler.decode(input, FilterableAttribute.class), expectedOutput);
