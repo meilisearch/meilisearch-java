@@ -142,9 +142,6 @@ public class TasksTest extends AbstractIT {
         int from = 2;
         TasksQuery query = new TasksQuery().setLimit(limit).setFrom(from);
         TasksResults result = client.getTasks(query);
-        System.out.println("Expected from: " + from);
-        System.out.println("Actual from: " + result.getFrom());
-        System.out.println("Tasks returned: " + Arrays.toString(result.getResults()));
         assertThat(result.getLimit(), is(equalTo(limit)));
         assertThat(result.getFrom(), is(equalTo(from)));
         assertThat(result.getFrom(), is(notNullValue()));

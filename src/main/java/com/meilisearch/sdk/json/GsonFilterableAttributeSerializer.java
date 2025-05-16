@@ -25,8 +25,8 @@ public class GsonFilterableAttributeSerializer
         Map<String, Boolean> filters = attribute.getFilter();
         if (filters == null) filters = new HashMap<>();
 
-        boolean equalityAllowed   = !filters.containsKey("equality") || filters.get("equality");
-        boolean comparisonAllowed =  filters.getOrDefault("comparison", false);
+        boolean equalityAllowed = !filters.containsKey("equality") || filters.get("equality");
+        boolean comparisonAllowed = filters.getOrDefault("comparison", false);
 
         return attribute.getPatterns() != null
                 && attribute.getPatterns().length == 1

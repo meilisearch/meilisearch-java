@@ -95,7 +95,7 @@ public class GsonFilterableAttributeSerializerTest {
         String expectedOutput =
                 "[{\"attributePatterns\":[\"attribute1\",\"attribute2\"],\"features\":{\"facetSearch\":true,\"filter\":{\"comparison\":true,\"equality\":false}}},\"attribute3\"]";
         String array = handler.encode(new FilterableAttribute[] {input, input2});
-        assertEquals(expectedOutput, handler.encode(array));
+        assertEquals(expectedOutput, array);
     }
 
     @Test

@@ -812,7 +812,7 @@ public class Index implements Serializable {
     }
 
     /**
-     * Resets the filterable attributes of the index
+     * Resets the filterable attributes of te index
      *
      * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
