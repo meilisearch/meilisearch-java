@@ -163,9 +163,12 @@ publishing {
 		maven {
 			name = "MavenCentral"
 			url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-			credentials {
+			credentials(PasswordCredentials) {
 				username = System.getenv('MAVEN_USERNAME')
 				password = System.getenv('MAVEN_PASSWORD')
+			}
+			authentication {
+				basic(BasicAuthentication)
 			}
 		}
 	}
@@ -200,4 +203,6 @@ nexusPublishing {
 			password = System.getenv('MAVEN_PASSWORD')
 		}
 	}
+	connectTimeout = Duration.ofMinutes(3)
+	clientTimeout = Duration.ofMinutes(3)
 }
