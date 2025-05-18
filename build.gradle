@@ -161,10 +161,13 @@ publishing {
 	repositories {
 		maven {
 			name = "CentralPortal"
-			url = "https://central.sonatype.com/content/repositories/releases"
+			url = "https://central.sonatype.com/api/v1/publisher/upload"
 			credentials {
 				username = System.getenv('MAVEN_USERNAME')
 				password = System.getenv('MAVEN_PASSWORD')
+			}
+			authentication {
+				header(HttpHeaderAuthentication)
 			}
 		}
 	}
