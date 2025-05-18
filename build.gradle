@@ -12,7 +12,6 @@ plugins {
 	id 'maven-publish'
 	id 'signing'
 	id 'jacoco'
-	id 'io.github.gradle-nexus.publish-plugin' version "2.0.0"
 	id "com.diffplug.spotless" version "6.13.0"
 }
 
@@ -161,14 +160,11 @@ publishing {
 	}
 	repositories {
 		maven {
-			name = "MavenCentral"
-			url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-			credentials(PasswordCredentials) {
+			name = "CentralPortal"
+			url = "https://central.sonatype.com/content/repositories/releases"
+			credentials {
 				username = System.getenv('MAVEN_USERNAME')
 				password = System.getenv('MAVEN_PASSWORD')
-			}
-			authentication {
-				basic(BasicAuthentication)
 			}
 		}
 	}
@@ -192,17 +188,4 @@ spotless {
 		// apply a specific flavor of google-java-format
 		googleJavaFormat('1.7').aosp()
 	}
-}
-
-nexusPublishing {
-	repositories {
-		sonatype {
-			nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-			snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-			username = System.getenv('MAVEN_USERNAME')
-			password = System.getenv('MAVEN_PASSWORD')
-		}
-	}
-	connectTimeout = Duration.ofMinutes(3)
-	clientTimeout = Duration.ofMinutes(3)
 }
