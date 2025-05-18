@@ -161,25 +161,12 @@ publishing {
 	}
 	repositories {
 		maven {
-			url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+			name = "OSSRH"
+			url = "https://central.sonatype.com/artifact/upload"
 			credentials {
-				username System.getenv('OSSRH_USERNAME')
-				password System.getenv('OSSRH_PASSWORD')
+				username = System.getenv('MAVEN_USERNAME')
+				password = System.getenv('MAVEN_PASSWORD')
 			}
-		}
-	}
-}
-
-nexusPublishing {
-	packageGroup = "com.meilisearch"
-
-	repositories {
-		sonatype {
-			nexusUrl.set(uri("https://oss.sonatype.org/service/local/"))
-
-			username = System.getenv('OSSRH_USERNAME')
-			password = System.getenv('OSSRH_PASSWORD')
-			stagingProfileId = System.getenv('SONATYPE_STAGING_PROFILE_ID')
 		}
 	}
 }
