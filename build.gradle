@@ -161,8 +161,8 @@ publishing {
 	}
 	repositories {
 		maven {
-			name = "OSSRH"
-			url = "https://central.sonatype.com/artifact/upload"
+			name = "MavenCentral"
+			url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
 			credentials {
 				username = System.getenv('MAVEN_USERNAME')
 				password = System.getenv('MAVEN_PASSWORD')
@@ -188,5 +188,16 @@ spotless {
 
 		// apply a specific flavor of google-java-format
 		googleJavaFormat('1.7').aosp()
+	}
+}
+
+nexusPublishing {
+	repositories {
+		sonatype {
+			nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+			snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+			username = System.getenv('MAVEN_USERNAME')
+			password = System.getenv('MAVEN_PASSWORD')
+		}
 	}
 }
