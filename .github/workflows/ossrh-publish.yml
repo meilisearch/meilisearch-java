@@ -36,5 +36,4 @@ jobs:
       - name: Publish to Maven Central
         run: ./gradlew publish --info -Psigning.keyId=${{secrets.SIGNING_KEY_ID}} -Psigning.password=${{secrets.SIGNING_PASSWORD}} -Psigning.secretKeyRingFile=$(echo ~/.gradle/secring.gpg)
         env:
-          MAVEN_USERNAME: ${{secrets.MAVEN_USERNAME}}
-          MAVEN_PASSWORD: ${{secrets.MAVEN_PASSWORD}}
+          MAVEN_BEARER: ${{secrets.MAVEN_BEARER}}

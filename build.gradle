@@ -162,9 +162,9 @@ publishing {
 		maven {
 			name = "CentralPortal"
 			url = "https://central.sonatype.com/api/v1/publisher/upload"
-			credentials {
-				username = System.getenv('MAVEN_USERNAME')
-				password = System.getenv('MAVEN_PASSWORD')
+			credentials(HttpHeaderCredentials) {
+				name = "Authorization"
+				value = "Bearer ${System.getenv('MAVEN_BEARER')}"
 			}
 			authentication {
 				header(HttpHeaderAuthentication)
