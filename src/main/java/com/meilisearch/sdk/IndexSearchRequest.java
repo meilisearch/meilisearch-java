@@ -38,13 +38,14 @@ public class IndexSearchRequest {
     private FederationOptions federationOptions;
     protected String[] locales;
     protected String distinct;
+    protected Boolean retrieveVectors;
 
     /**
      * Constructor for MultiSearchRequest for building search queries with the default values:
      * offset: 0, limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
      * attributesToHighlight: null, filter: null, showMatchesPosition: false, facets: null, sort:
      * null, showRankingScore: false, showRankingScoreDetails: false, rankingScoreThreshold: null
-     * distinct: null
+     * distinct: null, retrieveVectors: false
      *
      * @param indexUid uid of the requested index String
      */
@@ -106,7 +107,8 @@ public class IndexSearchRequest {
                         .putOpt("rankingScoreThreshold", this.rankingScoreThreshold)
                         .putOpt("attributesToSearchOn", this.attributesToSearchOn)
                         .putOpt("locales", this.locales)
-                        .putOpt("distinct", this.distinct);
+                        .putOpt("distinct", this.distinct)
+                        .putOpt("retrieveVectors", this.retrieveVectors);
 
         return jsonObject.toString();
     }

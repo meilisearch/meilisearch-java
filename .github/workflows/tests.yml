@@ -29,7 +29,7 @@ jobs:
       - name: Meilisearch (latest) setup with Docker
         run: docker run -d -p 7700:7700 getmeili/meilisearch:latest meilisearch --master-key=masterKey --no-analytics
       - name: Build and run unit and integration tests
-        run: ./gradlew build integrationTest
+        run: ./gradlew build integrationTest --info
       - name: Archive test report
         uses: actions/upload-artifact@v4
         if: failure()

@@ -16,6 +16,8 @@ import static org.hamcrest.Matchers.notNullValue;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.model.Embedder;
+import com.meilisearch.sdk.model.EmbedderSource;
 import com.meilisearch.sdk.model.FacetSortValue;
 import com.meilisearch.sdk.model.Faceting;
 import com.meilisearch.sdk.model.LocalizedAttribute;
@@ -1464,5 +1466,60 @@ public class SettingsTest extends AbstractIT {
         assertThat(
                 nonSeparatorTokensAfterReset, is(arrayWithSize(initialNonSeparatorTokens.length)));
         assertThat(nonSeparatorTokensAfterReset, is(equalTo(initialNonSeparatorTokens)));
+    }
+
+    @Test
+    @DisplayName("Test get embedders settings by uid")
+    public void testGetEmbeddersSettings() throws Exception {
+        Index index = createIndex("testGetEmbeddersSettings");
+        Settings initialSettings = index.getSettings();
+        Map<String, Embedder> initialEmbedders = index.getEmbeddersSettings();
+
+        assertThat(initialEmbedders, is(equalTo(initialSettings.getEmbedders())));
+    }
+
+    @Test
+    @DisplayName("Test update embedders settings")
+    public void testUpdateEmbeddersSettings() throws Exception {
+        Index index = createIndex("testUpdateEmbeddersSettings");
+
+        // Update settings
+        HashMap<String, Embedder> newEmbedders = new HashMap<>();
+        Embedder userProvidedEmbedder =
+                new Embedder().setSource(EmbedderSource.USER_PROVIDED).setDimensions(768);
+        newEmbedders.put("custom", userProvidedEmbedder);
+        TaskInfo task = index.updateEmbeddersSettings(newEmbedders);
+        index.waitForTask(task.getTaskUid());
+
+        // Verify results
+        Map<String, Embedder> updatedEmbedders = index.getEmbeddersSettings();
+        assertThat(updatedEmbedders.size(), is(equalTo(1)));
+        Embedder retrievedUser = updatedEmbedders.get("custom");
+        assertThat(retrievedUser.getSource(), is(equalTo(EmbedderSource.USER_PROVIDED)));
+        assertThat(retrievedUser.getDimensions(), is(equalTo(768)));
+    }
+
+    @Test
+    @DisplayName("Test reset embedders settings")
+    public void testResetEmbeddersSettings() throws Exception {
+        // Create and set new embedders
+        Index index = createIndex("testResetEmbeddersSettings");
+        HashMap<String, Embedder> embedders = new HashMap<>();
+        Embedder userProvidedEmbedder =
+                new Embedder().setSource(EmbedderSource.USER_PROVIDED).setDimensions(768);
+        embedders.put("custom", userProvidedEmbedder);
+
+        // Update settings
+        TaskInfo updateTask = index.updateEmbeddersSettings(embedders);
+        index.waitForTask(updateTask.getTaskUid());
+        Map<String, Embedder> updatedEmbedders = index.getEmbeddersSettings();
+        assertThat(updatedEmbedders.size(), is(equalTo(1)));
+        assertThat(updatedEmbedders.containsKey("custom"), is(true));
+
+        // Reset settings
+        TaskInfo resetTask = index.resetEmbeddersSettings();
+        index.waitForTask(resetTask.getTaskUid());
+        Map<String, Embedder> resetEmbedders = index.getEmbeddersSettings();
+        assertThat(resetEmbedders.size(), is(equalTo(0)));
     }
 }

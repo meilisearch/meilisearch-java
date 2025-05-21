@@ -21,28 +21,22 @@ public class SimilarDocumentRequest {
     private Double rankingScoreThreshold;
     private Boolean retrieveVectors;
 
-    /**
-     * Constructor for SimilarDocumentsRequest for building search request for similar documents
-     * with the default values: id null, embedder "default", attributesToRetrieve ["*"], offset 0,
-     * limit 20, filter null, showRankingScore false, showRankingScoreDetails false,
-     * rankingScoreThreshold null, retrieveVectors false
-     */
+    /** Constructor for SimilarDocumentsRequest for building search request for similar documents */
     public SimilarDocumentRequest() {}
 
     @Override
     public String toString() {
-        JSONObject jsonObject =
-                new JSONObject()
-                        .put("id", this.id)
-                        .put("embedder", this.embedder)
-                        .put("attributesToRetrieve", this.attributesToRetrieve)
-                        .put("offset", this.offset)
-                        .put("limit", this.limit)
-                        .put("filter", this.filter)
-                        .put("showRankingScore", this.showRankingScore)
-                        .put("showRankingScoreDetails", this.showRankingScoreDetails)
-                        .put("rankingScoreThreshold", this.rankingScoreThreshold)
-                        .put("retrieveVectors", this.retrieveVectors);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", this.id);
+        jsonObject.put("embedder", this.embedder);
+        jsonObject.putOpt("attributesToRetrieve", this.attributesToRetrieve);
+        jsonObject.putOpt("offset", this.offset);
+        jsonObject.putOpt("limit", this.limit);
+        jsonObject.putOpt("filter", this.filter);
+        jsonObject.putOpt("showRankingScore", this.showRankingScore);
+        jsonObject.putOpt("showRankingScoreDetails", this.showRankingScoreDetails);
+        jsonObject.putOpt("rankingScoreThreshold", this.rankingScoreThreshold);
+        jsonObject.putOpt("retrieveVectors", this.retrieveVectors);
 
         return jsonObject.toString();
     }

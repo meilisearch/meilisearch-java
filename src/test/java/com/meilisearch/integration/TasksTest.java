@@ -138,6 +138,13 @@ public class TasksTest extends AbstractIT {
     /** Test Get Tasks with limit and from */
     @Test
     public void testClientGetTasksLimitAndFrom() throws Exception {
+        // Create several indexes to make sure we have enough tasks
+        int numIndexes = 4;
+        for (int i = 1; i <= numIndexes; i++) {
+            String indexUid = "GetClientTasksLimitFrom" + i;
+            TaskInfo response = client.createIndex(indexUid);
+        }
+
         int limit = 2;
         int from = 2;
         TasksQuery query = new TasksQuery().setLimit(limit).setFrom(from);
@@ -147,7 +154,7 @@ public class TasksTest extends AbstractIT {
         assertThat(result.getFrom(), is(equalTo(from)));
         assertThat(result.getFrom(), is(notNullValue()));
         assertThat(result.getNext(), is(notNullValue()));
-        assertThat(result.getResults().length, is(notNullValue()));
+        assertThat(result.getResults().length, is(equalTo(limit)));
     }
 
     /** Test Get Tasks with uid as filter */
