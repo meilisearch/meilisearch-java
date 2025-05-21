@@ -21,9 +21,7 @@ public class SimilarDocumentRequest {
     private Double rankingScoreThreshold;
     private Boolean retrieveVectors;
 
-    /**
-     * Constructor for SimilarDocumentsRequest for building search request for similar documents
-     */
+    /** Constructor for SimilarDocumentsRequest for building search request for similar documents */
     public SimilarDocumentRequest() {}
 
     @Override
