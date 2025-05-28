@@ -18,7 +18,7 @@ plugins {
 
 group = 'com.meilisearch.sdk'
 archivesBaseName = 'meilisearch-java'
-version = '0.14.3'
+version = '0.14.5'
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_1_8
@@ -61,12 +61,12 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:4.9.0'
 	testImplementation 'org.hamcrest:hamcrest:3.0'
-	testImplementation 'com.squareup.okio:okio:3.10.2'
+	testImplementation 'com.squareup.okio:okio:3.11.0'
 	testImplementation 'com.squareup.okhttp3:okhttp:4.12.0'
-	testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.18.3'
+	testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.19.0'
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.18.3'
+	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.19.0'
 
 	// Lombok
 	compileOnly 'org.projectlombok:lombok:1.18.38'
