@@ -2,12 +2,7 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.URLBuilder;
-import com.meilisearch.sdk.model.Faceting;
-import com.meilisearch.sdk.model.LocalizedAttribute;
-import com.meilisearch.sdk.model.Pagination;
-import com.meilisearch.sdk.model.Settings;
-import com.meilisearch.sdk.model.TaskInfo;
-import com.meilisearch.sdk.model.TypoTolerance;
+import com.meilisearch.sdk.model.*;
 import java.util.Map;
 
 /**
@@ -318,9 +313,10 @@ public class SettingsHandler {
      * @return an array of strings that contains the filterable attributes settings
      * @throws MeilisearchException if an error occurs
      */
-    String[] getFilterableAttributesSettings(String uid) throws MeilisearchException {
+    FilterableAttribute[] getFilterableAttributesSettings(String uid) throws MeilisearchException {
         return httpClient.get(
-                settingsPath(uid).addSubroute("filterable-attributes").getURL(), String[].class);
+                settingsPath(uid).addSubroute("filterable-attributes").getURL(),
+                FilterableAttribute[].class);
     }
 
     /**
@@ -332,13 +328,11 @@ public class SettingsHandler {
      * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    TaskInfo updateFilterableAttributesSettings(String uid, String[] filterableAttributes)
-            throws MeilisearchException {
+    TaskInfo updateFilterableAttributesSettings(
+            String uid, FilterableAttribute[] filterableAttributes) throws MeilisearchException {
         return httpClient.put(
                 settingsPath(uid).addSubroute("filterable-attributes").getURL(),
-                filterableAttributes == null
-                        ? httpClient.jsonHandler.encode(filterableAttributes)
-                        : filterableAttributes,
+                httpClient.jsonHandler.encode(filterableAttributes),
                 TaskInfo.class);
     }
 
