@@ -12,7 +12,7 @@ plugins {
 	id 'maven-publish'
 	id 'signing'
 	id 'jacoco'
-	id 'io.github.gradle-nexus.publish-plugin' version "2.0.0"
+	id "io.github.gradle-nexus.publish-plugin" version "2.0.0"
 	id "com.diffplug.spotless" version "6.13.0"
 }
 
@@ -159,33 +159,25 @@ publishing {
 			}
 		}
 	}
-	repositories {
-		maven {
-			url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-			credentials {
-				username System.getenv('OSSRH_USERNAME')
-				password System.getenv('OSSRH_PASSWORD')
-			}
-		}
-	}
 }
 
 nexusPublishing {
-	packageGroup = "com.meilisearch"
-
 	repositories {
 		sonatype {
-			nexusUrl.set(uri("https://oss.sonatype.org/service/local/"))
-
-			username = System.getenv('OSSRH_USERNAME')
-			password = System.getenv('OSSRH_PASSWORD')
-			stagingProfileId = System.getenv('SONATYPE_STAGING_PROFILE_ID')
+			// Point to new Central Portal staging API (replaces oss.sonatype.org)
+			nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
+			snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
+			// Credentials: use Central Portal token (username/password)
+			username.set(System.getenv("MAVEN_CENTRAL_USERNAME"))  // portal token user
+			password.set(System.getenv("MAVEN_CENTRAL_PASSWORD"))  // portal token password
+			// packageGroup or stagingProfileId not needed if using nexus-publish-plugin
 		}
 	}
 }
 
 signing {
-	sign publishing.publications.mavenJava
+	useInMemoryPgpKeys(System.getenv("MAVEN_CENTRAL_SIGNING_KEY"), System.getenv("MAVEN_CENTRAL_SIGNING_PASSWORD"))
+	sign(publishing.publications["mavenJava"])
 }
 
 javadoc {
