@@ -39,6 +39,17 @@ jacocoTestCoverageVerification {
 		}
 	}
 }
+configurations.all {
+    resolutionStrategy {
+        componentSelection {
+            all { ComponentSelection selection ->
+                if (selection.candidate.version =~ /(?i).*[.-](alpha|beta|rc|m)[.\d-]*/) {
+                    selection.reject("Pre-release versions are not allowed")
+                }
+            }
+        }
+    }
+}
 
 repositories {
 	mavenCentral()
