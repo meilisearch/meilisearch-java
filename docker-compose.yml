@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   package:
     image: azul/zulu-openjdk:8-latest
