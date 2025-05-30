@@ -9,19 +9,25 @@
 plugins {
 	// Apply the java-library plugin to add support for Java Library
 	id 'java-library'
-	id 'maven-publish'
-	id 'signing'
+
 	id 'jacoco'
 	id "com.diffplug.spotless" version "6.13.0"
+
+	id 'maven-publish'
+	id 'signing'
+	// Sonatype Nexus Publish Plugin
+	id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
 }
 
 group = 'com.meilisearch.sdk'
-archivesBaseName = 'meilisearch-java'
 version = '0.14.5'
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_1_8
 	targetCompatibility = JavaVersion.VERSION_1_8
+
+	withJavadocJar()
+	withSourcesJar()
 }
 
 jacoco {
@@ -41,10 +47,6 @@ jacocoTestCoverageVerification {
 
 repositories {
 	mavenCentral()
-}
-
-configurations {
-	testCompile.extendsFrom compileOnly
 }
 
 dependencies {
@@ -77,19 +79,6 @@ dependencies {
 	implementation 'com.auth0:java-jwt:4.5.0'
 }
 
-task buildJar(type: Jar) {
-	archiveBaseName = 'meilisearch-java'
-	from {
-		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-	}
-	{
-		exclude 'META-INF/*.SF'
-		exclude 'META-INF/*.DSA'
-		exclude 'META-INF/*.RSA'
-	}
-	with jar
-}
-
 test {
 	finalizedBy jacocoTestReport
 	useJUnitPlatform {
@@ -119,11 +108,6 @@ task integrationTest(type: Test) {
 		events 'passed', 'skipped', 'failed'
 		showStandardStreams = System.getenv('DEBUG') != null
 	}
-}
-
-java {
-	withJavadocJar()
-	withSourcesJar()
 }
 
 publishing {
@@ -158,19 +142,6 @@ publishing {
 			}
 		}
 	}
-	repositories {
-		maven {
-			name = "CentralPortal"
-			url = "https://central.sonatype.com/api/v1/publisher/upload"
-			credentials(HttpHeaderCredentials) {
-				name = "Authorization"
-				value = "Bearer ${System.getenv('MAVEN_BEARER')}"
-			}
-			authentication {
-				header(HttpHeaderAuthentication)
-			}
-		}
-	}
 }
 
 signing {
@@ -190,5 +161,21 @@ spotless {
 
 		// apply a specific flavor of google-java-format
 		googleJavaFormat('1.7').aosp()
+	}
+}
+
+
+// Nexus Publish Plugin configuration
+nexusPublishing {
+	packageGroup.set("com.meilisearch")
+
+	repositories {
+		sonatype {
+			nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
+			snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
+
+			username.set(System.getenv('MAVEN_CENTRAL_USERNAME'))
+			password.set(System.getenv('MAVEN_CENTRAL_PASSWORD'))
+		}
 	}
 }
