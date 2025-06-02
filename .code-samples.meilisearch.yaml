@@ -459,14 +459,14 @@ getting_started_add_documents: |-
   // <dependency>
   //   <groupId>com.meilisearch.sdk</groupId>
   //   <artifactId>meilisearch-java</artifactId>
-  //   <version>0.14.6</version>
+  //   <version>0.14.7</version>
   //   <type>pom</type>
   // </dependency>
 
   // For Gradle
   // Add the following line to the `dependencies` section of your `build.gradle`:
   //
-  // implementation 'com.meilisearch.sdk:meilisearch-java:0.14.6'
+  // implementation 'com.meilisearch.sdk:meilisearch-java:0.14.7'
 
   // In your .java file:
   import com.meilisearch.sdk;
