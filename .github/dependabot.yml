@@ -8,6 +8,10 @@ updates:
       - 'skip-changelog'
       - 'dependencies'
     rebase-strategy: disabled
+    groups:
+      github-actions:
+        patterns:
+          - "*"
 
   - package-ecosystem: gradle
     directory: "/"
@@ -19,3 +23,11 @@ updates:
       - skip-changelog
       - dependencies
     rebase-strategy: disabled
+    groups:
+      gradle-plugins:
+        patterns:
+          - "io.github.gradle-nexus.publish-plugin*"
+          - "com.diffplug.spotless*"
+      gradle-dependencies:
+        patterns:
+          - "*"
