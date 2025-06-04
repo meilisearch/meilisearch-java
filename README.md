@@ -31,7 +31,6 @@
 ## Table of Contents <!-- omit in TOC -->
 
 - [📖 Documentation](#-documentation)
-- [⚡ Supercharge your Meilisearch experience](#-supercharge-your-meilisearch-experience)
 - [🔧 Installation](#-installation)
 - [🚀 Getting started](#-getting-started)
 - [🛠 Customization](#-customization)
@@ -47,10 +46,6 @@ For general information on how to use Meilisearch—such as our API reference, t
 
 
 
-## ⚡ Supercharge your Meilisearch experience
-
-Say goodbye to server deployment and manual updates with [Meilisearch Cloud](https://www.meilisearch.com/cloud?utm_campaign=oss&utm_source=github&utm_medium=meilisearch-java). Get started with a 14-day free trial! No credit card required.
-
 ## 🔧 Installation
 
 `meilisearch-java` is available from JCentral official repository. To be able to import this package, declare it as a dependency in your project:
@@ -63,7 +58,7 @@ Add the following code to the `<dependencies>` section of your project:
 <dependency>
   <groupId>com.meilisearch.sdk</groupId>
   <artifactId>meilisearch-java</artifactId>
-  <version>0.14.0</version>
+  <version>0.14.7</version>
   <type>pom</type>
 </dependency>
 ```
@@ -73,26 +68,16 @@ Add the following code to the `<dependencies>` section of your project:
 Add the following line to the `dependencies` section of your `build.gradle`:
 
 ```groovy
-implementation 'com.meilisearch.sdk:meilisearch-java:0.14.0'
+implementation 'com.meilisearch.sdk:meilisearch-java:0.14.7'
 ```
 
 :warning: `meilisearch-java` also requires `okhttp` as a peer dependency.
 
 ### Run Meilisearch <!-- omit in toc -->
 
-There are many easy ways to [download and run a Meilisearch instance](https://www.meilisearch.com/docs/learn/getting_started/installation).
+⚡️ **Launch, scale, and streamline in minutes with Meilisearch Cloud**—no maintenance, no commitment, cancel anytime. [Try it free now](https://cloud.meilisearch.com/login?utm_campaign=oss&utm_source=github&utm_medium=meilisearch-java).
 
-For example, using the `curl` command in [your Terminal](https://itconnect.uw.edu/learn/workshops/online-tutorials/web-publishing/what-is-a-terminal/):
-
-```bash
- # Install Meilisearch
- curl -L https://install.meilisearch.com | sh
-
- # Launch Meilisearch
- ./meilisearch --master-key=masterKey
- ```
-
-NB: you can also download Meilisearch from **Homebrew** or **APT** or even run it using **Docker**.
+🪨  Prefer to self-host? [Download and deploy](https://www.meilisearch.com/docs/learn/self_hosted/getting_started_with_self_hosted_meilisearch?utm_campaign=oss&utm_source=github&utm_medium=meilisearch-java) our fast, open-source search engine on your own infrastructure.
 
 ## 🚀 Getting started
 
@@ -162,10 +147,10 @@ import com.meilisearch.sdk.SearchRequest;
 
 // ...
 
-SearchResult results = index.search(
-  new SearchRequest("of")
-  .setShowMatchesPosition(true)
-  .setAttributesToHighlight(new String[]{"title"})
+SearchResult results = (SearchResult) index.search(
+    new SearchRequest("of")
+        .setShowMatchesPosition(true)
+        .setAttributesToHighlight(new String[]{"title"})
 );
 System.out.println(results.getHits());
 ```
@@ -231,6 +216,38 @@ index.search(
   "query": "wonder"
 }
 ```
+#### Custom Search With Pagination <!-- omit in toc -->
+
+```java
+import com.meilisearch.sdk.SearchResultPaginated;
+
+// ...
+
+SearchResultPaginated results = (SearchResultPaginated) index.search(
+    new SearchRequest("wonder")
+        .setPage(1)
+        .setHitsPerPage(20)
+);
+```
+
+```json
+{
+    "hits": [
+        {
+            "id": 2,
+            "title": "Wonder Woman",
+            "genres": ["Action","Adventure"]
+        }
+    ], 
+    "query": "wonder",
+    "processingTimeMs": 0,
+    "hitsPerPage": 20,
+    "page": 1,
+    "totalPages": 1,
+    "totalHits": 1
+}
+```
+
 ## 🛠 Customization
 
 ### JSON <!-- omit in toc -->
@@ -273,6 +290,12 @@ Client client = new Client(config);
 ## 🤖 Compatibility with Meilisearch
 
 This package guarantees compatibility with [version v1.x of Meilisearch](https://github.com/meilisearch/meilisearch/releases/latest), but some features may not be present. Please check the [issues](https://github.com/meilisearch/meilisearch-java/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22+label%3Aenhancement) for more info.
+
+This SDK is compatible with the following JDK versions:
+
+| SDK Version | Supported Java Versions |
+|-------------|-------------------------|
+| v1.x        | JDK 8 and above         |
 
 ## 💡 Learn more
 

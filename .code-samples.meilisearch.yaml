@@ -452,25 +452,23 @@ typo_tolerance_guide_4: |-
           };
   typoTolerance.setMinWordSizeForTypos(minWordSizeTypos);
   client.index("movies").updateTypoToleranceSettings(typoTolerance);
-getting_started_add_documents_md: |-
-  **Maven**
-  Add the following code to the `<dependencies>` section of your project:
-  ```xml
-  <dependency>
-    <groupId>com.meilisearch.sdk</groupId>
-    <artifactId>meilisearch-java</artifactId>
-    <version>0.14.0</version>
-    <type>pom</type>
-  </dependency>
-  ```
+getting_started_add_documents: |-
+  // For Maven:
+  // Add the following code to the `<dependencies>` section of your project:
+  //
+  // <dependency>
+  //   <groupId>com.meilisearch.sdk</groupId>
+  //   <artifactId>meilisearch-java</artifactId>
+  //   <version>0.14.7</version>
+  //   <type>pom</type>
+  // </dependency>
 
-  **Gradle**
-  Add the following line to the `dependencies` section of your `build.gradle`:
-  ```groovy
-  implementation 'com.meilisearch.sdk:meilisearch-java:0.14.0'
-  ```
+  // For Gradle
+  // Add the following line to the `dependencies` section of your `build.gradle`:
+  //
+  // implementation 'com.meilisearch.sdk:meilisearch-java:0.14.7'
 
-  ```java
+  // In your .java file:
   import com.meilisearch.sdk;
   import java.nio.file.Files;
   import java.nio.file.Path;
@@ -480,17 +478,10 @@ getting_started_add_documents_md: |-
   Client client = new Client(new Config("http://localhost:7700", "aSampleMasterKey"));
   Index index = client.index("movies");
   index.addDocuments(moviesJson);
-  ```
-
-  [About this SDK](https://github.com/meilisearch/meilisearch-java)
 getting_started_check_task_status: |-
   client.getTask(0);
-getting_started_search_md: |-
-  ```java
+getting_started_search: |-
   client.index("movies").search("botman");
-  ```
-
-  [About this SDK](https://github.com/meilisearch/meilisearch-java)
 getting_started_add_meteorites: |-
   import com.meilisearch.sdk;
   import org.json.JSONArray;
@@ -827,3 +818,28 @@ get_similar_post_1:
     .setId("143")
     .setEmbedder("manual");
   client.index("movies").searchSimilarDocuments(query)
+search_parameter_reference_distinct_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("QUERY TERMS").distinct("ATTRIBUTE_A").build();
+  client.index("INDEX_NAME").search(searchRequest);
+distinct_attribute_guide_filterable_1: |-
+  Settings settings = new Settings();
+  settings.setFilterableAttributes(new String[] {"product_id", "SKU", "url"});
+  client.index("products").updateSettings(settings);
+distinct_attribute_guide_distinct_parameter_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("white shirt").distinct("sku").build();
+  client.index("products").search(searchRequest);
+search_parameter_reference_locales_1: |-
+  SearchRequest searchRequest = SearchRequest.builder().q("QUERY TEXT IN JAPANESE").locales(new String[]{"jpn"}).build();
+  client.index("INDEX_NAME").search(searchRequest);
+get_localized_attribute_settings_1: |-
+  client.index("INDEX_NAME").getLocalizedAttributesSettings();
+update_localized_attribute_settings_1: |-
+  LocalizedAttribute attribute = new LocalizedAttribute();
+  attribute.setAttributePatterns(new String[] {"jpn"});
+  attribute.setLocales(new String[] {"*_ja"});
+
+  client.index("INDEX_NAME").updateLocalizedAttributesSettings(
+    new LocalizedAttributes[] {attribute}
+  );
+reset_localized_attribute_settings_1: |-
+  client.index("INDEX_NAME").resetLocalizedAttributesSettings();

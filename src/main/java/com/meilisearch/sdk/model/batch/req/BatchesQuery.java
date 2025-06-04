@@ -1,46 +1,41 @@
-package com.meilisearch.sdk.model;
+package com.meilisearch.sdk.model.batch.req;
 
 import com.meilisearch.sdk.http.URLBuilder;
 import java.util.Date;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * Data structure of a query parameter for tasks route
+ * Data structure of a query parameter for batches route
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks#query-parameters">API
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/batches#query-parameters">API
  *     specification</a>
  */
-@Setter
-@Getter
+@Data
 @Accessors(chain = true)
-public class TasksQuery {
+public class BatchesQuery {
     private int[] uids;
-    private int limit = -1;
-    private int from = -1;
-    private String[] statuses;
+    private int[] batchUids;
     private String[] types;
+    private String[] statuses;
     private String[] indexUids;
     private int[] canceledBy;
-    private Boolean reverse;
     private Date beforeEnqueuedAt;
     private Date afterEnqueuedAt;
     private Date beforeStartedAt;
     private Date afterStartedAt;
     private Date beforeFinishedAt;
     private Date afterFinishedAt;
-
-    public TasksQuery() {}
+    private int limit = -1;
+    private int from = -1;
 
     public String toQuery() {
         URLBuilder urlb =
                 new URLBuilder()
-                        .addParameter("limit", this.getLimit())
-                        .addParameter("from", this.getFrom())
                         .addParameter("uids", this.getUids())
-                        .addParameter("statuses", this.getStatuses())
+                        .addParameter("batchUids", this.getBatchUids())
                         .addParameter("types", this.getTypes())
+                        .addParameter("statuses", this.getStatuses())
                         .addParameter("indexUids", this.getIndexUids())
                         .addParameter("canceledBy", this.getCanceledBy())
                         .addParameter("beforeEnqueuedAt", this.getBeforeEnqueuedAt())
@@ -49,7 +44,8 @@ public class TasksQuery {
                         .addParameter("afterStartedAt", this.getAfterStartedAt())
                         .addParameter("beforeFinishedAt", this.getBeforeFinishedAt())
                         .addParameter("afterFinishedAt", this.getAfterFinishedAt())
-                        .addParameter("reverse", this.getReverse());
+                        .addParameter("limit", this.getLimit())
+                        .addParameter("from", this.getFrom());
         return urlb.getURL();
     }
 }

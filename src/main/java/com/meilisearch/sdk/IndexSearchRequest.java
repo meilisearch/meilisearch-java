@@ -34,12 +34,17 @@ public class IndexSearchRequest {
     protected Boolean showRankingScore;
     protected Boolean showRankingScoreDetails;
     protected Double rankingScoreThreshold;
+    private String[] attributesToSearchOn;
+    private FederationOptions federationOptions;
+    protected String[] locales;
+    protected String distinct;
 
     /**
      * Constructor for MultiSearchRequest for building search queries with the default values:
      * offset: 0, limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
      * attributesToHighlight: null, filter: null, showMatchesPosition: false, facets: null, sort:
      * null, showRankingScore: false, showRankingScoreDetails: false, rankingScoreThreshold: null
+     * distinct: null
      *
      * @param indexUid uid of the requested index String
      */
@@ -87,13 +92,21 @@ public class IndexSearchRequest {
                         .put("sort", this.sort)
                         .put("page", this.page)
                         .put("hitsPerPage", this.hitsPerPage)
+                        .put(
+                                "federationOptions",
+                                this.federationOptions != null
+                                        ? this.federationOptions.toString()
+                                        : null)
                         .putOpt("attributesToCrop", this.attributesToCrop)
                         .putOpt("attributesToHighlight", this.attributesToHighlight)
                         .putOpt("filter", this.filter)
                         .putOpt("filter", this.filterArray)
                         .putOpt("showRankingScore", this.showRankingScore)
                         .putOpt("showRankingScoreDetails", this.showRankingScoreDetails)
-                        .putOpt("rankingScoreThreshold", this.rankingScoreThreshold);
+                        .putOpt("rankingScoreThreshold", this.rankingScoreThreshold)
+                        .putOpt("attributesToSearchOn", this.attributesToSearchOn)
+                        .putOpt("locales", this.locales)
+                        .putOpt("distinct", this.distinct);
 
         return jsonObject.toString();
     }
