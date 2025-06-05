@@ -6,7 +6,7 @@ public class MultiSearchRequest {
     private ArrayList<IndexSearchRequest> queries;
 
     public MultiSearchRequest() {
-        this.queries = new ArrayList();
+        this.queries = new ArrayList<IndexSearchRequest>();
     }
 
     /*

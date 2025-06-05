@@ -706,6 +706,7 @@ public class SettingsHandler {
      * Updates the separator tokens settings of the index
      *
      * @param uid Index identifier
+     * @param separatorTokens an array of strings that contains the new separator tokens settings
      * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
@@ -746,6 +747,7 @@ public class SettingsHandler {
      * Updates the non-separator tokens settings of the index
      *
      * @param uid Index identifier
+     * @param separatorTokens an array of strings that contains the new separator tokens settings
      * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */

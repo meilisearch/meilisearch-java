@@ -13,17 +13,12 @@ plugins {
 	id 'signing'
 	id 'jacoco'
 	id "io.github.gradle-nexus.publish-plugin" version "2.0.0"
-	id "com.diffplug.spotless" version "7.0.4"
+	id "com.diffplug.spotless" version "6.13.0"
 }
 
 group = 'com.meilisearch.sdk'
 archivesBaseName = 'meilisearch-java'
 version = '0.14.7'
-
-java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
-}
 
 jacoco {
   toolVersion = "0.8.8"
@@ -92,13 +87,12 @@ task buildJar(type: Jar) {
 }
 
 test {
-	finalizedBy jacocoTestReport
 	useJUnitPlatform {
-		excludeTags('integration')
+			excludeTags 'integration'
 	}
-
+	finalizedBy jacocoTestReport
 	testLogging {
-		events 'passed', 'skipped', 'failed'
+			events 'passed', 'skipped', 'failed'
 	}
 }
 
@@ -114,7 +108,7 @@ jacocoTestReport {
 
 task integrationTest(type: Test) {
 	useJUnitPlatform {
-		includeTags('integration')
+		includeTags 'integration'
 	}
 	testLogging {
 		events 'passed', 'skipped', 'failed'
@@ -123,8 +117,15 @@ task integrationTest(type: Test) {
 }
 
 java {
+	sourceCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_1_8
+
 	withJavadocJar()
 	withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += ['-Xlint:deprecation', '-Xlint:unchecked']
 }
 
 publishing {
@@ -193,5 +194,13 @@ spotless {
 
 		// apply a specific flavor of google-java-format
 		googleJavaFormat('1.7').aosp()
+	}
+}
+
+testing {
+	suites {
+		test {
+			useJUnitJupiter()
+		}
 	}
 }
