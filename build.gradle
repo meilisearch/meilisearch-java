@@ -20,11 +20,6 @@ group = 'com.meilisearch.sdk'
 archivesBaseName = 'meilisearch-java'
 version = '0.14.7'
 
-java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
-}
-
 jacoco {
   toolVersion = "0.8.8"
   reportsDirectory = layout.buildDirectory.dir("$projectDir/tmp/coverage")
@@ -56,10 +51,10 @@ dependencies {
 	api 'com.squareup.okhttp3:okhttp:4.12.0'
 
 	// Use JUnit test framework
-	testImplementation(platform('org.junit:junit-bom:5.11.4'))
-	testImplementation('org.junit.jupiter:junit-jupiter:5.11.4')
+	testImplementation(platform('org.junit:junit-bom:5.13.0'))
+	testImplementation('org.junit.jupiter:junit-jupiter:5.13.0')
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
-	testImplementation 'org.mockito:mockito-core:4.9.0'
+	testImplementation 'org.mockito:mockito-core:4.11.0'
 	testImplementation 'org.hamcrest:hamcrest:3.0'
 	testImplementation 'com.squareup.okio:okio:3.12.0'
 	testImplementation 'com.squareup.okhttp3:okhttp:4.12.0'
@@ -92,13 +87,12 @@ task buildJar(type: Jar) {
 }
 
 test {
-	finalizedBy jacocoTestReport
 	useJUnitPlatform {
-		excludeTags('integration')
+			excludeTags 'integration'
 	}
-
+	finalizedBy jacocoTestReport
 	testLogging {
-		events 'passed', 'skipped', 'failed'
+			events 'passed', 'skipped', 'failed'
 	}
 }
 
@@ -114,7 +108,7 @@ jacocoTestReport {
 
 task integrationTest(type: Test) {
 	useJUnitPlatform {
-		includeTags('integration')
+		includeTags 'integration'
 	}
 	testLogging {
 		events 'passed', 'skipped', 'failed'
@@ -123,8 +117,15 @@ task integrationTest(type: Test) {
 }
 
 java {
+	sourceCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_1_8
+
 	withJavadocJar()
 	withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += ['-Xlint:deprecation', '-Xlint:unchecked']
 }
 
 publishing {
@@ -193,5 +194,13 @@ spotless {
 
 		// apply a specific flavor of google-java-format
 		googleJavaFormat('1.7').aosp()
+	}
+}
+
+testing {
+	suites {
+		test {
+			useJUnitJupiter()
+		}
 	}
 }

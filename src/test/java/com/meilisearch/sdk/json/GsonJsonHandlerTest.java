@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 class GsonJsonHandlerTest {
 
@@ -68,16 +69,11 @@ class GsonJsonHandlerTest {
 
     @Test
     void encodeThrowsJsonEncodingExceptionWhenGsonThrowsException() {
-        assertThrows(
-                JsonEncodingException.class,
-                () ->
-                        classToTest.encode(
-                                new JsonElement() {
-                                    @Override
-                                    public JsonElement deepCopy() {
-                                        return null;
-                                    }
-                                }));
+        JsonElement mockElement = Mockito.mock(JsonElement.class);
+        // Optionally mock behavior (if needed):
+        // Mockito.when(mockElement.deepCopy()).thenReturn(null);
+
+        assertThrows(JsonEncodingException.class, () -> classToTest.encode(mockElement));
     }
 
     @Test
@@ -161,6 +157,7 @@ class GsonJsonHandlerTest {
     void deserializeMap() throws Exception {
         String mapString =
                 "{\"commitSha\":\"b46889b5f0f2f8b91438a08a358ba8f05fc09fc1\",\"commitDate\":\"2019-11-15T09:51:54.278247+00:00\",\"pkgVersion\":\"0.1.1\"}";
+        @SuppressWarnings("unchecked")
         HashMap<String, String> decode =
                 classToTest.decode(mapString, HashMap.class, String.class, String.class);
 
