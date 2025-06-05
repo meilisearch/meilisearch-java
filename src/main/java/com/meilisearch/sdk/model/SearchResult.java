@@ -22,6 +22,7 @@ public class SearchResult implements Searchable {
     int offset;
     int limit;
     int estimatedTotalHits;
+    HashMap<String, Object> _vectors;
 
     public SearchResult() {}
 }
