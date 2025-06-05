@@ -18,7 +18,7 @@ plugins {
 
 group = 'com.meilisearch.sdk'
 archivesBaseName = 'meilisearch-java'
-version = '0.14.6'
+version = '0.14.7'
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_1_8
@@ -39,17 +39,6 @@ jacocoTestCoverageVerification {
 		}
 	}
 }
-configurations.all {
-    resolutionStrategy {
-        componentSelection {
-            all { ComponentSelection selection ->
-                if (selection.candidate.version =~ /(?i).*[.-](alpha|beta|rc|m)[.\d-]*/) {
-                    selection.reject("Pre-release versions are not allowed")
-                }
-            }
-        }
-    }
-}
 
 repositories {
 	mavenCentral()
@@ -61,10 +50,10 @@ configurations {
 
 dependencies {
 	// This dependency is used internally, and not exposed to consumers on their own compile classpath.
-	implementation 'com.google.code.gson:gson:2.12.1'
-	implementation 'org.json:json:20250107'
+	implementation 'com.google.code.gson:gson:2.13.1'
+	implementation 'org.json:json:20250517'
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
-	api 'com.squareup.okhttp3:okhttp:[4.10.0,5.0.0)'
+	api 'com.squareup.okhttp3:okhttp:4.12.0'
 
 	// Use JUnit test framework
 	testImplementation(platform('org.junit:junit-bom:5.11.4'))
@@ -72,7 +61,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.mockito/mockito-core
 	testImplementation 'org.mockito:mockito-core:4.9.0'
 	testImplementation 'org.hamcrest:hamcrest:3.0'
-	testImplementation 'com.squareup.okio:okio:3.11.0'
+	testImplementation 'com.squareup.okio:okio:3.12.0'
 	testImplementation 'com.squareup.okhttp3:okhttp:4.12.0'
 	testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.19.0'
 
