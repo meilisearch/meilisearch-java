@@ -321,7 +321,9 @@ public class ClientTest extends AbstractIT {
                 new GsonBuilder().excludeFieldsWithModifiers(Modifier.STATIC).create();
 
         // TODO: Throws StackOverflowError on JDK 1.8, but InaccessibleObjectException on JDK9+
-        Assertions.assertThrows(StackOverflowError.class, () -> gsonWithTransient.toJson(test));
+        Assertions.assertThrows(
+                Exception.class,
+                () -> gsonWithTransient.toJson(test)); // accommodating upgrade to jdk 11
         Assertions.assertDoesNotThrow(() -> gson.toJson(test));
     }
 }

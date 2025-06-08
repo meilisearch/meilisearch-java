@@ -2,7 +2,9 @@ package com.meilisearch.sdk.json;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.meilisearch.sdk.model.FilterableAttribute;
 import java.util.HashMap;
 import java.util.Map;
@@ -95,7 +97,12 @@ public class GsonFilterableAttributeSerializerTest {
         String expectedOutput =
                 "[{\"attributePatterns\":[\"attribute1\",\"attribute2\"],\"features\":{\"facetSearch\":true,\"filter\":{\"comparison\":true,\"equality\":false}}},\"attribute3\"]";
         String array = handler.encode(new FilterableAttribute[] {input, input2});
-        assertEquals(expectedOutput, array);
+
+        // Parse JSON strings for comparison
+        JsonElement expectedJson = JsonParser.parseString(expectedOutput);
+        JsonElement actualJson = JsonParser.parseString(array);
+
+        assertEquals(expectedJson, actualJson);
     }
 
     @Test

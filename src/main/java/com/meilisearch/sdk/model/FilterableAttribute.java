@@ -42,20 +42,20 @@ public class FilterableAttribute {
     }
 
     public FilterableAttribute(
-public FilterableAttribute(String[] patterns, boolean facetSearch, Map<String, Boolean> filters) {
-    if (patterns == null) throw new IllegalArgumentException("Patterns cannot be null");
-    if (filters == null)  throw new IllegalArgumentException("Filters cannot be null");
-    boolean patternHasGeo = false;
-    for (String s : patterns)
-        if (_GEO.equals(s)) {
-            patternHasGeo = true;
-            break;
-        }
-    if (patternHasGeo) checkGeoValidation(facetSearch, filters);
-    this.patterns  = Arrays.copyOf(patterns, patterns.length); // defensive copy
-    this.facetSearch = facetSearch;
-    this.filter    = new HashMap<>(filters);                   // defensive copy
-}
+            String[] patterns, boolean facetSearch, Map<String, Boolean> filters) {
+        if (patterns == null) throw new IllegalArgumentException("Patterns cannot be null");
+        if (filters == null) throw new IllegalArgumentException("Filters cannot be null");
+        boolean patternHasGeo = false;
+        for (String s : patterns)
+            if (_GEO.equals(s)) {
+                patternHasGeo = true;
+                break;
+            }
+        if (patternHasGeo) checkGeoValidation(facetSearch, filters);
+        this.patterns = Arrays.copyOf(patterns, patterns.length); // defensive copy
+        this.facetSearch = facetSearch;
+        this.filter = new HashMap<>(filters); // defensive copy
+    }
 
     private static void checkGeoValidation(boolean facetSearch, Map<String, Boolean> filters) {
         String[] errors = new String[3];
