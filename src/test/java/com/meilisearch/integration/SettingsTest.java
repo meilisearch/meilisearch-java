@@ -1536,4 +1536,69 @@ public class SettingsTest extends AbstractIT {
                 nonSeparatorTokensAfterReset, is(arrayWithSize(initialNonSeparatorTokens.length)));
         assertThat(nonSeparatorTokensAfterReset, is(equalTo(initialNonSeparatorTokens)));
     }
+
+    @Test
+    @DisplayName("Test get embedders settings by uid")
+    public void testGetEmbeddersSettings() throws Exception {
+        Index index = createIndex("testGetEmbeddersSettings");
+        Settings initialSettings = index.getSettings();
+        Map<String, Embedder> initialEmbedders = index.getEmbeddersSettings();
+
+        assertThat(initialEmbedders, is(equalTo(initialSettings.getEmbedders())));
+    }
+
+    public Embedder createUserProvidedEmbedder() {
+        return Embedder.builder()
+                .source(EmbedderSource.USER_PROVIDED)
+                .dimensions(1)
+                .distribution(EmbedderDistribution.builder().mean(0.7).sigma(0.3).build())
+                .binaryQuantized(false)
+                .build();
+    }
+
+    @Test
+    @DisplayName("Test update embedders settings")
+    public void testUpdateEmbeddersSettings() throws Exception {
+        Index index = createEmptyIndex("testUpdateEmbeddersSettings");
+
+        HashMap<String, Embedder> newEmbedders = new HashMap<>();
+        Embedder embedder = createUserProvidedEmbedder();
+        newEmbedders.put("default", embedder);
+        TaskInfo task = index.updateEmbeddersSettings(newEmbedders);
+        index.waitForTask(task.getTaskUid());
+
+        Map<String, Embedder> updatedEmbedders = index.getEmbeddersSettings();
+        assertThat(updatedEmbedders.size(), is(equalTo(1)));
+        Embedder retrievedEmbedder = updatedEmbedders.get("default");
+        assertThat(retrievedEmbedder.getSource(), is(equalTo(embedder.getSource())));
+        assertThat(retrievedEmbedder.getDimensions(), is(equalTo(embedder.getDimensions())));
+        assertThat(
+                retrievedEmbedder.getDistribution().getMean(),
+                is(equalTo(embedder.getDistribution().getMean())));
+        assertThat(
+                retrievedEmbedder.getDistribution().getSigma(),
+                is(equalTo(embedder.getDistribution().getSigma())));
+        assertThat(
+                retrievedEmbedder.getBinaryQuantized(), is(equalTo(embedder.getBinaryQuantized())));
+    }
+
+    @Test
+    @DisplayName("Test reset embedders settings")
+    public void testResetEmbeddersSettings() throws Exception {
+        Index index = createEmptyIndex("testResetEmbeddersSettings");
+
+        HashMap<String, Embedder> embedders = new HashMap<>();
+        embedders.put("custom", createUserProvidedEmbedder());
+        TaskInfo updateTask = index.updateEmbeddersSettings(embedders);
+        index.waitForTask(updateTask.getTaskUid());
+
+        Map<String, Embedder> updatedEmbedders = index.getEmbeddersSettings();
+        assertThat(updatedEmbedders.size(), is(equalTo(1)));
+        assertThat(updatedEmbedders.containsKey("custom"), is(true));
+
+        TaskInfo resetTask = index.resetEmbeddersSettings();
+        index.waitForTask(resetTask.getTaskUid());
+        Map<String, Embedder> resetEmbedders = index.getEmbeddersSettings();
+        assertThat(resetEmbedders.size(), is(equalTo(0)));
+    }
 }

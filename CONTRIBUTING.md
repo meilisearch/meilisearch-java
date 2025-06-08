@@ -199,16 +199,10 @@ gpg --gen-key --batch genkey
 gpg --keyserver hkp://keyserver.ubuntu.com --send-keys <last-8-digits-of-your-key-hash>
 ```
 
-5. Export the gpg key in a secring.gpg file
+5. Export the gpg key in a signing-key.asc armored file
 
 ```bash
-gpg --keyring secring.gpg --export-secret-keys > ~/.gnupg/secring.gpg
-```
-
-6. Encode the secring in base64 and store it (Used by the ossrh-publish workflow)
-
-```bash
-base64 ~/.gnupg/secring.gpg > secring.gpg.b64
+gpg --armor --export-secret-keys $KEY_ID > signing-key.asc
 ```
 
 #### Sign your files and upload to Maven Repository manually <!-- omit in TOC -->
@@ -216,12 +210,11 @@ base64 ~/.gnupg/secring.gpg > secring.gpg.b64
 1. Set the environment variables listed below with the required credentials:
 
 ```bash
-export OSSRH_USERNAME=<maven-username>
-export OSSRH_PASSWORD=<maven-password>
+export MAVEN_CENTRAL_USERNAME=<maven-username>
+export MAVEN_CENTRAL_PASSWORD=<maven-password>
 
 export SIGNINT_KEY_ID=<id-associated-to-the-gpg-key>
 export SIGNING_PASSWORD=<passphrase-associated-to-the-gpg-key>
-export SIGNING_SECRET_KEY_RING_FILE=<path-to-gpg-key-encoded-in-base64>
 ```
 
 2. Decode the gpg key
@@ -235,13 +228,13 @@ base64 -d $SIGNING_SECRET_KEY_RING_FILE > secring.gpg
 ```bash
 # May need sudo privilege and JDK8
 ./gradlew build
-./gradlew publish -Psigning.keyId=$SIGNING_KEY_ID -Psigning.password=$SIGNING_PASSWORD -Psigning.secretKeyRingFile=$(echo secring.gpg)
+TODO
 ```
 
-4. Login to [Sonatype Nexus](https://oss.sonatype.org).
-5. Navigate to `Staging repositories`.
-6. Close your repository by clicking on the `Close` button. Checks will be made by nexus. It might take time. If any error occurs, it will be visible in the `Activity` tab.
-7. Once the check have succeeded, you should be able to click on the `Release` button. The release will be now processed and might take a long time to appear in [Maven Central](https://search.maven.org/artifact/com.meilisearch.sdk/meilisearch-java).
+4. Login to [Sonatype Nexus](https://central.sonatype.com/).
+5. Navigate to `Deployments`.
+6. Checks will be made by Sonatype. It might take time. If any error occurs, it will be visible in the `Deployments` tab (last one).
+7. Once the check have succeeded, the release will be now processed and it will appear in [Maven Central](https://central.sonatype.com/artifact/com.meilisearch.sdk/meilisearch-java/versions).
 
 <hr>
 

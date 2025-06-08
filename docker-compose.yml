@@ -1,8 +1,6 @@
-version: "3.8"
-
 services:
   package:
-    image: azul/zulu-openjdk:8-latest
+    image: azul/zulu-openjdk:11-latest
     tty: true
     stdin_open: true
     working_dir: /home/package
