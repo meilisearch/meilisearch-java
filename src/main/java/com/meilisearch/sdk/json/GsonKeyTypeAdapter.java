@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class GsonKeyTypeAdapter extends TypeAdapter<Key> {
 
@@ -24,7 +25,13 @@ public class GsonKeyTypeAdapter extends TypeAdapter<Key> {
     private static final String KEY_EXPIRES_AT = "expiresAt";
     private static final String KEY_CREATED_AT = "createdAt";
     private static final String KEY_UPDATED_AT = "updatedAt";
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    private static final DateFormat DATE_FORMAT = createUtcDateFormat();
+
+    private static DateFormat createUtcDateFormat() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return format;
+    }
 
     @Override
     public void write(JsonWriter writer, Key key) throws IOException {
