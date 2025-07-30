@@ -45,7 +45,7 @@ public class KeysTest extends AbstractIT {
         Results<Key> result = client.getKeys();
         Key[] keys = result.getResults();
 
-        assertThat(keys, is(arrayWithSize(2)));
+        assertThat(keys, is(arrayWithSize(4)));
 
         for (Key key : keys) {
             assertThat(key.getKey(), is(notNullValue()));
@@ -65,7 +65,7 @@ public class KeysTest extends AbstractIT {
         Results<Key> result = clientJackson.getKeys();
         Key[] keys = result.getResults();
 
-        assertThat(keys, is(arrayWithSize(2)));
+        assertThat(keys, is(arrayWithSize(4)));
 
         for (Key key : keys) {
             assertThat(key.getKey(), is(notNullValue()));
