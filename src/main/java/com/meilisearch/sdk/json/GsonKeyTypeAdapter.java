@@ -6,7 +6,6 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import com.meilisearch.sdk.model.Key;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -25,13 +24,13 @@ public class GsonKeyTypeAdapter extends TypeAdapter<Key> {
     private static final String KEY_EXPIRES_AT = "expiresAt";
     private static final String KEY_CREATED_AT = "createdAt";
     private static final String KEY_UPDATED_AT = "updatedAt";
-    private static final DateFormat DATE_FORMAT = createUtcDateFormat();
-
-    private static DateFormat createUtcDateFormat() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        format.setTimeZone(TimeZone.getTimeZone("UTC"));
-        return format;
-    }
+    private static final ThreadLocal<SimpleDateFormat> DATE_FORMAT =
+            ThreadLocal.withInitial(
+                    () -> {
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        return format;
+                    });
 
     @Override
     public void write(JsonWriter writer, Key key) throws IOException {
@@ -141,7 +140,7 @@ public class GsonKeyTypeAdapter extends TypeAdapter<Key> {
         if (value == null) {
             return;
         }
-        writer.name(key).value(DATE_FORMAT.format(value));
+        writer.name(key).value(DATE_FORMAT.get().format(value));
     }
 
     private void readStartObject(JsonReader reader) throws IOException {
