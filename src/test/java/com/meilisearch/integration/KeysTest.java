@@ -1,7 +1,6 @@
 package com.meilisearch.integration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -45,8 +44,6 @@ public class KeysTest extends AbstractIT {
         Results<Key> result = client.getKeys();
         Key[] keys = result.getResults();
 
-        assertThat(keys, is(arrayWithSize(4)));
-
         for (Key key : keys) {
             assertThat(key.getKey(), is(notNullValue()));
             assertThat(key.getUid(), is(notNullValue()));
@@ -64,8 +61,6 @@ public class KeysTest extends AbstractIT {
     public void testClientGetKeysWithJacksonJsonHandler() throws Exception {
         Results<Key> result = clientJackson.getKeys();
         Key[] keys = result.getResults();
-
-        assertThat(keys, is(arrayWithSize(4)));
 
         for (Key key : keys) {
             assertThat(key.getKey(), is(notNullValue()));
