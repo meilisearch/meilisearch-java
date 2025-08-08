@@ -843,3 +843,6 @@ update_localized_attribute_settings_1: |-
   );
 reset_localized_attribute_settings_1: |-
   client.index("INDEX_NAME").resetLocalizedAttributesSettings();
+export_post_1: |-
+  ExportRequest request = ExportRequest.builder().setUrl("http://anothermeiliinstance:7070").build();
+  client.export(request);

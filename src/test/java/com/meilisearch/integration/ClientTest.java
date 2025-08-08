@@ -7,12 +7,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.google.gson.*;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
+import com.meilisearch.sdk.ExportIndexFilter;
+import com.meilisearch.sdk.ExportRequest;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.utils.Movie;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.*;
 
 @Tag("integration")
@@ -306,6 +310,22 @@ public class ClientTest extends AbstractIT {
 
         assertThat(task.getStatus(), is(equalTo(TaskStatus.ENQUEUED)));
         assertThat(snapshot.getType(), is(equalTo("snapshotCreation")));
+    }
+
+    /** Test call to initiate export */
+    @Test
+    public void testExport() throws Exception {
+        Map<String, ExportIndexFilter> indexes = new HashMap<>();
+        indexes.put("*", ExportIndexFilter.builder().filter("genres = action").build());
+
+        ExportRequest payload =
+                ExportRequest.builder().url(getMeilisearchHost()).indexes(indexes).build();
+        TaskInfo task = client.export(payload);
+        client.waitForTask(task.getTaskUid());
+        Task snapshot = client.getTask(task.getTaskUid());
+
+        assertThat(task.getStatus(), is(equalTo(TaskStatus.ENQUEUED)));
+        assertThat(snapshot.getType(), is(equalTo("export")));
     }
 
     /**
