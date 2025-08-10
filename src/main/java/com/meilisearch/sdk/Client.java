@@ -219,7 +219,7 @@ public class Client {
     }
 
     /**
-     * Triggers the export of documents between Meilisearch Instances.
+     * Triggers the export of documents between Meilisearch instances.
      *
      * @param request Export request parameters
      * @return Meilisearch API response as TaskInfo

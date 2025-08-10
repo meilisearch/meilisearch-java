@@ -322,10 +322,10 @@ public class ClientTest extends AbstractIT {
                 ExportRequest.builder().url(getMeilisearchHost()).indexes(indexes).build();
         TaskInfo task = client.export(payload);
         client.waitForTask(task.getTaskUid());
-        Task snapshot = client.getTask(task.getTaskUid());
+        Task exportTask = client.getTask(task.getTaskUid());
 
         assertThat(task.getStatus(), is(equalTo(TaskStatus.ENQUEUED)));
-        assertThat(snapshot.getType(), is(equalTo("export")));
+        assertThat(exportTask.getType(), is(equalTo("export")));
     }
 
     /**

@@ -13,16 +13,20 @@ public class ExportIndexFilter {
     @Builder.Default private boolean overrideSettings = false;
 
     /**
-     * Method that returns the JSON String of the ExportRequest
+     * Method that returns the JSON String of the ExportIndexFilter
      *
-     * @return JSON String of the ExportRequest query
+     * @return JSON String of the ExportIndexFilter query
      */
     @Override
     public String toString() {
-        JSONObject jsonObject =
-                new JSONObject()
-                        .putOpt("filter", this.filter)
-                        .putOpt("overrideSettings", this.overrideSettings);
+        JSONObject jsonObject = new JSONObject();
+        if (this.filter != null) {
+            jsonObject.put("filter", this.filter);
+        }
+        if (this.overrideSettings) {
+            jsonObject.put("overrideSettings", true);
+        }
+
         return jsonObject.toString();
     }
 }
