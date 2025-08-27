@@ -13,12 +13,15 @@ plugins {
 	id 'signing'
 	id 'jacoco'
 	id "io.github.gradle-nexus.publish-plugin" version "2.0.0"
-	id "com.diffplug.spotless" version "6.13.0"
+	id "com.diffplug.spotless" version "6.25.0"
 }
 
 group = 'com.meilisearch.sdk'
-archivesBaseName = 'meilisearch-java'
 version = '0.15.0'
+
+base {
+	archivesName.set('meilisearch-java')
+}
 
 jacoco {
   toolVersion = "0.8.8"
@@ -117,8 +120,8 @@ task integrationTest(type: Test) {
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 
 	withJavadocJar()
 	withSourcesJar()
@@ -193,7 +196,7 @@ spotless {
 		// don't need to set target, it is inferred from java
 
 		// apply a specific flavor of google-java-format
-		googleJavaFormat('1.7').aosp()
+		googleJavaFormat('1.10.0').aosp()
 	}
 }
 
