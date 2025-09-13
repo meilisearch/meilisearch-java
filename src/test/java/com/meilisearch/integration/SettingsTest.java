@@ -904,18 +904,16 @@ public class SettingsTest extends AbstractIT {
     @DisplayName("Test update disableOnNumbers tolerance settings")
     public void testUpdateDisableOnNumbersTolerance() throws Exception {
         Index index = createIndex("testUpdateDisableOnNumbers");
-
-        TypoTolerance newTypoTolerance = new TypoTolerance();
-        index.waitForTask(index.updateTypoToleranceSettings(newTypoTolerance).getTaskUid());
-        TypoTolerance updatedTypoToleranceDefault = index.getTypoToleranceSettings();
+        TypoTolerance defaultTypoTolerance = index.getTypoToleranceSettings();
 
         TypoTolerance newTypoToleranceDisableOnNumbers = new TypoTolerance();
         newTypoToleranceDisableOnNumbers.setDisableOnNumbers(true);
-        index.waitForTask(index.updateTypoToleranceSettings(newTypoToleranceDisableOnNumbers).getTaskUid());
-        TypoTolerance updatedTypoToleranceDisableOnNumbers = index.getTypoToleranceSettings();
+        index.waitForTask(
+                index.updateTypoToleranceSettings(newTypoToleranceDisableOnNumbers).getTaskUid());
+        TypoTolerance updatedTypoTolerance = index.getTypoToleranceSettings();
 
-        assertThat(updatedTypoToleranceDefault.isDisableOnNumbers(), is(equalTo(false)));
-        assertThat(updatedTypoToleranceDisableOnNumbers.isDisableOnNumbers(), is(equalTo(true)));
+        assertThat(defaultTypoTolerance.getDisableOnNumbers(), is(equalTo(false)));
+        assertThat(updatedTypoTolerance.getDisableOnNumbers(), is(equalTo(true)));
     }
 
     /** Tests of all the specifics setting methods when null is passed */

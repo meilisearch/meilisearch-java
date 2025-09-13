@@ -19,7 +19,7 @@ public class TypoTolerance {
     protected HashMap<String, Integer> minWordSizeForTypos;
     protected String[] disableOnWords;
     protected String[] disableOnAttributes;
-    protected boolean disableOnNumbers;
+    protected Boolean disableOnNumbers;
 
     public TypoTolerance() {}
 }
