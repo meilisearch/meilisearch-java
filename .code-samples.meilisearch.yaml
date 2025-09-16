@@ -452,6 +452,10 @@ typo_tolerance_guide_4: |-
           };
   typoTolerance.setMinWordSizeForTypos(minWordSizeTypos);
   client.index("movies").updateTypoToleranceSettings(typoTolerance);
+typo_tolerance_guide_5: |-
+  TypoTolerance typoTolerance = new TypoTolerance();
+  typoTolerance.setDisableOnNumbers(true);
+  client.index("movies").updateTypoToleranceSettings(typoTolerance);
 getting_started_add_documents: |-
   // For Maven:
   // Add the following code to the `<dependencies>` section of your project:
