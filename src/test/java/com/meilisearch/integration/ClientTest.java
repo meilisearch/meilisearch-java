@@ -12,6 +12,7 @@ import com.meilisearch.sdk.exceptions.MeilisearchApiException;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.utils.Movie;
+import java.lang.reflect.InaccessibleObjectException;
 import java.lang.reflect.Modifier;
 import org.junit.jupiter.api.*;
 
@@ -320,8 +321,8 @@ public class ClientTest extends AbstractIT {
         Gson gsonWithTransient =
                 new GsonBuilder().excludeFieldsWithModifiers(Modifier.STATIC).create();
 
-        // TODO: Throws StackOverflowError on JDK 1.8, but InaccessibleObjectException on JDK9+
-        Assertions.assertThrows(StackOverflowError.class, () -> gsonWithTransient.toJson(test));
+        Assertions.assertThrows(
+                InaccessibleObjectException.class, () -> gsonWithTransient.toJson(test));
         Assertions.assertDoesNotThrow(() -> gson.toJson(test));
     }
 }

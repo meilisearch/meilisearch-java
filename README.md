@@ -295,7 +295,7 @@ This SDK is compatible with the following JDK versions:
 
 | SDK Version | Supported Java Versions |
 |-------------|-------------------------|
-| v1.x        | JDK 8 and above         |
+| v1.x        | JDK 17 and above        |
 
 ## 💡 Learn more
 
