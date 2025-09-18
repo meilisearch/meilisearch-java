@@ -17,7 +17,7 @@ plugins {
 }
 
 group = 'com.meilisearch.sdk'
-version = '0.15.0'
+version = '0.16.0'
 
 base {
 	archivesName.set('meilisearch-java')
