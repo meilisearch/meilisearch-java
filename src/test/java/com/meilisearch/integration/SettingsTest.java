@@ -900,6 +900,22 @@ public class SettingsTest extends AbstractIT {
                 is(notNullValue()));
     }
 
+    @Test
+    @DisplayName("Test update disableOnNumbers tolerance settings")
+    public void testUpdateDisableOnNumbersTolerance() throws Exception {
+        Index index = createIndex("testUpdateDisableOnNumbers");
+        TypoTolerance defaultTypoTolerance = index.getTypoToleranceSettings();
+
+        TypoTolerance newTypoToleranceDisableOnNumbers = new TypoTolerance();
+        newTypoToleranceDisableOnNumbers.setDisableOnNumbers(true);
+        index.waitForTask(
+                index.updateTypoToleranceSettings(newTypoToleranceDisableOnNumbers).getTaskUid());
+        TypoTolerance updatedTypoTolerance = index.getTypoToleranceSettings();
+
+        assertThat(defaultTypoTolerance.getDisableOnNumbers(), is(equalTo(false)));
+        assertThat(updatedTypoTolerance.getDisableOnNumbers(), is(equalTo(true)));
+    }
+
     /** Tests of all the specifics setting methods when null is passed */
     @Test
     @DisplayName("Test update synonyms settings when null is passed")
