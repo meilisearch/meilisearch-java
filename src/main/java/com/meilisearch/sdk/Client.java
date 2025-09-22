@@ -219,6 +219,18 @@ public class Client {
     }
 
     /**
+     * Triggers the export of documents between Meilisearch instances.
+     *
+     * @param request Export request parameters
+     * @return Meilisearch API response as TaskInfo
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/export">API specification</a>
+     */
+    public TaskInfo export(ExportRequest request) throws MeilisearchException {
+        return config.httpClient.post("/export", request, TaskInfo.class);
+    }
+
+    /**
      * Gets the status and availability of a Meilisearch instance
      *
      * @return String containing the status of the Meilisearch instance from Meilisearch API
