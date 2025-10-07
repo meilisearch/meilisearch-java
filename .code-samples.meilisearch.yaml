@@ -452,6 +452,10 @@ typo_tolerance_guide_4: |-
           };
   typoTolerance.setMinWordSizeForTypos(minWordSizeTypos);
   client.index("movies").updateTypoToleranceSettings(typoTolerance);
+typo_tolerance_guide_5: |-
+  TypoTolerance typoTolerance = new TypoTolerance();
+  typoTolerance.setDisableOnNumbers(true);
+  client.index("movies").updateTypoToleranceSettings(typoTolerance);
 getting_started_add_documents: |-
   // For Maven:
   // Add the following code to the `<dependencies>` section of your project:
@@ -459,14 +463,14 @@ getting_started_add_documents: |-
   // <dependency>
   //   <groupId>com.meilisearch.sdk</groupId>
   //   <artifactId>meilisearch-java</artifactId>
-  //   <version>0.15.0</version>
+  //   <version>0.16.1</version>
   //   <type>pom</type>
   // </dependency>
 
   // For Gradle
   // Add the following line to the `dependencies` section of your `build.gradle`:
   //
-  // implementation 'com.meilisearch.sdk:meilisearch-java:0.15.0'
+  // implementation 'com.meilisearch.sdk:meilisearch-java:0.16.1'
 
   // In your .java file:
   import com.meilisearch.sdk;
