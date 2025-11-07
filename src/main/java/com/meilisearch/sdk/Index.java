@@ -1306,7 +1306,7 @@ public class Index implements Serializable {
      */
     public TaskInfo compact() throws MeilisearchException {
         return this.config.httpClient.post(
-            new URLBuilder("/indexes").addSubroute(this.uid).addSubroute("compact").getURL(),
+            new URLBuilder("/indexes").addSubroute(this.uid).addSubroute("/compact").getURL(),
             null,
             TaskInfo.class);
     }
