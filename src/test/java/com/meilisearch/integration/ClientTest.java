@@ -345,4 +345,35 @@ public class ClientTest extends AbstractIT {
                 InaccessibleObjectException.class, () -> gsonWithTransient.toJson(test));
         Assertions.assertDoesNotThrow(() -> gson.toJson(test));
     }
+
+    @Test
+    public void testCompactWithDocuments() throws Exception {
+        String indexUid = "testCompactWithDocuments";
+        Index index = createEmptyIndex(indexUid, this.primaryKey);
+
+        TaskInfo addTask =
+            index.addDocuments(
+                "[{"
+                    + "\"id\": 1,"
+                    + "\"title\": \"Document1\","
+                    + "\"description\": \"Test document 1\""
+                    + "},"
+                    + "{"
+                    + "\"id\": 2,"
+                    + "\"title\": \"Document2\","
+                    + "\"description\": \"Test document 2\""
+                    + "}]");
+        index.waitForTask(addTask.getTaskUid());
+
+        TaskInfo compactTask = index.compact();
+        client.waitForTask(compactTask.getTaskUid());
+        Task completedCompactTask = client.getTask(compactTask.getTaskUid());
+
+        assertThat(compactTask.getStatus(), is(equalTo(TaskStatus.ENQUEUED)));
+        assertThat(completedCompactTask.getType(), is(equalTo("indexCompaction")));
+        assertThat(completedCompactTask.getStatus(), is(equalTo(TaskStatus.SUCCEEDED)));
+
+        assertThat(index.getDocument("1", Movie.class).getTitle(), is(equalTo("Document1")));
+        assertThat(index.getDocument("2", Movie.class).getTitle(), is(equalTo("Document2")));
+    }
 }
