@@ -1296,7 +1296,6 @@ public class Index implements Serializable {
         return this.settingsHandler.resetEmbedders(this.uid);
     }
 
-
     /**
      * Compacts the database for this index to reclaim unused space
      *
@@ -1306,8 +1305,8 @@ public class Index implements Serializable {
      */
     public TaskInfo compact() throws MeilisearchException {
         return this.config.httpClient.post(
-            new URLBuilder("/indexes").addSubroute(this.uid).addSubroute("/compact").getURL(),
-            null,
-            TaskInfo.class);
+                new URLBuilder("/indexes").addSubroute(this.uid).addSubroute("/compact").getURL(),
+                null,
+                TaskInfo.class);
     }
 }

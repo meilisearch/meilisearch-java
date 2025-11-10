@@ -352,17 +352,17 @@ public class ClientTest extends AbstractIT {
         Index index = createEmptyIndex(indexUid, this.primaryKey);
 
         TaskInfo addTask =
-            index.addDocuments(
-                "[{"
-                    + "\"id\": 1,"
-                    + "\"title\": \"Document1\","
-                    + "\"description\": \"Test document 1\""
-                    + "},"
-                    + "{"
-                    + "\"id\": 2,"
-                    + "\"title\": \"Document2\","
-                    + "\"description\": \"Test document 2\""
-                    + "}]");
+                index.addDocuments(
+                        "[{"
+                                + "\"id\": 1,"
+                                + "\"title\": \"Document1\","
+                                + "\"description\": \"Test document 1\""
+                                + "},"
+                                + "{"
+                                + "\"id\": 2,"
+                                + "\"title\": \"Document2\","
+                                + "\"description\": \"Test document 2\""
+                                + "}]");
         index.waitForTask(addTask.getTaskUid());
 
         TaskInfo compactTask = index.compact();
