@@ -852,3 +852,5 @@ export_post_1: |-
   indexes.put("*", ExportIndexFilter.builder().overrideSettings(true).build());
   ExportRequest request = ExportRequest.builder().url("TARGET_INSTANCE_URL").indexes(indexes).build();
   client.export(request);
+compact_index_1: |-
+  client.index("INDEX_NAME").compact();

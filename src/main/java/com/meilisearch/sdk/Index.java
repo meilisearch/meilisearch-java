@@ -1295,4 +1295,18 @@ public class Index implements Serializable {
     public TaskInfo resetEmbeddersSettings() throws MeilisearchException {
         return this.settingsHandler.resetEmbedders(this.uid);
     }
+
+    /**
+     * Compacts the database for this index to reclaim unused space
+     *
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/compact">API specification</a>
+     */
+    public TaskInfo compact() throws MeilisearchException {
+        return this.config.httpClient.post(
+                new URLBuilder("/indexes").addSubroute(this.uid).addSubroute("/compact").getURL(),
+                null,
+                TaskInfo.class);
+    }
 }
