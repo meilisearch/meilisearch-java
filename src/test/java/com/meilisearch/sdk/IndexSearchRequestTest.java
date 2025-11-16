@@ -7,7 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-class IndexIndexSearchRequestTest {
+class IndexSearchRequestTest {
     @Test
     void toStringWithHybridUsingBuilder() {
         IndexSearchRequest classToTest =
