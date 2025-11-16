@@ -111,11 +111,7 @@ public class IndexSearchRequest {
                         .putOpt("locales", this.locales)
                         .putOpt("distinct", this.distinct)
                         .putOpt("retrieveVectors", this.retrieveVectors)
-                        .putOpt(
-                                "hybrid",
-                                this.hybrid != null
-                                    ? this.hybrid.toJSONObject() :
-                                    null);
+                        .putOpt("hybrid", this.hybrid != null ? this.hybrid.toJSONObject() : null);
 
         return jsonObject.toString();
     }
