@@ -47,7 +47,7 @@ public class IndexSearchRequest {
      * offset: 0, limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
      * attributesToHighlight: null, filter: null, showMatchesPosition: false, facets: null, sort:
      * null, showRankingScore: false, showRankingScoreDetails: false, rankingScoreThreshold: null
-     * distinct: null, retrieveVectors: false
+     * distinct: null, retrieveVectors: false, hybrid: null
      *
      * @param indexUid uid of the requested index String
      */
