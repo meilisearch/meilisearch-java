@@ -1,5 +1,6 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.model.Hybrid;
 import com.meilisearch.sdk.model.MatchingStrategy;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -38,6 +39,7 @@ public class IndexSearchRequest {
     private FederationOptions federationOptions;
     protected String[] locales;
     protected String distinct;
+    protected Hybrid hybrid;
     protected Boolean retrieveVectors;
 
     /**
@@ -109,6 +111,10 @@ public class IndexSearchRequest {
                         .putOpt("locales", this.locales)
                         .putOpt("distinct", this.distinct)
                         .putOpt("retrieveVectors", this.retrieveVectors);
+
+        if (this.hybrid != null) {
+            jsonObject.put("hybrid", this.hybrid.toJSONObject());
+        }
 
         return jsonObject.toString();
     }
