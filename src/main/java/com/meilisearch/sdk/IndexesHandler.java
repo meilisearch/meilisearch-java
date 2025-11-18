@@ -5,6 +5,7 @@ import com.meilisearch.sdk.http.URLBuilder;
 import com.meilisearch.sdk.model.IndexesQuery;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.TaskInfo;
+
 import java.util.HashMap;
 
 /**
@@ -39,7 +40,7 @@ class IndexesHandler {
     /**
      * Creates an index with a unique identifier
      *
-     * @param uid Unique identifier of the index
+     * @param uid        Unique identifier of the index
      * @param primaryKey Field to use as the primary key for documents in that index
      * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
@@ -82,7 +83,7 @@ class IndexesHandler {
      */
     Results<Index> getIndexes(IndexesQuery params) throws MeilisearchException {
         return httpClient.get(
-                indexesPath().addQuery(params.toQuery()).getURL(), Results.class, Index.class);
+            indexesPath().addQuery(params.toQuery()).getURL(), Results.class, Index.class);
     }
 
     /**
@@ -109,7 +110,7 @@ class IndexesHandler {
     /**
      * Updates the primary key of an index in the Meilisearch instance
      *
-     * @param uid Unique identifier of the index to update
+     * @param uid        Unique identifier of the index to update
      * @param primaryKey New primary key field to use for documents in that index
      * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
@@ -122,6 +123,21 @@ class IndexesHandler {
     }
 
     /**
+     * Rename an index by changing its uid.
+     *
+     * @param uid      Unique identifier of the index to rename
+     * @param indexUid New unique identifier for the index
+     * @return Meilisearch API response as TaskInfo
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo updateIndexUid(String uid, String indexUid) throws MeilisearchException {
+        HashMap<String, String> body = new HashMap<>();
+        body.put("indexUid", indexUid);
+        return httpClient.patch(indexesPath().addSubroute(uid).getURL(), body, TaskInfo.class);
+    }
+
+
+    /**
      * Deletes an index in the Meilisearch instance
      *
      * @param uid Unique identifier of the index to delete
@@ -132,7 +148,9 @@ class IndexesHandler {
         return httpClient.delete(indexesPath().addSubroute(uid).getURL(), TaskInfo.class);
     }
 
-    /** Creates an URLBuilder for the constant route indexes */
+    /**
+     * Creates an URLBuilder for the constant route indexes
+     */
     private URLBuilder indexesPath() {
         return new URLBuilder("/indexes");
     }

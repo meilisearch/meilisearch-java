@@ -23,6 +23,7 @@ public class SearchResultPaginated implements Searchable {
     Object facetDistribution;
     HashMap<String, FacetRating> facetStats;
     int processingTimeMs;
+    ArrayList<Float> queryVector;
     String query;
 
     public SearchResultPaginated() {}

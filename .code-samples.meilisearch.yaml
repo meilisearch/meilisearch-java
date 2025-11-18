@@ -854,3 +854,5 @@ export_post_1: |-
   client.export(request);
 compact_index_1: |-
   client.index("INDEX_NAME").compact();
+rename_an_index_1: |-
+  client.updateIndex("indexA", null, "indexB");

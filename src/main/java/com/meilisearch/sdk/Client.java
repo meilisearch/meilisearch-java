@@ -10,13 +10,12 @@ import com.meilisearch.sdk.json.JsonHandler;
 import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.model.batch.req.BatchesQuery;
 import com.meilisearch.sdk.model.batch.res.Batch;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.UUID;
 
-/** Meilisearch client */
+import java.util.*;
+
+/**
+ * Meilisearch client
+ */
 public class Client {
     private Config config;
     private IndexesHandler indexesHandler;
@@ -46,7 +45,7 @@ public class Client {
      * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes#create-an-index">API
-     *     specification</a>
+     * specification</a>
      */
     public TaskInfo createIndex(String uid) throws MeilisearchException {
         return this.createIndex(uid, null);
@@ -55,12 +54,12 @@ public class Client {
     /**
      * Creates an index with a unique identifier
      *
-     * @param uid Unique identifier for the index to create
+     * @param uid        Unique identifier for the index to create
      * @param primaryKey The primary key of the documents in that index
      * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes#create-an-index">API
-     *     specification</a>
+     * specification</a>
      */
     public TaskInfo createIndex(String uid, String primaryKey) throws MeilisearchException {
         return this.indexesHandler.createIndex(uid, primaryKey);
@@ -72,7 +71,7 @@ public class Client {
      * @return Results containing a list of indexes from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes#list-all-indexes">API
-     *     specification</a>
+     * specification</a>
      */
     public Results<Index> getIndexes() throws MeilisearchException {
         Results<Index> indexes = this.indexesHandler.getIndexes();
@@ -89,7 +88,7 @@ public class Client {
      * @return Results containing a list of indexes from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes#list-all-indexes">API
-     *     specification</a>
+     * specification</a>
      */
     public Results<Index> getIndexes(IndexesQuery params) throws MeilisearchException {
         Results<Index> indexes = this.indexesHandler.getIndexes(params);
@@ -105,7 +104,7 @@ public class Client {
      * @return List of indexes from the Meilisearch API as String
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes#list-all-indexes">API
-     *     specification</a>
+     * specification</a>
      */
     public String getRawIndexes() throws MeilisearchException {
         return this.indexesHandler.getRawIndexes();
@@ -118,7 +117,7 @@ public class Client {
      * @return List of indexes from the Meilisearch API as String
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes#list-all-indexes">API
-     *     specification</a>
+     * specification</a>
      */
     public String getRawIndexes(IndexesQuery params) throws MeilisearchException {
         return this.indexesHandler.getRawIndexes(params);
@@ -147,7 +146,7 @@ public class Client {
      * @return Meilisearch API response as Index instance
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes#get-one-index">API
-     *     specification</a>
+     * specification</a>
      */
     public Index getIndex(String uid) throws MeilisearchException {
         Index index = this.indexesHandler.getIndex(uid);
@@ -158,16 +157,27 @@ public class Client {
     /**
      * Updates the primary key of an index
      *
-     * @param uid Unique identifier of the index to update
+     * @param uid        Unique identifier of the index to update
      * @param primaryKey Primary key of the documents in the index
      * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes#update-an-index">API
-     *     specification</a>
+     * specification</a>
      */
     public TaskInfo updateIndex(String uid, String primaryKey) throws MeilisearchException {
         return this.indexesHandler.updatePrimaryKey(uid, primaryKey);
     }
+
+    /**
+     * Update an index: either update primary key or rename the index by passing indexUid.
+     */
+    public TaskInfo updateIndex(String uid, String primaryKey, String indexUid) throws MeilisearchException {
+        if (indexUid != null) {
+            return this.indexesHandler.updateIndexUid(uid, indexUid);
+        }
+        return this.indexesHandler.updatePrimaryKey(uid, primaryKey);
+    }
+
 
     /**
      * Deletes single index by its unique identifier
@@ -176,7 +186,7 @@ public class Client {
      * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes#delete-one-index">API
-     *     specification</a>
+     * specification</a>
      */
     public TaskInfo deleteIndex(String uid) throws MeilisearchException {
         return this.indexesHandler.deleteIndex(uid);
@@ -189,7 +199,7 @@ public class Client {
      * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes#swap-indexes">API
-     *     specification</a>
+     * specification</a>
      */
     public TaskInfo swapIndexes(SwapIndexesParams[] param) throws MeilisearchException {
         return config.httpClient.post("/swap-indexes", param, TaskInfo.class);
@@ -201,7 +211,7 @@ public class Client {
      * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/dump#create-a-dump">API
-     *     specification</a>
+     * specification</a>
      */
     public TaskInfo createDump() throws MeilisearchException {
         return config.httpClient.post("/dumps", "", TaskInfo.class);
@@ -234,10 +244,10 @@ public class Client {
      * Gets the status and availability of a Meilisearch instance
      *
      * @return String containing the status of the Meilisearch instance from Meilisearch API
-     *     response
+     * response
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/health#health">API
-     *     specification</a>
+     * specification</a>
      */
     public String health() throws MeilisearchException {
         return this.instanceHandler.health();
@@ -249,7 +259,7 @@ public class Client {
      * @return True if the Meilisearch instance is available or false if it is not
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/health#health">API
-     *     specification</a>
+     * specification</a>
      */
     public Boolean isHealthy() throws MeilisearchException {
         return this.instanceHandler.isHealthy();
@@ -261,7 +271,7 @@ public class Client {
      * @return Stats instance from Meilisearch API response
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/stats#stats-object">API
-     *     specification</a>
+     * specification</a>
      */
     public Stats getStats() throws MeilisearchException {
         return this.instanceHandler.getStats();
@@ -273,7 +283,7 @@ public class Client {
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/version#version">API
-     *     specification</a>
+     * specification</a>
      */
     public String getVersion() throws MeilisearchException {
         return this.instanceHandler.getVersion();
@@ -286,7 +296,7 @@ public class Client {
      * @return Meilisearch API response as Task Instance
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks#get-one-task">API
-     *     specification</a>
+     * specification</a>
      */
     public Task getTask(int uid) throws MeilisearchException {
         return this.tasksHandler.getTask(uid);
@@ -298,7 +308,7 @@ public class Client {
      * @return TasksResults containing a list of tasks from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks#get-tasks">API
-     *     specification</a>
+     * specification</a>
      */
     public TasksResults getTasks() throws MeilisearchException {
         return this.tasksHandler.getTasks();
@@ -311,7 +321,7 @@ public class Client {
      * @return TasksResults containing a list of tasks from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks#get-tasks">API
-     *     specification</a>
+     * specification</a>
      */
     public TasksResults getTasks(TasksQuery param) throws MeilisearchException {
         return this.tasksHandler.getTasks(param);
@@ -324,7 +334,7 @@ public class Client {
      * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks#cancel-tasks">API
-     *     specification</a>
+     * specification</a>
      */
     public TaskInfo cancelTasks(CancelTasksQuery param) throws MeilisearchException {
         return this.tasksHandler.cancelTasks(param);
@@ -337,7 +347,7 @@ public class Client {
      * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks#delete-tasks">API
-     *     specification</a>
+     * specification</a>
      */
     public TaskInfo deleteTasks(DeleteTasksQuery param) throws MeilisearchException {
         return this.tasksHandler.deleteTasks(param);
@@ -372,7 +382,7 @@ public class Client {
      * @throws MeilisearchException If an error occurs during the request.
      */
     public CursorResults<Batch> getAllBatches(BatchesQuery batchesQuery)
-            throws MeilisearchException {
+        throws MeilisearchException {
         return this.tasksHandler.getAllBatches(batchesQuery);
     }
 
@@ -383,7 +393,7 @@ public class Client {
      * @return Meilisearch API response as Key Instance
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/keys#get-one-key">API
-     *     specification</a>
+     * specification</a>
      */
     public Key getKey(String uid) throws MeilisearchException {
         return this.keysHandler.getKey(uid);
@@ -395,7 +405,7 @@ public class Client {
      * @return Results containing a list of Key from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/keys#get-all-keys">API
-     *     specification</a>
+     * specification</a>
      */
     public Results<Key> getKeys() throws MeilisearchException {
         return this.keysHandler.getKeys();
@@ -408,7 +418,7 @@ public class Client {
      * @return Results containing a list of Key from the Meilisearch API
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/keys#get-all-keys">API
-     *     specification</a>
+     * specification</a>
      */
     public Results<Key> getKeys(KeysQuery params) throws MeilisearchException {
         return this.keysHandler.getKeys(params);
@@ -421,7 +431,7 @@ public class Client {
      * @return Meilisearch API response as Key Instance
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/keys#create-a-key">API
-     *     specification</a>
+     * specification</a>
      */
     public Key createKey(Key options) throws MeilisearchException {
         return this.keysHandler.createKey(options);
@@ -430,12 +440,12 @@ public class Client {
     /**
      * Updates a key
      *
-     * @param key String containing the key
+     * @param key     String containing the key
      * @param options String containing the options to update
      * @return Meilisearch API response as Key Instance
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/keys#update-a-key">API
-     *     specification</a>
+     * specification</a>
      */
     public Key updateKey(String key, KeyUpdate options) throws MeilisearchException {
         return this.keysHandler.updateKey(key, options);
@@ -447,7 +457,7 @@ public class Client {
      * @param key String containing the key
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/keys#delete-a-key">API
-     *     specification</a>
+     * specification</a>
      */
     public void deleteKey(String key) throws MeilisearchException {
         this.keysHandler.deleteKey(key);
@@ -457,8 +467,8 @@ public class Client {
      * Method overloading the multi search method to add federation parameter
      */
     public MultiSearchResult multiSearch(
-            MultiSearchRequest search, MultiSearchFederation federation)
-            throws MeilisearchException {
+        MultiSearchRequest search, MultiSearchFederation federation)
+        throws MeilisearchException {
         Map<String, Object> payload = new HashMap<>();
         payload.put("queries", search.getQueries());
         payload.put("federation", federation);
@@ -466,9 +476,9 @@ public class Client {
     }
 
     public Results<MultiSearchResult> multiSearch(MultiSearchRequest search)
-            throws MeilisearchException {
+        throws MeilisearchException {
         return this.config.httpClient.post(
-                "/multi-search", search, Results.class, MultiSearchResult.class);
+            "/multi-search", search, Results.class, MultiSearchResult.class);
     }
 
     public void experimentalFeatures(Map<String, Boolean> features) {
@@ -476,29 +486,29 @@ public class Client {
     }
 
     public String generateTenantToken(String apiKeyUid, Map<String, Object> searchRules)
-            throws MeilisearchException {
+        throws MeilisearchException {
         return this.generateTenantToken(apiKeyUid, searchRules, new TenantTokenOptions());
     }
 
     /**
      * Generate a tenant token
      *
-     * @param apiKeyUid Uid of a signing API key.
+     * @param apiKeyUid   Uid of a signing API key.
      * @param searchRules A Map of string, object which contains the rules to be enforced at search
-     *     time for all or specific accessible indexes for the signing API Key.
-     * @param options A TenantTokenOptions, the following fileds are accepted: - apiKey: String
-     *     containing the API key parent of the token. If you leave it empty the client API Key will
-     *     be used. - expiresAt: A DateTime when the key will expire. Note that if an expiresAt
-     *     value is included it should be in UTC time.
+     *                    time for all or specific accessible indexes for the signing API Key.
+     * @param options     A TenantTokenOptions, the following fileds are accepted: - apiKey: String
+     *                    containing the API key parent of the token. If you leave it empty the client API Key will
+     *                    be used. - expiresAt: A DateTime when the key will expire. Note that if an expiresAt
+     *                    value is included it should be in UTC time.
      * @return String containing the tenant token
      * @throws MeilisearchException if an error occurs
      * @see <a
-     *     href="https://www.meilisearch.com/docs/learn/security/tenant_tokens#multitenancy-and-tenant-tokens">Meilisearch
-     *     Tenant Tokens</a>
+     * href="https://www.meilisearch.com/docs/learn/security/tenant_tokens#multitenancy-and-tenant-tokens">Meilisearch
+     * Tenant Tokens</a>
      */
     public String generateTenantToken(
-            String apiKeyUid, Map<String, Object> searchRules, TenantTokenOptions options)
-            throws MeilisearchException {
+        String apiKeyUid, Map<String, Object> searchRules, TenantTokenOptions options)
+        throws MeilisearchException {
         // Validate all fields
         Date now = new Date();
         String secret;
@@ -514,15 +524,15 @@ public class Client {
         }
         if (secret == null || secret == "" || secret.length() <= 8) {
             throw new MeilisearchException(
-                    "An api key is required in the client or should be passed as an argument and this key cannot be the master key.");
+                "An api key is required in the client or should be passed as an argument and this key cannot be the master key.");
         }
         if (searchRules == null) {
             throw new MeilisearchException(
-                    "The searchRules field is mandatory and should be defined.");
+                "The searchRules field is mandatory and should be defined.");
         }
         if (apiKeyUid == "" || apiKeyUid == null || !isValidUUID(apiKeyUid)) {
             throw new MeilisearchException(
-                    "The uid used for the token generation must exist and comply to uuid4 format");
+                "The uid used for the token generation must exist and comply to uuid4 format");
         }
 
         // Encrypt the key
@@ -530,11 +540,11 @@ public class Client {
 
         // Create JWT
         String jwtToken =
-                JWT.create()
-                        .withClaim("searchRules", searchRules)
-                        .withClaim("apiKeyUid", apiKeyUid)
-                        .withExpiresAt(options.getExpiresAt())
-                        .sign(algorithm);
+            JWT.create()
+                .withClaim("searchRules", searchRules)
+                .withClaim("apiKeyUid", apiKeyUid)
+                .withExpiresAt(options.getExpiresAt())
+                .sign(algorithm);
 
         return jwtToken;
     }
