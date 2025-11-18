@@ -20,6 +20,7 @@ public class Task {
     protected Date finishedAt = null;
     protected TaskError error = null;
     protected TaskDetails details = null;
+    protected String customMetadata = null;
 
     public Task() {}
 }

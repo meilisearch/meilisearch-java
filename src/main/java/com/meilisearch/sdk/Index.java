@@ -205,6 +205,26 @@ public class Index implements Serializable {
     }
 
     /**
+     * Adds/Replaces documents in the index
+     *
+     * @param document Document to add in JSON or CSV string format
+     * @param primaryKey PrimaryKey of the document to add
+     * @param csvDelimiter Custom delimiter to use for the document being added
+     * @param customMetadata Custom metadata to attach to the task
+     * @return TaskInfo Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/documents#add-or-replace-documents">API
+     *     specification</a>
+     */
+    public TaskInfo addDocuments(
+            String document, String primaryKey, String csvDelimiter, String customMetadata)
+            throws MeilisearchException {
+        return this.documents.addDocuments(
+                this.uid, document, primaryKey, csvDelimiter, customMetadata);
+    }
+
+    /**
      * Adds/Replaces documents in the index in batches
      *
      * @param batchSize size of the batch of documents
@@ -299,6 +319,26 @@ public class Index implements Serializable {
     }
 
     /**
+     * Updates documents in the index
+     *
+     * @param document Document to update in JSON or CSV string format
+     * @param primaryKey PrimaryKey of the document
+     * @param csvDelimiter Custom delimiter to use for the document being added
+     * @param customMetadata Custom metadata to attach to the task
+     * @return TaskInfo Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/documents#add-or-replace-documents">API
+     *     specification</a>
+     */
+    public TaskInfo updateDocuments(
+            String document, String primaryKey, String csvDelimiter, String customMetadata)
+            throws MeilisearchException {
+        return this.documents.updateDocuments(
+                this.uid, document, primaryKey, csvDelimiter, customMetadata);
+    }
+
+    /**
      * Updates documents in index in batches
      *
      * @param document Document to add in JSON string format
@@ -360,6 +400,22 @@ public class Index implements Serializable {
     }
 
     /**
+     * Deletes a document from the index
+     *
+     * @param identifier Identifier of the document to delete
+     * @param customMetadata Custom metadata to attach to the task
+     * @return TaskInfo Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/documents#delete-one-document">API
+     *     specification</a>
+     */
+    public TaskInfo deleteDocument(String identifier, String customMetadata)
+            throws MeilisearchException {
+        return this.documents.deleteDocument(this.uid, identifier, customMetadata);
+    }
+
+    /**
      * Deletes list of documents from the index
      *
      * @param documentsIdentifiers list of identifiers of documents to delete
@@ -373,6 +429,24 @@ public class Index implements Serializable {
     @Deprecated
     public TaskInfo deleteDocuments(List<String> documentsIdentifiers) throws MeilisearchException {
         return this.documents.deleteDocuments(this.uid, documentsIdentifiers);
+    }
+
+    /**
+     * Deletes list of documents from the index
+     *
+     * @param documentsIdentifiers list of identifiers of documents to delete
+     * @param customMetadata Custom metadata to attach to the task
+     * @return TaskInfo Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/documents#delete-documents-by-batch">API
+     *     specification</a>
+     * @see com.meilisearch.sdk.Index#deleteDocumentsByFilter(String) Delete documents using filter
+     */
+    @Deprecated
+    public TaskInfo deleteDocuments(List<String> documentsIdentifiers, String customMetadata)
+            throws MeilisearchException {
+        return this.documents.deleteDocuments(this.uid, documentsIdentifiers, customMetadata);
     }
 
     /**
@@ -391,6 +465,23 @@ public class Index implements Serializable {
     }
 
     /**
+     * Deletes list of documents from the index using the given filter
+     *
+     * @param filter filter to match the documents to delete
+     * @param customMetadata Custom metadata to attach to the task
+     * @return TaskInfo Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/documents#delete-documents-by-filter">API
+     *     specification</a>
+     * @since 1.2
+     */
+    public TaskInfo deleteDocumentsByFilter(String filter, String customMetadata)
+            throws MeilisearchException {
+        return this.documents.deleteDocumentsByFilter(this.uid, filter, customMetadata);
+    }
+
+    /**
      * Deletes all documents in the index
      *
      * @return List of tasks Meilisearch API response
@@ -401,6 +492,20 @@ public class Index implements Serializable {
      */
     public TaskInfo deleteAllDocuments() throws MeilisearchException {
         return this.documents.deleteAllDocuments(this.uid);
+    }
+
+    /**
+     * Deletes all documents in the index
+     *
+     * @param customMetadata Custom metadata to attach to the task
+     * @return List of tasks Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/documents#delete-all-documents">API
+     *     specification</a>
+     */
+    public TaskInfo deleteAllDocuments(String customMetadata) throws MeilisearchException {
+        return this.documents.deleteAllDocuments(this.uid, customMetadata);
     }
 
     /**
