@@ -1,81 +1,81 @@
 package com.meilisearch.sdk;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.*;
-
-import com.meilisearch.sdk.http.CustomOkHttpClient;
-import com.meilisearch.sdk.http.request.HttpMethod;
-import com.meilisearch.sdk.http.request.HttpRequest;
-import com.meilisearch.sdk.http.response.HttpResponse;
-import java.util.ArrayDeque;
-import okhttp3.*;
-import okhttp3.internal.connection.RealCall;
-import okio.Buffer;
+import com.meilisearch.sdk.model.TaskInfo;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class IndexRenameTest {
+import java.io.IOException;
 
-    private final Config config = new Config("http://localhost:7700", "masterKey");
-    private final OkHttpClient ok = mock(OkHttpClient.class);
-    private final CustomOkHttpClient http = new CustomOkHttpClient(config, ok);
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
-    private final ArrayDeque<Request> requestQueue = new ArrayDeque<>();
-    private final ArrayDeque<Response> responseQueue = new ArrayDeque<>();
+public class IndexRenameTest {
 
-    private final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+    private MockWebServer mockServer;
+    private Config config;
+    private IndexesHandler handler;
 
     @BeforeEach
-    void setUp() throws Exception {
-        RealCall call = mock(RealCall.class);
+    void setUp() throws IOException {
+        mockServer = new MockWebServer();
+        mockServer.start();
 
-        when(ok.newCall(any()))
-                .thenAnswer(
-                        inv -> {
-                            Request req = inv.getArgument(0);
-                            requestQueue.push(req);
+        String baseUrl = mockServer.url("").toString();
+        if (baseUrl.endsWith("/")) {
+            baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
+        }
+        config = new Config(baseUrl, "masterKey");
+        handler = new IndexesHandler(config);
+    }
 
-                            Response resp =
-                                    new Response.Builder()
-                                            .request(req)
-                                            .protocol(Protocol.HTTP_1_1)
-                                            .code(200)
-                                            .message("OK")
-                                            .body(
-                                                    ResponseBody.create(
-                                                            "{\"status\":\"enqueued\"}", JSON))
-                                            .build();
-
-                            responseQueue.push(resp);
-                            return call;
-                        });
-
-        when(call.execute()).then(inv -> responseQueue.poll());
+    @AfterEach
+    void tearDown() throws IOException {
+        mockServer.shutdown();
     }
 
     @Test
     void testRenameIndex() throws Exception {
-        // Build the PATCH request the same way IndexesHandler does:
-        String body = "{\"indexUid\":\"indexB\"}";
-        HttpRequest request =
-                new HttpRequest(HttpMethod.PATCH, "/indexes/indexA", config.getHeaders(), body);
+        String responseJson = "{\"taskUid\":123,\"indexUid\":\"indexB\",\"status\":\"enqueued\",\"type\":\"indexUpdate\",\"enqueuedAt\":\"2024-01-01T00:00:00Z\"}";
+        mockServer.enqueue(new MockResponse()
+            .setResponseCode(202)
+            .setBody(responseJson)
+            .addHeader("Content-Type", "application/json"));
 
-        HttpResponse<Object> resp = http.patch(request);
+        TaskInfo result = handler.updateIndexUid("indexA", "indexB");
 
-        assertThat(resp.getStatusCode(), equalTo(200));
+        assertThat(result, is(notNullValue()));
+        assertThat(result.getTaskUid(), is(equalTo(123)));
 
-        Request okReq = requestQueue.poll();
+        RecordedRequest request = mockServer.takeRequest();
+        assertThat(request.getMethod(), equalTo("PATCH"));
+        assertThat(request.getPath(), equalTo("/indexes/indexA"));
+        assertThat(request.getHeader("Authorization"), equalTo("Bearer masterKey"));
 
-        assertThat(okReq.method(), equalTo("PATCH"));
-        assertThat(okReq.url().toString(), equalTo("http://localhost:7700/indexes/indexA"));
-        assertThat(read(okReq.body()), containsString("\"indexUid\":\"indexB\""));
+        String requestBody = request.getBody().readUtf8();
+        assertThat(requestBody, containsString("\"indexUid\":\"indexB\""));
     }
 
-    private String read(RequestBody body) throws Exception {
-        Buffer buf = new Buffer();
-        body.writeTo(buf);
-        return buf.readUtf8();
+    @Test
+    void testRenameIndexWithDifferentNames() throws Exception {
+        String responseJson = "{\"taskUid\":456,\"indexUid\":\"newIndex\",\"status\":\"enqueued\",\"type\":\"indexUpdate\",\"enqueuedAt\":\"2024-01-02T00:00:00Z\"}";
+        mockServer.enqueue(new MockResponse()
+            .setResponseCode(202)
+            .setBody(responseJson)
+            .addHeader("Content-Type", "application/json"));
+
+        TaskInfo result = handler.updateIndexUid("oldIndex", "newIndex");
+
+        assertThat(result, is(notNullValue()));
+        assertThat(result.getTaskUid(), is(equalTo(456)));
+
+        RecordedRequest request = mockServer.takeRequest();
+        assertThat(request.getPath(), equalTo("/indexes/oldIndex"));
+
+        String requestBody = request.getBody().readUtf8();
+        assertThat(requestBody, containsString("\"indexUid\":\"newIndex\""));
     }
 }
