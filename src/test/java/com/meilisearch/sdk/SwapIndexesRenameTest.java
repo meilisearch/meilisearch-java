@@ -91,6 +91,7 @@ public class SwapIndexesRenameTest {
         RecordedRequest request = mockServer.takeRequest();
         assertThat(request.getMethod(), equalTo("POST"));
         assertThat(request.getPath(), equalTo("/swap-indexes"));
+        assertThat(request.getHeader("Authorization"), equalTo("Bearer masterKey"));
 
         String requestBody = request.getBody().readUtf8();
         assertThat(requestBody, containsString("\"rename\":false"));
@@ -127,7 +128,11 @@ public class SwapIndexesRenameTest {
         assertThat(requestBody, containsString("\"indexB\""));
         assertThat(requestBody, containsString("\"indexC\""));
         assertThat(requestBody, containsString("\"indexD\""));
-        assertThat(requestBody, startsWith("["));
-        assertThat(requestBody, endsWith("]"));
+        assertThat(requestBody, containsString("\"rename\":true"));
+        assertThat(requestBody, containsString("\"rename\":false"));
+
+        String trimmedBody = requestBody.trim();
+        assertThat(trimmedBody, startsWith("["));
+        assertThat(trimmedBody, endsWith("]"));
     }
 }

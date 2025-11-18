@@ -13,7 +13,7 @@ import java.io.IOException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class IndexRenameTest {
+class IndexRenameTest {
 
     private MockWebServer mockServer;
     private Config config;
@@ -73,7 +73,9 @@ public class IndexRenameTest {
         assertThat(result.getTaskUid(), is(equalTo(456)));
 
         RecordedRequest request = mockServer.takeRequest();
+        assertThat(request.getMethod(), equalTo("PATCH"));
         assertThat(request.getPath(), equalTo("/indexes/oldIndex"));
+        assertThat(request.getHeader("Authorization"), equalTo("Bearer masterKey"));
 
         String requestBody = request.getBody().readUtf8();
         assertThat(requestBody, containsString("\"indexUid\":\"newIndex\""));
