@@ -161,12 +161,36 @@ class Documents {
      */
     TaskInfo addDocuments(String uid, String document, String primaryKey, String csvDelimiter)
             throws MeilisearchException {
+        return addDocuments(uid, document, primaryKey, csvDelimiter, null);
+    }
+
+    /**
+     * Adds/Replaces a document at the specified index uid
+     *
+     * @param uid Partial index identifier for the document
+     * @param document String containing the document to add
+     * @param primaryKey PrimaryKey of the document
+     * @param csvDelimiter CSV delimiter of the document
+     * @param customMetadata Custom metadata to attach to the task
+     * @return Meilisearch's TaskInfo API response
+     * @throws MeilisearchException if the client request causes an error
+     */
+    TaskInfo addDocuments(
+            String uid,
+            String document,
+            String primaryKey,
+            String csvDelimiter,
+            String customMetadata)
+            throws MeilisearchException {
         URLBuilder urlb = documentPath(uid);
         if (primaryKey != null) {
             urlb.addParameter("primaryKey", primaryKey);
         }
         if (csvDelimiter != null) {
             urlb.addParameter("csvDelimiter", csvDelimiter);
+        }
+        if (customMetadata != null) {
+            urlb.addParameter("customMetadata", customMetadata);
         }
         return httpClient.post(urlb.getURL(), document, TaskInfo.class);
     }
@@ -182,12 +206,36 @@ class Documents {
      */
     TaskInfo updateDocuments(String uid, String document, String primaryKey, String csvDelimiter)
             throws MeilisearchException {
+        return updateDocuments(uid, document, primaryKey, csvDelimiter, null);
+    }
+
+    /**
+     * Replaces a document at the specified index uid
+     *
+     * @param uid Partial index identifier for the document
+     * @param document String containing the document to replace the existing document
+     * @param primaryKey PrimaryKey of the document
+     * @param csvDelimiter CSV delimiter of the document
+     * @param customMetadata Custom metadata to attach to the task
+     * @return Meilisearch's TaskInfo API response
+     * @throws MeilisearchException if the client request causes an error
+     */
+    TaskInfo updateDocuments(
+            String uid,
+            String document,
+            String primaryKey,
+            String csvDelimiter,
+            String customMetadata)
+            throws MeilisearchException {
         URLBuilder urlb = documentPath(uid);
         if (primaryKey != null) {
             urlb.addParameter("primaryKey", primaryKey);
         }
         if (csvDelimiter != null) {
             urlb.addParameter("csvDelimiter", csvDelimiter);
+        }
+        if (customMetadata != null) {
+            urlb.addParameter("customMetadata", customMetadata);
         }
         return httpClient.put(urlb.getURL(), document, TaskInfo.class);
     }
@@ -201,7 +249,25 @@ class Documents {
      * @throws MeilisearchException if the client request causes an error
      */
     TaskInfo deleteDocument(String uid, String identifier) throws MeilisearchException {
-        return httpClient.<TaskInfo>delete(documentPath(uid, identifier).getURL(), TaskInfo.class);
+        return deleteDocument(uid, identifier, null);
+    }
+
+    /**
+     * Deletes the document from the specified index uid with the specified identifier
+     *
+     * @param uid Partial index identifier for the requested document
+     * @param identifier ID of the document
+     * @param customMetadata Custom metadata to attach to the task
+     * @return Meilisearch's TaskInfo API response
+     * @throws MeilisearchException if the client request causes an error
+     */
+    TaskInfo deleteDocument(String uid, String identifier, String customMetadata)
+            throws MeilisearchException {
+        URLBuilder urlb = documentPath(uid, identifier);
+        if (customMetadata != null) {
+            urlb.addParameter("customMetadata", customMetadata);
+        }
+        return httpClient.<TaskInfo>delete(urlb.getURL(), TaskInfo.class);
     }
 
     /**
@@ -213,7 +279,24 @@ class Documents {
      * @throws MeilisearchException if the client request causes an error
      */
     TaskInfo deleteDocuments(String uid, List<String> identifiers) throws MeilisearchException {
+        return deleteDocuments(uid, identifiers, null);
+    }
+
+    /**
+     * Deletes the documents at the specified index uid with the specified identifiers
+     *
+     * @param uid Partial index identifier for the requested documents
+     * @param identifiers ID of documents to delete
+     * @param customMetadata Custom metadata to attach to the task
+     * @return Meilisearch's TaskInfo API response
+     * @throws MeilisearchException if the client request causes an error
+     */
+    TaskInfo deleteDocuments(String uid, List<String> identifiers, String customMetadata)
+            throws MeilisearchException {
         URLBuilder urlb = documentPath(uid).addSubroute("delete-batch");
+        if (customMetadata != null) {
+            urlb.addParameter("customMetadata", customMetadata);
+        }
         return httpClient.post(urlb.getURL(), identifiers, TaskInfo.class);
     }
 
@@ -226,6 +309,20 @@ class Documents {
      * @throws MeilisearchException if the client request causes an error
      */
     TaskInfo deleteDocumentsByFilter(String uid, String filter) throws MeilisearchException {
+        return deleteDocumentsByFilter(uid, filter, null);
+    }
+
+    /**
+     * Deletes the documents matching the given filter
+     *
+     * @param uid Partial index identifier for the requested documents
+     * @param filter filter to match the documents on
+     * @param customMetadata Custom metadata to attach to the task
+     * @return Meilisearch's TaskInfo API response
+     * @throws MeilisearchException if the client request causes an error
+     */
+    TaskInfo deleteDocumentsByFilter(String uid, String filter, String customMetadata)
+            throws MeilisearchException {
         if (filter == null || filter.isEmpty()) {
             throw new MeilisearchException(
                     "Null or blank filter not allowed while deleting documents");
@@ -233,6 +330,9 @@ class Documents {
         HashMap<String, String> filterMap = new HashMap<>();
         filterMap.put("filter", filter);
         URLBuilder urlb = documentPath(uid).addSubroute("delete");
+        if (customMetadata != null) {
+            urlb.addParameter("customMetadata", customMetadata);
+        }
         return httpClient.post(urlb.getURL(), filterMap, TaskInfo.class);
     }
 
@@ -244,7 +344,23 @@ class Documents {
      * @throws MeilisearchException if the client request causes an error
      */
     TaskInfo deleteAllDocuments(String uid) throws MeilisearchException {
-        return httpClient.<TaskInfo>delete(documentPath(uid).getURL(), TaskInfo.class);
+        return deleteAllDocuments(uid, null);
+    }
+
+    /**
+     * Deletes all documents at the specified index uid
+     *
+     * @param uid Partial index identifier for the requested documents
+     * @param customMetadata Custom metadata to attach to the task
+     * @return Meilisearch's TaskInfo API response
+     * @throws MeilisearchException if the client request causes an error
+     */
+    TaskInfo deleteAllDocuments(String uid, String customMetadata) throws MeilisearchException {
+        URLBuilder urlb = documentPath(uid);
+        if (customMetadata != null) {
+            urlb.addParameter("customMetadata", customMetadata);
+        }
+        return httpClient.<TaskInfo>delete(urlb.getURL(), TaskInfo.class);
     }
 
     /** Creates an URLBuilder for the constant route documents. */
