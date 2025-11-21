@@ -1,5 +1,6 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.model.Hybrid;
 import com.meilisearch.sdk.model.MatchingStrategy;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -38,6 +39,7 @@ public class IndexSearchRequest {
     private FederationOptions federationOptions;
     protected String[] locales;
     protected String distinct;
+    protected Hybrid hybrid;
     protected Boolean retrieveVectors;
 
     /**
@@ -45,7 +47,7 @@ public class IndexSearchRequest {
      * offset: 0, limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
      * attributesToHighlight: null, filter: null, showMatchesPosition: false, facets: null, sort:
      * null, showRankingScore: false, showRankingScoreDetails: false, rankingScoreThreshold: null
-     * distinct: null, retrieveVectors: false
+     * distinct: null, retrieveVectors: false, hybrid: null
      *
      * @param indexUid uid of the requested index String
      */
@@ -108,7 +110,8 @@ public class IndexSearchRequest {
                         .putOpt("attributesToSearchOn", this.attributesToSearchOn)
                         .putOpt("locales", this.locales)
                         .putOpt("distinct", this.distinct)
-                        .putOpt("retrieveVectors", this.retrieveVectors);
+                        .putOpt("retrieveVectors", this.retrieveVectors)
+                        .putOpt("hybrid", this.hybrid != null ? this.hybrid.toJSONObject() : null);
 
         return jsonObject.toString();
     }
