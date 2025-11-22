@@ -731,4 +731,138 @@ public class DocumentsTest extends AbstractIT {
         movies = index.getDocuments(Movie.class).getResults();
         assertThat(movies, is(arrayWithSize(0)));
     }
+
+    /** Test addDocuments with customMetadata */
+    @Test
+    public void testAddDocumentsWithCustomMetadata() throws Exception {
+        String indexUid = "AddDocumentsWithCustomMetadata";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        String singleDocument = this.gson.toJson(testData.getData().get(0));
+        TaskInfo task =
+                index.addDocuments("[" + singleDocument + "]", null, null, "add-movies-metadata");
+
+        index.waitForTask(task.getTaskUid());
+        assertThat(task, is(instanceOf(TaskInfo.class)));
+        assertThat(task.getType(), is(equalTo("documentAdditionOrUpdate")));
+
+        // Verify the task was created with custom metadata
+        com.meilisearch.sdk.model.Task taskDetails = index.getTask(task.getTaskUid());
+        assertThat(taskDetails.getCustomMetadata(), is(equalTo("add-movies-metadata")));
+    }
+
+    /** Test updateDocuments with customMetadata */
+    @Test
+    public void testUpdateDocumentsWithCustomMetadata() throws Exception {
+        String indexUid = "UpdateDocumentsWithCustomMetadata";
+        Index index = createEmptyIndex(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo addTask = index.addDocuments(testData.getRaw());
+        index.waitForTask(addTask.getTaskUid());
+
+        String updateDocument =
+                "[{\"id\":\"419704\",\"title\":\"Ad Astra Updated\",\"genre\":[\"Drama\"]}]";
+        TaskInfo task = index.updateDocuments(updateDocument, null, null, "update-movies-metadata");
+
+        index.waitForTask(task.getTaskUid());
+        assertThat(task, is(instanceOf(TaskInfo.class)));
+        assertThat(task.getType(), is(equalTo("documentAdditionOrUpdate")));
+
+        // Verify the task was created with custom metadata
+        com.meilisearch.sdk.model.Task taskDetails = index.getTask(task.getTaskUid());
+        assertThat(taskDetails.getCustomMetadata(), is(equalTo("update-movies-metadata")));
+    }
+
+    /** Test deleteDocument with customMetadata */
+    @Test
+    public void testDeleteDocumentWithCustomMetadata() throws Exception {
+        String indexUid = "DeleteDocumentWithCustomMetadata";
+        Index index = createEmptyIndex(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo addTask = index.addDocuments(testData.getRaw());
+        index.waitForTask(addTask.getTaskUid());
+
+        TaskInfo task = index.deleteDocument("419704", "delete-single-movie-metadata");
+        index.waitForTask(task.getTaskUid());
+
+        assertThat(task, is(instanceOf(TaskInfo.class)));
+        assertThat(task.getType(), is(equalTo("documentDeletion")));
+
+        // Verify the task was created with custom metadata
+        com.meilisearch.sdk.model.Task taskDetails = index.getTask(task.getTaskUid());
+        assertThat(taskDetails.getCustomMetadata(), is(equalTo("delete-single-movie-metadata")));
+    }
+
+    /** Test deleteDocuments (batch) with customMetadata */
+    @Test
+    public void testDeleteDocumentsBatchWithCustomMetadata() throws Exception {
+        String indexUid = "DeleteDocumentsBatchWithCustomMetadata";
+        Index index = createEmptyIndex(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo addTask = index.addDocuments(testData.getRaw());
+        index.waitForTask(addTask.getTaskUid());
+
+        List<String> identifiers = Arrays.asList("419704", "574982");
+        TaskInfo task = index.deleteDocuments(identifiers, "delete-batch-metadata");
+        index.waitForTask(task.getTaskUid());
+
+        assertThat(task, is(instanceOf(TaskInfo.class)));
+        assertThat(task.getType(), is(equalTo("documentDeletion")));
+
+        // Verify the task was created with custom metadata
+        com.meilisearch.sdk.model.Task taskDetails = index.getTask(task.getTaskUid());
+        assertThat(taskDetails.getCustomMetadata(), is(equalTo("delete-batch-metadata")));
+    }
+
+    /** Test deleteDocumentsByFilter with customMetadata */
+    @Test
+    public void testDeleteDocumentsByFilterWithCustomMetadata() throws Exception {
+        String indexUid = "DeleteDocumentsByFilterWithCustomMetadata";
+        Index index = createEmptyIndex(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo addTask = index.addDocuments(testData.getRaw());
+        index.waitForTask(addTask.getTaskUid());
+
+        index.waitForTask(
+                index.updateFilterableAttributesSettings(new String[] {"id"}).getTaskUid());
+
+        TaskInfo task = index.deleteDocumentsByFilter("id = 419704", "delete-filter-metadata");
+        index.waitForTask(task.getTaskUid());
+
+        assertThat(task, is(instanceOf(TaskInfo.class)));
+        assertThat(task.getType(), is(equalTo("documentDeletion")));
+
+        // Verify the task was created with custom metadata
+        com.meilisearch.sdk.model.Task taskDetails = index.getTask(task.getTaskUid());
+        assertThat(taskDetails.getCustomMetadata(), is(equalTo("delete-filter-metadata")));
+    }
+
+    /** Test deleteAllDocuments with customMetadata */
+    @Test
+    public void testDeleteAllDocumentsWithCustomMetadata() throws Exception {
+        String indexUid = "DeleteAllDocumentsWithCustomMetadata";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo addTask = index.addDocuments(testData.getRaw());
+        index.waitForTask(addTask.getTaskUid());
+
+        TaskInfo task = index.deleteAllDocuments("delete-all-metadata");
+        index.waitForTask(task.getTaskUid());
+
+        assertThat(task, is(instanceOf(TaskInfo.class)));
+        assertThat(task.getType(), is(equalTo("documentDeletion")));
+
+        // Verify the task was created with custom metadata
+        com.meilisearch.sdk.model.Task taskDetails = index.getTask(task.getTaskUid());
+        assertThat(taskDetails.getCustomMetadata(), is(equalTo("delete-all-metadata")));
+
+        Results<Movie> result = index.getDocuments(Movie.class);
+        assertThat(result.getResults(), is(arrayWithSize(0)));
+    }
 }
