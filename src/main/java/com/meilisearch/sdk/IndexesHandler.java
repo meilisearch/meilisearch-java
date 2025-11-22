@@ -122,6 +122,20 @@ class IndexesHandler {
     }
 
     /**
+     * Rename an index by changing its uid.
+     *
+     * @param uid Unique identifier of the index to rename
+     * @param indexUid New unique identifier for the index
+     * @return Meilisearch API response as TaskInfo
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo updateIndexUid(String uid, String indexUid) throws MeilisearchException {
+        HashMap<String, String> body = new HashMap<>();
+        body.put("indexUid", indexUid);
+        return httpClient.patch(indexesPath().addSubroute(uid).getURL(), body, TaskInfo.class);
+    }
+
+    /**
      * Deletes an index in the Meilisearch instance
      *
      * @param uid Unique identifier of the index to delete
