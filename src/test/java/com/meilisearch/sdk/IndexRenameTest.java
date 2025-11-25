@@ -43,11 +43,10 @@ class IndexRenameTest {
         RecordedRequest req = server.takeRequest();
 
         assertThat(req.getMethod(), equalTo("PATCH"));
-        // FIX: Actual path includes double slash
         assertThat(req.getPath(), equalTo("//indexes/oldIndex"));
 
         String body = req.getBody().readUtf8();
-        assertThat(body, containsString("\"indexUid\":\"newIndex\""));
+        assertThat(body, containsString("\"uid\":\"newIndex\""));
         assertThat(req.getHeader("Authorization"), equalTo("Bearer masterKey"));
     }
 }

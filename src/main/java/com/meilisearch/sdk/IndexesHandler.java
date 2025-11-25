@@ -131,7 +131,7 @@ public class IndexesHandler {
      */
     TaskInfo updateIndexUid(String uid, String indexUid) throws MeilisearchException {
         HashMap<String, String> body = new HashMap<>();
-        body.put("indexUid", indexUid);
+        body.put("uid", indexUid);
         return httpClient.patch(indexesPath().addSubroute(uid).getURL(), body, TaskInfo.class);
     }
 
