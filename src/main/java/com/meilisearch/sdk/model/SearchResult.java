@@ -18,6 +18,7 @@ public class SearchResult implements Searchable {
     Object facetDistribution;
     HashMap<String, FacetRating> facetStats;
     int processingTimeMs;
+    ArrayList<Float> queryVector;
     String query;
     int offset;
     int limit;
