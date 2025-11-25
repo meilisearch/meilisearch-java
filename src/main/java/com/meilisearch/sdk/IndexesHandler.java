@@ -12,7 +12,7 @@ import java.util.HashMap;
  *
  * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes">API specification</a>
  */
-class IndexesHandler {
+public class IndexesHandler {
     private final HttpClient httpClient;
 
     /**

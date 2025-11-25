@@ -3,30 +3,54 @@ package com.meilisearch.sdk;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.model.SearchResult;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class SearchResultQueryVectorTest {
 
+    private MockWebServer server;
+    private Client client;
+
+    @BeforeEach
+    void setup() throws Exception {
+        server = new MockWebServer();
+        server.start();
+
+        client = new Client(new Config(server.url("/").toString(), "masterKey"));
+    }
+
+    @AfterEach
+    void teardown() throws Exception {
+        server.shutdown();
+    }
+
     @Test
-    void testQueryVectorIsMapped() throws Exception {
+    void testQueryVectorDeserialization() throws Exception {
         String json =
-                "{"
-                        + "\"hits\": [],"
-                        + "\"processingTimeMs\": 1,"
-                        + "\"query\": \"hello\","
-                        + "\"queryVector\": [0.1, 0.2, 0.3]"
-                        + "}";
+                """
+            {
+              "hits": [],
+              "queryVector": [1.1, -2.5, 3.14],
+              "offset": 0,
+              "limit": 20,
+              "estimatedTotalHits": 0,
+              "query": "hello",
+              "processingTimeMs": 1
+            }
+            """;
 
-        GsonJsonHandler handler = new GsonJsonHandler();
-        SearchResult result = handler.decode(json, SearchResult.class);
+        server.enqueue(new MockResponse().setResponseCode(200).setBody(json));
 
-        assertThat(result, is(notNullValue()));
-        assertThat(result.getQueryVector(), is(notNullValue()));
-        assertThat(result.getQueryVector().size(), is(3));
-        assertThat(result.getQueryVector().get(0), equalTo(0.1F));
-        assertThat(result.getQueryVector().get(1), equalTo(0.2F));
-        assertThat(result.getQueryVector().get(2), equalTo(0.3F));
+        SearchResult res = client.index("movies").search("hello");
+
+        assertThat(res, notNullValue());
+        assertThat(res.getQueryVector(), hasSize(3));
+        assertThat(res.getQueryVector().get(0), equalTo(1.1f));
+        assertThat(res.getQueryVector().get(1), equalTo(-2.5f));
+        assertThat(res.getQueryVector().get(2), equalTo(3.14f));
     }
 }
