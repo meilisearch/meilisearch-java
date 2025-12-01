@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     name: integration-and-unit-tests-against-rc
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Java
         uses: actions/setup-java@v5
         with:
