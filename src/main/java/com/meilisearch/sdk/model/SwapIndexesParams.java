@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class SwapIndexesParams {
     protected String[] indexes;
+    protected Boolean rename;
 
     public SwapIndexesParams() {}
 }

@@ -10,11 +10,7 @@ import com.meilisearch.sdk.json.JsonHandler;
 import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.model.batch.req.BatchesQuery;
 import com.meilisearch.sdk.model.batch.res.Batch;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.UUID;
+import java.util.*;
 
 /** Meilisearch client */
 public class Client {
@@ -166,6 +162,15 @@ public class Client {
      *     specification</a>
      */
     public TaskInfo updateIndex(String uid, String primaryKey) throws MeilisearchException {
+        return this.indexesHandler.updatePrimaryKey(uid, primaryKey);
+    }
+
+    /** Update an index: either update primary key or rename the index by passing indexUid. */
+    public TaskInfo updateIndex(String uid, String primaryKey, String indexUid)
+            throws MeilisearchException {
+        if (indexUid != null) {
+            return this.indexesHandler.updateIndexUid(uid, indexUid);
+        }
         return this.indexesHandler.updatePrimaryKey(uid, primaryKey);
     }
 

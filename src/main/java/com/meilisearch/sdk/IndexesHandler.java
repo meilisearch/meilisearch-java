@@ -12,7 +12,7 @@ import java.util.HashMap;
  *
  * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes">API specification</a>
  */
-class IndexesHandler {
+public class IndexesHandler {
     private final HttpClient httpClient;
 
     /**
@@ -119,6 +119,20 @@ class IndexesHandler {
         index.put("primaryKey", primaryKey);
 
         return httpClient.patch(indexesPath().addSubroute(uid).getURL(), index, TaskInfo.class);
+    }
+
+    /**
+     * Rename an index by changing its uid.
+     *
+     * @param uid Unique identifier of the index to rename
+     * @param indexUid New unique identifier for the index
+     * @return Meilisearch API response as TaskInfo
+     * @throws MeilisearchException if an error occurs
+     */
+    TaskInfo updateIndexUid(String uid, String indexUid) throws MeilisearchException {
+        HashMap<String, String> body = new HashMap<>();
+        body.put("uid", indexUid);
+        return httpClient.patch(indexesPath().addSubroute(uid).getURL(), body, TaskInfo.class);
     }
 
     /**
