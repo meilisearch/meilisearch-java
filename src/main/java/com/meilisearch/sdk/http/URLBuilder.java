@@ -3,6 +3,7 @@ package com.meilisearch.sdk.http;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.TimeZone;
 import lombok.Getter;
 
 @Getter
@@ -68,11 +69,10 @@ public class URLBuilder {
     public URLBuilder addParameter(String parameter, Date value) {
         if (value != null) {
             // Changed to utilise RFC 3339 format
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
             addSeparator();
             params.append(parameter);
             params.append("=");
-            params.append(formatter.format(value));
+            params.append(formatDateParameter(value));
         }
         return this;
     }
@@ -115,6 +115,12 @@ public class URLBuilder {
     private String formatArrayParameters(int[] fields) {
         String[] arr = Arrays.stream(fields).mapToObj(String::valueOf).toArray(String[]::new);
         return String.join(",", arr);
+    }
+
+    private String formatDateParameter(Date value) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return formatter.format(value);
     }
 
     public String getURL() {
