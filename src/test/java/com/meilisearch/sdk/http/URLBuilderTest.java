@@ -109,6 +109,16 @@ public class URLBuilderTest {
     }
 
     @Test
+    void addParameterStringDateWithPositiveTimezoneOffset() throws Exception {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+        Date date = format.parse("2042-01-30T17:30:00+02:00");
+
+        classToTest.addParameter("parameter1", date);
+
+        assertEquals("?parameter1=2042-01-30T15:30:00Z", classToTest.getParams().toString());
+    }
+
+    @Test
     void getURL() {
         assertThat(classToTest.getURL(), is(equalTo("")));
 
