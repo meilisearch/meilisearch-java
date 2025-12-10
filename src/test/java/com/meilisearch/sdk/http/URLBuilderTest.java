@@ -3,22 +3,16 @@ package com.meilisearch.sdk.http;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class URLBuilderTest {
 
     private final URLBuilder classToTest = new URLBuilder();
-
-    @BeforeEach
-    void beforeEach() {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-    }
 
     @Test
     void addSubroute() {
