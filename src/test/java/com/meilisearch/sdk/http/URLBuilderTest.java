@@ -3,22 +3,16 @@ package com.meilisearch.sdk.http;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class URLBuilderTest {
 
     private final URLBuilder classToTest = new URLBuilder();
-
-    @BeforeEach
-    void beforeEach() {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-    }
 
     @Test
     void addSubroute() {
@@ -112,6 +106,16 @@ public class URLBuilderTest {
         assertEquals(
                 classToTest.getParams().toString(),
                 "?parameter1=2042-01-30T15:30:00Z&parameter2=2042-01-30T15:30:00Z");
+    }
+
+    @Test
+    void addParameterStringDateWithPositiveTimezoneOffset() throws Exception {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+        Date date = format.parse("2042-01-30T17:30:00+02:00");
+
+        classToTest.addParameter("parameter1", date);
+
+        assertEquals("?parameter1=2042-01-30T15:30:00Z", classToTest.getParams().toString());
     }
 
     @Test
