@@ -11,8 +11,6 @@ import com.meilisearch.sdk.exceptions.JsonDecodingException;
 import com.meilisearch.sdk.exceptions.JsonEncodingException;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.FilterableAttributesConfig;
-import com.meilisearch.sdk.json.JacksonFilterableAttributesConfigDeserializer;
-import com.meilisearch.sdk.json.JacksonFilterableAttributesConfigSerializer;
 import java.io.IOException;
 
 public class JacksonJsonHandler implements JsonHandler {

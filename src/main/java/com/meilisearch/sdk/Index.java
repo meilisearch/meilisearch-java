@@ -868,8 +868,7 @@ public class Index implements Serializable {
      *     specification</a>
      */
     public TaskInfo updateFilterableAttributesSettings(
-            FilterableAttributesConfig[] filterableAttributes)
-            throws MeilisearchException {
+            FilterableAttributesConfig[] filterableAttributes) throws MeilisearchException {
         return this.settingsHandler.updateFilterableAttributesSettings(
                 this.uid, filterableAttributes);
     }
