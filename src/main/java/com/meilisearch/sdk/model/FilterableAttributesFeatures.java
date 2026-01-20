@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Feature toggles for a granular filterable attribute configuration.
- */
+/** Feature toggles for a granular filterable attribute configuration. */
 @Getter
 @Setter
 @NoArgsConstructor

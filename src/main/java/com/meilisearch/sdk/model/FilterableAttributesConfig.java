@@ -8,8 +8,8 @@ import lombok.Setter;
 /**
  * Granular filterable attribute configuration (Meilisearch v1.14+).
  *
- * <p>Represents either a simple attribute name or a structured configuration that can disable/enable
- * specific filter features.
+ * <p>Represents either a simple attribute name or a structured configuration that can
+ * disable/enable specific filter features.
  */
 @Getter
 @Setter
