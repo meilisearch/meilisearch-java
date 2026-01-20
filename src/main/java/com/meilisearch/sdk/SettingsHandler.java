@@ -4,6 +4,7 @@ import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.URLBuilder;
 import com.meilisearch.sdk.model.Embedder;
 import com.meilisearch.sdk.model.Faceting;
+import com.meilisearch.sdk.model.FilterableAttributesConfig;
 import com.meilisearch.sdk.model.LocalizedAttribute;
 import com.meilisearch.sdk.model.Pagination;
 import com.meilisearch.sdk.model.Settings;
@@ -316,24 +317,27 @@ public class SettingsHandler {
      * Gets the filterableAttributes of the index
      *
      * @param uid Index identifier
-     * @return an array of strings that contains the filterable attributes settings
+     * @return an array of filterable attribute configs (strings or granular objects)
      * @throws MeilisearchException if an error occurs
      */
-    String[] getFilterableAttributesSettings(String uid) throws MeilisearchException {
+    FilterableAttributesConfig[] getFilterableAttributesSettings(String uid)
+            throws MeilisearchException {
         return httpClient.get(
-                settingsPath(uid).addSubroute("filterable-attributes").getURL(), String[].class);
+                settingsPath(uid).addSubroute("filterable-attributes").getURL(),
+                FilterableAttributesConfig[].class);
     }
 
     /**
      * Updates the filterable attributes of the index. This will re-index all documents in the index
      *
      * @param uid Index identifier
-     * @param filterableAttributes an array of strings that contains the new filterable attributes
-     *     settings
+     * @param filterableAttributes Array of filterable attribute configs (strings or granular
+     *     objects) that contains the new filterable attributes settings
      * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      */
-    TaskInfo updateFilterableAttributesSettings(String uid, String[] filterableAttributes)
+    TaskInfo updateFilterableAttributesSettings(
+            String uid, FilterableAttributesConfig[] filterableAttributes)
             throws MeilisearchException {
         return httpClient.put(
                 settingsPath(uid).addSubroute("filterable-attributes").getURL(),

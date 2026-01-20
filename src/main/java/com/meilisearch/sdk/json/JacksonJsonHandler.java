@@ -5,10 +5,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.meilisearch.sdk.exceptions.JsonDecodingException;
 import com.meilisearch.sdk.exceptions.JsonEncodingException;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.model.FilterableAttributesConfig;
+import com.meilisearch.sdk.json.JacksonFilterableAttributesConfigDeserializer;
+import com.meilisearch.sdk.json.JacksonFilterableAttributesConfigSerializer;
 import java.io.IOException;
 
 public class JacksonJsonHandler implements JsonHandler {
@@ -24,6 +28,14 @@ public class JacksonJsonHandler implements JsonHandler {
         this.mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         this.mapper.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
         this.mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        SimpleModule filterableModule = new SimpleModule();
+        filterableModule.addSerializer(
+                FilterableAttributesConfig.class,
+                new JacksonFilterableAttributesConfigSerializer());
+        filterableModule.addDeserializer(
+                FilterableAttributesConfig.class,
+                new JacksonFilterableAttributesConfigDeserializer());
+        this.mapper.registerModule(filterableModule);
     }
 
     /** @param mapper ObjectMapper */

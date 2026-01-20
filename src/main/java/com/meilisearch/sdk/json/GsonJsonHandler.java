@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import com.meilisearch.sdk.exceptions.JsonDecodingException;
 import com.meilisearch.sdk.exceptions.JsonEncodingException;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
+import com.meilisearch.sdk.model.FilterableAttributesConfig;
 import com.meilisearch.sdk.model.Key;
 
 public class GsonJsonHandler implements JsonHandler {
@@ -16,6 +17,8 @@ public class GsonJsonHandler implements JsonHandler {
     public GsonJsonHandler() {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Key.class, new GsonKeyTypeAdapter());
+        builder.registerTypeAdapter(
+                FilterableAttributesConfig.class, new GsonFilterableAttributesConfigTypeAdapter());
         this.gson = builder.create();
     }
 

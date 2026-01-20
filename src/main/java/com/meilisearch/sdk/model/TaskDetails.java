@@ -13,7 +13,7 @@ public class TaskDetails {
     protected String[] rankingRules;
     protected String[] searchableAttributes;
     protected String[] displayedAttributes;
-    protected String[] filterableAttributes;
+    protected FilterableAttributesConfig[] filterableAttributes;
     protected String[] sortableAttributes;
     protected String[] stopWords;
     protected Map<String, String[]> synonyms;

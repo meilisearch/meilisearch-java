@@ -18,7 +18,7 @@ public class Settings {
     protected HashMap<String, String[]> synonyms;
     protected String[] stopWords;
     protected String[] rankingRules;
-    protected String[] filterableAttributes;
+    protected FilterableAttributesConfig[] filterableAttributes;
     protected String distinctAttribute;
     protected String[] searchableAttributes;
     protected String[] displayedAttributes;

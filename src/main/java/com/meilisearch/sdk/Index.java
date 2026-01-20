@@ -851,22 +851,24 @@ public class Index implements Serializable {
      *     href="https://www.meilisearch.com/docs/reference/api/settings#get-filterable-attributes">API
      *     specification</a>
      */
-    public String[] getFilterableAttributesSettings() throws MeilisearchException {
+    public FilterableAttributesConfig[] getFilterableAttributesSettings()
+            throws MeilisearchException {
         return this.settingsHandler.getFilterableAttributesSettings(this.uid);
     }
 
     /**
      * Updates the filterable attributes of the index. This will re-index all documents in the index
      *
-     * @param filterableAttributes An array of strings containing the attributes that can be used as
-     *     filters at query time.
+     * @param filterableAttributes Array of filterable attribute configs (string or granular) to use
+     *     at query time.
      * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
      * @see <a
      *     href="https://www.meilisearch.com/docs/reference/api/settings#update-filterable-attributes">API
      *     specification</a>
      */
-    public TaskInfo updateFilterableAttributesSettings(String[] filterableAttributes)
+    public TaskInfo updateFilterableAttributesSettings(
+            FilterableAttributesConfig[] filterableAttributes)
             throws MeilisearchException {
         return this.settingsHandler.updateFilterableAttributesSettings(
                 this.uid, filterableAttributes);
