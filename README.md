@@ -186,6 +186,32 @@ index.updateFilterableAttributesSettings(new String[]
 });
 ```
 
+You can also use the advanced syntax introduced in Meilisearch v1.14 to disable specific features per attribute pattern:
+
+```java
+FilterableAttributesRule.Filter numericFilter =
+    new FilterableAttributesRule.Filter().setEquality(true).setComparison(true);
+FilterableAttributesRule.Features numericFeatures =
+    new FilterableAttributesRule.Features().setFacetSearch(false).setFilter(numericFilter);
+
+FilterableAttributesRule.Filter textFilter =
+    new FilterableAttributesRule.Filter().setEquality(true).setComparison(false);
+FilterableAttributesRule.Features textFeatures =
+    new FilterableAttributesRule.Features().setFacetSearch(true).setFilter(textFilter);
+
+FilterableAttributesRule[] rules =
+    new FilterableAttributesRule[] {
+        new FilterableAttributesRule()
+                .setAttributePatterns(new String[] {"price"})
+                .setFeatures(numericFeatures),
+        new FilterableAttributesRule()
+                .setAttributePatterns(new String[] {"genres"})
+                .setFeatures(textFeatures)
+    };
+
+index.updateFilterableAttributesSettings(rules);
+```
+
 You only need to perform this operation once.
 
 Note that Meilisearch will rebuild your index whenever you update `filterableAttributes`. Depending on the size of your dataset, this might take time. You can track the process using the [task status](https://www.meilisearch.com/docs/reference/api/tasks).

@@ -229,6 +229,28 @@ update_filterable_attributes_1: |-
   Settings settings = new Settings();
   settings.setFilterableAttributes(new String[] {"genres", "director"});
   client.index("movies").updateSettings(settings);
+update_filterable_attributes_advanced_1: |-
+  FilterableAttributesRule.Filter numericFilter =
+      new FilterableAttributesRule.Filter().setEquality(true).setComparison(true);
+  FilterableAttributesRule.Features numericFeatures =
+      new FilterableAttributesRule.Features().setFacetSearch(false).setFilter(numericFilter);
+
+  FilterableAttributesRule.Filter textFilter =
+      new FilterableAttributesRule.Filter().setEquality(true).setComparison(false);
+  FilterableAttributesRule.Features textFeatures =
+      new FilterableAttributesRule.Features().setFacetSearch(true).setFilter(textFilter);
+
+  FilterableAttributesRule[] rules =
+      new FilterableAttributesRule[] {
+        new FilterableAttributesRule()
+            .setAttributePatterns(new String[] {"price"})
+            .setFeatures(numericFeatures),
+        new FilterableAttributesRule()
+            .setAttributePatterns(new String[] {"genres"})
+            .setFeatures(textFeatures)
+      };
+
+  client.index("movies").updateFilterableAttributesSettings(rules);
 reset_filterable_attributes_1: |-
   client.index("movies").resetFilterableAttributesSettings();
 get_displayed_attributes_1: |-

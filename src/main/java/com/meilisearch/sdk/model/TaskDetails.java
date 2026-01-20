@@ -2,6 +2,7 @@ package com.meilisearch.sdk.model;
 
 import java.util.Map;
 import lombok.Getter;
+import com.meilisearch.sdk.model.FilterableAttributesRule;
 
 /** Task details data structure */
 @Getter
@@ -13,7 +14,7 @@ public class TaskDetails {
     protected String[] rankingRules;
     protected String[] searchableAttributes;
     protected String[] displayedAttributes;
-    protected String[] filterableAttributes;
+    protected FilterableAttributesRule[] filterableAttributes;
     protected String[] sortableAttributes;
     protected String[] stopWords;
     protected Map<String, String[]> synonyms;

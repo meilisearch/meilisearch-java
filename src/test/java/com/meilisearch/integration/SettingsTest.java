@@ -24,6 +24,7 @@ import com.meilisearch.sdk.model.Faceting;
 import com.meilisearch.sdk.model.LocalizedAttribute;
 import com.meilisearch.sdk.model.Pagination;
 import com.meilisearch.sdk.model.Settings;
+import com.meilisearch.sdk.model.FilterableAttributesRule;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.model.TypoTolerance;
 import com.meilisearch.sdk.utils.Movie;
@@ -623,6 +624,38 @@ public class SettingsTest extends AbstractIT {
         assertThat(
                 updatedFilterableAttributes,
                 is(not(arrayWithSize(initialFilterableAttributes.length))));
+    }
+
+    @Test
+    @DisplayName("Test update filterable attributes with advanced config")
+    public void testUpdateFilterableAttributesAdvancedSettings() throws Exception {
+        Index index = createIndex("testUpdateFilterableAttributesAdvancedSettings");
+
+        FilterableAttributesRule.Filter filter =
+                new FilterableAttributesRule.Filter().setEquality(true).setComparison(false);
+        FilterableAttributesRule.Features features =
+                new FilterableAttributesRule.Features().setFacetSearch(false).setFilter(filter);
+        FilterableAttributesRule advancedRule =
+                new FilterableAttributesRule()
+                        .setAttributePatterns(new String[] {"title"})
+                        .setFeatures(features);
+        FilterableAttributesRule simpleRule = FilterableAttributesRule.fromAttributeName("genres");
+
+        Settings settings =
+                new Settings()
+                        .setFilterableAttributesConfig(
+                                new FilterableAttributesRule[] {advancedRule, simpleRule});
+
+        index.waitForTask(index.updateSettings(settings).getTaskUid());
+
+        FilterableAttributesRule[] config = index.getFilterableAttributesConfig();
+        assertThat(config, is(arrayWithSize(2)));
+        assertThat(config[0].getFeatures().getFacetSearch(), is(equalTo(false)));
+        assertThat(config[0].getFeatures().getFilter().getEquality(), is(equalTo(true)));
+        assertThat(config[0].getFeatures().getFilter().getComparison(), is(equalTo(false)));
+
+        String[] flattened = index.getFilterableAttributesSettings();
+        assertThat(Arrays.asList(flattened), containsInAnyOrder("title", "genres"));
     }
 
     @Test

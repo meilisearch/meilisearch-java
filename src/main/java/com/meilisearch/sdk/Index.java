@@ -856,6 +856,19 @@ public class Index implements Serializable {
     }
 
     /**
+     * Gets the filterable attributes configuration of the index (v1.14+ advanced format).
+     *
+     * @return array of FilterableAttributesRule describing attribute patterns and feature toggles
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#get-filterable-attributes">API
+     *     specification</a>
+     */
+    public FilterableAttributesRule[] getFilterableAttributesConfig() throws MeilisearchException {
+        return this.settingsHandler.getFilterableAttributesConfig(this.uid);
+    }
+
+    /**
      * Updates the filterable attributes of the index. This will re-index all documents in the index
      *
      * @param filterableAttributes An array of strings containing the attributes that can be used as
@@ -867,6 +880,23 @@ public class Index implements Serializable {
      *     specification</a>
      */
     public TaskInfo updateFilterableAttributesSettings(String[] filterableAttributes)
+            throws MeilisearchException {
+        return this.settingsHandler.updateFilterableAttributesSettings(
+                this.uid, filterableAttributes);
+    }
+
+    /**
+     * Updates the filterable attributes of the index using the advanced configuration (v1.14+).
+     *
+     * @param filterableAttributes An array of FilterableAttributesRule describing attribute patterns
+     *     and feature toggles.
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#update-filterable-attributes">API
+     *     specification</a>
+     */
+    public TaskInfo updateFilterableAttributesSettings(FilterableAttributesRule[] filterableAttributes)
             throws MeilisearchException {
         return this.settingsHandler.updateFilterableAttributesSettings(
                 this.uid, filterableAttributes);
