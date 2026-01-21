@@ -425,7 +425,10 @@ public class SearchTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        settings.setFilterableAttributes(new String[] {"language"});
+        settings.setFilterableAttributes(
+                new FilterableAttributesConfig[] {
+                    FilterableAttributesConfig.fromAttributeName("language")
+                });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchRequest searchRequest = SearchRequest.builder().q("").distinct("language").build();
@@ -469,7 +472,10 @@ public class SearchTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        settings.setFilterableAttributes(new String[] {"title"});
+        settings.setFilterableAttributes(
+                new FilterableAttributesConfig[] {
+                    FilterableAttributesConfig.fromAttributeName("title")
+                });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchRequest searchRequest =
@@ -499,7 +505,11 @@ public class SearchTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        settings.setFilterableAttributes(new String[] {"title", "id"});
+        settings.setFilterableAttributes(
+                new FilterableAttributesConfig[] {
+                    FilterableAttributesConfig.fromAttributeName("title"),
+                    FilterableAttributesConfig.fromAttributeName("id")
+                });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchRequest searchRequest =
@@ -528,7 +538,10 @@ public class SearchTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        settings.setFilterableAttributes(new String[] {"title"});
+        settings.setFilterableAttributes(
+                new FilterableAttributesConfig[] {
+                    FilterableAttributesConfig.fromAttributeName("title")
+                });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchRequest searchRequest =
@@ -553,7 +566,11 @@ public class SearchTest extends AbstractIT {
 
         Settings settings = index.getSettings();
 
-        settings.setFilterableAttributes(new String[] {"title", "id"});
+        settings.setFilterableAttributes(
+                new FilterableAttributesConfig[] {
+                    FilterableAttributesConfig.fromAttributeName("title"),
+                    FilterableAttributesConfig.fromAttributeName("id")
+                });
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchRequest searchRequest =
@@ -907,7 +924,11 @@ public class SearchTest extends AbstractIT {
             TaskInfo task = index.addDocuments(testData.getRaw());
 
             Settings settings = new Settings();
-            settings.setFilterableAttributes(new String[] {"language", "title"});
+            settings.setFilterableAttributes(
+                    new FilterableAttributesConfig[] {
+                        FilterableAttributesConfig.fromAttributeName("language"),
+                        FilterableAttributesConfig.fromAttributeName("title")
+                    });
 
             index.waitForTask(index.updateSettings(settings).getTaskUid());
 
@@ -946,7 +967,11 @@ public class SearchTest extends AbstractIT {
             index.waitForTask(task1.getTaskUid());
 
             Settings settings = new Settings();
-            settings.setFilterableAttributes(new String[] {"id", "title"});
+            settings.setFilterableAttributes(
+                    new FilterableAttributesConfig[] {
+                        FilterableAttributesConfig.fromAttributeName("id"),
+                        FilterableAttributesConfig.fromAttributeName("title")
+                    });
             settings.setSortableAttributes(new String[] {"id"});
 
             index.waitForTask(index.updateSettings(settings).getTaskUid());
@@ -1036,7 +1061,11 @@ public class SearchTest extends AbstractIT {
             index.waitForTask(task1.getTaskUid());
 
             Settings settings = new Settings();
-            settings.setFilterableAttributes(new String[] {"id", "title"});
+            settings.setFilterableAttributes(
+                    new FilterableAttributesConfig[] {
+                        FilterableAttributesConfig.fromAttributeName("id"),
+                        FilterableAttributesConfig.fromAttributeName("title")
+                    });
             settings.setSortableAttributes(new String[] {"id"});
 
             index.waitForTask(index.updateSettings(settings).getTaskUid());

@@ -549,7 +549,8 @@ public class Index implements Serializable {
      *     href="https://www.meilisearch.com/docs/reference/api/facet_search#perform-a-facet-search">API
      *     specification</a>
      * @see Index#getFilterableAttributesSettings() getFilterableAttributesSettings
-     * @see Index#updateFilterableAttributesSettings(String[]) updateFilterableAttributesSettings
+     * @see Index#updateFilterableAttributesSettings(FilterableAttributesConfig[])
+     *     updateFilterableAttributesSettings
      * @since 1.3
      */
     public FacetSearchable facetSearch(FacetSearchRequest facetSearchRequest)

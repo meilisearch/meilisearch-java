@@ -17,6 +17,7 @@ import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.exceptions.MeilisearchApiException;
 import com.meilisearch.sdk.model.DocumentsQuery;
+import com.meilisearch.sdk.model.FilterableAttributesConfig;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.utils.Movie;
@@ -495,7 +496,10 @@ public class DocumentsTest extends AbstractIT {
                         .setFilter(filters.toArray(new String[0]));
         Index index = client.index(indexUid);
 
-        String[] filterAttributes = {"genres"};
+        FilterableAttributesConfig[] filterAttributes =
+                new FilterableAttributesConfig[] {
+                    FilterableAttributesConfig.fromAttributeName("genres")
+                };
         index.waitForTask(index.updateFilterableAttributesSettings(filterAttributes).getTaskUid());
 
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
@@ -684,7 +688,11 @@ public class DocumentsTest extends AbstractIT {
         assertThat(movies, is(arrayWithSize(20)));
 
         index.waitForTask(
-                index.updateFilterableAttributesSettings(new String[] {"genres"}).getTaskUid());
+                index.updateFilterableAttributesSettings(
+                                new FilterableAttributesConfig[] {
+                                    FilterableAttributesConfig.fromAttributeName("genres")
+                                })
+                        .getTaskUid());
 
         String deleteFilter = "genres = action OR genres = adventure";
 
@@ -829,7 +837,11 @@ public class DocumentsTest extends AbstractIT {
         index.waitForTask(addTask.getTaskUid());
 
         index.waitForTask(
-                index.updateFilterableAttributesSettings(new String[] {"id"}).getTaskUid());
+                index.updateFilterableAttributesSettings(
+                                new FilterableAttributesConfig[] {
+                                    FilterableAttributesConfig.fromAttributeName("id")
+                                })
+                        .getTaskUid());
 
         TaskInfo task = index.deleteDocumentsByFilter("id = 419704", "delete-filter-metadata");
         index.waitForTask(task.getTaskUid());
