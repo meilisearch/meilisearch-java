@@ -11,9 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Gson adapter for polymorphic filterable attributes config (string or object).
- */
+/** Gson adapter for polymorphic filterable attributes config (string or object). */
 public class GsonFilterableAttributesConfigTypeAdapter
         extends TypeAdapter<FilterableAttributesConfig> {
 
