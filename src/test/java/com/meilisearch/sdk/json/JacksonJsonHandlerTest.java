@@ -12,6 +12,10 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.meilisearch.sdk.model.FilterableAttributesConfig;
+import com.meilisearch.sdk.model.FilterableAttributesFeatures;
+import com.meilisearch.sdk.model.FilterableAttributesFilter;
+import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.HashMap;
 import java.util.List;
@@ -64,5 +68,69 @@ class JacksonJsonHandlerTest {
 
         assertThat(decode, notNullValue());
         assertThat(decode, aMapWithSize(3));
+    }
+
+    @Test
+    void granularFilterableAttributesRoundTripWithCustomMapper() throws Exception {
+        ObjectMapper customMapper = new ObjectMapper();
+        JacksonJsonHandler handlerWithCustomMapper = new JacksonJsonHandler(customMapper);
+
+        FilterableAttributesFilter filter = new FilterableAttributesFilter();
+        filter.setEquality(true);
+        filter.setComparison(false);
+
+        FilterableAttributesFeatures features = new FilterableAttributesFeatures();
+        features.setFacetSearch(true);
+        features.setFilter(filter);
+
+        FilterableAttributesConfig advanced = new FilterableAttributesConfig();
+        advanced.setAttributePatterns(new String[] {"director"});
+        advanced.setFeatures(features);
+
+        FilterableAttributesConfig[] configs =
+                new FilterableAttributesConfig[] {
+                    FilterableAttributesConfig.fromAttributeName("genres"), advanced
+                };
+
+        String json = handlerWithCustomMapper.encode(configs);
+        FilterableAttributesConfig[] decoded =
+                handlerWithCustomMapper.decode(json, FilterableAttributesConfig[].class);
+
+        assertThat(decoded, is(notNullValue()));
+        assertThat(decoded.length, is(2));
+
+        FilterableAttributesConfig decodedAdvanced = decoded[1];
+        assertThat(decodedAdvanced.getAttributePatterns()[0], is("director"));
+        assertThat(decodedAdvanced.getFeatures(), is(notNullValue()));
+        assertThat(decodedAdvanced.getFeatures().getFacetSearch(), is(true));
+        assertThat(decodedAdvanced.getFeatures().getFilter(), is(notNullValue()));
+        assertThat(decodedAdvanced.getFeatures().getFilter().getEquality(), is(true));
+        assertThat(decodedAdvanced.getFeatures().getFilter().getComparison(), is(false));
+    }
+
+    @Test
+    void settingsWithGranularFilterableAttributesRoundTripWithCustomMapper() throws Exception {
+        ObjectMapper customMapper = new ObjectMapper();
+        JacksonJsonHandler handlerWithCustomMapper = new JacksonJsonHandler(customMapper);
+
+        FilterableAttributesConfig[] configs =
+                new FilterableAttributesConfig[] {
+                    FilterableAttributesConfig.fromAttributeName("genres"),
+                    FilterableAttributesConfig.fromAttributeName("director")
+                };
+
+        Settings settings = new Settings();
+        settings.setFilterableAttributes(configs);
+
+        String json = handlerWithCustomMapper.encode(settings);
+        Settings decoded = handlerWithCustomMapper.decode(json, Settings.class);
+
+        assertThat(decoded, is(notNullValue()));
+        assertThat(decoded.getFilterableAttributes(), is(notNullValue()));
+        assertThat(decoded.getFilterableAttributes().length, is(2));
+        assertThat(
+                decoded.getFilterableAttributes()[0].getAttributePatterns()[0], is("genres"));
+        assertThat(
+                decoded.getFilterableAttributes()[1].getAttributePatterns()[0], is("director"));
     }
 }
