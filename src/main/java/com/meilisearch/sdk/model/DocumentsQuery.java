@@ -21,6 +21,7 @@ public class DocumentsQuery {
     private int limit = -1;
     private String[] fields;
     private String[] filter;
+    private String[] sort;
 
     public DocumentsQuery() {}
 
@@ -29,7 +30,8 @@ public class DocumentsQuery {
                 new URLBuilder()
                         .addParameter("limit", this.getLimit())
                         .addParameter("offset", this.getOffset())
-                        .addParameter("fields", this.getFields());
+                        .addParameter("fields", this.getFields())
+                        .addParameter("sort", this.getSort());
         return urlb.getURL();
     }
 
@@ -47,6 +49,9 @@ public class DocumentsQuery {
         }
         if (filter != null) {
             jsonObject.put("filter", filter);
+        }
+        if (sort != null) {
+            jsonObject.put("sort", sort);
         }
         return jsonObject.toString();
     }

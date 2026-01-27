@@ -518,6 +518,37 @@ public class DocumentsTest extends AbstractIT {
         assertThat(movies[0].getRelease_date(), is(nullValue()));
     }
 
+    /** Test GetDocuments with sort parameter */
+    @Test
+    void testGetDocumentsWithSort() throws Exception {
+        String indexUid = "GetDocumentsWithSort";
+        int limit = 5;
+        List<String> sortCriteria = Arrays.asList("title:asc");
+
+        DocumentsQuery query =
+                new DocumentsQuery().setLimit(limit).setSort(sortCriteria.toArray(new String[0]));
+        Index index = client.index(indexUid);
+
+        String[] sortableAttributes = {"title"};
+        index.waitForTask(index.updateSortableAttributesSettings(sortableAttributes).getTaskUid());
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+        Results<Movie> result = index.getDocuments(query, Movie.class);
+        Movie[] movies = result.getResults();
+
+        assertThat(movies, is(arrayWithSize(limit)));
+        // Verify movies are sorted by title in ascending order
+        for (int i = 0; i < movies.length - 1; i++) {
+            assertThat(movies[i].getTitle(), is(notNullValue()));
+            assertThat(movies[i + 1].getTitle(), is(notNullValue()));
+            assertThat(
+                    movies[i].getTitle().compareTo(movies[i + 1].getTitle()), is(not(equalTo(1))));
+        }
+    }
+
     /** Test default GetRawDocuments */
     @Test
     public void testGetRawDocuments() throws Exception {
@@ -609,6 +640,30 @@ public class DocumentsTest extends AbstractIT {
         assertThat(results.contains("langage"), is(equalTo(false)));
         assertThat(results.contains("poster"), is(equalTo(false)));
         assertThat(results.contains("release_date"), is(equalTo(false)));
+    }
+
+    /** Test GetRawDocuments with sort parameter */
+    @Test
+    void testGetRawDocumentsWithSort() throws Exception {
+        String indexUid = "GetRawDocumentsWithSort";
+        int limit = 3;
+        List<String> sortCriteria = Arrays.asList("title:desc");
+
+        DocumentsQuery query =
+                new DocumentsQuery().setLimit(limit).setSort(sortCriteria.toArray(new String[0]));
+        Index index = client.index(indexUid);
+
+        String[] sortableAttributes = {"title"};
+        index.waitForTask(index.updateSortableAttributesSettings(sortableAttributes).getTaskUid());
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+        String results = index.getRawDocuments(query);
+
+        assertThat(results.contains("results"), is(equalTo(true)));
+        assertThat(results.contains("\"limit\":3"), is(equalTo(true)));
     }
 
     /** Test deleteDocument */
