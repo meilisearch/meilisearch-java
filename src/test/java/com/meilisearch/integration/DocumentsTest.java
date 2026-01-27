@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItemInArray;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -545,7 +546,8 @@ public class DocumentsTest extends AbstractIT {
             assertThat(movies[i].getTitle(), is(notNullValue()));
             assertThat(movies[i + 1].getTitle(), is(notNullValue()));
             assertThat(
-                    movies[i].getTitle().compareTo(movies[i + 1].getTitle()), is(not(equalTo(1))));
+                    movies[i].getTitle().compareTo(movies[i + 1].getTitle()),
+                    is(lessThanOrEqualTo(0)));
         }
     }
 
