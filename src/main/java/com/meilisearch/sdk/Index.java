@@ -221,7 +221,32 @@ public class Index implements Serializable {
             String document, String primaryKey, String csvDelimiter, String customMetadata)
             throws MeilisearchException {
         return this.documents.addDocuments(
-                this.uid, document, primaryKey, csvDelimiter, customMetadata);
+                this.uid, document, primaryKey, csvDelimiter, customMetadata, null);
+    }
+
+    /**
+     * Adds/Replaces documents in the index
+     *
+     * @param document Document to add in JSON or CSV string format
+     * @param primaryKey PrimaryKey of the document to add
+     * @param csvDelimiter Custom delimiter to use for the document being added
+     * @param customMetadata Custom metadata to attach to the task
+     * @param skipCreation If true, skips document creation and only updates existing documents
+     * @return TaskInfo Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/documents#add-or-replace-documents">API
+     *     specification</a>
+     */
+    public TaskInfo addDocuments(
+            String document,
+            String primaryKey,
+            String csvDelimiter,
+            String customMetadata,
+            Boolean skipCreation)
+            throws MeilisearchException {
+        return this.documents.addDocuments(
+                this.uid, document, primaryKey, csvDelimiter, customMetadata, skipCreation);
     }
 
     /**
@@ -335,7 +360,32 @@ public class Index implements Serializable {
             String document, String primaryKey, String csvDelimiter, String customMetadata)
             throws MeilisearchException {
         return this.documents.updateDocuments(
-                this.uid, document, primaryKey, csvDelimiter, customMetadata);
+                this.uid, document, primaryKey, csvDelimiter, customMetadata, null);
+    }
+
+    /**
+     * Updates documents in the index
+     *
+     * @param document Document to update in JSON or CSV string format
+     * @param primaryKey PrimaryKey of the document
+     * @param csvDelimiter Custom delimiter to use for the document being added
+     * @param customMetadata Custom metadata to attach to the task
+     * @param skipCreation If true, skips document creation and only updates existing documents
+     * @return TaskInfo Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/documents#add-or-replace-documents">API
+     *     specification</a>
+     */
+    public TaskInfo updateDocuments(
+            String document,
+            String primaryKey,
+            String csvDelimiter,
+            String customMetadata,
+            Boolean skipCreation)
+            throws MeilisearchException {
+        return this.documents.updateDocuments(
+                this.uid, document, primaryKey, csvDelimiter, customMetadata, skipCreation);
     }
 
     /**
