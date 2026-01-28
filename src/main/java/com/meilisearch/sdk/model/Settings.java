@@ -1,6 +1,7 @@
 package com.meilisearch.sdk.model;
 
 import java.util.HashMap;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -18,6 +19,8 @@ public class Settings {
     protected HashMap<String, String[]> synonyms;
     protected String[] stopWords;
     protected String[] rankingRules;
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     protected FilterableAttributesConfig[] filterableAttributes;
     protected String distinctAttribute;
     protected String[] searchableAttributes;
@@ -35,4 +38,25 @@ public class Settings {
     protected LocalizedAttribute[] localizedAttributes;
 
     public Settings() {}
+
+    /** Granular filterable attributes accessor. */
+    public FilterableAttributesConfig[] getFilterableAttributesConfig() {
+        return filterableAttributes;
+    }
+
+    public Settings setFilterableAttributesConfig(FilterableAttributesConfig[] configs) {
+        this.filterableAttributes = configs;
+        return this;
+    }
+
+    /** Legacy String[] view of filterable attributes. */
+    public String[] getFilterableAttributes() {
+        return FilterableAttributesLegacyAdapter.toLegacyNamesOrThrow(filterableAttributes);
+    }
+
+    public Settings setFilterableAttributes(String[] filterableAttributes) {
+        this.filterableAttributes =
+                FilterableAttributesLegacyAdapter.fromLegacyNames(filterableAttributes);
+        return this;
+    }
 }

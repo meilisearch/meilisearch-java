@@ -549,8 +549,8 @@ public class Index implements Serializable {
      *     href="https://www.meilisearch.com/docs/reference/api/facet_search#perform-a-facet-search">API
      *     specification</a>
      * @see Index#getFilterableAttributesSettings() getFilterableAttributesSettings
-     * @see Index#updateFilterableAttributesSettings(FilterableAttributesConfig[])
-     *     updateFilterableAttributesSettings
+     * @see Index#updateGranularFilterableAttributesSettings(FilterableAttributesConfig[])
+     *     updateGranularFilterableAttributesSettings
      * @since 1.3
      */
     public FacetSearchable facetSearch(FacetSearchRequest facetSearchRequest)
@@ -844,21 +844,53 @@ public class Index implements Serializable {
     }
 
     /**
-     * Gets the filterable attributes of the index
+     * Gets the filterable attributes of the index (legacy String[] view).
      *
      * @return filterable attributes of a given uid as String
+     * @throws MeilisearchException if an error occurs or granular configs cannot be reduced
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#get-filterable-attributes">API
+     *     specification</a>
+     */
+    public String[] getFilterableAttributesSettings() throws MeilisearchException {
+        return this.settingsHandler.getFilterableAttributesSettings(this.uid);
+    }
+
+    /**
+     * Updates the filterable attributes of the index using the legacy String[] view. This will
+     * re-index all documents in the index.
+     *
+     * @param filterableAttributes An array of strings containing the attributes that can be used as
+     *     filters at query time.
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/settings#update-filterable-attributes">API
+     *     specification</a>
+     */
+    public TaskInfo updateFilterableAttributesSettings(String[] filterableAttributes)
+            throws MeilisearchException {
+        return this.settingsHandler.updateFilterableAttributesSettings(
+                this.uid, filterableAttributes);
+    }
+
+    /**
+     * Gets the filterable attributes of the index (granular view).
+     *
+     * @return filterable attributes of a given uid as FilterableAttributesConfig[]
      * @throws MeilisearchException if an error occurs
      * @see <a
      *     href="https://www.meilisearch.com/docs/reference/api/settings#get-filterable-attributes">API
      *     specification</a>
      */
-    public FilterableAttributesConfig[] getFilterableAttributesSettings()
+    public FilterableAttributesConfig[] getGranularFilterableAttributesSettings()
             throws MeilisearchException {
-        return this.settingsHandler.getFilterableAttributesSettings(this.uid);
+        return this.settingsHandler.getGranularFilterableAttributesSettings(this.uid);
     }
 
     /**
-     * Updates the filterable attributes of the index. This will re-index all documents in the index
+     * Updates the filterable attributes of the index using the granular representation. This will
+     * re-index all documents in the index.
      *
      * @param filterableAttributes Array of filterable attribute configs (string or granular) to use
      *     at query time.
@@ -868,9 +900,9 @@ public class Index implements Serializable {
      *     href="https://www.meilisearch.com/docs/reference/api/settings#update-filterable-attributes">API
      *     specification</a>
      */
-    public TaskInfo updateFilterableAttributesSettings(
+    public TaskInfo updateGranularFilterableAttributesSettings(
             FilterableAttributesConfig[] filterableAttributes) throws MeilisearchException {
-        return this.settingsHandler.updateFilterableAttributesSettings(
+        return this.settingsHandler.updateGranularFilterableAttributesSettings(
                 this.uid, filterableAttributes);
     }
 

@@ -568,11 +568,7 @@ getting_started_sorting: |-
   client.index("meteorites").search(searchRequest);
 getting_started_configure_settings: |-
   Settings settings = new Settings();
-  settings.setFilterableAttributes(
-    new FilterableAttributesConfig[] {
-      FilterableAttributesConfig.fromAttributeName("mass"),
-      FilterableAttributesConfig.fromAttributeName("_geo")
-    });
+  settings.setFilterableAttributes(new String[] { "mass", "_geo" });
   settings.setSortableAttributes(new String[] {"mass", "_geo"});
   client.index("meteorites").updateSettings(settings);
 getting_started_faceting: |-
@@ -587,11 +583,11 @@ getting_started_pagination: |-
   newPagination.setMaxTotalHits(500);
   client.index("movies").updatePaginationSettings(newPagination);
 filtering_update_settings_1: |-
-  FilterableAttributesConfig[] filterableAttributes = new FilterableAttributesConfig[] {
-    FilterableAttributesConfig.fromAttributeName("genres"),
-    FilterableAttributesConfig.fromAttributeName("director")
-  };
-  client.index("movies").updateFilterableAttributesSettings(filterableAttributes);
+  client.index("movies").updateFilterableAttributesSettings(new String[]
+  {
+    "genres",
+    "director"
+  });
 faceted_search_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("classic").facets(new String[]
   {
@@ -608,12 +604,12 @@ search_parameter_guide_facet_stats_1: |-
   }).build();
   client.index("movies").search(searchRequest);
 faceted_search_update_settings_1:
-  FilterableAttributesConfig[] filterableAttributes = new FilterableAttributesConfig[] {
-    FilterableAttributesConfig.fromAttributeName("genres"),
-    FilterableAttributesConfig.fromAttributeName("director"),
-    FilterableAttributesConfig.fromAttributeName("language")
-  };
-  client.index("movie_ratings").updateFilterableAttributesSettings(filterableAttributes);
+  client.index("movie_ratings").updateFilterableAttributesSettings(new String[]
+  {
+    "genres",
+    "director",
+    "language"
+  });
 faceted_search_walkthrough_filter_1: |-
   SearchRequest searchRequest =
     SearchRequest.builder().q("thriller").filterArray(new String[][] {
@@ -695,10 +691,7 @@ search_parameter_guide_sort_1: |-
   client.index("search_parameter_guide_sort_1").search(searchRequest);
 geosearch_guide_filter_settings_1: |-
   Settings settings = new Settings();
-  settings.setFilterableAttributes(
-    new FilterableAttributesConfig[] {
-      FilterableAttributesConfig.fromAttributeName("_geo")
-    });
+  settings.setFilterableAttributes(new String[] { "_geo" });
   client.index("restaurants").updateSettings(settings);
 geosearch_guide_filter_usage_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("").filter(new String[] {"_geoRadius(45.472735, 9.184019, 2000)"}).build();
@@ -791,10 +784,8 @@ date_guide_index_1: |-
   Index index = client.index("games");
   index.addDocuments(gamesJson);
 date_guide_filterable_attributes_1: |-
-  FilterableAttributesConfig releaseTimestamp =
-    FilterableAttributesConfig.fromAttributeName("release_timestamp");
   client.index("movies").updateFilterableAttributesSettings(
-    new FilterableAttributesConfig[] { releaseTimestamp });
+    new String[] { "release_timestamp" });
 date_guide_filter_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("").filter(new String[] {"release_timestamp >= 1514761200 AND release_timestamp < 1672527600"}).build();
   client.index("games").search(searchRequest);
@@ -851,12 +842,7 @@ search_parameter_reference_distinct_1: |-
   client.index("INDEX_NAME").search(searchRequest);
 distinct_attribute_guide_filterable_1: |-
   Settings settings = new Settings();
-  settings.setFilterableAttributes(
-    new FilterableAttributesConfig[] {
-      FilterableAttributesConfig.fromAttributeName("product_id"),
-      FilterableAttributesConfig.fromAttributeName("SKU"),
-      FilterableAttributesConfig.fromAttributeName("url")
-    });
+  settings.setFilterableAttributes(new String[] { "product_id", "SKU", "url" });
   client.index("products").updateSettings(settings);
 distinct_attribute_guide_distinct_parameter_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("white shirt").distinct("sku").build();

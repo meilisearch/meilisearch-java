@@ -19,6 +19,7 @@ public class GsonJsonHandler implements JsonHandler {
         builder.registerTypeAdapter(Key.class, new GsonKeyTypeAdapter());
         builder.registerTypeAdapter(
                 FilterableAttributesConfig.class, new GsonFilterableAttributesConfigTypeAdapter());
+        builder.registerTypeAdapterFactory(new GsonTaskDetailsTypeAdapterFactory());
         this.gson = builder.create();
     }
 

@@ -13,7 +13,6 @@ import com.meilisearch.sdk.Config;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.TenantTokenOptions;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
-import com.meilisearch.sdk.model.FilterableAttributesConfig;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.model.Settings;
@@ -102,10 +101,7 @@ public class TenantTokenTest extends AbstractIT {
         index.waitForTask(task.getTaskUid());
 
         Settings settings = index.getSettings();
-        settings.setFilterableAttributes(
-                new FilterableAttributesConfig[] {
-                    FilterableAttributesConfig.fromAttributeName("id")
-                });
+        settings.setFilterableAttributes(new String[] {"id"});
         index.waitForTask(index.updateSettings(settings).getTaskUid());
 
         SearchResult searchResult = tokenClient.index(indexUid).search("");

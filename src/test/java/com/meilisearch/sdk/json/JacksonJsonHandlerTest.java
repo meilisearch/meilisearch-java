@@ -120,15 +120,18 @@ class JacksonJsonHandlerTest {
                 };
 
         Settings settings = new Settings();
-        settings.setFilterableAttributes(configs);
+        settings.setFilterableAttributesConfig(configs);
 
         String json = handlerWithCustomMapper.encode(settings);
         Settings decoded = handlerWithCustomMapper.decode(json, Settings.class);
 
         assertThat(decoded, is(notNullValue()));
-        assertThat(decoded.getFilterableAttributes(), is(notNullValue()));
-        assertThat(decoded.getFilterableAttributes().length, is(2));
-        assertThat(decoded.getFilterableAttributes()[0].getAttributePatterns()[0], is("genres"));
-        assertThat(decoded.getFilterableAttributes()[1].getAttributePatterns()[0], is("director"));
+        assertThat(decoded.getFilterableAttributesConfig(), is(notNullValue()));
+        assertThat(decoded.getFilterableAttributesConfig().length, is(2));
+        assertThat(
+                decoded.getFilterableAttributesConfig()[0].getAttributePatterns()[0], is("genres"));
+        assertThat(
+                decoded.getFilterableAttributesConfig()[1].getAttributePatterns()[0],
+                is("director"));
     }
 }
