@@ -332,6 +332,7 @@ public class SettingsHandler {
      * @param uid Index identifier
      * @return an array of filterable attribute configs (strings or granular objects)
      * @throws MeilisearchException if an error occurs
+     * @since 1.14.0
      */
     FilterableAttributesConfig[] getGranularFilterableAttributesSettings(String uid)
             throws MeilisearchException {
@@ -365,6 +366,7 @@ public class SettingsHandler {
      *     objects) that contains the new filterable attributes settings
      * @return TaskInfo instance
      * @throws MeilisearchException if an error occurs
+     * @since 1.14.0
      */
     TaskInfo updateGranularFilterableAttributesSettings(
             String uid, FilterableAttributesConfig[] filterableAttributes)

@@ -224,9 +224,11 @@ update_searchable_attributes_1: |-
 reset_searchable_attributes_1: |-
   client.index("movies").resetSearchableAttributesSettings();
 get_filterable_attributes_1: |-
+  // Granular filterable attributes API (v1.14+)
+  client.index("movies").getGranularFilterableAttributesSettings();
+  // Legacy String[] API
   client.index("movies").getFilterableAttributesSettings();
 update_filterable_attributes_1: |-
-  Settings settings = new Settings();
   FilterableAttributesConfig genres = FilterableAttributesConfig.fromAttributeName("genres");
 
   FilterableAttributesFilter directorFilter = new FilterableAttributesFilter();
@@ -241,6 +243,8 @@ update_filterable_attributes_1: |-
   director.setAttributePatterns(new String[] {"director"});
   director.setFeatures(directorFeatures);
 
+  // Update settings
+  Settings settings = new Settings();
   settings.setFilterableAttributes(new FilterableAttributesConfig[] {genres, director});
   client.index("movies").updateSettings(settings);
 reset_filterable_attributes_1: |-
