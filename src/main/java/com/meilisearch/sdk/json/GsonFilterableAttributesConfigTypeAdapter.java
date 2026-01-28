@@ -108,6 +108,10 @@ public class GsonFilterableAttributesConfigTypeAdapter
     }
 
     private String[] readAttributePatterns(JsonReader reader) throws IOException {
+        if (reader.peek() == JsonToken.NULL) {
+            reader.nextNull();
+            return null;
+        }
         List<String> patterns = new ArrayList<>();
         reader.beginArray();
         while (reader.peek() != JsonToken.END_ARRAY) {
@@ -123,6 +127,10 @@ public class GsonFilterableAttributesConfigTypeAdapter
     }
 
     private FilterableAttributesFeatures readFeatures(JsonReader reader) throws IOException {
+        if (reader.peek() == JsonToken.NULL) {
+            reader.nextNull();
+            return null;
+        }
         FilterableAttributesFeatures features = new FilterableAttributesFeatures();
         reader.beginObject();
         while (reader.peek() != JsonToken.END_OBJECT) {
@@ -142,6 +150,10 @@ public class GsonFilterableAttributesConfigTypeAdapter
     }
 
     private FilterableAttributesFilter readFilter(JsonReader reader) throws IOException {
+        if (reader.peek() == JsonToken.NULL) {
+            reader.nextNull();
+            return null;
+        }
         FilterableAttributesFilter filter = new FilterableAttributesFilter();
         reader.beginObject();
         while (reader.peek() != JsonToken.END_OBJECT) {
