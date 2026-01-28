@@ -3,7 +3,6 @@ package com.meilisearch.sdk.json;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
@@ -63,7 +62,8 @@ public class GsonTaskDetailsTypeAdapterFactory implements TypeAdapterFactory {
                                                 if (pattern != null
                                                         && !pattern.isJsonNull()
                                                         && pattern.isJsonPrimitive()
-                                                        && pattern.getAsJsonPrimitive().isString()) {
+                                                        && pattern.getAsJsonPrimitive()
+                                                                .isString()) {
                                                     normalized.add(pattern);
                                                 }
                                             }
