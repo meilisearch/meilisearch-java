@@ -784,7 +784,7 @@ public class SearchTest extends AbstractIT {
 
     @Test
     public void testMultiSearch() throws Exception {
-        HashSet<String> indexUids = new HashSet();
+        HashSet<String> indexUids = new HashSet<>();
         indexUids.add("MultiSearch1");
         indexUids.add("MultiSearch2");
 
@@ -822,7 +822,7 @@ public class SearchTest extends AbstractIT {
      */
     @Test
     public void testFederation() throws Exception {
-        HashSet<String> indexUids = new HashSet();
+        HashSet<String> indexUids = new HashSet<>();
         indexUids.add("MultiSearch1");
         indexUids.add("MultiSearch2");
         for (String indexUid : indexUids) {

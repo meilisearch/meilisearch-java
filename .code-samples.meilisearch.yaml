@@ -224,11 +224,28 @@ update_searchable_attributes_1: |-
 reset_searchable_attributes_1: |-
   client.index("movies").resetSearchableAttributesSettings();
 get_filterable_attributes_1: |-
+  // Granular filterable attributes API (v1.14+)
+  client.index("movies").getGranularFilterableAttributesSettings();
+  // Legacy String[] API
   client.index("movies").getFilterableAttributesSettings();
 update_filterable_attributes_1: |-
-  Settings settings = new Settings();
-  settings.setFilterableAttributes(new String[] {"genres", "director"});
-  client.index("movies").updateSettings(settings);
+  FilterableAttributesConfig genres = FilterableAttributesConfig.simple("genres");
+
+  FilterableAttributesFilter directorFilter = new FilterableAttributesFilter();
+  directorFilter.setEquality(true);
+  directorFilter.setComparison(false);
+
+  FilterableAttributesFeatures directorFeatures = new FilterableAttributesFeatures();
+  directorFeatures.setFacetSearch(true);
+  directorFeatures.setFilter(directorFilter);
+
+  FilterableAttributesConfig director = new FilterableAttributesConfig();
+  director.setAttributePatterns(new String[] {"director"});
+  director.setFeatures(directorFeatures);
+
+  // Update settings
+  client.index("movies").updateGranularFilterableAttributesSettings(
+    new FilterableAttributesConfig[] {genres, director});
 reset_filterable_attributes_1: |-
   client.index("movies").resetFilterableAttributesSettings();
 get_displayed_attributes_1: |-
@@ -554,7 +571,7 @@ getting_started_sorting: |-
   client.index("meteorites").search(searchRequest);
 getting_started_configure_settings: |-
   Settings settings = new Settings();
-  settings.setFilterableAttributes(new String[] {"mass", "_geo"});
+  settings.setFilterableAttributes(new String[] { "mass", "_geo" });
   settings.setSortableAttributes(new String[] {"mass", "_geo"});
   client.index("meteorites").updateSettings(settings);
 getting_started_faceting: |-
@@ -677,7 +694,7 @@ search_parameter_guide_sort_1: |-
   client.index("search_parameter_guide_sort_1").search(searchRequest);
 geosearch_guide_filter_settings_1: |-
   Settings settings = new Settings();
-  settings.setFilterableAttributes(new String[] {"_geo"});
+  settings.setFilterableAttributes(new String[] { "_geo" });
   client.index("restaurants").updateSettings(settings);
 geosearch_guide_filter_usage_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("").filter(new String[] {"_geoRadius(45.472735, 9.184019, 2000)"}).build();
@@ -770,7 +787,8 @@ date_guide_index_1: |-
   Index index = client.index("games");
   index.addDocuments(gamesJson);
 date_guide_filterable_attributes_1: |-
-  client.index("movies").updateFilterableAttributesSettings(new String[] { "release_timestamp" });
+  client.index("movies").updateFilterableAttributesSettings(
+    new String[] { "release_timestamp" });
 date_guide_filter_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("").filter(new String[] {"release_timestamp >= 1514761200 AND release_timestamp < 1672527600"}).build();
   client.index("games").search(searchRequest);
@@ -827,7 +845,7 @@ search_parameter_reference_distinct_1: |-
   client.index("INDEX_NAME").search(searchRequest);
 distinct_attribute_guide_filterable_1: |-
   Settings settings = new Settings();
-  settings.setFilterableAttributes(new String[] {"product_id", "SKU", "url"});
+  settings.setFilterableAttributes(new String[] { "product_id", "SKU", "url" });
   client.index("products").updateSettings(settings);
 distinct_attribute_guide_distinct_parameter_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("white shirt").distinct("sku").build();

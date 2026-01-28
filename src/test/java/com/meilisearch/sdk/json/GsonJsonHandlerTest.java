@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.google.gson.JsonElement;
 import com.meilisearch.sdk.exceptions.JsonEncodingException;
+import com.meilisearch.sdk.model.FilterableAttributesConfig;
 import com.meilisearch.sdk.model.Key;
 import com.meilisearch.sdk.utils.Movie;
 import java.time.Instant;
@@ -274,6 +275,20 @@ class GsonJsonHandlerTest {
 
         assertThat(result.getKey(), is(nullValue()));
         assertThat(result.getEnabled(), is(equalTo(true)));
+    }
+
+    @Test
+    void granularFilterableAttributesWithNullPatternRoundTrip() throws Exception {
+        FilterableAttributesConfig config = new FilterableAttributesConfig();
+        config.setAttributePatterns(new String[] {"director", null, "genres"});
+
+        String json = classToTest.encode(new FilterableAttributesConfig[] {config});
+        FilterableAttributesConfig[] decoded =
+                classToTest.decode(json, FilterableAttributesConfig[].class);
+
+        assertThat(decoded, is(notNullValue()));
+        assertThat(decoded.length, is(1));
+        assertThat(decoded[0].getAttributePatterns(), arrayContaining("director", null, "genres"));
     }
 
     @Getter

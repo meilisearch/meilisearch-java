@@ -12,21 +12,27 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.exceptions.GranularFilterableAttributesException;
 import com.meilisearch.sdk.model.Embedder;
 import com.meilisearch.sdk.model.EmbedderDistribution;
 import com.meilisearch.sdk.model.EmbedderSource;
 import com.meilisearch.sdk.model.FacetSortValue;
 import com.meilisearch.sdk.model.Faceting;
+import com.meilisearch.sdk.model.FilterableAttributesConfig;
+import com.meilisearch.sdk.model.FilterableAttributesFeatures;
+import com.meilisearch.sdk.model.FilterableAttributesFilter;
 import com.meilisearch.sdk.model.LocalizedAttribute;
 import com.meilisearch.sdk.model.Pagination;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
 import com.meilisearch.sdk.model.TypoTolerance;
 import com.meilisearch.sdk.utils.Movie;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +56,40 @@ public class SettingsTest extends AbstractIT {
     @AfterAll
     static void cleanMeilisearch() {
         cleanup();
+    }
+
+    private ArrayList<String> attributeNames(FilterableAttributesConfig[] configs) {
+        ArrayList<String> names = new ArrayList<>();
+        if (configs == null) {
+            return names;
+        }
+        for (FilterableAttributesConfig config : configs) {
+            if (config == null) {
+                names.add(null);
+                continue;
+            }
+            String[] patterns = config.getAttributePatterns();
+            names.add((patterns != null && patterns.length > 0) ? patterns[0] : null);
+        }
+        return names;
+    }
+
+    private FilterableAttributesConfig findConfigByPattern(
+            FilterableAttributesConfig[] configs, String pattern) {
+        if (configs == null) {
+            return null;
+        }
+        for (FilterableAttributesConfig config : configs) {
+            if (config == null || config.getAttributePatterns() == null) {
+                continue;
+            }
+            for (String candidate : config.getAttributePatterns()) {
+                if (pattern.equals(candidate)) {
+                    return config;
+                }
+            }
+        }
+        return null;
     }
 
     /** Tests of the setting methods */
@@ -610,7 +650,8 @@ public class SettingsTest extends AbstractIT {
     public void testUpdateFilterableAttributesSettings() throws Exception {
         Index index = createIndex("testUpdateDisplayedAttributesSettings");
         String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
-        String[] newFilterableAttributes = {"title", "description", "genre", "release_date"};
+        String[] newFilterableAttributes =
+                new String[] {"title", "description", "genre", "release_date"};
 
         index.waitForTask(
                 index.updateFilterableAttributesSettings(newFilterableAttributes).getTaskUid());
@@ -630,9 +671,8 @@ public class SettingsTest extends AbstractIT {
     public void testResetFilterableAttributesSettings() throws Exception {
         Index index = createIndex("testUpdateDisplayedAttributesSettings");
         String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
-        String[] newFilterableAttributes = {
-            "title", "description", "genres", "director", "release_date"
-        };
+        String[] newFilterableAttributes =
+                new String[] {"title", "description", "genres", "director", "release_date"};
 
         index.waitForTask(
                 index.updateFilterableAttributesSettings(newFilterableAttributes).getTaskUid());
@@ -654,6 +694,54 @@ public class SettingsTest extends AbstractIT {
         assertThat(
                 updatedFilterableAttributes,
                 is(not(arrayWithSize(initialFilterableAttributes.length))));
+    }
+
+    @Test
+    @DisplayName("Test granular filterable attributes settings round trip")
+    public void testGranularFilterableAttributesSettings() throws Exception {
+        Index index = createIndex("testGranularFilterableAttributesSettings");
+
+        FilterableAttributesFilter filter = new FilterableAttributesFilter();
+        filter.setEquality(true);
+        filter.setComparison(false);
+
+        FilterableAttributesFeatures features = new FilterableAttributesFeatures();
+        features.setFacetSearch(true);
+        features.setFilter(filter);
+
+        FilterableAttributesConfig advanced = new FilterableAttributesConfig();
+        advanced.setAttributePatterns(new String[] {"director"});
+        advanced.setFeatures(features);
+
+        FilterableAttributesConfig[] configs =
+                new FilterableAttributesConfig[] {
+                    FilterableAttributesConfig.simple("genres"), advanced
+                };
+
+        index.waitForTask(index.updateGranularFilterableAttributesSettings(configs).getTaskUid());
+
+        FilterableAttributesConfig[] fetched = index.getGranularFilterableAttributesSettings();
+        assertThat(fetched, is(arrayWithSize(2)));
+        assertThat(attributeNames(fetched), containsInAnyOrder("genres", "director"));
+
+        FilterableAttributesConfig fetchedAdvanced = findConfigByPattern(fetched, "director");
+        assertThat(fetchedAdvanced, is(notNullValue()));
+        assertThat(fetchedAdvanced.getFeatures(), is(notNullValue()));
+        assertThat(fetchedAdvanced.getFeatures().getFacetSearch(), is(true));
+        assertThat(fetchedAdvanced.getFeatures().getFilter(), is(notNullValue()));
+        assertThat(fetchedAdvanced.getFeatures().getFilter().getEquality(), is(true));
+        assertThat(fetchedAdvanced.getFeatures().getFilter().getComparison(), is(false));
+
+        Settings settings = index.getSettings();
+        assertThat(
+                attributeNames(settings.getFilterableAttributesConfig()),
+                containsInAnyOrder("genres", "director"));
+
+        assertThrows(
+                GranularFilterableAttributesException.class,
+                index::getFilterableAttributesSettings);
+        assertThrows(
+                GranularFilterableAttributesException.class, settings::getFilterableAttributes);
     }
 
     /** Tests of the sortable attributes setting methods* */
@@ -1038,7 +1126,7 @@ public class SettingsTest extends AbstractIT {
     public void testUpdateFilterableAttributesSettingsUsingNull() throws Exception {
         Index index = createIndex("testUpdateFilterableAttributesSettingsUsingNull");
         String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
-        String[] newFilterableAttributes = {"title", "genres", "cast", "release_date"};
+        String[] newFilterableAttributes = new String[] {"title", "genres", "cast", "release_date"};
 
         index.waitForTask(
                 index.updateFilterableAttributesSettings(newFilterableAttributes).getTaskUid());
@@ -1055,7 +1143,9 @@ public class SettingsTest extends AbstractIT {
                 is(not(arrayWithSize(initialFilterableAttributes.length))));
         assertThat(
                 resetFilterableAttributes, is(arrayWithSize(initialFilterableAttributes.length)));
-        assertThat(resetFilterableAttributes, is(equalTo(initialFilterableAttributes)));
+        assertThat(
+                Arrays.asList(resetFilterableAttributes),
+                is(equalTo(Arrays.asList(initialFilterableAttributes))));
     }
 
     @Test

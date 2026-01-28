@@ -4,6 +4,8 @@ import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.URLBuilder;
 import com.meilisearch.sdk.model.Embedder;
 import com.meilisearch.sdk.model.Faceting;
+import com.meilisearch.sdk.model.FilterableAttributesConfig;
+import com.meilisearch.sdk.model.FilterableAttributesLegacyAdapter;
 import com.meilisearch.sdk.model.LocalizedAttribute;
 import com.meilisearch.sdk.model.Pagination;
 import com.meilisearch.sdk.model.Settings;
@@ -313,19 +315,35 @@ public class SettingsHandler {
     }
 
     /**
-     * Gets the filterableAttributes of the index
+     * Gets the filterableAttributes of the index (legacy String[] view).
      *
      * @param uid Index identifier
      * @return an array of strings that contains the filterable attributes settings
-     * @throws MeilisearchException if an error occurs
+     * @throws MeilisearchException if an error occurs or granular configs cannot be reduced
      */
     String[] getFilterableAttributesSettings(String uid) throws MeilisearchException {
-        return httpClient.get(
-                settingsPath(uid).addSubroute("filterable-attributes").getURL(), String[].class);
+        return FilterableAttributesLegacyAdapter.toLegacyNamesOrThrow(
+                getGranularFilterableAttributesSettings(uid));
     }
 
     /**
-     * Updates the filterable attributes of the index. This will re-index all documents in the index
+     * Gets the filterableAttributes of the index (granular view).
+     *
+     * @param uid Index identifier
+     * @return an array of filterable attribute configs (strings or granular objects)
+     * @throws MeilisearchException if an error occurs
+     * @since 1.14.0
+     */
+    FilterableAttributesConfig[] getGranularFilterableAttributesSettings(String uid)
+            throws MeilisearchException {
+        return httpClient.get(
+                settingsPath(uid).addSubroute("filterable-attributes").getURL(),
+                FilterableAttributesConfig[].class);
+    }
+
+    /**
+     * Updates the filterable attributes of the index using the legacy String[] view. This will
+     * re-index all documents in the index.
      *
      * @param uid Index identifier
      * @param filterableAttributes an array of strings that contains the new filterable attributes
@@ -335,11 +353,31 @@ public class SettingsHandler {
      */
     TaskInfo updateFilterableAttributesSettings(String uid, String[] filterableAttributes)
             throws MeilisearchException {
-        return httpClient.put(
-                settingsPath(uid).addSubroute("filterable-attributes").getURL(),
+        return updateGranularFilterableAttributesSettings(
+                uid, FilterableAttributesLegacyAdapter.fromLegacyNames(filterableAttributes));
+    }
+
+    /**
+     * Updates the filterable attributes of the index using the granular representation. This will
+     * re-index all documents in the index.
+     *
+     * @param uid Index identifier
+     * @param filterableAttributes Array of filterable attribute configs (strings or granular
+     *     objects) that contains the new filterable attributes settings
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @since 1.14.0
+     */
+    TaskInfo updateGranularFilterableAttributesSettings(
+            String uid, FilterableAttributesConfig[] filterableAttributes)
+            throws MeilisearchException {
+        Object body =
                 filterableAttributes == null
                         ? httpClient.jsonHandler.encode(filterableAttributes)
-                        : filterableAttributes,
+                        : filterableAttributes;
+        return httpClient.put(
+                settingsPath(uid).addSubroute("filterable-attributes").getURL(),
+                body,
                 TaskInfo.class);
     }
 
