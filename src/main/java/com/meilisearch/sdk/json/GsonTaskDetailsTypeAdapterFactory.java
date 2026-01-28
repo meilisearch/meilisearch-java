@@ -47,7 +47,7 @@ public class GsonTaskDetailsTypeAdapterFactory implements TypeAdapterFactory {
                                 JsonArray normalized = new JsonArray();
                                 for (JsonElement element : source) {
                                     if (element == null || element.isJsonNull()) {
-                                        normalized.add(JsonNull.INSTANCE);
+                                        // skip null entries
                                         continue;
                                     }
                                     if (element.isJsonPrimitive()
@@ -58,20 +58,19 @@ public class GsonTaskDetailsTypeAdapterFactory implements TypeAdapterFactory {
                                     if (element.isJsonObject()) {
                                         JsonObject o = element.getAsJsonObject();
                                         JsonElement patterns = o.get("attributePatterns");
-                                        if (patterns != null
-                                                && patterns.isJsonArray()
-                                                && patterns.getAsJsonArray().size() > 0) {
-                                            JsonElement first = patterns.getAsJsonArray().get(0);
-                                            normalized.add(
-                                                    first == null || first.isJsonNull()
-                                                            ? JsonNull.INSTANCE
-                                                            : first);
-                                        } else {
-                                            normalized.add(JsonNull.INSTANCE);
+                                        if (patterns != null && patterns.isJsonArray()) {
+                                            for (JsonElement pattern : patterns.getAsJsonArray()) {
+                                                if (pattern != null
+                                                        && !pattern.isJsonNull()
+                                                        && pattern.isJsonPrimitive()
+                                                        && pattern.getAsJsonPrimitive().isString()) {
+                                                    normalized.add(pattern);
+                                                }
+                                            }
                                         }
                                         continue;
                                     }
-                                    normalized.add(JsonNull.INSTANCE);
+                                    // any other shape is skipped
                                 }
                                 obj.add("filterableAttributes", normalized);
                             }

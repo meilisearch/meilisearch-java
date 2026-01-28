@@ -22,7 +22,7 @@ public class TaskDetailsFilterableAttributesDeserializer extends JsonDeserialize
         List<String> attributes = new ArrayList<>();
         for (JsonNode element : node) {
             if (element == null || element.isNull()) {
-                attributes.add(null);
+                // skip null entries
                 continue;
             }
 
@@ -33,11 +33,12 @@ public class TaskDetailsFilterableAttributesDeserializer extends JsonDeserialize
 
             if (element.isObject()) {
                 JsonNode patterns = element.get("attributePatterns");
-                if (patterns != null && patterns.isArray() && patterns.size() > 0) {
-                    JsonNode first = patterns.get(0);
-                    attributes.add(first == null || first.isNull() ? null : first.asText());
-                } else {
-                    attributes.add(null);
+                if (patterns != null && patterns.isArray()) {
+                    for (JsonNode pattern : patterns) {
+                        if (pattern != null && !pattern.isNull() && pattern.isTextual()) {
+                            attributes.add(pattern.asText());
+                        }
+                    }
                 }
             }
         }
