@@ -111,7 +111,12 @@ public class GsonFilterableAttributesConfigTypeAdapter
         List<String> patterns = new ArrayList<>();
         reader.beginArray();
         while (reader.peek() != JsonToken.END_ARRAY) {
-            patterns.add(reader.nextString());
+            if (reader.peek() == JsonToken.NULL) {
+                reader.nextNull();
+                patterns.add(null);
+            } else {
+                patterns.add(reader.nextString());
+            }
         }
         reader.endArray();
         return patterns.toArray(new String[0]);
