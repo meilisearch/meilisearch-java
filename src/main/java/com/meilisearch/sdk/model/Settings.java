@@ -19,9 +19,11 @@ public class Settings {
     protected HashMap<String, String[]> synonyms;
     protected String[] stopWords;
     protected String[] rankingRules;
+
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     protected FilterableAttributesConfig[] filterableAttributes;
+
     protected String distinctAttribute;
     protected String[] searchableAttributes;
     protected String[] displayedAttributes;

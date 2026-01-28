@@ -640,7 +640,9 @@ public class SettingsTest extends AbstractIT {
         assertThat(
                 initialFilterableAttributes,
                 is(arrayWithSize(initialSettings.getFilterableAttributes().length)));
-        assertThat(initialFilterableAttributes, is(equalTo(initialSettings.getFilterableAttributes())));
+        assertThat(
+                initialFilterableAttributes,
+                is(equalTo(initialSettings.getFilterableAttributes())));
     }
 
     @Test
@@ -736,7 +738,8 @@ public class SettingsTest extends AbstractIT {
                 containsInAnyOrder("genres", "director"));
 
         assertThrows(
-                GranularFilterableAttributesException.class, index::getFilterableAttributesSettings);
+                GranularFilterableAttributesException.class,
+                index::getFilterableAttributesSettings);
         assertThrows(
                 GranularFilterableAttributesException.class, settings::getFilterableAttributes);
     }
@@ -1123,8 +1126,7 @@ public class SettingsTest extends AbstractIT {
     public void testUpdateFilterableAttributesSettingsUsingNull() throws Exception {
         Index index = createIndex("testUpdateFilterableAttributesSettingsUsingNull");
         String[] initialFilterableAttributes = index.getFilterableAttributesSettings();
-        String[] newFilterableAttributes =
-                new String[] {"title", "genres", "cast", "release_date"};
+        String[] newFilterableAttributes = new String[] {"title", "genres", "cast", "release_date"};
 
         index.waitForTask(
                 index.updateFilterableAttributesSettings(newFilterableAttributes).getTaskUid());

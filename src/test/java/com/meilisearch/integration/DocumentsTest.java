@@ -683,7 +683,8 @@ public class DocumentsTest extends AbstractIT {
         Movie[] movies = result.getResults();
         assertThat(movies, is(arrayWithSize(20)));
 
-        index.waitForTask(index.updateFilterableAttributesSettings(new String[] {"genres"}).getTaskUid());
+        index.waitForTask(
+                index.updateFilterableAttributesSettings(new String[] {"genres"}).getTaskUid());
 
         String deleteFilter = "genres = action OR genres = adventure";
 
@@ -827,7 +828,8 @@ public class DocumentsTest extends AbstractIT {
         TaskInfo addTask = index.addDocuments(testData.getRaw());
         index.waitForTask(addTask.getTaskUid());
 
-        index.waitForTask(index.updateFilterableAttributesSettings(new String[] {"id"}).getTaskUid());
+        index.waitForTask(
+                index.updateFilterableAttributesSettings(new String[] {"id"}).getTaskUid());
 
         TaskInfo task = index.deleteDocumentsByFilter("id = 419704", "delete-filter-metadata");
         index.waitForTask(task.getTaskUid());

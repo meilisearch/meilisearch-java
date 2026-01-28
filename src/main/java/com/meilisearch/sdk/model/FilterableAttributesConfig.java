@@ -22,9 +22,9 @@ public class FilterableAttributesConfig {
     /**
      * Convenience factory for the simple string form of a filterable attribute.
      *
-     * <p>Equivalent to adding the attribute directly to the {@code filterableAttributes}
-     * array in the Meilisearch settings (e.g., {@code "filterableAttributes": ["genres"]}).
-     * The string form enables all filter types for the given attribute.
+     * <p>Equivalent to adding the attribute directly to the {@code filterableAttributes} array in
+     * the Meilisearch settings (e.g., {@code "filterableAttributes": ["genres"]}). The string form
+     * enables all filter types for the given attribute.
      */
     public static FilterableAttributesConfig simple(String name) {
         FilterableAttributesConfig config = new FilterableAttributesConfig();

@@ -17,11 +17,7 @@ public final class FilterableAttributesLegacyAdapter {
             return null;
         }
         return Arrays.stream(names)
-                .map(
-                        name ->
-                                name == null
-                                        ? null
-                                        : FilterableAttributesConfig.simple(name))
+                .map(name -> name == null ? null : FilterableAttributesConfig.simple(name))
                 .toArray(FilterableAttributesConfig[]::new);
     }
 

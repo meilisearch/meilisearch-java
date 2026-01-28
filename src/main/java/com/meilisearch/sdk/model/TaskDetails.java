@@ -14,8 +14,11 @@ public class TaskDetails {
     protected String[] rankingRules;
     protected String[] searchableAttributes;
     protected String[] displayedAttributes;
-    @JsonDeserialize(using = com.meilisearch.sdk.json.TaskDetailsFilterableAttributesDeserializer.class)
+
+    @JsonDeserialize(
+            using = com.meilisearch.sdk.json.TaskDetailsFilterableAttributesDeserializer.class)
     protected String[] filterableAttributes;
+
     protected String[] sortableAttributes;
     protected String[] stopWords;
     protected Map<String, String[]> synonyms;

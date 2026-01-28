@@ -14,8 +14,8 @@ import com.meilisearch.sdk.model.TaskDetails;
 import java.io.IOException;
 
 /**
- * Normalizes the filterableAttributes field in TaskDetails when Gson deserializes mixed string/object
- * arrays returned by Meilisearch.
+ * Normalizes the filterableAttributes field in TaskDetails when Gson deserializes mixed
+ * string/object arrays returned by Meilisearch.
  */
 public class GsonTaskDetailsTypeAdapterFactory implements TypeAdapterFactory {
     @SuppressWarnings("unchecked")
