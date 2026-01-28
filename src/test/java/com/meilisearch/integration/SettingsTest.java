@@ -713,7 +713,7 @@ public class SettingsTest extends AbstractIT {
 
         FilterableAttributesConfig[] configs =
                 new FilterableAttributesConfig[] {
-                    FilterableAttributesConfig.fromAttributeName("genres"), advanced
+                    FilterableAttributesConfig.simple("genres"), advanced
                 };
 
         index.waitForTask(index.updateGranularFilterableAttributesSettings(configs).getTaskUid());

@@ -229,7 +229,7 @@ get_filterable_attributes_1: |-
   // Legacy String[] API
   client.index("movies").getFilterableAttributesSettings();
 update_filterable_attributes_1: |-
-  FilterableAttributesConfig genres = FilterableAttributesConfig.fromAttributeName("genres");
+  FilterableAttributesConfig genres = FilterableAttributesConfig.simple("genres");
 
   FilterableAttributesFilter directorFilter = new FilterableAttributesFilter();
   directorFilter.setEquality(true);

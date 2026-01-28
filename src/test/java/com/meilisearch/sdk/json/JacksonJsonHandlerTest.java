@@ -89,7 +89,7 @@ class JacksonJsonHandlerTest {
 
         FilterableAttributesConfig[] configs =
                 new FilterableAttributesConfig[] {
-                    FilterableAttributesConfig.fromAttributeName("genres"), advanced
+                    FilterableAttributesConfig.simple("genres"), advanced
                 };
 
         String json = handlerWithCustomMapper.encode(configs);
@@ -115,8 +115,8 @@ class JacksonJsonHandlerTest {
 
         FilterableAttributesConfig[] configs =
                 new FilterableAttributesConfig[] {
-                    FilterableAttributesConfig.fromAttributeName("genres"),
-                    FilterableAttributesConfig.fromAttributeName("director")
+                    FilterableAttributesConfig.simple("genres"),
+                    FilterableAttributesConfig.simple("director")
                 };
 
         Settings settings = new Settings();

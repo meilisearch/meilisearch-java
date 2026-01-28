@@ -46,7 +46,7 @@ public class GsonFilterableAttributesConfigTypeAdapter
         }
 
         if (reader.peek() == JsonToken.STRING) {
-            return FilterableAttributesConfig.fromAttributeName(reader.nextString());
+            return FilterableAttributesConfig.simple(reader.nextString());
         }
 
         FilterableAttributesConfig config = new FilterableAttributesConfig();

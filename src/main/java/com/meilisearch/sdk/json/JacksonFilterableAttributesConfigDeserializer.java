@@ -22,7 +22,7 @@ public class JacksonFilterableAttributesConfigDeserializer
         JsonNode node = p.getCodec().readTree(p);
 
         if (node.isTextual()) {
-            return FilterableAttributesConfig.fromAttributeName(node.asText());
+            return FilterableAttributesConfig.simple(node.asText());
         }
 
         FilterableAttributesConfig config = new FilterableAttributesConfig();

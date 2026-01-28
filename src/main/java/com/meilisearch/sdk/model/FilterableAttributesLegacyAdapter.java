@@ -21,7 +21,7 @@ public final class FilterableAttributesLegacyAdapter {
                         name ->
                                 name == null
                                         ? null
-                                        : FilterableAttributesConfig.fromAttributeName(name))
+                                        : FilterableAttributesConfig.simple(name))
                 .toArray(FilterableAttributesConfig[]::new);
     }
 
