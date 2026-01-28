@@ -244,9 +244,8 @@ update_filterable_attributes_1: |-
   director.setFeatures(directorFeatures);
 
   // Update settings
-  Settings settings = new Settings();
-  settings.setFilterableAttributes(new FilterableAttributesConfig[] {genres, director});
-  client.index("movies").updateSettings(settings);
+  client.index("movies").updateGranularFilterableAttributesSettings(
+    new FilterableAttributesConfig[] {genres, director});
 reset_filterable_attributes_1: |-
   client.index("movies").resetFilterableAttributesSettings();
 get_displayed_attributes_1: |-
