@@ -110,7 +110,7 @@ class Documents {
      */
     <T> Results<T> getDocuments(String uid, DocumentsQuery param, Class<T> targetClass)
             throws MeilisearchException {
-        if (param.getFilter() != null) {
+        if (param.getFilter() != null || param.getSort() != null) {
             return httpClient.post(
                     documentPathWithFetch(uid).getURL(),
                     param.toString(),
@@ -141,7 +141,7 @@ class Documents {
      * @throws MeilisearchException if an error occurs
      */
     String getRawDocuments(String uid, DocumentsQuery param) throws MeilisearchException {
-        if (param.getFilter() != null) {
+        if (param.getFilter() != null || param.getSort() != null) {
             return httpClient.post(
                     documentPathWithFetch(uid).getURL(), param.toString(), String.class);
         }
