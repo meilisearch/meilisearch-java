@@ -20,7 +20,7 @@ public class GsonJsonHandler implements JsonHandler {
         builder.registerTypeAdapter(
                 FilterableAttributesConfig.class, new GsonFilterableAttributesConfigTypeAdapter());
         builder.registerTypeAdapterFactory(new GsonTaskDetailsTypeAdapterFactory());
-        this.gson = builder.create();
+        this.gson = builder.serializeNulls().create();
     }
 
     @Override
