@@ -20,6 +20,7 @@ public class Client {
     private TasksHandler tasksHandler;
     private KeysHandler keysHandler;
     private JsonHandler jsonHandler;
+    private NetworkHandler networkHandler;
 
     /**
      * Calls instance for Meilisearch client
@@ -33,6 +34,7 @@ public class Client {
         this.tasksHandler = new TasksHandler(config);
         this.keysHandler = new KeysHandler(config);
         this.jsonHandler = config.jsonHandler;
+        this.networkHandler = new NetworkHandler(config);
     }
 
     /**
@@ -42,7 +44,7 @@ public class Client {
      * @return Meilisearch API response as TaskInfo
      * @throws MeilisearchException if an error occurs
      * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes#create-an-index">API
-     *     specification</a>
+     * specification</a>
      */
     public TaskInfo createIndex(String uid) throws MeilisearchException {
         return this.createIndex(uid, null);
@@ -542,6 +544,27 @@ public class Client {
                         .sign(algorithm);
 
         return jwtToken;
+    }
+
+    /**
+     * Returns the current value of the instance’s network object.
+     *
+     * @return Network object
+     */
+    public Network getNetwork() {
+        return this.networkHandler.getNetworkState();
+    }
+
+    /**
+     * Update the fields of the network object. Updates to the network object are partial. Only provide the fields you intend to update.
+     * Fields that are null in the payload will remain unchanged. To reset self and remotes to their original value, set them to null.
+     * To remove a single remote from your network, set the value of its name to null.
+     *
+     * @param updatedNetwork Updated network configs
+     * @return Updated Network
+     */
+    public Network updateNetwork(UpdateNetwork updatedNetwork) {
+        return this.networkHandler.updateNetwork(updatedNetwork);
     }
 
     private Boolean isValidUUID(String apiKeyUid) {
