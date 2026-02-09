@@ -874,3 +874,20 @@ compact_index_1: |-
   client.index("INDEX_NAME").compact();
 rename_an_index_1: |-
   client.updateIndex("indexA", null, "indexB");
+get_network_1: |-
+  Network networkState = client.getNetwork();
+update_network_1: |-
+  HashMap<String, NetworksRemote> remotes = new HashMap<>();
+  remotes.put("ms-00", new NetworksRemote(
+    "http://INSTANCE_URL",
+    "INSTANCE_API_KEY",
+    null));
+  remotes.put("ms-01", new NetworksRemote(
+    "http://ANOTHER_INSTANCE_URL",
+    "ANOTHER_INSTANCE_API_KEY",
+    null));
+  UpdateNetwork newNetwork = new UpdateNetwork();
+  newNetwork.setSelf("ms-00");
+  newNetwork.setRemotes(remotes);
+
+  var network = this.client.updateNetwork(newNetwork);
