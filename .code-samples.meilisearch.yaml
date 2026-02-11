@@ -624,6 +624,22 @@ primary_field_guide_add_document_primary_key: |-
 authorization_header_1: |-
   Client client = new Client(new Config("http://localhost:7700", "masterKey"));
   client.getKeys();
+tenant_token_guide_generate_sdk_1: |-
+  Map<String, Object> filters = new HashMap<String, Object>();
+  filters.put("filter", "user_id = 1");
+  Map<String, Object> searchRules = new HashMap<String, Object>();
+  searchRules.put("patient_medical_records", filters);
+
+  Date expiresAt = new SimpleDateFormat("yyyy-MM-dd").parse("2025-12-20");
+  TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+  TenantTokenOptions options = new TenantTokenOptions();
+  options.setApiKey("B5KdX2MY2jV6EXfUs6scSfmC...");
+  options.setExpiresAt(expiresAt);
+
+  String token = client.generateTenantToken("85c3c2f9-bdd6-41f1-abd8-11fcf80e0f76", searchRules, options);
+tenant_token_guide_search_sdk_1: |-
+  Client frontEndClient = new Client(new Config("http://localhost:7700", token));
+  frontEndClient.index("patient_medical_records").search("blood test");
 date_guide_index_1: |-
   import com.meilisearch.sdk;
   import org.json.JSONArray;
