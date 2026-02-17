@@ -1,17 +1,14 @@
 package com.meilisearch.sdk.model;
 
-
-import lombok.Getter;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.UUID;
+import lombok.Getter;
 
 /**
  * Webhook data structure.
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/webhooks">API
- * specification</a>
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/webhooks">API specification</a>
  */
 public class Webhook implements Serializable {
     @Getter protected final UUID uuid;
@@ -25,6 +22,4 @@ public class Webhook implements Serializable {
         this.headers = headers;
         this.isEditable = isEditable;
     }
-
 }
-

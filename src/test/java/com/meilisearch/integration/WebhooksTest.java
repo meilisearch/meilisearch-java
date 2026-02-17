@@ -1,21 +1,20 @@
 package com.meilisearch.integration;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.sdk.model.CreateUpdateWebhookRequest;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.Webhook;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 @Tag("integration")
 public class WebhooksTest extends AbstractIT {
@@ -44,7 +43,8 @@ public class WebhooksTest extends AbstractIT {
         HashMap<String, Object> headers = new HashMap<>();
         headers.put("authorization", "MASTER_KEY");
         headers.put("referer", "http://example.com");
-        CreateUpdateWebhookRequest webhookReq1 = new CreateUpdateWebhookRequest("http://webiste.com", headers);
+        CreateUpdateWebhookRequest webhookReq1 =
+                new CreateUpdateWebhookRequest("http://webiste.com", headers);
 
         Webhook webhook = this.client.createWebhook(webhookReq1);
 
@@ -61,8 +61,10 @@ public class WebhooksTest extends AbstractIT {
         HashMap<String, Object> headers = new HashMap<>();
         headers.put("authorization", "MASTER_KEY");
         headers.put("referer", "http://example.com");
-        CreateUpdateWebhookRequest webhookReq1 = new CreateUpdateWebhookRequest("http://webiste.com", headers);
-        CreateUpdateWebhookRequest webhookReq2 = new CreateUpdateWebhookRequest("http://webiste1.com", headers);
+        CreateUpdateWebhookRequest webhookReq1 =
+                new CreateUpdateWebhookRequest("http://webiste.com", headers);
+        CreateUpdateWebhookRequest webhookReq2 =
+                new CreateUpdateWebhookRequest("http://webiste1.com", headers);
 
         this.client.createWebhook(webhookReq1);
         this.client.createWebhook(webhookReq2);
@@ -90,12 +92,12 @@ public class WebhooksTest extends AbstractIT {
         HashMap<String, Object> headers = new HashMap<>();
         headers.put("authorization", "MASTER_KEY");
         headers.put("referer", "http://example.com");
-        CreateUpdateWebhookRequest webhookReq1 = new CreateUpdateWebhookRequest("http://webiste.com", headers);
+        CreateUpdateWebhookRequest webhookReq1 =
+                new CreateUpdateWebhookRequest("http://webiste.com", headers);
 
         Webhook webhook = this.client.createWebhook(webhookReq1);
 
         Webhook webhook_res = client.getWebhook(webhook.getUuid());
-
 
         assertThat(webhook_res, is(instanceOf(Webhook.class)));
         assertThat(webhook_res.getUuid(), is(notNullValue()));
@@ -110,11 +112,13 @@ public class WebhooksTest extends AbstractIT {
         HashMap<String, Object> headers = new HashMap<>();
         headers.put("authorization", "MASTER_KEY");
         headers.put("referer", "http://example.com");
-        CreateUpdateWebhookRequest webhookReq1 = new CreateUpdateWebhookRequest("http://webiste.com", headers);
+        CreateUpdateWebhookRequest webhookReq1 =
+                new CreateUpdateWebhookRequest("http://webiste.com", headers);
         Webhook webhook = this.client.createWebhook(webhookReq1);
 
         headers.put("referer", null);
-        CreateUpdateWebhookRequest webhookReq2 = new CreateUpdateWebhookRequest(webhook.getUrl(), headers);
+        CreateUpdateWebhookRequest webhookReq2 =
+                new CreateUpdateWebhookRequest(webhook.getUrl(), headers);
 
         Webhook updated_webhook = this.client.updateWebhook(webhook.getUuid(), webhookReq2);
 
@@ -132,9 +136,9 @@ public class WebhooksTest extends AbstractIT {
         HashMap<String, Object> headers = new HashMap<>();
         headers.put("authorization", "MASTER_KEY");
         headers.put("referer", "http://example.com");
-        CreateUpdateWebhookRequest webhookReq1 = new CreateUpdateWebhookRequest("http://webiste.com", headers);
+        CreateUpdateWebhookRequest webhookReq1 =
+                new CreateUpdateWebhookRequest("http://webiste.com", headers);
         Webhook webhook = this.client.createWebhook(webhookReq1);
-
 
         this.client.deleteWebhook(webhook.getUuid());
 

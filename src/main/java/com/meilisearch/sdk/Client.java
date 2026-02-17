@@ -549,7 +549,6 @@ public class Client {
     /**
      * Get a list of all webhooks configured in the current Meilisearch instance.
      *
-     *
      * @return List of all webhooks.
      * @throws MeilisearchException if an error occurs.
      */
@@ -560,7 +559,6 @@ public class Client {
     /**
      * Get a webhook specified by its unique Uuid.
      *
-     *
      * @return A single Webhook instance.
      * @param webhookUuid Uuid v4 identifier of a webhook.
      * @throws MeilisearchException if an error occurs.
@@ -570,15 +568,16 @@ public class Client {
     }
 
     /**
-     * Create a new webhook. When Meilisearch finishes processing a task,
-     * it sends the relevant task object to all configured webhooks
-     *
+     * Create a new webhook. When Meilisearch finishes processing a task, it sends the relevant task
+     * object to all configured webhooks
      *
      * @return A single Webhook instance.
-     * @param createUpdateWebhookRequest Request body containing headers and url for the new webhook.
+     * @param createUpdateWebhookRequest Request body containing headers and url for the new
+     *     webhook.
      * @throws MeilisearchException If an error occurs.
      */
-    public Webhook createWebhook(CreateUpdateWebhookRequest createUpdateWebhookRequest) throws MeilisearchException {
+    public Webhook createWebhook(CreateUpdateWebhookRequest createUpdateWebhookRequest)
+            throws MeilisearchException {
         return this.webHooksHandler.createWebhook(createUpdateWebhookRequest);
     }
 
@@ -590,18 +589,20 @@ public class Client {
      * @return A single webhook instance.
      * @throws MeilisearchException If an error occurs.
      */
-    public Webhook updateWebhook(UUID webhook_uuid, CreateUpdateWebhookRequest createUpdateWebhookRequest) throws MeilisearchException {
+    public Webhook updateWebhook(
+            UUID webhook_uuid, CreateUpdateWebhookRequest createUpdateWebhookRequest)
+            throws MeilisearchException {
         return this.webHooksHandler.updateWebhook(webhook_uuid, createUpdateWebhookRequest);
     }
 
     /**
      * Delete a webhook and stop sending task completion data to the target URL.
+     *
      * @param webhook_uuid Uuid v4 identifier of a webhook.
      */
     public void deleteWebhook(UUID webhook_uuid) throws MeilisearchException {
         this.webHooksHandler.deleteWebhook(webhook_uuid);
     }
-
 
     private Boolean isValidUUID(String apiKeyUid) {
         try {

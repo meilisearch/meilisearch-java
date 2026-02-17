@@ -5,10 +5,7 @@ import com.meilisearch.sdk.http.URLBuilder;
 import com.meilisearch.sdk.model.CreateUpdateWebhookRequest;
 import com.meilisearch.sdk.model.Results;
 import com.meilisearch.sdk.model.Webhook;
-
-import java.util.List;
 import java.util.UUID;
-
 
 public class WebHooksHandler {
     private final HttpClient httpClient;
@@ -35,7 +32,8 @@ public class WebHooksHandler {
      * @throws MeilisearchException if an error occurs
      */
     Webhook getWebhook(UUID uuid) throws MeilisearchException {
-        return this.httpClient.get(webhooksPath().addSubroute(uuid.toString()).getURL(), Webhook.class);
+        return this.httpClient.get(
+                webhooksPath().addSubroute(uuid.toString()).getURL(), Webhook.class);
     }
 
     /**
@@ -45,20 +43,26 @@ public class WebHooksHandler {
      * @return Meilisearch API response as Webhook instance
      * @throws MeilisearchException if an error occurs
      */
-    Webhook createWebhook(CreateUpdateWebhookRequest createUpdateWebhookRequest) throws MeilisearchException {
-        return this.httpClient.post(webhooksPath().getURL(), createUpdateWebhookRequest, Webhook.class);
+    Webhook createWebhook(CreateUpdateWebhookRequest createUpdateWebhookRequest)
+            throws MeilisearchException {
+        return this.httpClient.post(
+                webhooksPath().getURL(), createUpdateWebhookRequest, Webhook.class);
     }
 
     /**
      * Update a webhook
      *
-     * @param webhookUuid                Unique identifier of a webhook to update
+     * @param webhookUuid Unique identifier of a webhook to update
      * @param createUpdateWebhookRequest Request body for updating a webhook
      * @return Meilisearch API response as Webhook instance
      * @throws MeilisearchException if an error occurs
      */
-    Webhook updateWebhook(UUID webhookUuid, CreateUpdateWebhookRequest createUpdateWebhookRequest) throws MeilisearchException {
-        return this.httpClient.patch(webhooksPath().addSubroute(webhookUuid.toString()).getURL(), createUpdateWebhookRequest, Webhook.class);
+    Webhook updateWebhook(UUID webhookUuid, CreateUpdateWebhookRequest createUpdateWebhookRequest)
+            throws MeilisearchException {
+        return this.httpClient.patch(
+                webhooksPath().addSubroute(webhookUuid.toString()).getURL(),
+                createUpdateWebhookRequest,
+                Webhook.class);
     }
 
     /**
@@ -68,7 +72,8 @@ public class WebHooksHandler {
      * @throws MeilisearchException if an error occurs
      */
     void deleteWebhook(UUID webhookUuid) throws MeilisearchException {
-        this.httpClient.delete(webhooksPath().addSubroute(webhookUuid.toString()).getURL(), String.class);
+        this.httpClient.delete(
+                webhooksPath().addSubroute(webhookUuid.toString()).getURL(), String.class);
     }
 
     private URLBuilder webhooksPath() {

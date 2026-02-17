@@ -11,13 +11,10 @@ import com.meilisearch.sdk.http.response.BasicResponse;
 import com.meilisearch.sdk.http.response.HttpResponse;
 import com.meilisearch.sdk.json.GsonJsonHandler;
 import com.meilisearch.sdk.json.JsonHandler;
-
 import java.util.Collections;
 import java.util.Map;
 
-/**
- * HTTP client used for API calls to Meilisearch
- */
+/** HTTP client used for API calls to Meilisearch */
 public class HttpClient {
     private final CustomOkHttpClient client;
     private final BasicRequest request;
@@ -41,7 +38,7 @@ public class HttpClient {
     /**
      * Constructor for the HttpClient
      *
-     * @param client  HttpClient for making calls to server
+     * @param client HttpClient for making calls to server
      * @param request BasicRequest for generating calls to server
      */
     public HttpClient(CustomOkHttpClient client, BasicRequest request) {
@@ -60,27 +57,27 @@ public class HttpClient {
      * @throws MeilisearchException if the response is an error
      */
     <T> T get(String api, Class<T> targetClass, Class<?>... parameters)
-        throws MeilisearchException {
+            throws MeilisearchException {
         return this.get(api, "", targetClass, parameters);
     }
 
     /**
      * Gets the specified resource from the specified path with a given parameter
      *
-     * @param api   Path to document
+     * @param api Path to document
      * @param param Parameter to be passed
      * @return document that was requested
      * @throws MeilisearchException if the response is an error
      */
     <T> T get(String api, String param, Class<T> targetClass, Class<?>... parameters)
-        throws MeilisearchException {
+            throws MeilisearchException {
         HttpRequest requestConfig = request.create(HttpMethod.GET, api + param, this.headers, null);
         HttpResponse<T> httpRequest = this.client.get(requestConfig);
         HttpResponse<T> httpResponse = response.create(httpRequest, targetClass, parameters);
 
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
-                jsonHandler.decode(httpRequest.getContent(), APIError.class));
+                    jsonHandler.decode(httpRequest.getContent(), APIError.class));
         }
         return httpResponse.getContent();
     }
@@ -88,20 +85,20 @@ public class HttpClient {
     /**
      * Adds the specified resource to the specified path
      *
-     * @param api  Path to server
+     * @param api Path to server
      * @param body Query for search
      * @return results of the search
      * @throws MeilisearchException if the response is an error
      */
     <S, T> T post(String api, S body, Class<T> targetClass, Class<?>... parameters)
-        throws MeilisearchException {
+            throws MeilisearchException {
         HttpRequest requestConfig = request.create(HttpMethod.POST, api, this.headers, body);
         HttpResponse<T> httpRequest = this.client.post(requestConfig);
         HttpResponse<T> httpResponse = response.create(httpRequest, targetClass, parameters);
 
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
-                jsonHandler.decode(httpRequest.getContent(), APIError.class));
+                    jsonHandler.decode(httpRequest.getContent(), APIError.class));
         }
         return httpResponse.getContent();
     }
@@ -109,7 +106,7 @@ public class HttpClient {
     /**
      * Replaces the specified resource with new data to the specified path
      *
-     * @param api  Path to the requested resource
+     * @param api Path to the requested resource
      * @param body Replacement data for the requested resource
      * @return updated resource
      * @throws MeilisearchException if the response is an error
@@ -121,7 +118,7 @@ public class HttpClient {
 
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
-                jsonHandler.decode(httpRequest.getContent(), APIError.class));
+                    jsonHandler.decode(httpRequest.getContent(), APIError.class));
         }
         return httpResponse.getContent();
     }
@@ -129,7 +126,7 @@ public class HttpClient {
     /**
      * Patch the specified resource with new data to the specified path
      *
-     * @param api  Path to server
+     * @param api Path to server
      * @param body Query for search
      * @return results of the search
      * @throws MeilisearchException if the response is an error
@@ -140,7 +137,7 @@ public class HttpClient {
 
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
-                jsonHandler.decode(httpResponse.getContent(), APIError.class));
+                    jsonHandler.decode(httpResponse.getContent(), APIError.class));
         }
 
         return response.create(httpResponse, targetClass).getContent();
@@ -159,9 +156,8 @@ public class HttpClient {
         HttpResponse<T> httpResponse = response.create(httpRequest, targetClass);
         if (httpResponse.getStatusCode() >= 400) {
             throw new MeilisearchApiException(
-                jsonHandler.decode(httpRequest.getContent(), APIError.class));
+                    jsonHandler.decode(httpRequest.getContent(), APIError.class));
         }
         return httpResponse.getContent();
-
     }
 }
