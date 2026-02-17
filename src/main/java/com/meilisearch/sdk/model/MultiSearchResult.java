@@ -23,6 +23,7 @@ public class MultiSearchResult implements Searchable {
     int limit;
     int estimatedTotalHits;
     HashMap<String, FacetsByIndexInfo> facetsByIndex;
+    HashMap<String, Object> performanceDetails;
 
     public MultiSearchResult() {}
 }
