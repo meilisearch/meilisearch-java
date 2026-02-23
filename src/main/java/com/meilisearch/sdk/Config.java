@@ -42,7 +42,8 @@ public class Config {
     }
 
     /**
-     * Creates a configuration with an API key and a provided OkHttpClient, and no customized headers.
+     * Creates a configuration with an API key and a provided OkHttpClient, and no customized
+     * headers.
      *
      * @param hostUrl URL of the Meilisearch instance
      * @param apiKey API key to pass to the header of requests sent to Meilisearch
@@ -87,7 +88,8 @@ public class Config {
     }
 
     /**
-     * Creates a configuration with an API key, client agent header value, a JSON handler and an OkHttpClient
+     * Creates a configuration with an API key, client agent header value, a JSON handler and an
+     * OkHttpClient
      *
      * @param hostUrl URL of the Meilisearch instance
      * @param apiKey API key to pass to the header of requests sent to Meilisearch
@@ -95,7 +97,12 @@ public class Config {
      * @param okHttpClient The OkHttpClient instance to use for the SDK's HTTP requests
      * @param clientAgents List of customized agents to be passed to User-Agent header.
      */
-    public Config(String hostUrl, String apiKey, JsonHandler jsonHandler, OkHttpClient okHttpClient, String[] clientAgents) {
+    public Config(
+            String hostUrl,
+            String apiKey,
+            JsonHandler jsonHandler,
+            OkHttpClient okHttpClient,
+            String[] clientAgents) {
         this.hostUrl = hostUrl;
         this.apiKey = apiKey;
         this.headers = configHeaders(clientAgents);
