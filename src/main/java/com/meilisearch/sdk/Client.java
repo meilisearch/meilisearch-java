@@ -20,6 +20,7 @@ public class Client {
     private TasksHandler tasksHandler;
     private KeysHandler keysHandler;
     private JsonHandler jsonHandler;
+    private WebHooksHandler webHooksHandler;
 
     /**
      * Calls instance for Meilisearch client
@@ -33,6 +34,7 @@ public class Client {
         this.tasksHandler = new TasksHandler(config);
         this.keysHandler = new KeysHandler(config);
         this.jsonHandler = config.jsonHandler;
+        this.webHooksHandler = new WebHooksHandler(config);
     }
 
     /**
@@ -542,6 +544,64 @@ public class Client {
                         .sign(algorithm);
 
         return jwtToken;
+    }
+
+    /**
+     * Get a list of all webhooks configured in the current Meilisearch instance.
+     *
+     * @return List of all webhooks.
+     * @throws MeilisearchException if an error occurs.
+     */
+    public Results<Webhook> getWebhooks() throws MeilisearchException {
+        return this.webHooksHandler.getWebhooks();
+    }
+
+    /**
+     * Get a webhook specified by its unique Uuid.
+     *
+     * @return A single Webhook instance.
+     * @param webhookUuid Uuid v4 identifier of a webhook.
+     * @throws MeilisearchException if an error occurs.
+     */
+    public Webhook getWebhook(UUID webhookUuid) throws MeilisearchException {
+        return this.webHooksHandler.getWebhook(webhookUuid);
+    }
+
+    /**
+     * Create a new webhook. When Meilisearch finishes processing a task, it sends the relevant task
+     * object to all configured webhooks
+     *
+     * @return A single Webhook instance.
+     * @param createUpdateWebhookRequest Request body containing headers and url for the new
+     *     webhook.
+     * @throws MeilisearchException If an error occurs.
+     */
+    public Webhook createWebhook(CreateUpdateWebhookRequest createUpdateWebhookRequest)
+            throws MeilisearchException {
+        return this.webHooksHandler.createWebhook(createUpdateWebhookRequest);
+    }
+
+    /**
+     * Update the configuration for the specified webhook. To remove a field, set its value to null.
+     *
+     * @param webhookUuid Uuid v4 identifier of a webhook.
+     * @param createUpdateWebhookRequest Request body containing new header or url.
+     * @return A single webhook instance.
+     * @throws MeilisearchException If an error occurs.
+     */
+    public Webhook updateWebhook(
+            UUID webhookUuid, CreateUpdateWebhookRequest createUpdateWebhookRequest)
+            throws MeilisearchException {
+        return this.webHooksHandler.updateWebhook(webhookUuid, createUpdateWebhookRequest);
+    }
+
+    /**
+     * Delete a webhook and stop sending task completion data to the target URL.
+     *
+     * @param webhookUuid Uuid v4 identifier of a webhook.
+     */
+    public void deleteWebhook(UUID webhookUuid) throws MeilisearchException {
+        this.webHooksHandler.deleteWebhook(webhookUuid);
     }
 
     private Boolean isValidUUID(String apiKeyUid) {

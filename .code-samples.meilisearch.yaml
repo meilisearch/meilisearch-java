@@ -260,6 +260,18 @@ update_displayed_attributes_1: |-
   });
 reset_displayed_attributes_1: |-
   client.index("movies").resetDisplayedAttributesSettings();
+getting_started_typo_tolerance: |-
+  HashMap<String, Integer> minWordSizeTypos =
+  new HashMap<String, Integer>() {
+    {
+      put("oneTypo", 4);
+    }
+  };
+
+  TypoTolerance typoTolerance = new TypoTolerance();
+  typoTolerance.setMinWordSizeForTypos(minWordSizeTypos);
+
+  client.index("movies").updateTypoToleranceSettings(typoTolerance);
 get_typo_tolerance_1:
   client.index("books").getTypoToleranceSettings();
 update_typo_tolerance_1: |-
@@ -311,7 +323,7 @@ update_non_separator_tokens_1: |-
   String[] newSeparatorTokens = { "@", "#" };
   client.index("articles").updateNonSeparatorTokensSettings(newSeparatorTokens);
 reset_non_separator_tokens_1: |-
-    client.index("articles").resetNonSeparatorTokensSettings();
+  client.index("articles").resetNonSeparatorTokensSettings();
 get_dictionary_1: |-
   client.index("books").getDictionarySettings();
 update_dictionary_1: |-
@@ -511,9 +523,9 @@ search_parameter_guide_facet_stats_1: |-
 faceted_search_update_settings_1:
   client.index("movie_ratings").updateFilterableAttributesSettings(new String[]
   {
-    "genres",
-    "director",
-    "language"
+  "genres",
+  "director",
+  "language"
   });
 faceted_search_walkthrough_filter_1: |-
   SearchRequest searchRequest =
@@ -681,10 +693,9 @@ multi_search_1: |-
   multiIndexSearch.addQuery(new IndexSearchRequest("movie_ratings").setQuery("us"));
 
   client.multiSearch(multiSearchRequest);
-get_similar_post_1:
-  SimilarDocumentRequest query = new SimilarDocumentRequest()
-    .setId("143")
-    .setEmbedder("manual");
+get_similar_post_1: SimilarDocumentRequest query = new SimilarDocumentRequest()
+  .setId("143")
+  .setEmbedder("manual");
   client.index("movies").searchSimilarDocuments(query)
 search_parameter_reference_distinct_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("QUERY TERMS").distinct("ATTRIBUTE_A").build();
@@ -720,3 +731,23 @@ compact_index_1: |-
   client.index("INDEX_NAME").compact();
 rename_an_index_1: |-
   client.updateIndex("indexA", null, "indexB");
+get_webhooks_1: |-
+  client.getWebhook();
+get_webhook_1: |-
+  client.getWebhook();
+create_webhook_1: |-
+  HashMap<String, Object> headers = new HashMap<>();
+  headers.put("authorization", "MASTER_KEY");
+  headers.put("referer", "http://example.com");
+  CreateUpdateWebhookRequest webhookReq1 = new CreateUpdateWebhookRequest("http://webiste.com", headers);
+
+  Webhook webhook = client.createWebhook();
+update_webhook_1: |-
+  Webhook webhook = this.client.createWebhook(webhookReq1);
+  HashMap<String, Object> headers = new HashMap<>();
+  headers.put("referer", null);
+  CreateUpdateWebhookRequest webhookReq2 = new CreateUpdateWebhookRequest(webhook.getUrl(), headers);
+
+  Webhook updated_webhook = this.client.updateWebhook(webhook.getUuid(), webhookReq2);
+delete_webhook_1: |-
+  this.client.deleteWebhook("WEBHOOK_UUID");
