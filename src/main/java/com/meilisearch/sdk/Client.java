@@ -584,24 +584,24 @@ public class Client {
     /**
      * Update the configuration for the specified webhook. To remove a field, set its value to null.
      *
-     * @param webhook_uuid Uuid v4 identifier of a webhook.
+     * @param webhookUuid Uuid v4 identifier of a webhook.
      * @param createUpdateWebhookRequest Request body containing new header or url.
      * @return A single webhook instance.
      * @throws MeilisearchException If an error occurs.
      */
     public Webhook updateWebhook(
-            UUID webhook_uuid, CreateUpdateWebhookRequest createUpdateWebhookRequest)
+            UUID webhookUuid, CreateUpdateWebhookRequest createUpdateWebhookRequest)
             throws MeilisearchException {
-        return this.webHooksHandler.updateWebhook(webhook_uuid, createUpdateWebhookRequest);
+        return this.webHooksHandler.updateWebhook(webhookUuid, createUpdateWebhookRequest);
     }
 
     /**
      * Delete a webhook and stop sending task completion data to the target URL.
      *
-     * @param webhook_uuid Uuid v4 identifier of a webhook.
+     * @param webhookUuid Uuid v4 identifier of a webhook.
      */
-    public void deleteWebhook(UUID webhook_uuid) throws MeilisearchException {
-        this.webHooksHandler.deleteWebhook(webhook_uuid);
+    public void deleteWebhook(UUID webhookUuid) throws MeilisearchException {
+        this.webHooksHandler.deleteWebhook(webhookUuid);
     }
 
     private Boolean isValidUUID(String apiKeyUid) {
