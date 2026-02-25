@@ -731,23 +731,23 @@ compact_index_1: |-
   client.index("INDEX_NAME").compact();
 rename_an_index_1: |-
   client.updateIndex("indexA", null, "indexB");
-get_webhooks_1: |-
+webhooks_get_1: |-
+  client.getWebhooks();
+webhooks_get_single_1: |-
   client.getWebhook();
-get_webhook_1: |-
-  client.getWebhook();
-create_webhook_1: |-
+webhooks_post_1: |-
   HashMap<String, Object> headers = new HashMap<>();
   headers.put("authorization", "MASTER_KEY");
   headers.put("referer", "http://example.com");
   CreateUpdateWebhookRequest webhookReq1 = new CreateUpdateWebhookRequest("http://webiste.com", headers);
 
   Webhook webhook = client.createWebhook();
-update_webhook_1: |-
+webhooks_patch_1: |-
   Webhook webhook = this.client.createWebhook(webhookReq1);
   HashMap<String, Object> headers = new HashMap<>();
   headers.put("referer", null);
   CreateUpdateWebhookRequest webhookReq2 = new CreateUpdateWebhookRequest(webhook.getUrl(), headers);
 
   Webhook updated_webhook = this.client.updateWebhook(webhook.getUuid(), webhookReq2);
-delete_webhook_1: |-
+webhooks_delete_1: |-
   this.client.deleteWebhook("WEBHOOK_UUID");
