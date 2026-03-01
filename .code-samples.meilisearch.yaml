@@ -358,76 +358,9 @@ filtering_guide_3: |-
 filtering_guide_nested_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("thriller").filter(new String[] {"rating.users >= 90"}).build();
   client.index("movie_ratings").search(searchRequest);
-search_parameter_guide_query_1: |-
-  client.index("movies").search("shifu");
-search_parameter_guide_offset_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("shifu").offset(1).build();
-  client.index("movies").search(searchRequest);
-search_parameter_guide_limit_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("shifu").limit(2).build();
-  client.index("movies").search(searchRequest);
-search_parameter_guide_retrieve_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("a").attributesToRetrieve(new String[] {"overview", "title"}).build();
-  client.index("movies").search(searchRequest);
-search_parameter_guide_crop_1: |-
-  SearchRequest searchRequest =
-          SearchRequest.builder()
-                  .q("shifu")
-                  .attributesToCrop(new String[] {"overview"})
-                  .cropLength(5)
-                  .build();
-  client.index("movies").search(searchRequest);
-search_parameter_guide_crop_marker_1: |-
-  SearchRequest searchRequest =
-          SearchRequest.builder()
-                  .q("shifu")
-                  .attributesToCrop(new String[] {"overview"})
-                  .cropMarker("[…]")
-                  .build();
-  client.index("movies").search(searchRequest);
-search_parameter_guide_highlight_1: |-
-  SearchRequest searchRequest =
-    new SearchRequest("winter feast").setAttributesToHighlight(new String[] {"overview"});
-  client.index("movies").search(searchRequest);
-search_parameter_guide_highlight_tag_1: |-
-  SearchRequest searchRequest =
-          SearchRequest.builder()
-                  .q("winter feast")
-                  .attributesToHighlight(new String[] {"overview"})
-                  .highlightPreTag("<span class=\"highlight\">")
-                  .highlightPostTag("</span>")
-                  .build();
-  client.index("movies").search(searchRequest);
-search_parameter_guide_hitsperpage_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("").hitsPerPage(15).build();
-  SearchResultPaginated searchResult = client.index("movies").search(searchRequest);
-search_parameter_guide_page_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("").page(15).build();
-  SearchResultPaginated searchResult = client.index("movies").search(searchRequest);
-search_parameter_guide_show_matches_position_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("winter feast").showMatchesPosition(true).build();
-  SearchResultPaginated searchResult = client.index("movies").search(searchRequest);
-search_parameter_guide_matching_strategy_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("big fat liar").matchingStrategy(MatchingStrategy.LAST).build();
-  client.index("movies").search(searchRequest);
-search_parameter_guide_matching_strategy_2: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("big fat liar").matchingStrategy(MatchingStrategy.ALL).build();
-  client.index("movies").search(searchRequest);
-search_parameter_guide_matching_strategy_3: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("white shirt").matchingStrategy(MatchingStrategy.FREQUENCY).build();
-  client.index("movies").search(searchRequest);
-search_parameter_guide_attributes_to_search_on_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("adventure").attributesToSearchOn(new String[] {"overview"});
-  client.index("movies").searchRequest(searchRequest);
-search_parameter_guide_show_ranking_score_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("dragon").showRankingScore(true).build();
-  client.index("movies").search(searchRequest);
 search_parameter_guide_show_ranking_score_details_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("dragon").showRankingScoreDetails(true).build();
   client.index("movies").search(searchRequest);
-search_parameter_reference_ranking_score_threshold_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("badman").rankingScoreThreshold(0.2).build();
-  client.index("INDEX_NAME").search(searchRequest);
 synonyms_guide_1: |-
   HashMap<String, String[]> synonyms = new HashMap<String, String[]>();
   synonyms.put("great", new String[] {"fantastic"});
@@ -501,13 +434,6 @@ faceted_search_1: |-
     "language"
   }).build();
   client.index("books").search(searchRequest);
-search_parameter_guide_facet_stats_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("Batman").facets(new String[]
-  {
-    "genres",
-    "rating"
-  }).build();
-  client.index("movies").search(searchRequest);
 faceted_search_update_settings_1:
   client.index("movie_ratings").updateFilterableAttributesSettings(new String[]
   {
@@ -515,12 +441,6 @@ faceted_search_update_settings_1:
   "director",
   "language"
   });
-faceted_search_walkthrough_filter_1: |-
-  SearchRequest searchRequest =
-    SearchRequest.builder().q("thriller").filterArray(new String[][] {
-      new String[] {"genres = Horror", "genres = Mystery"},
-      new String[] {"director = \"Jordan Peele\""}}).build();
-  client.index("movies").search(searchRequest);
 add_movies_json_1: |-
   import com.meilisearch.sdk;
   import org.json.JSONArray;
@@ -536,8 +456,6 @@ post_dump_1: |-
   client.createDump();
 create_snapshot_1: |-
   client.createSnapshot();
-phrase_search_1: |-
-  client.index("movies").search("\"african american\" horror");
 sorting_guide_update_sortable_attributes_1: |-
   client.index("books").updateSortableAttributesSettings(new String[] {"price", "author"});
 sorting_guide_update_ranking_rules_1: |-
@@ -579,9 +497,6 @@ facet_search_2: |-
 facet_search_3: |-
   FacetSearchRequest fsr = FacetSearchRequest.builder().facetName("genres").facetQuery("c").build();
   client.index("books").facetSearch(fsr);
-search_parameter_guide_sort_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("science fiction").sort(new String[] {"price:asc"}).build();
-  client.index("search_parameter_guide_sort_1").search(searchRequest);
 geosearch_guide_filter_settings_1: |-
   Settings settings = new Settings();
   settings.setFilterableAttributes(new String[] { "_geo" });
@@ -685,9 +600,6 @@ get_similar_post_1: SimilarDocumentRequest query = new SimilarDocumentRequest()
   .setId("143")
   .setEmbedder("manual");
   client.index("movies").searchSimilarDocuments(query)
-search_parameter_reference_distinct_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("QUERY TERMS").distinct("ATTRIBUTE_A").build();
-  client.index("INDEX_NAME").search(searchRequest);
 distinct_attribute_guide_filterable_1: |-
   Settings settings = new Settings();
   settings.setFilterableAttributes(new String[] { "product_id", "SKU", "url" });
@@ -695,9 +607,6 @@ distinct_attribute_guide_filterable_1: |-
 distinct_attribute_guide_distinct_parameter_1: |-
   SearchRequest searchRequest = SearchRequest.builder().q("white shirt").distinct("sku").build();
   client.index("products").search(searchRequest);
-search_parameter_reference_locales_1: |-
-  SearchRequest searchRequest = SearchRequest.builder().q("QUERY TEXT IN JAPANESE").locales(new String[]{"jpn"}).build();
-  client.index("INDEX_NAME").search(searchRequest);
 get_localized_attribute_settings_1: |-
   client.index("INDEX_NAME").getLocalizedAttributesSettings();
 update_localized_attribute_settings_1: |-
