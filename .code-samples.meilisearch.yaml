@@ -648,3 +648,16 @@ webhooks_patch_1: |-
   Webhook updated_webhook = this.client.updateWebhook(webhook.getUuid(), webhookReq2);
 webhooks_delete_1: |-
   this.client.deleteWebhook("WEBHOOK_UUID");
+get_facet_search_setting_1: |-
+  Boolean value = index.getFacetSearchSettings();
+update_facet_search_setting_1: |-
+  index.updateFacetSearchSettings(false);
+reset_facet_search_setting_1: |-
+  index.resetFacetSearchSettings();
+get_prefix_search_settings_1: |-
+  PrefixSearchSetting prefixSearchSettings = index.getPrefixSearchSettings();
+update_prefix_search_setting_1: |-
+  PrefixSearchSetting newSetting = PrefixSearchSetting.DISABLED;
+  index.updatePrefixSearchSettings(newSetting);
+reset_prefix_search_setting_1: |-
+  index.resetPrefixSearchSettings();

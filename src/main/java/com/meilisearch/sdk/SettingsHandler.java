@@ -1,5 +1,6 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.enums.PrefixSearchSetting;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.URLBuilder;
 import com.meilisearch.sdk.model.Embedder;
@@ -852,5 +853,77 @@ public class SettingsHandler {
     TaskInfo resetEmbedders(String uid) throws MeilisearchException {
         return httpClient.delete(
                 settingsPath(uid).addSubroute("embedders").getURL(), TaskInfo.class);
+    }
+
+    /**
+     * Returns the current value of the facetSearch setting for the index.
+     *
+     * @return Returns the current value of the facetSearch setting.
+     * @throws MeilisearchException If the Authorization header is missing or index not found
+     */
+    Boolean getFacetSearch(String uid) throws MeilisearchException {
+        return httpClient.get(
+                settingsPath(uid).addSubroute("facet-search").getURL(), Boolean.class);
+    }
+
+    /**
+     * Updates the facetSearch setting for the index. Send the new value in the request body; send
+     * null to reset to default.
+     *
+     * @param isEnabled New value for the setting
+     * @return A summarized view of a task, returned when a task is enqueued
+     * @throws MeilisearchException If the Authorization header is missing or index not found.
+     */
+    TaskInfo updateFacetSearch(String uid, Boolean isEnabled) throws MeilisearchException {
+        return httpClient.put(
+                settingsPath(uid).addSubroute("facet-search").getURL(), isEnabled, TaskInfo.class);
+    }
+
+    /**
+     * Resets the facetSearch setting to its default value.
+     *
+     * @return A summarized view of a task, returned when a task is enqueued
+     * @throws MeilisearchException If the Authorization header is missing or index not found.
+     */
+    TaskInfo resetFacetSearch(String uid) throws MeilisearchException {
+        return httpClient.delete(
+                settingsPath(uid).addSubroute("facet-search").getURL(), TaskInfo.class);
+    }
+
+    /**
+     * Returns the current value of the prefixSearch setting for the index.
+     *
+     * @return The current value of the prefixSearch setting.
+     * @throws MeilisearchException If the Authorization header is missing or index not found.
+     */
+    PrefixSearchSetting getPrefixSearch(String uid) throws MeilisearchException {
+        return httpClient.get(
+                settingsPath(uid).addSubroute("prefix-search").getURL(), PrefixSearchSetting.class);
+    }
+
+    /**
+     * Updates the prefixSearch setting for the index. Send the new value in the request body; send
+     * null to reset to default.
+     *
+     * @return A summarized view of a task, returned when a task is enqueued
+     * @throws MeilisearchException If the Authorization header is missing or index not found.
+     */
+    TaskInfo updatePrefixSearch(String uid, PrefixSearchSetting prefixSearchSetting)
+            throws MeilisearchException {
+        return httpClient.put(
+                settingsPath(uid).addSubroute("prefix-search").getURL(),
+                prefixSearchSetting,
+                TaskInfo.class);
+    }
+
+    /**
+     * Resets the prefixSearch setting to its default value.
+     *
+     * @return A summarized view of a task, returned when a task is enqueued
+     * @throws MeilisearchException If the Authorization header is missing or index not found.
+     */
+    TaskInfo resetPrefixSearch(String uid) throws MeilisearchException {
+        return httpClient.delete(
+                settingsPath(uid).addSubroute("prefix-search").getURL(), TaskInfo.class);
     }
 }

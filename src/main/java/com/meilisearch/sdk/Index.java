@@ -1,5 +1,6 @@
 package com.meilisearch.sdk;
 
+import com.meilisearch.sdk.enums.PrefixSearchSetting;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.http.URLBuilder;
 import com.meilisearch.sdk.model.*;
@@ -1447,5 +1448,71 @@ public class Index implements Serializable {
                 new URLBuilder("/indexes").addSubroute(this.uid).addSubroute("/compact").getURL(),
                 null,
                 TaskInfo.class);
+    }
+
+    /**
+     * Returns the current value of the facetSearch setting for the index.
+     *
+     * @return Returns the current value of the facetSearch setting.
+     * @throws MeilisearchException If the Authorization header is missing or index not found
+     */
+    public Boolean getFacetSearchSettings() throws MeilisearchException {
+        return this.settingsHandler.getFacetSearch(this.uid);
+    }
+
+    /**
+     * Updates the facetSearch setting for the index. Send the new value in the request body; send
+     * null to reset to default.
+     *
+     * @param isEnabled New value for the setting
+     * @return A summarized view of a task, returned when a task is enqueued
+     * @throws MeilisearchException If the Authorization header is missing or index not found.
+     */
+    public TaskInfo updateFacetSearchSettings(Boolean isEnabled) throws MeilisearchException {
+        return this.settingsHandler.updateFacetSearch(this.uid, isEnabled);
+    }
+
+    /**
+     * Resets the facetSearch setting to its default value.
+     *
+     * @return A summarized view of a task, returned when a task is enqueued
+     * @throws MeilisearchException If the Authorization header is missing or index not found.
+     */
+    public TaskInfo resetFacetSearchSettings() throws MeilisearchException {
+        return this.settingsHandler.resetFacetSearch(this.uid);
+    }
+
+    /**
+     * Returns the current value of the prefixSearch setting for the index.
+     *
+     * @return The current value of the prefixSearch setting.
+     * @throws MeilisearchException If the Authorization header is missing or index not found.
+     */
+    public PrefixSearchSetting getPrefixSearchSettings() throws MeilisearchException {
+        return this.settingsHandler.getPrefixSearch(this.uid);
+    }
+
+    /**
+     * Updates the prefixSearch setting for the index. Send the new value in the request body; send
+     * null to reset to default.
+     *
+     * @param updatedPrefixSetting The body is of type enum. Available options: indexingTime,
+     *     disabled
+     * @return A summarized view of a task, returned when a task is enqueued
+     * @throws MeilisearchException If the Authorization header is missing or index not found.
+     */
+    public TaskInfo updatePrefixSearchSettings(PrefixSearchSetting updatedPrefixSetting)
+            throws MeilisearchException {
+        return this.settingsHandler.updatePrefixSearch(this.uid, updatedPrefixSetting);
+    }
+
+    /**
+     * Resets the prefixSearch setting to its default value.
+     *
+     * @return A summarized view of a task, returned when a task is enqueued
+     * @throws MeilisearchException If the Authorization header is missing or index not found.
+     */
+    public TaskInfo resetPrefixSearchSettings() throws MeilisearchException {
+        return this.settingsHandler.resetPrefixSearch(this.uid);
     }
 }
