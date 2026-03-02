@@ -1,15 +1,7 @@
 package com.meilisearch.integration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.arrayWithSize;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasLength;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
@@ -842,6 +834,7 @@ public class SearchTest extends AbstractIT {
 
         MultiSearchFederation federation = new MultiSearchFederation();
         federation.setLimit(2);
+        federation.setShowPerformanceDetails(true);
         MultiSearchResult results = client.multiSearch(search, federation);
 
         assertThat(results.getEstimatedTotalHits(), is(2));
@@ -851,6 +844,7 @@ public class SearchTest extends AbstractIT {
         for (HashMap<String, Object> record : hits) {
             assertThat(record.containsKey("_federation"), is(true));
         }
+        assertThat(results.getPerformanceDetails(), aMapWithSize(greaterThan(0)));
     }
 
     /** Test multisearch with ranking score threshold */
@@ -1106,7 +1100,10 @@ public class SearchTest extends AbstractIT {
 
         SimilarDocumentsResults results =
                 index.searchSimilarDocuments(
-                        new SimilarDocumentRequest().setId("143").setEmbedder("manual"));
+                        new SimilarDocumentRequest()
+                                .setId("143")
+                                .setEmbedder("manual")
+                                .setShowPerformanceDetails(true));
 
         ArrayList<HashMap<String, Object>> hits = results.getHits();
         assertThat(hits.size(), is(4));
@@ -1114,6 +1111,7 @@ public class SearchTest extends AbstractIT {
         assertThat(hits.get(1).get("title"), is("Captain Marvel"));
         assertThat(hits.get(2).get("title"), is("How to Train Your Dragon: The Hidden World"));
         assertThat(hits.get(3).get("title"), is("Shazam!"));
+        assertThat(results.getPerformanceDetails(), aMapWithSize(greaterThan(0)));
     }
 
     /** Test vector search */
@@ -1306,5 +1304,24 @@ public class SearchTest extends AbstractIT {
         @SuppressWarnings("unchecked")
         Map<String, Object> vectors = (Map<String, Object>) hitWith.get("_vectors");
         assertThat(vectors.containsKey("manual"), is(true));
+    }
+
+    @Test
+    public void testSearchWithPerformanceDetails() throws Exception {
+        String indexUid = "testSearchWithPerformanceDetails";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+
+        index.waitForTask(task.getTaskUid());
+
+        SearchRequest searchRequest =
+                SearchRequest.builder().q("a").showPerformanceDetails(true).build();
+        SearchResult searchResult = (SearchResult) index.search(searchRequest);
+
+        assertThat(searchResult.getHits(), hasSize(11));
+        assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(31)));
+        assertThat(searchResult.getPerformanceDetails(), aMapWithSize(greaterThan(0)));
     }
 }
