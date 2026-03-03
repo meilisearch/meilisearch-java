@@ -260,7 +260,8 @@ update_displayed_attributes_1: |-
   });
 reset_displayed_attributes_1: |-
   client.index("movies").resetDisplayedAttributesSettings();
-get_typo_tolerance_1: client.index("books").getTypoToleranceSettings();
+get_typo_tolerance_1: |-
+  client.index("books").getTypoToleranceSettings();
 update_typo_tolerance_1: |-
   TypoTolerance typoTolerance = new TypoTolerance();
   HashMap<String, Integer> minWordSizeTypos =
