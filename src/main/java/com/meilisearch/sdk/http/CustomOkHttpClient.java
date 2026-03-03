@@ -28,7 +28,7 @@ public class CustomOkHttpClient {
 
     public CustomOkHttpClient(Config config) {
         this.config = config;
-        this.client = new OkHttpClient();
+        this.client = config.getOkHttpClient();
     }
 
     public <T> HttpResponse<T> execute(HttpRequest request) throws MeilisearchException {
