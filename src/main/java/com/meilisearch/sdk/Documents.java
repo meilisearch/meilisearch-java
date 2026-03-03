@@ -161,7 +161,7 @@ class Documents {
      */
     TaskInfo addDocuments(String uid, String document, String primaryKey, String csvDelimiter)
             throws MeilisearchException {
-        return addDocuments(uid, document, primaryKey, csvDelimiter, null);
+        return addDocuments(uid, document, primaryKey, csvDelimiter, null, null);
     }
 
     /**
@@ -182,6 +182,29 @@ class Documents {
             String csvDelimiter,
             String customMetadata)
             throws MeilisearchException {
+        return addDocuments(uid, document, primaryKey, csvDelimiter, customMetadata, null);
+    }
+
+    /**
+     * Adds/Replaces a document at the specified index uid
+     *
+     * @param uid Partial index identifier for the document
+     * @param document String containing the document to add
+     * @param primaryKey PrimaryKey of the document
+     * @param csvDelimiter CSV delimiter of the document
+     * @param customMetadata Custom metadata to attach to the task
+     * @param skipCreation If true, skips document creation and only updates existing documents
+     * @return Meilisearch's TaskInfo API response
+     * @throws MeilisearchException if the client request causes an error
+     */
+    TaskInfo addDocuments(
+            String uid,
+            String document,
+            String primaryKey,
+            String csvDelimiter,
+            String customMetadata,
+            Boolean skipCreation)
+            throws MeilisearchException {
         URLBuilder urlb = documentPath(uid);
         if (primaryKey != null) {
             urlb.addParameter("primaryKey", primaryKey);
@@ -191,6 +214,9 @@ class Documents {
         }
         if (customMetadata != null) {
             urlb.addParameter("customMetadata", customMetadata);
+        }
+        if (skipCreation != null) {
+            urlb.addParameter("skipCreation", skipCreation.toString());
         }
         return httpClient.post(urlb.getURL(), document, TaskInfo.class);
     }
@@ -206,7 +232,7 @@ class Documents {
      */
     TaskInfo updateDocuments(String uid, String document, String primaryKey, String csvDelimiter)
             throws MeilisearchException {
-        return updateDocuments(uid, document, primaryKey, csvDelimiter, null);
+        return updateDocuments(uid, document, primaryKey, csvDelimiter, null, null);
     }
 
     /**
@@ -227,6 +253,29 @@ class Documents {
             String csvDelimiter,
             String customMetadata)
             throws MeilisearchException {
+        return updateDocuments(uid, document, primaryKey, csvDelimiter, customMetadata, null);
+    }
+
+    /**
+     * Replaces a document at the specified index uid
+     *
+     * @param uid Partial index identifier for the document
+     * @param document String containing the document to replace the existing document
+     * @param primaryKey PrimaryKey of the document
+     * @param csvDelimiter CSV delimiter of the document
+     * @param customMetadata Custom metadata to attach to the task
+     * @param skipCreation If true, skips document creation and only updates existing documents
+     * @return Meilisearch's TaskInfo API response
+     * @throws MeilisearchException if the client request causes an error
+     */
+    TaskInfo updateDocuments(
+            String uid,
+            String document,
+            String primaryKey,
+            String csvDelimiter,
+            String customMetadata,
+            Boolean skipCreation)
+            throws MeilisearchException {
         URLBuilder urlb = documentPath(uid);
         if (primaryKey != null) {
             urlb.addParameter("primaryKey", primaryKey);
@@ -236,6 +285,9 @@ class Documents {
         }
         if (customMetadata != null) {
             urlb.addParameter("customMetadata", customMetadata);
+        }
+        if (skipCreation != null) {
+            urlb.addParameter("skipCreation", skipCreation.toString());
         }
         return httpClient.put(urlb.getURL(), document, TaskInfo.class);
     }

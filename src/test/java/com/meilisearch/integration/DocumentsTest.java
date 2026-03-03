@@ -865,4 +865,117 @@ public class DocumentsTest extends AbstractIT {
         Results<Movie> result = index.getDocuments(Movie.class);
         assertThat(result.getResults(), is(arrayWithSize(0)));
     }
+
+    /** Test addDocuments with skipCreation set to true */
+    @Test
+    public void testAddDocumentsWithSkipCreationTrue() throws Exception {
+        String indexUid = "AddDocumentsWithSkipCreationTrue";
+        Index index = createEmptyIndex(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+
+        // First, add a document
+        String firstDocument = this.gson.toJson(testData.getData().get(0));
+        TaskInfo addTask = index.addDocuments("[" + firstDocument + "]");
+        index.waitForTask(addTask.getTaskUid());
+
+        // Verify one document exists
+        Results<Movie> result = index.getDocuments(Movie.class);
+        assertThat(result.getResults(), is(arrayWithSize(1)));
+        assertThat(result.getResults()[0].getTitle(), is(equalTo("Ad Astra")));
+
+        // Try to add a new document with skipCreation=true, it should not be added
+        String newDocument = this.gson.toJson(testData.getData().get(1));
+        TaskInfo skipTask = index.addDocuments("[" + newDocument + "]", null, null, null, true);
+        index.waitForTask(skipTask.getTaskUid());
+
+        // Verify still only one document exists (new one was not created)
+        result = index.getDocuments(Movie.class);
+        assertThat(result.getResults(), is(arrayWithSize(1)));
+
+        // Now update existing document with skipCreation=true, it should work
+        String updatedDocument = "[{\"id\":\"419704\",\"title\":\"Ad Astra Updated\"}]";
+        TaskInfo updateTask = index.addDocuments(updatedDocument, null, null, null, true);
+        index.waitForTask(updateTask.getTaskUid());
+
+        // Verify document was updated
+        Movie movie = index.getDocument("419704", Movie.class);
+        assertThat(movie.getTitle(), is(equalTo("Ad Astra Updated")));
+    }
+
+    /** Test addDocuments with skipCreation set to false */
+    @Test
+    public void testAddDocumentsWithSkipCreationFalse() throws Exception {
+        String indexUid = "AddDocumentsWithSkipCreationFalse";
+        Index index = createEmptyIndex(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+
+        // Add documents with skipCreation=false (should create new documents)
+        TaskInfo task = index.addDocuments(testData.getRaw(), null, null, null, false);
+        index.waitForTask(task.getTaskUid());
+
+        // Verify all documents were created
+        Results<Movie> result = index.getDocuments(Movie.class);
+        assertThat(result.getResults(), is(arrayWithSize(testData.getData().size())));
+    }
+
+    /** Test updateDocuments with skipCreation set to true */
+    @Test
+    public void testUpdateDocumentsWithSkipCreationTrue() throws Exception {
+        String indexUid = "UpdateDocumentsWithSkipCreationTrue";
+        Index index = createEmptyIndex(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+
+        // First, add documents
+        TaskInfo addTask = index.addDocuments(testData.getRaw());
+        index.waitForTask(addTask.getTaskUid());
+
+        // Verify documents exist
+        Results<Movie> result = index.getDocuments(Movie.class);
+        int initialCount = result.getResults().length;
+        assertThat(initialCount, is(equalTo(testData.getData().size())));
+
+        // Try to update with a new document with skipCreation=true (should not be added)
+        String newDocument = "[{\"id\":\"999999\",\"title\":\"New Movie\"}]";
+        TaskInfo skipTask = index.updateDocuments(newDocument, null, null, null, true);
+        index.waitForTask(skipTask.getTaskUid());
+
+        // Verify document count hasn't changed (new one was not created)
+        result = index.getDocuments(Movie.class);
+        assertThat(result.getResults(), is(arrayWithSize(initialCount)));
+
+        // Now update existing document with skipCreation=true, it should work
+        String updatedDocument = "[{\"id\":\"419704\",\"title\":\"Updated Title\"}]";
+        TaskInfo updateTask = index.updateDocuments(updatedDocument, null, null, null, true);
+        index.waitForTask(updateTask.getTaskUid());
+
+        // Verify document was updated
+        Movie movie = index.getDocument("419704", Movie.class);
+        assertThat(movie.getTitle(), is(equalTo("Updated Title")));
+    }
+
+    /** Test updateDocuments with skipCreation set to false */
+    @Test
+    public void testUpdateDocumentsWithSkipCreationFalse() throws Exception {
+        String indexUid = "UpdateDocumentsWithSkipCreationFalse";
+        Index index = createEmptyIndex(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+
+        // First, add one document
+        String firstDocument = this.gson.toJson(testData.getData().get(0));
+        TaskInfo addTask = index.addDocuments("[" + firstDocument + "]");
+        index.waitForTask(addTask.getTaskUid());
+
+        // Update with new document and skipCreation=false (should add the new document)
+        String newDocument = "[{\"id\":\"999999\",\"title\":\"New Movie\"}]";
+        TaskInfo task = index.updateDocuments(newDocument, null, null, null, false);
+        index.waitForTask(task.getTaskUid());
+
+        // Verify new document was created
+        Results<Movie> result = index.getDocuments(Movie.class);
+        assertThat(result.getResults(), is(arrayWithSize(2)));
+    }
 }
