@@ -648,3 +648,14 @@ webhooks_patch_1: |-
   Webhook updated_webhook = this.client.updateWebhook(webhook.getUuid(), webhookReq2);
 webhooks_delete_1: |-
   this.client.deleteWebhook("WEBHOOK_UUID");
+search_parameter_reference_media_1: |-
+  Hybrid hybrid = Hybrid.builder().embedder("EMBEDDER_NAME").build();
+  SearchRequest searchRequest = SearchRequest.builder().
+            hybrid(hybrid).media(JsonParser.parseString("""
+                {
+                "FIELD_A": "VALUE_A",
+                "FIELD_B": {
+                  "FIELD_C": "VALUE_B",
+                  "FIELD_D": "VALUE_C"
+                }}""")).build();
+  client.search("movies", searchRequest);
