@@ -1,6 +1,7 @@
 package com.meilisearch.sdk.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.HashMap;
 import java.util.Map;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -68,6 +69,16 @@ public class Embedder {
 
     /** Query for the embedder. Optional. */
     protected String query;
+
+    /**
+     * Template fragments that will be reassembled and sent to the remote embedder at indexing time.
+     */
+    protected HashMap<String, EmbedderFragment> indexingFragments;
+
+    /**
+     * Template fragments that will be reassembled and sent to the remote embedder at search time.
+     */
+    protected HashMap<String, EmbedderFragment> searchFragments;
 
     public Embedder() {}
 }

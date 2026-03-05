@@ -14,23 +14,12 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.google.gson.JsonParser;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.exceptions.GranularFilterableAttributesException;
-import com.meilisearch.sdk.model.Embedder;
-import com.meilisearch.sdk.model.EmbedderDistribution;
-import com.meilisearch.sdk.model.EmbedderSource;
-import com.meilisearch.sdk.model.FacetSortValue;
-import com.meilisearch.sdk.model.Faceting;
-import com.meilisearch.sdk.model.FilterableAttributesConfig;
-import com.meilisearch.sdk.model.FilterableAttributesFeatures;
-import com.meilisearch.sdk.model.FilterableAttributesFilter;
-import com.meilisearch.sdk.model.LocalizedAttribute;
-import com.meilisearch.sdk.model.Pagination;
-import com.meilisearch.sdk.model.Settings;
-import com.meilisearch.sdk.model.TaskInfo;
-import com.meilisearch.sdk.model.TypoTolerance;
+import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1586,11 +1575,45 @@ public class SettingsTest extends AbstractIT {
     }
 
     public Embedder createUserProvidedEmbedder() {
+        HashMap<String, EmbedderFragment> indexingFragment = new HashMap<>();
+        indexingFragment.put(
+                "text",
+                EmbedderFragment.builder()
+                        .value(
+                                JsonParser.parseString(
+                                        """
+                                    {
+                                    "content": [
+                                                {
+                                                    "type": "text",
+                                                    "text": "A movie titled {{doc.title}} whose description starts with {{doc.overview|truncateWords:20}}."
+                                                }
+                                            ]
+                                    }"""))
+                        .build());
+        HashMap<String, EmbedderFragment> searchFragment = new HashMap<>();
+        searchFragment.put(
+                "text",
+                EmbedderFragment.builder()
+                        .value(
+                                JsonParser.parseString(
+                                        """
+                    {
+                    "content": [
+                                {
+                                    "type": "image_url",
+                                    "image_url": "https://static.vecteezy.com/system/resources/thumbnails/057/068/323/small/single-fresh-red-strawberry-on-table-green-background-food-fruit-sweet-macro-juicy-plant-image-photo.jpg"
+                                }
+                            ]
+                    }"""))
+                        .build());
         return Embedder.builder()
                 .source(EmbedderSource.USER_PROVIDED)
                 .dimensions(1)
                 .distribution(EmbedderDistribution.builder().mean(0.7).sigma(0.3).build())
                 .binaryQuantized(false)
+                .indexingFragments(indexingFragment)
+                .searchFragments(searchFragment)
                 .build();
     }
 
@@ -1618,6 +1641,11 @@ public class SettingsTest extends AbstractIT {
                 is(equalTo(embedder.getDistribution().getSigma())));
         assertThat(
                 retrievedEmbedder.getBinaryQuantized(), is(equalTo(embedder.getBinaryQuantized())));
+        assertThat(
+                retrievedEmbedder.getIndexingFragments(),
+                is(equalTo(embedder.getIndexingFragments())));
+        assertThat(
+                retrievedEmbedder.getSearchFragments(), is(equalTo(embedder.getSearchFragments())));
     }
 
     @Test
