@@ -6,7 +6,7 @@ import lombok.Data;
 /**
  * Data structure paginated response Currently used in : Batches.
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/batches#response">API
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/async-task-management/list-batches#response">API
  *     specification</a>
  */
 @Data

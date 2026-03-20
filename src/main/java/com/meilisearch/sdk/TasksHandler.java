@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * Class covering the Meilisearch Task API
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks">API specification</a>
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/async-task-management/list-tasks">API specification</a>
  */
 public class TasksHandler {
     private final HttpClient httpClient;

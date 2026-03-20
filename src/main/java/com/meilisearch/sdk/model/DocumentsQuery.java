@@ -10,7 +10,7 @@ import org.json.JSONObject;
  * Data structure of the query parameters or request body params of the documents route when
  * retrieving multiple documents
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/documents#query-parameters">API
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/documents/list-documents-with-get#query-parameters">API
  *     specification</a>
  */
 @Setter

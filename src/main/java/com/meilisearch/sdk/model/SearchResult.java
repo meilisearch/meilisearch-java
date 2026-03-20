@@ -8,7 +8,7 @@ import lombok.ToString;
 /**
  * Meilisearch search response data structure for infinite pagination
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/search#response">API
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/search/search-with-post#response">API
  *     specification</a>
  */
 @Getter

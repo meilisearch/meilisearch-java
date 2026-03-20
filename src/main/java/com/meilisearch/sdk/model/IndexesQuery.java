@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 /**
  * Data structure of the query parameters when fetching indexes
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes#query-parameters">API
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/indexes/list-all-indexes#query-parameters">API
  *     specification</a>
  */
 @Setter

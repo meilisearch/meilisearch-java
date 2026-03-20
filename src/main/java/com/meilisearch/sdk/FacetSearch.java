@@ -7,7 +7,7 @@ import com.meilisearch.sdk.model.FacetSearchable;
 /**
  * Class used for performing facet searching on Meilisearch indexes
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/facet_search">API specification</a>
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/facet-search/search-in-facets">API specification</a>
  */
 public class FacetSearch {
     private final HttpClient httpClient;

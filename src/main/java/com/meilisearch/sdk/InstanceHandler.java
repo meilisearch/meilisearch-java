@@ -22,7 +22,7 @@ public class InstanceHandler {
      *
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
-     * @see <a href="https://www.meilisearch.com/docs/reference/api/health">API specification</a>
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/health/get-health">API specification</a>
      */
     String health() throws MeilisearchException {
         return httpClient.get("/health", String.class);
@@ -33,7 +33,7 @@ public class InstanceHandler {
      *
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
-     * @see <a href="https://www.meilisearch.com/docs/reference/api/health">API specification</a>
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/health/get-health">API specification</a>
      */
     boolean isHealthy() throws MeilisearchException {
         try {
@@ -49,7 +49,7 @@ public class InstanceHandler {
      *
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
-     * @see <a href="https://www.meilisearch.com/docs/reference/api/stats">API specification</a>
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/stats/get-stats-of-all-indexes">API specification</a>
      */
     Stats getStats() throws MeilisearchException {
         return httpClient.get("/stats", Stats.class);
@@ -61,7 +61,7 @@ public class InstanceHandler {
      * @param uid Index identifier to the requested
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
-     * @see <a href="https://www.meilisearch.com/docs/reference/api/stats">API specification</a>
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/stats/get-stats-of-all-indexes">API specification</a>
      */
     IndexStats getIndexStats(String uid) throws MeilisearchException {
         String requestQuery = "/indexes/" + uid + "/stats";
@@ -73,7 +73,7 @@ public class InstanceHandler {
      *
      * @return Meilisearch API response
      * @throws MeilisearchException if an error occurs
-     * @see <a href="https://www.meilisearch.com/docs/reference/api/version">API specification</a>
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/version/get-version">API specification</a>
      */
     String getVersion() throws MeilisearchException {
         return httpClient.get("/version", String.class);

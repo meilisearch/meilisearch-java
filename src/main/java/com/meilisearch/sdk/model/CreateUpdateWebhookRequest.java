@@ -7,7 +7,7 @@ import lombok.NonNull;
 /**
  * Data structure used in request body while creating or updating a webhook.
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/webhooks">API Specification</a>
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/webhooks/list-webhooks">API Specification</a>
  */
 public class CreateUpdateWebhookRequest implements Serializable {
     final String url;

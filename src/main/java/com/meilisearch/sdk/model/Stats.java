@@ -7,7 +7,7 @@ import lombok.Getter;
 /**
  * Meilisearch stats data structure
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/stats">API specification</a>
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/stats/get-stats-of-all-indexes">API specification</a>
  */
 @Getter
 public class Stats {

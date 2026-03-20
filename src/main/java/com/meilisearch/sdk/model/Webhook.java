@@ -8,7 +8,7 @@ import lombok.Getter;
 /**
  * Webhook data structure.
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/webhooks">API specification</a>
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/webhooks/list-webhooks">API specification</a>
  */
 public class Webhook implements Serializable {
     @Getter protected final UUID uuid;

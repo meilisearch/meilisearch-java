@@ -7,7 +7,7 @@ import lombok.Setter;
 /**
  * Data structure of the query parameters of the documents route when retrieving a document
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/documents#query-parameters-1">API
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/documents/list-documents-with-get#query-parameters-1">API
  *     specification</a>
  */
 @Setter

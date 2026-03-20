@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Class covering the Meilisearch Document API
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/documents">API specification</a>
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/documents/list-documents-with-get">API specification</a>
  */
 class Documents {
     private final HttpClient httpClient;

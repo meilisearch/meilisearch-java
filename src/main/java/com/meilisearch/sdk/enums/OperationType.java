@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Enum for Operation Type
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks#type">API specification</a>
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/async-task-management/list-tasks#type">API specification</a>
  */
 public enum OperationType {
     @SerializedName("indexCreation")

@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Enum for Task Status
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks#status">API specification</a>
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/async-task-management/list-tasks#status">API specification</a>
  */
 public enum TaskStatus {
     @SerializedName("enqueued")

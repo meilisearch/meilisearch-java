@@ -8,7 +8,7 @@ import lombok.ToString;
 /**
  * Multi search response
  *
- * <p>https://www.meilisearch.com/docs/reference/api/multi_search#response
+ * <p>https://www.meilisearch.com/docs/reference/api/multi-search/perform-a-multi-search#response
  */
 @Getter
 @ToString

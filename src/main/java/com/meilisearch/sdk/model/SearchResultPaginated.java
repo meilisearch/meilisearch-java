@@ -9,7 +9,7 @@ import lombok.ToString;
  * Meilisearch search response data structure for limited pagination
  *
  * @see <a
- *     href="https://www.meilisearch.com/docs/learn/front_end/pagination#numbered-page-selectors">
+ *     href="https://www.meilisearch.com/docs/guides/front_end/pagination#numbered-page-selectors">
  *     Numbered Page Selectors</a>
  */
 @Getter

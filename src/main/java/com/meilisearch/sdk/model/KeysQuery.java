@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 /**
  * Data structure of the query parameters for the keys routes
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/keys#query-parameters">API
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/keys/list-api-keys#query-parameters">API
  *     specification</a>
  */
 @Setter

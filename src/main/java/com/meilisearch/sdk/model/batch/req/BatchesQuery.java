@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 /**
  * Data structure of a query parameter for batches route
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/batches#query-parameters">API
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/async-task-management/list-batches#query-parameters">API
  *     specification</a>
  */
 @Data

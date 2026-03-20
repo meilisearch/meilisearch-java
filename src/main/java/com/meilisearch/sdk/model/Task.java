@@ -6,7 +6,7 @@ import lombok.Getter;
 /**
  * Data structure of Meilisearch response for a Task
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks">API specification</a>
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/async-task-management/list-tasks">API specification</a>
  */
 @Getter
 public class Task {

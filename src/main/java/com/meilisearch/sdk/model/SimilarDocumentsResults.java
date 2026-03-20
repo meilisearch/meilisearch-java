@@ -8,7 +8,7 @@ import lombok.ToString;
 /**
  * Meilisearch similar documents results data structure
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/similar#response-200-ok">API
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/similar-documents/get-similar-documents-with-post#response-200-ok">API
  *     specification</a>
  */
 @Getter

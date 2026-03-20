@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Class covering the Meilisearch Settings API
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/settings">API specification</a>
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/settings/list-all-settings">API specification</a>
  * @see Settings
  */
 public class SettingsHandler {

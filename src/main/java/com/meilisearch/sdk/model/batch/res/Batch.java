@@ -6,7 +6,7 @@ import lombok.Data;
 /**
  * Data structure of the batch object response
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/batches#batch-object">API
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/async-task-management/list-batches#batch-object">API
  *     specification</a>
  */
 @Data

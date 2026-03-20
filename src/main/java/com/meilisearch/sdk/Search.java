@@ -8,7 +8,7 @@ import com.meilisearch.sdk.model.Searchable;
 /**
  * Class used for searching on Meilisearch indexes
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/search">API specification</a>
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/search/search-with-post">API specification</a>
  */
 public class Search {
     private final HttpClient httpClient;

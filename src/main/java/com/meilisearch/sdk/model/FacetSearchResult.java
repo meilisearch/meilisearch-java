@@ -8,7 +8,7 @@ import lombok.ToString;
 /**
  * Meilisearch facet search response data structure
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/facet_search#response">API
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/facet-search/search-in-facets#response">API
  *     specification</a>
  */
 @Getter

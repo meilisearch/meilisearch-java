@@ -8,7 +8,7 @@ import lombok.Setter;
 /**
  * LocalizedAttribute setting data structure
  *
- * @see <a href="https://www.meilisearch.com/docs/reference/api/settings#localized-attributes">API
+ * @see <a href="https://www.meilisearch.com/docs/reference/api/settings/list-all-settings#localized-attributes">API
  *     specification</a>
  */
 @Getter
