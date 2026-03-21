@@ -449,7 +449,7 @@ add_movies_json_1: |-
 
   Path fileName = Path.of("movies.json");
   String moviesJson = Files.readString(fileName);
-  Client client = new Client(new Config("MEILISEARCH_URL", "masterKey"));
+  Client client = new Client(new Config("MEILISEARCH_URL", "MEILISEARCH_KEY"));
   Index index = client.index("movies");
   index.addDocuments(moviesJson);
 post_dump_1: |-
@@ -537,7 +537,7 @@ primary_field_guide_add_document_primary_key: |-
     + "}]"
   , "reference_number");
 authorization_header_1: |-
-  Client client = new Client(new Config("MEILISEARCH_URL", "masterKey"));
+  Client client = new Client(new Config("MEILISEARCH_URL", "MEILISEARCH_KEY"));
   client.getKeys();
 tenant_token_guide_generate_sdk_1: |-
   Map<String, Object> filters = new HashMap<String, Object>();
