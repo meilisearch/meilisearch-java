@@ -41,7 +41,7 @@ public class WebhooksTest extends AbstractIT {
     @Test
     public void testCreateWebhook() throws Exception {
         HashMap<String, Object> headers = new HashMap<>();
-        headers.put("authorization", "MASTER_KEY");
+        headers.put("authorization", "MEILISEARCH_KEY");
         headers.put("referer", "http://example.com");
         CreateUpdateWebhookRequest webhookReq1 =
                 new CreateUpdateWebhookRequest("http://webiste.com", headers);
@@ -59,7 +59,7 @@ public class WebhooksTest extends AbstractIT {
     @Test
     public void testGetWebhooks() throws Exception {
         HashMap<String, Object> headers = new HashMap<>();
-        headers.put("authorization", "MASTER_KEY");
+        headers.put("authorization", "MEILISEARCH_KEY");
         headers.put("referer", "http://example.com");
         CreateUpdateWebhookRequest webhookReq1 =
                 new CreateUpdateWebhookRequest("http://webiste.com", headers);
@@ -90,7 +90,7 @@ public class WebhooksTest extends AbstractIT {
     @Test
     public void testGetWebhook() throws Exception {
         HashMap<String, Object> headers = new HashMap<>();
-        headers.put("authorization", "MASTER_KEY");
+        headers.put("authorization", "MEILISEARCH_KEY");
         headers.put("referer", "http://example.com");
         CreateUpdateWebhookRequest webhookReq1 =
                 new CreateUpdateWebhookRequest("http://webiste.com", headers);
@@ -110,7 +110,7 @@ public class WebhooksTest extends AbstractIT {
     @Test
     public void testUpdateWebhook() throws Exception {
         HashMap<String, Object> headers = new HashMap<>();
-        headers.put("authorization", "MASTER_KEY");
+        headers.put("authorization", "MEILISEARCH_KEY");
         headers.put("referer", "http://example.com");
         CreateUpdateWebhookRequest webhookReq1 =
                 new CreateUpdateWebhookRequest("http://webiste.com", headers);
@@ -134,7 +134,7 @@ public class WebhooksTest extends AbstractIT {
     @Test
     public void testDeleteWebhook() throws Exception {
         HashMap<String, Object> headers = new HashMap<>();
-        headers.put("authorization", "MASTER_KEY");
+        headers.put("authorization", "MEILISEARCH_KEY");
         headers.put("referer", "http://example.com");
         CreateUpdateWebhookRequest webhookReq1 =
                 new CreateUpdateWebhookRequest("http://webiste.com", headers);

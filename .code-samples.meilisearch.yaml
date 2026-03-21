@@ -634,7 +634,7 @@ webhooks_get_single_1: |-
   client.getWebhook();
 webhooks_post_1: |-
   HashMap<String, Object> headers = new HashMap<>();
-  headers.put("authorization", "MASTER_KEY");
+  headers.put("authorization", "MEILISEARCH_KEY");
   headers.put("referer", "http://example.com");
   CreateUpdateWebhookRequest webhookReq1 = new CreateUpdateWebhookRequest("http://webiste.com", headers);
 
