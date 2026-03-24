@@ -853,6 +853,40 @@ public class SearchTest extends AbstractIT {
         }
     }
 
+    /*
+     * Test the federation parameter with distinct in multi search method
+     */
+    @Test
+    public void testFederationWithDistinct() throws Exception {
+        HashSet<String> indexUids = new HashSet<>();
+        indexUids.add("MultiSearch1");
+        indexUids.add("MultiSearch2");
+        for (String indexUid : indexUids) {
+            Index index = client.index(indexUid);
+
+            TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+            TaskInfo task = index.addDocuments(testData.getRaw());
+
+            index.waitForTask(task.getTaskUid());
+        }
+
+        MultiSearchRequest search = new MultiSearchRequest();
+        search.addQuery(new IndexSearchRequest("MultiSearch1").setQuery("batman"));
+        search.addQuery(new IndexSearchRequest("MultiSearch2").setQuery("batman"));
+
+        MultiSearchFederation federation = new MultiSearchFederation();
+        federation.setDistinct("title");
+        MultiSearchResult results = client.multiSearch(search, federation);
+
+        ArrayList<HashMap<String, Object>> hits = results.getHits();
+        // With distinct on "title", each title value appears at most once
+        HashSet<Object> titles = new HashSet<>();
+        for (HashMap<String, Object> hit : hits) {
+            titles.add(hit.get("title"));
+        }
+        assertThat(titles.size(), is(hits.size()));
+    }
+
     /** Test multisearch with ranking score threshold */
     @Test
     public void testMultiSearchWithRankingScoreThreshold() throws Exception {
