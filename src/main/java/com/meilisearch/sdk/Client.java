@@ -300,6 +300,20 @@ public class Client {
     }
 
     /**
+     * Retrieves the documents associated with a task
+     *
+     * @param uid Identifier of the requested task
+     * @return String containing the JSON response with task documents
+     * @throws MeilisearchException if an error occurs
+     * @see <a
+     *     href="https://www.meilisearch.com/docs/reference/api/async-task-management/get-tasks-documents">API
+     *     specification</a>
+     */
+    public String getTaskDocuments(int uid) throws MeilisearchException {
+        return this.tasksHandler.getTaskDocuments(uid);
+    }
+
+    /**
      * Retrieves list of tasks
      *
      * @return TasksResults containing a list of tasks from the Meilisearch API

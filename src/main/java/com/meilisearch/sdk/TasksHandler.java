@@ -40,6 +40,22 @@ public class TasksHandler {
     }
 
     /**
+     * Retrieves the documents associated with a task
+     *
+     * @param taskUid Identifier of the requested Task
+     * @return String containing the JSON response with task documents
+     * @throws MeilisearchException if client request causes an error
+     */
+    String getTaskDocuments(int taskUid) throws MeilisearchException {
+        URLBuilder urlb = new URLBuilder();
+        urlb.addSubroute("tasks")
+            .addSubroute(Integer.toString(taskUid))
+            .addSubroute("documents");
+        String urlPath = urlb.getURL();
+        return httpClient.get(urlPath, String.class);
+    }
+
+    /**
      * Retrieves all tasks from the client
      *
      * @return TasksResults containing a list of task instance

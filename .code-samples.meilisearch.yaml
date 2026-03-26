@@ -70,6 +70,8 @@ get_all_tasks_1: |-
   client.getTasks();
 get_task_1: |-
   client.getTask(1);
+get_task_documents_1: |-
+  client.getTaskDocuments(1);
 delete_tasks_1: |-
   DeleteTasksQuery query = new DeleteTasksQuery().setUids(new int[] {1, 2})
   client.deleteTasks(query);
