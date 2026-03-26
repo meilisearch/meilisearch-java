@@ -9,6 +9,7 @@ public class MultiSearchFederation {
 
     private Integer limit;
     private Integer offset;
+    private String distinct;
     private MergeFacets mergeFacets;
     private Map<String, String[]> facetsByIndex;
 
@@ -19,6 +20,11 @@ public class MultiSearchFederation {
 
     public MultiSearchFederation setOffset(Integer offset) {
         this.offset = offset;
+        return this;
+    }
+
+    public MultiSearchFederation setDistinct(String distinct) {
+        this.distinct = distinct;
         return this;
     }
 
@@ -40,7 +46,10 @@ public class MultiSearchFederation {
     @Override
     public String toString() {
         JSONObject jsonObject =
-                new JSONObject().put("limit", this.limit).put("offset", this.offset);
+                new JSONObject()
+                        .put("limit", this.limit)
+                        .put("offset", this.offset)
+                        .put("distinct", this.distinct);
         return jsonObject.toString();
     }
 }
