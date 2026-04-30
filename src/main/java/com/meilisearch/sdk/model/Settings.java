@@ -1,5 +1,6 @@
 package com.meilisearch.sdk.model;
 
+import com.meilisearch.sdk.enums.PrefixSearchSetting;
 import java.util.HashMap;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -38,6 +39,8 @@ public class Settings {
     protected String[] nonSeparatorTokens;
     protected HashMap<String, Embedder> embedders;
     protected LocalizedAttribute[] localizedAttributes;
+    protected Boolean facetSearch;
+    protected PrefixSearchSetting prefixSearch;
 
     public Settings() {}
 

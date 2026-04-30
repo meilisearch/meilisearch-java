@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.enums.PrefixSearchSetting;
 import com.meilisearch.sdk.exceptions.GranularFilterableAttributesException;
 import com.meilisearch.sdk.model.Embedder;
 import com.meilisearch.sdk.model.EmbedderDistribution;
@@ -1638,5 +1639,88 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(resetTask.getTaskUid());
         Map<String, Embedder> resetEmbedders = index.getEmbeddersSettings();
         assertThat(resetEmbedders.size(), is(equalTo(0)));
+    }
+
+    @Test
+    @DisplayName("Test get prefix search settings")
+    public void testGetPrefixSearch() throws Exception {
+        Index index = createEmptyIndex("testGetPrefixSearchSettings");
+        Settings initialSettings = index.getSettings();
+
+        PrefixSearchSetting searchSetting = index.getPrefixSearchSettings();
+
+        assertThat(searchSetting, is(instanceOf(PrefixSearchSetting.class)));
+        assertThat(searchSetting, is(equalTo(initialSettings.getPrefixSearch())));
+    }
+
+    @Test
+    @DisplayName("Test update prefix search settings")
+    public void testUpdatePrefixSearch() throws Exception {
+        Index index = createEmptyIndex("testUpdatePrefixSearchSettings");
+
+        PrefixSearchSetting newSetting = PrefixSearchSetting.DISABLED;
+        var task = index.updatePrefixSearchSettings(newSetting);
+        index.waitForTask(task.getTaskUid());
+        Settings initialSettings = index.getSettings();
+
+        assertThat(newSetting, is(equalTo(initialSettings.getPrefixSearch())));
+
+        PrefixSearchSetting newSetting1 = PrefixSearchSetting.INDEXING_TIME;
+        var task1 = index.updatePrefixSearchSettings(newSetting1);
+        index.waitForTask(task1.getTaskUid());
+        Settings initialSettings1 = index.getSettings();
+
+        assertThat(newSetting1, is(equalTo(initialSettings1.getPrefixSearch())));
+    }
+
+    @Test
+    @DisplayName("Test delete prefix search settings")
+    public void testResetPrefixSearch() throws Exception {
+        Index index = createEmptyIndex("testDeletePrefixSearchSettings");
+        PrefixSearchSetting newSetting = PrefixSearchSetting.DISABLED;
+
+        TaskInfo task = index.updatePrefixSearchSettings(newSetting);
+        index.waitForTask(task.getTaskUid());
+
+        TaskInfo task1 = index.resetPrefixSearchSettings();
+        index.waitForTask(task1.getTaskUid());
+        Settings settings = index.getSettings();
+
+        assertThat(settings.getPrefixSearch(), is(equalTo(PrefixSearchSetting.INDEXING_TIME)));
+    }
+
+    @Test
+    @DisplayName("Test get facet search settings")
+    public void testGetFacetSearch() throws Exception {
+        Index index = createEmptyIndex("testGetFacetSearchSettings");
+        Settings initialSettings = index.getSettings();
+
+        Boolean facetSetting = index.getFacetSearchSettings();
+
+        assertThat(facetSetting, is(equalTo(initialSettings.getFacetSearch())));
+    }
+
+    @Test
+    @DisplayName("Test update facet search settings")
+    public void testUpdateFacetSearch() throws Exception {
+        Index index = createEmptyIndex("testUpdateFacetSearchSettings");
+
+        var task = index.updateFacetSearchSettings(false);
+        index.waitForTask(task.getTaskUid());
+        Settings newSetting = index.getSettings();
+
+        assertThat(false, is(equalTo(newSetting.getFacetSearch())));
+    }
+
+    @Test
+    @DisplayName("Test reset facet search settings")
+    public void testResetFacetSearch() throws Exception {
+        Index index = createEmptyIndex("testResetFacetSearchSettings");
+
+        TaskInfo task = index.resetFacetSearchSettings();
+        index.waitForTask(task.getTaskUid());
+        Settings settings = index.getSettings();
+
+        assertThat(true, is(equalTo(settings.getFacetSearch())));
     }
 }
