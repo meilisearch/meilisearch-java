@@ -47,7 +47,7 @@ configurations {
 
 dependencies {
 	// Library dependencies
-	implementation 'com.google.code.gson:gson:2.13.2'
+	implementation 'com.google.code.gson:gson:2.14.0'
 	implementation 'org.json:json:20251224'
 	api 'com.squareup.okhttp3:okhttp:5.3.2'
 
@@ -62,18 +62,18 @@ dependencies {
 	testImplementation 'com.squareup.okhttp3:okhttp:5.3.2'
 	testImplementation 'com.squareup.okhttp3:mockwebserver:5.3.2'
 
-	testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.21.2'
+	testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.21.3'
 
-	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.21.2'
+	compileOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.21.3'
 
 	// Lombok
-	compileOnly 'org.projectlombok:lombok:1.18.44'
-	annotationProcessor 'org.projectlombok:lombok:1.18.44'
-	testCompileOnly 'org.projectlombok:lombok:1.18.44'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.44'
+	compileOnly 'org.projectlombok:lombok:1.18.46'
+	annotationProcessor 'org.projectlombok:lombok:1.18.46'
+	testCompileOnly 'org.projectlombok:lombok:1.18.46'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.46'
 
 	// JWT
-	implementation 'com.auth0:java-jwt:4.5.1'
+	implementation 'com.auth0:java-jwt:4.5.2'
 }
 
 tasks.register('buildJar', Jar) {
