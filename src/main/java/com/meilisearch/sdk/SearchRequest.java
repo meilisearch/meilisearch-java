@@ -2,6 +2,7 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.model.Hybrid;
 import com.meilisearch.sdk.model.MatchingStrategy;
+import com.meilisearch.sdk.model.Personalize;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,6 +47,7 @@ public class SearchRequest {
     protected Hybrid hybrid;
     protected Double[] vector;
     protected Boolean retrieveVectors;
+    protected Personalize personalize;
     /**
      * Constructor for SearchRequest for building search queries with the default values: offset: 0,
      * limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
@@ -114,6 +116,10 @@ public class SearchRequest {
 
         if (this.hybrid != null) {
             jsonObject.put("hybrid", this.hybrid.toJSONObject());
+        }
+
+        if (this.personalize != null) {
+            jsonObject.put("personalize", this.personalize.toJSONObject());
         }
 
         return jsonObject.toString();
