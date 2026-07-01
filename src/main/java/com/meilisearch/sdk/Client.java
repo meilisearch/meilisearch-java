@@ -275,6 +275,19 @@ public class Client {
     }
 
     /**
+     * Gets extended information and metrics about indexes and the Meilisearch database
+     *
+     * @param params query parameters accepted by the stats route
+     * @return StatsWithSizeFormat instance from Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/stats#stats-object">API
+     *     specification</a>
+     */
+    public StatsWithSizeFormat getStats(StatsQuery params) throws MeilisearchException {
+        return this.instanceHandler.getStats(params);
+    }
+
+    /**
      * Gets the version of Meilisearch instance
      *
      * @return Meilisearch API response

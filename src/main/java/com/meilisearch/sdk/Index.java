@@ -1266,6 +1266,19 @@ public class Index implements Serializable {
     }
 
     /**
+     * Gets extended information and metrics about indexes and the Meilisearch database
+     *
+     * @param params query parameters accepted by the stats route
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/stats#get-stats">API
+     *     specification</a>
+     */
+    public IndexStatsWithSizeFormat getStats(StatsQuery params) throws MeilisearchException {
+        return this.instanceHandler.getIndexStats(this.uid, params);
+    }
+
+    /**
      * Retrieves an index tasks by its uid
      *
      * @param taskId Identifier of the requested index task
