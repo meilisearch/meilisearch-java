@@ -112,10 +112,94 @@ class StatsTest {
     }
 
     @Test
+    void getStatsWithRawSizeResponse() throws Exception {
+        String json =
+                """
+            {
+              "databaseSize": 1200,
+              "usedDatabaseSize": 1000,
+              "lastUpdate": "2019-11-20T09:40:33.711324Z",
+              "indexes": {
+                "movies": {
+                  "numberOfDocuments": 10,
+                  "rawDocumentDbSize": 100,
+                  "maxDocumentSize": 16,
+                  "avgDocumentSize": 10,
+                  "isIndexing": true,
+                  "fieldDistribution": {
+                    "genre": 10
+                  },
+                  "internalDatabaseSizes": {
+                    "documents": 100
+                  }
+                }
+              }
+            }
+            """;
+        StatsQuery query = new StatsQuery().setShowInternalDatabaseSizes(true);
+
+        server.enqueue(new MockResponse().setResponseCode(200).setBody(json));
+
+        StatsWithSizeFormat stats = client.getStats(query);
+
+        assertThat(
+                server.takeRequest().getPath(),
+                is("//stats?showInternalDatabaseSizes=true"));
+        assertThat(stats.getDatabaseSize(), is(1200.0));
+        assertThat(stats.getUsedDatabaseSize(), is(1000.0));
+        assertThat(stats.getIndexes().get("movies").getRawDocumentDbSize(), is(100.0));
+        assertThat(
+                stats.getIndexes().get("movies").getInternalDatabaseSizes().get("documents"),
+                is(100.0));
+    }
+
+    @Test
+    void getIndexStatsWithRawSizeResponse() throws Exception {
+        String json =
+                """
+            {
+              "numberOfDocuments": 10,
+              "rawDocumentDbSize": 100,
+              "maxDocumentSize": 16,
+              "avgDocumentSize": 10,
+              "numberOfEmbeddings": 2,
+              "numberOfEmbeddedDocuments": 1,
+              "isIndexing": false,
+              "fieldDistribution": {
+                "genre": 10
+              },
+              "internalDatabaseSizes": {
+                "documents": 100
+              }
+            }
+            """;
+        StatsQuery query = new StatsQuery().setShowInternalDatabaseSizes(true);
+
+        server.enqueue(new MockResponse().setResponseCode(200).setBody(json));
+
+        IndexStatsWithSizeFormat stats = client.index("movies").getStats(query);
+
+        assertThat(
+                server.takeRequest().getPath(),
+                is("//indexes/movies/stats?showInternalDatabaseSizes=true"));
+        assertThat(stats.getRawDocumentDbSize(), is(100.0));
+        assertThat(stats.getAvgDocumentSize(), is(10.0));
+        assertThat(stats.getMaxDocumentSize(), is(16.0));
+        assertThat(stats.getInternalDatabaseSizes().get("documents"), is(100.0));
+        assertThat(stats.getNumberOfEmbeddings(), is(2L));
+        assertThat(stats.getNumberOfEmbeddedDocuments(), is(1L));
+    }
+
+    @Test
     void statsQuerySerializesParameters() {
         StatsQuery query =
                 new StatsQuery().setShowInternalDatabaseSizes(true).setSizeFormat("raw");
 
         assertThat(query.toQuery(), is("?showInternalDatabaseSizes=true&sizeFormat=raw"));
+        assertThat(new StatsQuery().toQuery(), is(""));
+        assertThat(
+                new StatsQuery().setShowInternalDatabaseSizes(true).toQuery(),
+                is("?showInternalDatabaseSizes=true"));
+        assertThat(new StatsQuery().setSizeFormat("human").toQuery(), is("?sizeFormat=human"));
     }
 }

@@ -24,8 +24,10 @@ public class StatsQuery {
                 new URLBuilder()
                         .addParameter(
                                 "showInternalDatabaseSizes",
-                                this.getShowInternalDatabaseSizes())
-                        .addParameter("sizeFormat", this.getSizeFormat());
+                                this.getShowInternalDatabaseSizes());
+        if (this.getSizeFormat() != null && !this.getSizeFormat().isEmpty()) {
+            urlb.addParameter("sizeFormat", this.getSizeFormat());
+        }
         return urlb.getURL();
     }
 }
