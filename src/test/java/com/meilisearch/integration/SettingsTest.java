@@ -26,6 +26,7 @@ import com.meilisearch.sdk.model.Faceting;
 import com.meilisearch.sdk.model.FilterableAttributesConfig;
 import com.meilisearch.sdk.model.FilterableAttributesFeatures;
 import com.meilisearch.sdk.model.FilterableAttributesFilter;
+import com.meilisearch.sdk.model.ForeignKey;
 import com.meilisearch.sdk.model.LocalizedAttribute;
 import com.meilisearch.sdk.model.Pagination;
 import com.meilisearch.sdk.model.Settings;
@@ -1638,5 +1639,103 @@ public class SettingsTest extends AbstractIT {
         index.waitForTask(resetTask.getTaskUid());
         Map<String, Embedder> resetEmbedders = index.getEmbeddersSettings();
         assertThat(resetEmbedders.size(), is(equalTo(0)));
+    }
+
+    /** Tests of the foreignKeys setting methods (experimental feature, Meilisearch v1.39+) */
+    @Test
+    @DisplayName("Test get foreign keys settings by uid")
+    public void testGetForeignKeysSettings() throws Exception {
+        Index index = createIndex("testGetForeignKeysSettings");
+
+        // Fetch global settings and the dedicated endpoint — they must agree.
+        Settings initialSettings = index.getSettings();
+        ForeignKey[] initialForeignKeys = index.getForeignKeysSettings();
+
+        int dedicatedSize = initialForeignKeys == null ? 0 : initialForeignKeys.length;
+        int globalSize =
+                initialSettings.getForeignKeys() == null
+                        ? 0
+                        : initialSettings.getForeignKeys().length;
+        assertThat(dedicatedSize, is(equalTo(globalSize)));
+    }
+
+    @Test
+    @DisplayName("Test update foreign keys settings")
+    public void testUpdateForeignKeysSettings() throws Exception {
+        Index index = createIndex("testUpdateForeignKeysSettings");
+
+        // Record what is there before we make any changes.
+        ForeignKey[] initialForeignKeys = index.getForeignKeysSettings();
+
+        // Build two ForeignKey entries using setters (mirrors the LocalizedAttribute pattern).
+        ForeignKey firstKey = new ForeignKey();
+        firstKey.setForeignIndexUid("authors"); // the related index uid
+        firstKey.setFieldName("author_id"); // the field in THIS index that holds the link
+
+        ForeignKey secondKey = new ForeignKey();
+        secondKey.setForeignIndexUid("genres");
+        secondKey.setFieldName("genre_id");
+
+        ForeignKey[] newForeignKeys = new ForeignKey[] {firstKey, secondKey};
+
+        // Push the update and wait for the async task to finish.
+        index.waitForTask(index.updateForeignKeysSettings(newForeignKeys).getTaskUid());
+
+        // Fetch the setting back and verify every field was stored correctly.
+        ForeignKey[] updatedForeignKeys = index.getForeignKeysSettings();
+
+        assertThat(updatedForeignKeys, is(arrayWithSize(newForeignKeys.length)));
+        assertThat(
+                updatedForeignKeys[0].getForeignIndexUid(),
+                is(equalTo(newForeignKeys[0].getForeignIndexUid())));
+        assertThat(
+                updatedForeignKeys[0].getFieldName(),
+                is(equalTo(newForeignKeys[0].getFieldName())));
+        assertThat(
+                updatedForeignKeys[1].getForeignIndexUid(),
+                is(equalTo(newForeignKeys[1].getForeignIndexUid())));
+        assertThat(
+                updatedForeignKeys[1].getFieldName(),
+                is(equalTo(newForeignKeys[1].getFieldName())));
+
+        // The updated setting must differ from what was there initially.
+        assertThat(updatedForeignKeys, is(not(equalTo(initialForeignKeys))));
+    }
+
+    @Test
+    @DisplayName("Test reset foreign keys settings")
+    public void testResetForeignKeysSettings() throws Exception {
+        Index index = createIndex("testResetForeignKeysSettings");
+
+        ForeignKey[] initialForeignKeys = index.getForeignKeysSettings();
+
+        // Apply some foreign keys first.
+        ForeignKey firstKey = new ForeignKey();
+        firstKey.setForeignIndexUid("authors");
+        firstKey.setFieldName("author_id");
+
+        ForeignKey secondKey = new ForeignKey();
+        secondKey.setForeignIndexUid("genres");
+        secondKey.setFieldName("genre_id");
+
+        ForeignKey[] newForeignKeys = new ForeignKey[] {firstKey, secondKey};
+
+        index.waitForTask(index.updateForeignKeysSettings(newForeignKeys).getTaskUid());
+        ForeignKey[] updatedForeignKeys = index.getForeignKeysSettings();
+
+        // Now reset and verify the setting returned to its initial state.
+        index.waitForTask(index.resetForeignKeysSettings().getTaskUid());
+        ForeignKey[] foreignKeysAfterReset = index.getForeignKeysSettings();
+
+        assertThat(updatedForeignKeys, is(arrayWithSize(newForeignKeys.length)));
+        assertThat(
+                updatedForeignKeys[0].getForeignIndexUid(),
+                is(equalTo(newForeignKeys[0].getForeignIndexUid())));
+        assertThat(
+                updatedForeignKeys[0].getFieldName(),
+                is(equalTo(newForeignKeys[0].getFieldName())));
+
+        // After reset the setting must differ from the updated state.
+        assertThat(foreignKeysAfterReset, is(not(equalTo(updatedForeignKeys))));
     }
 }

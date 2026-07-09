@@ -109,13 +109,15 @@ jacocoTestReport {
 }
 
 tasks.register('integrationTest', Test) {
-	useJUnitPlatform {
-		includeTags 'integration'
-	}
-	testLogging {
-		events 'passed', 'skipped', 'failed'
-		showStandardStreams = System.getenv('DEBUG') != null
-	}
+    testClassesDirs = sourceSets.test.output.classesDirs  // tells Gradle WHERE test classes are
+    classpath = sourceSets.test.runtimeClasspath          // gives JUnit all dependencies it needs
+    useJUnitPlatform {
+        includeTags 'integration'
+    }
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        showStandardStreams = System.getenv('DEBUG') != null
+    }
 }
 
 java {

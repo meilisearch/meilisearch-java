@@ -39,6 +39,10 @@ public class Settings {
     protected HashMap<String, Embedder> embedders;
     protected LocalizedAttribute[] localizedAttributes;
 
+    // Holds the list of foreign key relationships for cross-index document hydration.
+    // This is an experimental Meilisearch feature (v1.39+).
+    protected ForeignKey[] foreignKeys;
+
     public Settings() {}
 
     /** Granular filterable attributes accessor. */
