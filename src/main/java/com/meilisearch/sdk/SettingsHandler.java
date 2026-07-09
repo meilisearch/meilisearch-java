@@ -6,6 +6,7 @@ import com.meilisearch.sdk.model.Embedder;
 import com.meilisearch.sdk.model.Faceting;
 import com.meilisearch.sdk.model.FilterableAttributesConfig;
 import com.meilisearch.sdk.model.FilterableAttributesLegacyAdapter;
+import com.meilisearch.sdk.model.ForeignKey;
 import com.meilisearch.sdk.model.LocalizedAttribute;
 import com.meilisearch.sdk.model.Pagination;
 import com.meilisearch.sdk.model.Settings;
@@ -852,5 +853,62 @@ public class SettingsHandler {
     TaskInfo resetEmbedders(String uid) throws MeilisearchException {
         return httpClient.delete(
                 settingsPath(uid).addSubroute("embedders").getURL(), TaskInfo.class);
+    }
+
+    /**
+     * Gets the foreign keys settings of the index.
+     *
+     * <p>Foreign keys are an experimental feature (Meilisearch v1.39+) that allow cross-index
+     * document hydration. The user must enable this experimental feature on their Meilisearch
+     * instance before using these settings.
+     *
+     * @param uid Index identifier
+     * @return an array of ForeignKey that contains the foreign keys settings
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/settings/get-foreignkeys">API
+     *     specification</a>
+     */
+    ForeignKey[] getForeignKeysSettings(String uid) throws MeilisearchException {
+        // GET /indexes/{uid}/settings/foreign-keys
+        // Returns an array of ForeignKey objects, each with a foreignIndexUid and fieldName.
+        return httpClient.get(
+                settingsPath(uid).addSubroute("foreign-keys").getURL(), ForeignKey[].class);
+    }
+
+    /**
+     * Updates the foreign keys settings of the index.
+     *
+     * @param uid Index identifier
+     * @param foreignKeys an array of ForeignKey objects describing cross-index relationships
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/settings/update-foreignkeys">API
+     *     specification</a>
+     */
+    TaskInfo updateForeignKeysSettings(String uid, ForeignKey[] foreignKeys)
+            throws MeilisearchException {
+        // PUT /indexes/{uid}/settings/foreign-keys
+        // If foreignKeys is null, we encode it as a JSON null to reset the setting.
+        // Otherwise we send the array directly and let the HTTP client serialize it to JSON.
+        return httpClient.put(
+                settingsPath(uid).addSubroute("foreign-keys").getURL(),
+                foreignKeys == null ? httpClient.jsonHandler.encode(foreignKeys) : foreignKeys,
+                TaskInfo.class);
+    }
+
+    /**
+     * Resets the foreign keys settings of the index to the default (empty) value.
+     *
+     * @param uid Index identifier
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/settings/reset-foreignkeys">API
+     *     specification</a>
+     */
+    TaskInfo resetForeignKeysSettings(String uid) throws MeilisearchException {
+        // DELETE /indexes/{uid}/settings/foreign-keys resets the setting to its default empty
+        // value.
+        return httpClient.delete(
+                settingsPath(uid).addSubroute("foreign-keys").getURL(), TaskInfo.class);
     }
 }

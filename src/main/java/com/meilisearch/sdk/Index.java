@@ -1436,6 +1436,49 @@ public class Index implements Serializable {
     }
 
     /**
+     * Gets the foreign keys settings of the index.
+     *
+     * <p>Foreign keys are an experimental feature (Meilisearch v1.39+) that allow cross-index
+     * document hydration. The user must enable this experimental feature on their Meilisearch
+     * instance before using these settings.
+     *
+     * @return an array of ForeignKey that describes cross-index relationships
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/settings/get-foreignkeys">API
+     *     specification</a>
+     */
+    public ForeignKey[] getForeignKeysSettings() throws MeilisearchException {
+        // Delegates to SettingsHandler, passing the index uid.
+        return this.settingsHandler.getForeignKeysSettings(this.uid);
+    }
+
+    /**
+     * Updates the foreign keys settings of the index.
+     *
+     * @param foreignKeys an array of ForeignKey objects describing cross-index relationships
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/settings/update-foreignkeys">API
+     *     specification</a>
+     */
+    public TaskInfo updateForeignKeysSettings(ForeignKey[] foreignKeys)
+            throws MeilisearchException {
+        return this.settingsHandler.updateForeignKeysSettings(this.uid, foreignKeys);
+    }
+
+    /**
+     * Resets the foreign keys settings of the index to the default (empty) value.
+     *
+     * @return TaskInfo instance
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/settings/reset-foreignkeys">API
+     *     specification</a>
+     */
+    public TaskInfo resetForeignKeysSettings() throws MeilisearchException {
+        return this.settingsHandler.resetForeignKeysSettings(this.uid);
+    }
+
+    /**
      * Compacts the database for this index to reclaim unused space
      *
      * @return TaskInfo instance

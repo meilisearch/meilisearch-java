@@ -613,6 +613,22 @@ update_localized_attribute_settings_1: |-
   );
 reset_localized_attribute_settings_1: |-
   client.index("INDEX_NAME").resetLocalizedAttributesSettings();
+get_foreign_keys_setting_1: |-
+  client.index("INDEX_NAME").getForeignKeysSettings();
+update_foreign_keys_setting_1: |-
+  ForeignKey firstForeignKey = new ForeignKey();
+  firstForeignKey.setForeignIndexUid("authors");
+  firstForeignKey.setFieldName("author");
+
+  ForeignKey secondForeignKey = new ForeignKey();
+  secondForeignKey.setForeignIndexUid("authors");
+  secondForeignKey.setFieldName("related_authors");
+
+  client.index("books").updateForeignKeysSettings(
+    new ForeignKey[]{firstForeignKey, secondForeignKey}
+  );
+reset_foreign_keys_setting_1: |-
+  client.index("INDEX_NAME").resetForeignKeysSettings();
 export_post_1: |-
   Map<String, ExportIndexFilter> indexes = new HashMap<>();
   indexes.put("*", ExportIndexFilter.builder().overrideSettings(true).build());
