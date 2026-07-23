@@ -1,5 +1,7 @@
 package com.meilisearch.sdk.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -42,20 +44,24 @@ public class Settings {
     public Settings() {}
 
     /** Granular filterable attributes accessor. */
+    @JsonProperty("filterableAttributes")
     public FilterableAttributesConfig[] getFilterableAttributesConfig() {
         return filterableAttributes;
     }
 
+    @JsonProperty("filterableAttributes")
     public Settings setFilterableAttributesConfig(FilterableAttributesConfig[] configs) {
         this.filterableAttributes = configs;
         return this;
     }
 
     /** Legacy String[] view of filterable attributes. */
+    @JsonIgnore
     public String[] getFilterableAttributes() {
         return FilterableAttributesLegacyAdapter.toLegacyNamesOrThrow(filterableAttributes);
     }
 
+    @JsonIgnore
     public Settings setFilterableAttributes(String[] filterableAttributes) {
         this.filterableAttributes =
                 FilterableAttributesLegacyAdapter.fromLegacyNames(filterableAttributes);

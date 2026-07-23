@@ -134,4 +134,44 @@ class JacksonJsonHandlerTest {
                 decoded.getFilterableAttributesConfig()[1].getAttributePatterns()[0],
                 is("director"));
     }
+
+    @Test
+    void settingsWithAdvancedGranularFilterableAttributesRoundTripWithCustomMapper()
+            throws Exception {
+        ObjectMapper customMapper = new ObjectMapper();
+        JacksonJsonHandler handlerWithCustomMapper = new JacksonJsonHandler(customMapper);
+
+        FilterableAttributesFeatures features = new FilterableAttributesFeatures();
+        features.setFacetSearch(false);
+        features.setFilter(new FilterableAttributesFilter(true, false));
+
+        FilterableAttributesConfig advanced = new FilterableAttributesConfig();
+        advanced.setAttributePatterns(new String[] {"parent"});
+        advanced.setFeatures(features);
+
+        Settings settings = new Settings();
+        settings.setFilterableAttributesConfig(new FilterableAttributesConfig[] {advanced});
+
+        String json = handlerWithCustomMapper.encode(settings);
+
+        assertThat(
+                json,
+                is(
+                        "{\"filterableAttributes\":[{\"attributePatterns\":[\"parent\"],\"features\":{\"facetSearch\":false,\"filter\":{\"equality\":true,\"comparison\":false}}}]}"));
+
+        Settings decoded = handlerWithCustomMapper.decode(json, Settings.class);
+
+        assertThat(decoded.getFilterableAttributesConfig(), is(notNullValue()));
+        assertThat(decoded.getFilterableAttributesConfig().length, is(1));
+        assertThat(
+                decoded.getFilterableAttributesConfig()[0].getAttributePatterns()[0], is("parent"));
+        assertThat(
+                decoded.getFilterableAttributesConfig()[0].getFeatures().getFacetSearch(), is(false));
+        assertThat(
+                decoded.getFilterableAttributesConfig()[0].getFeatures().getFilter().getEquality(),
+                is(true));
+        assertThat(
+                decoded.getFilterableAttributesConfig()[0].getFeatures().getFilter().getComparison(),
+                is(false));
+    }
 }
