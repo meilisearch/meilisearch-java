@@ -19,8 +19,9 @@ public class DynamicSearchRule implements Serializable {
     protected String description;
     protected int priority;
     protected boolean active;
-    protected List<Map<String, Object>> conditions;
+    protected Map<String, Object> conditions;
     protected List<Map<String, Object>> actions;
+    protected String lastUpdatedAt;
 
     public DynamicSearchRule() {}
 
@@ -29,7 +30,7 @@ public class DynamicSearchRule implements Serializable {
             String description,
             int priority,
             boolean active,
-            List<Map<String, Object>> conditions,
+            Map<String, Object> conditions,
             List<Map<String, Object>> actions) {
         this.uid = uid;
         this.description = description;
