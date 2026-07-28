@@ -20,6 +20,7 @@ public class SimilarDocumentRequest {
     private Boolean showRankingScoreDetails;
     private Double rankingScoreThreshold;
     private Boolean retrieveVectors;
+    private Boolean showPerformanceDetails;
 
     /** Constructor for SimilarDocumentsRequest for building search request for similar documents */
     public SimilarDocumentRequest() {}
@@ -37,6 +38,7 @@ public class SimilarDocumentRequest {
         jsonObject.putOpt("showRankingScoreDetails", this.showRankingScoreDetails);
         jsonObject.putOpt("rankingScoreThreshold", this.rankingScoreThreshold);
         jsonObject.putOpt("retrieveVectors", this.retrieveVectors);
+        jsonObject.putOpt("showPerformanceDetails", this.showPerformanceDetails);
 
         return jsonObject.toString();
     }

@@ -24,6 +24,7 @@ public class SearchResult implements Searchable {
     int limit;
     int estimatedTotalHits;
     HashMap<String, Object> _vectors;
+    HashMap<String, Object> performanceDetails;
 
     public SearchResult() {}
 }

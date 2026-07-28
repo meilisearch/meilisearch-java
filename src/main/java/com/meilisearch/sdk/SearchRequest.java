@@ -46,6 +46,7 @@ public class SearchRequest {
     protected Hybrid hybrid;
     protected Double[] vector;
     protected Boolean retrieveVectors;
+    protected Boolean showPerformanceDetails;
     /**
      * Constructor for SearchRequest for building search queries with the default values: offset: 0,
      * limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
@@ -110,7 +111,8 @@ public class SearchRequest {
                         .putOpt("locales", this.locales)
                         .putOpt("distinct", this.distinct)
                         .putOpt("vector", this.vector)
-                        .putOpt("retrieveVectors", this.retrieveVectors);
+                        .putOpt("retrieveVectors", this.retrieveVectors)
+                        .putOpt("showPerformanceDetails", this.showPerformanceDetails);
 
         if (this.hybrid != null) {
             jsonObject.put("hybrid", this.hybrid.toJSONObject());
