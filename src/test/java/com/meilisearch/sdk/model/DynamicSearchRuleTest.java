@@ -45,13 +45,14 @@ class DynamicSearchRuleTest {
         String lastUpdatedAt = "2026-07-28T08:30:00Z";
         String response =
                 "{\"uid\":\"test-filter\",\"description\":\"Filter rule\","
-                        + "\"priority\":1,\"active\":true,\"conditions\":{},\"actions\":[],"
+                        + "\"precedence\":1,\"active\":true,\"conditions\":{},\"actions\":[],"
                         + "\"lastUpdatedAt\":\""
                         + lastUpdatedAt
                         + "\"}";
 
         DynamicSearchRule rule = jsonHandler.decode(response, DynamicSearchRule.class);
 
+        assertThat(rule.getPrecedence(), is(equalTo(1)));
         assertThat(rule.getLastUpdatedAt(), is(equalTo(lastUpdatedAt)));
     }
 }

@@ -58,7 +58,7 @@ public class DynamicSearchRulesTest extends AbstractIT {
         DynamicSearchRule fetched = client.getDynamicSearchRule("test-rule");
         assertThat(fetched.getUid(), equalTo("test-rule"));
         assertThat(fetched.getDescription(), equalTo("Test rule"));
-        assertThat(fetched.getPriority(), equalTo(5));
+        assertThat(fetched.getPrecedence(), equalTo(5));
         assertThat(fetched.isActive(), equalTo(true));
         assertThat(fetched.getLastUpdatedAt(), notNullValue());
     }

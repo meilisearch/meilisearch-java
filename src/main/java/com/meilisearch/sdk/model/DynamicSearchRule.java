@@ -17,7 +17,7 @@ import lombok.Setter;
 public class DynamicSearchRule implements Serializable {
     protected String uid;
     protected String description;
-    protected int priority;
+    protected int precedence;
     protected boolean active;
     protected Map<String, Object> conditions;
     protected List<Map<String, Object>> actions;
@@ -28,13 +28,13 @@ public class DynamicSearchRule implements Serializable {
     public DynamicSearchRule(
             String uid,
             String description,
-            int priority,
+            int precedence,
             boolean active,
             Map<String, Object> conditions,
             List<Map<String, Object>> actions) {
         this.uid = uid;
         this.description = description;
-        this.priority = priority;
+        this.precedence = precedence;
         this.active = active;
         this.conditions = conditions;
         this.actions = actions;
