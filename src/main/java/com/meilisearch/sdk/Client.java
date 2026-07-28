@@ -21,6 +21,7 @@ public class Client {
     private KeysHandler keysHandler;
     private JsonHandler jsonHandler;
     private WebHooksHandler webHooksHandler;
+    private DynamicSearchRulesHandler dynamicSearchRulesHandler;
 
     /**
      * Calls instance for Meilisearch client
@@ -35,6 +36,7 @@ public class Client {
         this.keysHandler = new KeysHandler(config);
         this.jsonHandler = config.jsonHandler;
         this.webHooksHandler = new WebHooksHandler(config);
+        this.dynamicSearchRulesHandler = new DynamicSearchRulesHandler(config);
     }
 
     /**
@@ -623,5 +625,51 @@ public class Client {
             return false;
         }
         return true;
+    }
+    /**
+     * Get a list of all dynamic search rules.
+     *
+     * @param query Query parameters for pagination and filtering (offset, limit, filter).
+     * @return Results containing a list of DynamicSearchRule instances.
+     * @throws MeilisearchException If an error occurs.
+     */
+    public Results<DynamicSearchRule> listDynamicSearchRules(DynamicSearchRulesQuery query)
+            throws MeilisearchException {
+        return this.dynamicSearchRulesHandler.listDynamicSearchRules(query);
+    }
+
+    /**
+     * Get a single dynamic search rule by its uid.
+     *
+     * @param uid Unique identifier of the dynamic search rule.
+     * @return A single DynamicSearchRule instance.
+     * @throws MeilisearchException If an error occurs.
+     */
+    public DynamicSearchRule getDynamicSearchRule(String uid) throws MeilisearchException {
+        return this.dynamicSearchRulesHandler.getDynamicSearchRule(uid);
+    }
+
+    /**
+     * Create a new dynamic search rule, or update it if a rule with the given uid already exists.
+     *
+     * @param uid Unique identifier of the dynamic search rule.
+     * @param dynamicSearchRule Request body containing the rule configuration.
+     * @return TaskInfo instance for the enqueued upsert operation.
+     * @throws MeilisearchException If an error occurs.
+     */
+    public TaskInfo updateDynamicSearchRule(String uid, DynamicSearchRule dynamicSearchRule)
+            throws MeilisearchException {
+        return this.dynamicSearchRulesHandler.updateDynamicSearchRule(uid, dynamicSearchRule);
+    }
+
+    /**
+     * Delete a dynamic search rule.
+     *
+     * @param uid Unique identifier of the dynamic search rule.
+     * @return TaskInfo instance for the enqueued delete operation.
+     * @throws MeilisearchException If an error occurs.
+     */
+    public TaskInfo deleteDynamicSearchRule(String uid) throws MeilisearchException {
+        return this.dynamicSearchRulesHandler.deleteDynamicSearchRule(uid);
     }
 }

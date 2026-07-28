@@ -664,3 +664,26 @@ post_render_template_1: |-
       .setInput(input);
 
   client.renderTemplate(request);
+
+
+list_dynamic_search_rules_1: |-
+  DynamicSearchRulesQuery query = new DynamicSearchRulesQuery();
+  Results<DynamicSearchRule> rules = client.listDynamicSearchRules(query);
+get_dynamic_search_rule_1: |-
+  DynamicSearchRule rule = client.getDynamicSearchRule("black-friday");
+patch_dynamic_search_rule_1: |-
+  List<Map<String, Object>> conditions = List.of(
+      Map.of("scope", "query", "isEmpty", true),
+      Map.of("scope", "time", "start", "2025-11-28T00:00:00Z", "end", "2025-11-28T23:59:59Z"));
+
+  List<Map<String, Object>> actions = List.of(
+      Map.of(
+          "selector", Map.of("indexUid", "products", "id", "123"),
+          "action", Map.of("type", "pin", "position", 1)));
+
+  DynamicSearchRule rule = new DynamicSearchRule(
+      "black-friday", "Black Friday 2025 rules", 10, true, conditions, actions);
+
+  TaskInfo task = client.updateDynamicSearchRule("black-friday", rule);
+delete_dynamic_search_rule_1: |-
+  TaskInfo task = client.deleteDynamicSearchRule("black-friday");
