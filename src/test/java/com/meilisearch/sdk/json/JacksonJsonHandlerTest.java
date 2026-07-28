@@ -166,12 +166,16 @@ class JacksonJsonHandlerTest {
         assertThat(
                 decoded.getFilterableAttributesConfig()[0].getAttributePatterns()[0], is("parent"));
         assertThat(
-                decoded.getFilterableAttributesConfig()[0].getFeatures().getFacetSearch(), is(false));
+                decoded.getFilterableAttributesConfig()[0].getFeatures().getFacetSearch(),
+                is(false));
         assertThat(
                 decoded.getFilterableAttributesConfig()[0].getFeatures().getFilter().getEquality(),
                 is(true));
         assertThat(
-                decoded.getFilterableAttributesConfig()[0].getFeatures().getFilter().getComparison(),
+                decoded.getFilterableAttributesConfig()[0]
+                        .getFeatures()
+                        .getFilter()
+                        .getComparison(),
                 is(false));
     }
 }
