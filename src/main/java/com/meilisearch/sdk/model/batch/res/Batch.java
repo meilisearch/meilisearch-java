@@ -18,4 +18,5 @@ public class Batch {
     private String startedAt;
     private String finishedAt;
     private String duration;
+    private String batchStrategy;
 }
