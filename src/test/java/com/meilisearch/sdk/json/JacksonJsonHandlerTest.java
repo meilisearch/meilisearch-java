@@ -192,4 +192,18 @@ class JacksonJsonHandlerTest {
         assertThat(indexStats.getIndexSize(), is(equalTo(2048L)));
         assertThat(indexStats.getUsedIndexSize(), is(equalTo(1500L)));
     }
+
+    @Test
+    void serializeIndexStats() throws Exception {
+        com.meilisearch.sdk.model.IndexStats indexStats =
+                new com.meilisearch.sdk.model.IndexStats(
+                        10, false, new java.util.HashMap<>(), 1024, 102, 0, 0, 2048, 1500);
+
+        String json = classToTest.encode(indexStats);
+
+        assertThat(json, org.hamcrest.Matchers.containsString("\"isIndexing\":false"));
+        assertThat(
+                json,
+                org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString("\"indexing\"")));
+    }
 }

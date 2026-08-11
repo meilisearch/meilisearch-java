@@ -14,31 +14,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class IndexStats {
-    @JsonProperty("numberOfDocuments")
     protected long numberOfDocuments;
-
-    @JsonProperty("isIndexing")
     protected boolean isIndexing;
-
-    @JsonProperty("fieldDistribution")
     protected Map<String, Integer> fieldDistribution;
-
-    @JsonProperty("rawDocumentDbSize")
     protected long rawDocumentDbSize;
-
-    @JsonProperty("avgDocumentSize")
     protected long avgDocumentSize;
-
-    @JsonProperty("numberOfEmbeddedDocuments")
     protected long numberOfEmbeddedDocuments;
-
-    @JsonProperty("numberOfEmbeddings")
     protected long numberOfEmbeddings;
-
-    @JsonProperty("indexSize")
     protected long indexSize;
-
-    @JsonProperty("usedIndexSize")
     protected long usedIndexSize;
 
     public IndexStats() {}
@@ -82,5 +65,10 @@ public class IndexStats {
         this.numberOfEmbeddings = numberOfEmbeddings;
         this.indexSize = indexSize;
         this.usedIndexSize = usedIndexSize;
+    }
+
+    @JsonProperty("isIndexing")
+    public boolean isIndexing() {
+        return isIndexing;
     }
 }
