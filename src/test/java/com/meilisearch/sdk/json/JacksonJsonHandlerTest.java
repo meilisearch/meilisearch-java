@@ -178,4 +178,32 @@ class JacksonJsonHandlerTest {
                         .getComparison(),
                 is(false));
     }
+
+    @Test
+    void decodeIndexStatsWithIndexSizeAndUsedIndexSize() throws Exception {
+        String json =
+                "{\"numberOfDocuments\":10,\"isIndexing\":false,\"fieldDistribution\":{},\"rawDocumentDbSize\":1024,\"avgDocumentSize\":102,\"numberOfEmbeddedDocuments\":0,\"numberOfEmbeddings\":0,\"indexSize\":2048,\"usedIndexSize\":1500}";
+
+        com.meilisearch.sdk.model.IndexStats indexStats =
+                classToTest.decode(json, com.meilisearch.sdk.model.IndexStats.class);
+
+        assertThat(indexStats, is(notNullValue()));
+        assertThat(indexStats.getNumberOfDocuments(), is(equalTo(10L)));
+        assertThat(indexStats.getIndexSize(), is(equalTo(2048L)));
+        assertThat(indexStats.getUsedIndexSize(), is(equalTo(1500L)));
+    }
+
+    @Test
+    void serializeIndexStats() throws Exception {
+        com.meilisearch.sdk.model.IndexStats indexStats =
+                new com.meilisearch.sdk.model.IndexStats(
+                        10, false, new java.util.HashMap<>(), 1024, 102, 0, 0, 2048, 1500);
+
+        String json = classToTest.encode(indexStats);
+
+        assertThat(json, org.hamcrest.Matchers.containsString("\"isIndexing\":false"));
+        assertThat(
+                json,
+                org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString("\"indexing\"")));
+    }
 }
