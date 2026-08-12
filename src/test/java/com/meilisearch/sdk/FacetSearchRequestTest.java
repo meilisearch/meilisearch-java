@@ -25,6 +25,17 @@ class FacetSearchRequestTest {
     }
 
     @Test
+    void serializesExhaustiveFacetCountWhenFalse() {
+        FacetSearchRequest request =
+                new FacetSearchRequest("genres").setExhaustiveFacetCount(false);
+
+        JSONObject json = new JSONObject(request.toString());
+
+        assertThat(json.has("exhaustiveFacetCount"), is(true));
+        assertThat(json.getBoolean("exhaustiveFacetCount"), is(false));
+    }
+
+    @Test
     void buildsWithExhaustiveFacetCount() {
         FacetSearchRequest request =
                 FacetSearchRequest.builder().facetName("genres").exhaustiveFacetCount(true).build();
