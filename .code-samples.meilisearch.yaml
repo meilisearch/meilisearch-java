@@ -391,14 +391,14 @@ getting_started_add_documents: |-
   // <dependency>
   //   <groupId>com.meilisearch.sdk</groupId>
   //   <artifactId>meilisearch-java</artifactId>
-  //   <version>0.20.1</version>
+  //   <version>0.21.0</version>
   //   <type>pom</type>
   // </dependency>
 
   // For Gradle
   // Add the following line to the `dependencies` section of your `build.gradle`:
   //
-  // implementation 'com.meilisearch.sdk:meilisearch-java:0.20.1'
+  // implementation 'com.meilisearch.sdk:meilisearch-java:0.21.0'
 
   // In your .java file:
   import com.meilisearch.sdk;
@@ -640,3 +640,50 @@ webhooks_patch_1: |-
   Webhook updated_webhook = this.client.updateWebhook(webhook.getUuid(), webhookReq2);
 webhooks_delete_1: |-
   this.client.deleteWebhook("WEBHOOK_UUID");
+
+post_render_template_1: |-
+  Map<String, Boolean> features = new HashMap<>();
+  features.put("renderRoute", true);
+  client.experimentalFeatures(features);
+
+  Map<String, Object> template = new HashMap<>();
+  template.put("kind", "inlineDocumentTemplate");
+  template.put("inline", "Product {{doc.name}} is a {{doc.color}} {{doc.category}}.");
+
+  Map<String, Object> product = new HashMap<>();
+  product.put("name", "Nike Air Max");
+  product.put("color", "Black");
+  product.put("category", "Shoes");
+
+  Map<String, Object> input = new HashMap<>();
+  input.put("kind", "inlineDocument");
+  input.put("inline", product);
+
+  RenderTemplateRequest request = new RenderTemplateRequest()
+      .setTemplate(template)
+      .setInput(input);
+
+  client.renderTemplate(request);
+
+
+list_dynamic_search_rules_1: |-
+  DynamicSearchRulesQuery query = new DynamicSearchRulesQuery();
+  Results<DynamicSearchRule> rules = client.listDynamicSearchRules(query);
+get_dynamic_search_rule_1: |-
+  DynamicSearchRule rule = client.getDynamicSearchRule("black-friday");
+patch_dynamic_search_rule_1: |-
+  Map<String, Object> conditions = Map.of(
+      "query", Map.of("isEmpty", true),
+      "time", Map.of("start", "2025-11-28T00:00:00Z", "end", "2025-11-28T23:59:59Z"));
+
+  List<Map<String, Object>> actions = List.of(
+      Map.of(
+          "selector", Map.of("indexUid", "products", "id", "123"),
+          "action", Map.of("type", "pin", "position", 1)));
+
+  DynamicSearchRule rule = new DynamicSearchRule(
+      "black-friday", "Black Friday 2025 rules", 10, true, conditions, actions);
+
+  TaskInfo task = client.updateDynamicSearchRule("black-friday", rule);
+delete_dynamic_search_rule_1: |-
+  TaskInfo task = client.deleteDynamicSearchRule("black-friday");
