@@ -20,4 +20,5 @@ public class SimilarDocumentsResults {
     int offset;
     int limit;
     int estimatedTotalHits;
+    HashMap<String, Object> performanceDetails;
 }

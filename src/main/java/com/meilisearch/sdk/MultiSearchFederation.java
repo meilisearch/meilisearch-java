@@ -12,6 +12,7 @@ public class MultiSearchFederation {
     private MergeFacets mergeFacets;
     private Map<String, String[]> facetsByIndex;
     private String distinct;
+    private Boolean showPerformanceDetails;
 
     public MultiSearchFederation setLimit(Integer limit) {
         this.limit = limit;
@@ -35,6 +36,11 @@ public class MultiSearchFederation {
 
     public MultiSearchFederation setDistinct(String distinct) {
         this.distinct = distinct;
+        return this;
+    }
+
+    public MultiSearchFederation setShowPerformanceDetails(Boolean showPerformanceDetails) {
+        this.showPerformanceDetails = showPerformanceDetails;
         return this;
     }
 
