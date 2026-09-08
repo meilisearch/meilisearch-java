@@ -2,6 +2,7 @@ package com.meilisearch.integration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.blankOrNullString;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.instanceOf;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
+import com.meilisearch.sdk.exceptions.MeilisearchTimeoutException;
 import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.utils.Movie;
 import java.time.Instant;
@@ -340,9 +342,58 @@ public class TasksTest extends AbstractIT {
         Index index = client.index(indexUid);
 
         TaskInfo task = index.addDocuments(this.testData.getRaw());
-        index.waitForTask(task.getTaskUid());
 
-        assertThrows(Exception.class, () -> index.waitForTask(task.getTaskUid(), 0, 50));
+        MeilisearchTimeoutException e =
+                assertThrows(
+                        MeilisearchTimeoutException.class,
+                        () -> index.waitForTask(task.getTaskUid(), 0, 50));
+        assertThat(e.getMessage(), containsString("Task " + task.getTaskUid()));
+        assertThat(e.getMessage(), containsString("0ms"));
+
+        index.waitForTask(task.getTaskUid());
+    }
+
+    /** Test waitForTask returns the finished task */
+    @Test
+    public void testWaitForTaskReturnsTask() throws Exception {
+        String indexUid = "WaitForTaskReturnsTask";
+        TaskInfo response = client.createIndex(indexUid);
+
+        Task task = client.waitForTask(response.getTaskUid());
+
+        assertThat(task.getUid(), is(equalTo(response.getTaskUid())));
+        assertThat(task.getStatus(), is(equalTo(TaskStatus.SUCCEEDED)));
+        assertThat(task.getFinishedAt(), is(notNullValue()));
+
+        client.deleteIndex(indexUid);
+    }
+
+    /** Test waitForTask returns a failed task instead of throwing */
+    @Test
+    public void testWaitForTaskReturnsFailedTask() throws Exception {
+        String indexUid = "WaitForTaskReturnsFailedTask";
+        client.waitForTask(client.createIndex(indexUid).getTaskUid());
+
+        TaskInfo response = client.createIndex(indexUid);
+        Task task = client.waitForTask(response.getTaskUid());
+
+        assertThat(task.getStatus(), is(equalTo(TaskStatus.FAILED)));
+        assertThat(task.getError().getCode(), is(equalTo("index_already_exists")));
+
+        client.deleteIndex(indexUid);
+    }
+
+    /** Test Client.waitForTask with timeoutInMs and intervalInMs */
+    @Test
+    public void testClientWaitForTaskTimeoutInMs() throws Exception {
+        String indexUid = "ClientWaitForTaskTimeoutInMs";
+        TaskInfo response = client.createIndex(indexUid);
+
+        Task task = client.waitForTask(response.getTaskUid(), 10000, 50);
+
+        assertThat(task.getStatus(), is(equalTo(TaskStatus.SUCCEEDED)));
+
+        client.deleteIndex(indexUid);
     }
 
     /** Test Tasks with Jackson Json Handler */
