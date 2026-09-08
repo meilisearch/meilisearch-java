@@ -150,7 +150,8 @@ public class TasksHandler {
             if (status != TaskStatus.ENQUEUED && status != TaskStatus.PROCESSING) {
                 return task;
             }
-            if (System.currentTimeMillis() >= deadline) {
+            long remainingMs = deadline - System.currentTimeMillis();
+            if (remainingMs <= 0) {
                 throw new MeilisearchTimeoutException(
                         "Task "
                                 + taskUid
@@ -161,7 +162,8 @@ public class TasksHandler {
                                 + ")");
             }
             try {
-                Thread.sleep(intervalInMs);
+                // never sleep past the deadline, even when intervalInMs exceeds timeoutInMs
+                Thread.sleep(Math.min(intervalInMs, remainingMs));
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new MeilisearchTimeoutException(e);

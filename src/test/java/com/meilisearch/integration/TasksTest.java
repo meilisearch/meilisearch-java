@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -349,6 +350,25 @@ public class TasksTest extends AbstractIT {
                         () -> index.waitForTask(task.getTaskUid(), 0, 50));
         assertThat(e.getMessage(), containsString("Task " + task.getTaskUid()));
         assertThat(e.getMessage(), containsString("0ms"));
+
+        index.waitForTask(task.getTaskUid());
+    }
+
+    /** Test waitForTask does not sleep past the timeout when intervalInMs exceeds it */
+    @Test
+    public void testWaitForTaskIntervalLongerThanTimeout() throws Exception {
+        String indexUid = "WaitForTaskIntervalLongerThanTimeout";
+        Index index = client.index(indexUid);
+        TaskInfo task = index.addDocuments(this.testData.getRaw());
+
+        long start = System.currentTimeMillis();
+        try {
+            index.waitForTask(task.getTaskUid(), 100, 10000);
+        } catch (MeilisearchTimeoutException ignored) {
+            // either outcome is fine, only the elapsed time matters
+        }
+
+        assertThat(System.currentTimeMillis() - start, is(lessThan(5000L)));
 
         index.waitForTask(task.getTaskUid());
     }
