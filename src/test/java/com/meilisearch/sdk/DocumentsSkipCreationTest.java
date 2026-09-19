@@ -15,6 +15,9 @@ class DocumentsSkipCreationTest {
     private MockWebServer server;
     private Index index;
 
+    /**
+     * Starts an isolated HTTP server so requests can be inspected without a Meilisearch instance.
+     */
     @BeforeEach
     void setup() throws Exception {
         server = new MockWebServer();
@@ -24,11 +27,13 @@ class DocumentsSkipCreationTest {
         index = client.index("movies");
     }
 
+    /** Releases the server and its connections after each test. */
     @AfterEach
     void teardown() throws Exception {
         server.shutdown();
     }
 
+    /** Verifies the short add/replace overload sends an explicit true value. */
     @Test
     void addDocumentsIncludesSkipCreation() throws Exception {
         server.enqueue(new MockResponse().setBody("{\"taskUid\": 1}").setResponseCode(202));
@@ -40,6 +45,7 @@ class DocumentsSkipCreationTest {
         assertThat(request.getPath(), equalTo("//indexes/movies/documents?skipCreation=true"));
     }
 
+    /** Verifies false is not omitted and existing update parameters are preserved. */
     @Test
     void updateDocumentsIncludesSkipCreationAndExistingParameters() throws Exception {
         server.enqueue(new MockResponse().setBody("{\"taskUid\": 2}").setResponseCode(202));
@@ -54,6 +60,7 @@ class DocumentsSkipCreationTest {
                         "//indexes/movies/documents?primaryKey=id&csvDelimiter=;&customMetadata=import&skipCreation=false"));
     }
 
+    /** Verifies legacy overloads leave skipCreation unspecified for backward compatibility. */
     @Test
     void existingDocumentMethodsOmitSkipCreation() throws Exception {
         server.enqueue(new MockResponse().setBody("{\"taskUid\": 3}").setResponseCode(202));

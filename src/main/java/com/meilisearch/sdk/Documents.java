@@ -209,6 +209,18 @@ class Documents {
                 uid, document, primaryKey, csvDelimiter, customMetadata, skipCreation);
     }
 
+    /**
+     * Sends an add/replace request, preserving the server default when skipCreation is null.
+     *
+     * @param uid Index identifier
+     * @param document Serialized documents to add or replace
+     * @param primaryKey Optional primary key
+     * @param csvDelimiter Optional CSV delimiter
+     * @param customMetadata Optional task metadata
+     * @param skipCreation Whether to skip new documents, or null to omit the parameter
+     * @return Enqueued task information
+     * @throws MeilisearchException if the request fails
+     */
     private TaskInfo addDocumentsRequest(
             String uid,
             String document,
@@ -291,6 +303,18 @@ class Documents {
                 uid, document, primaryKey, csvDelimiter, customMetadata, skipCreation);
     }
 
+    /**
+     * Sends an update request, preserving the server default when skipCreation is null.
+     *
+     * @param uid Index identifier
+     * @param document Serialized documents to update
+     * @param primaryKey Optional primary key
+     * @param csvDelimiter Optional CSV delimiter
+     * @param customMetadata Optional task metadata
+     * @param skipCreation Whether to skip new documents, or null to omit the parameter
+     * @return Enqueued task information
+     * @throws MeilisearchException if the request fails
+     */
     private TaskInfo updateDocumentsRequest(
             String uid,
             String document,
