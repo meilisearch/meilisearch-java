@@ -57,7 +57,7 @@ Add the following code to the `<dependencies>` section of your project:
 <dependency>
   <groupId>com.meilisearch.sdk</groupId>
   <artifactId>meilisearch-java</artifactId>
-  <version>0.21.0</version>
+  <version>0.22.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -67,7 +67,7 @@ Add the following code to the `<dependencies>` section of your project:
 Add the following line to the `dependencies` section of your `build.gradle`:
 
 ```groovy
-implementation 'com.meilisearch.sdk:meilisearch-java:0.21.0'
+implementation 'com.meilisearch.sdk:meilisearch-java:0.22.1'
 ```
 
 :warning: `meilisearch-java` also requires `okhttp` as a peer dependency.
