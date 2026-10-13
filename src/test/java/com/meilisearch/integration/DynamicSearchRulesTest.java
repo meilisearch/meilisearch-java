@@ -1,5 +1,12 @@
 package com.meilisearch.integration;
 
+
+
+import com.meilisearch.sdk.IndexSearchRequest;
+import com.meilisearch.sdk.MultiSearchRequest;
+import com.meilisearch.sdk.SearchRequest;
+import com.meilisearch.sdk.model.MultiSearchResult;
+import com.meilisearch.sdk.model.SearchResult;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -37,9 +44,9 @@ public class DynamicSearchRulesTest extends AbstractIT {
     private DynamicSearchRule buildTestRule(String uid) {
         Map<String, Object> queryCondition = Map.of("query", Map.of("isEmpty", true));
         Map<String, Object> action =
-                Map.of(
-                        "selector", Map.of("indexUid", "products"),
-                        "action", Map.of("type", "pin", "position", 1));
+            Map.of(
+                "selector", Map.of("indexUid", "products"),
+                "action", Map.of("type", "pin", "position", 1));
 
         return new DynamicSearchRule(uid, "Test rule", 5, true, queryCondition, List.of(action));
     }
@@ -65,7 +72,7 @@ public class DynamicSearchRulesTest extends AbstractIT {
 
     @Test
     public void testCreateAndUpdateDynamicSearchRuleWithFilterCondition()
-            throws MeilisearchException {
+        throws MeilisearchException {
         DynamicSearchRule rule = buildTestRule("test-filter");
         rule.setConditions(buildFilterCondition("red"));
 
@@ -74,13 +81,13 @@ public class DynamicSearchRulesTest extends AbstractIT {
 
         DynamicSearchRule created = client.getDynamicSearchRule("test-filter");
         JSONObject createdConditions =
-                new JSONObject(new GsonJsonHandler().encode(created.getConditions()));
+            new JSONObject(new GsonJsonHandler().encode(created.getConditions()));
         assertThat(
-                createdConditions
-                        .getJSONObject("filter")
-                        .getJSONObject("values")
-                        .getString("color"),
-                equalTo("red"));
+            createdConditions
+                .getJSONObject("filter")
+                .getJSONObject("values")
+                .getString("color"),
+            equalTo("red"));
 
         rule.setConditions(buildFilterCondition("blue"));
         TaskInfo updateTask = client.updateDynamicSearchRule("test-filter", rule);
@@ -88,13 +95,13 @@ public class DynamicSearchRulesTest extends AbstractIT {
 
         DynamicSearchRule updated = client.getDynamicSearchRule("test-filter");
         JSONObject updatedConditions =
-                new JSONObject(new GsonJsonHandler().encode(updated.getConditions()));
+            new JSONObject(new GsonJsonHandler().encode(updated.getConditions()));
         assertThat(
-                updatedConditions
-                        .getJSONObject("filter")
-                        .getJSONObject("values")
-                        .getString("color"),
-                equalTo("blue"));
+            updatedConditions
+                .getJSONObject("filter")
+                .getJSONObject("values")
+                .getString("color"),
+            equalTo("blue"));
         assertThat(updated.getLastUpdatedAt(), notNullValue());
     }
 
@@ -117,7 +124,7 @@ public class DynamicSearchRulesTest extends AbstractIT {
         client.waitForTask(task2.getTaskUid());
 
         Results<DynamicSearchRule> results =
-                client.listDynamicSearchRules(new DynamicSearchRulesQuery());
+            client.listDynamicSearchRules(new DynamicSearchRulesQuery());
 
         assertThat(results.getResults().length >= 2, equalTo(true));
         assertThat(results.getResults()[0].getLastUpdatedAt(), notNullValue());
@@ -133,9 +140,117 @@ public class DynamicSearchRulesTest extends AbstractIT {
         client.waitForTask(deleteTask.getTaskUid());
 
         MeilisearchException exception =
-                org.junit.jupiter.api.Assertions.assertThrows(
-                        MeilisearchException.class,
-                        () -> client.getDynamicSearchRule("test-rule-delete"));
+            org.junit.jupiter.api.Assertions.assertThrows(
+                MeilisearchException.class,
+                () -> client.getDynamicSearchRule("test-rule-delete"));
         assertThat(exception, notNullValue());
+    }
+
+
+    @Test
+    public void testSearchRequestWithInlineRule() throws Exception {
+        Map<String, Object> scaleRule =
+            Map.of("filter", "color = red", "weight", 1.2);
+
+        Map<String, Object> actions =
+            Map.of("scale", List.of(scaleRule));
+
+        Map<String, Object> inlineRule =
+            Map.of(
+                "uid", "test-inline-rule",
+                "actions", actions);
+
+        SearchRequest request =
+            SearchRequest.builder()
+                .q("shirt")
+                .inlineRule(inlineRule)
+                .build();
+
+        JSONObject json = new JSONObject(request.toString());
+
+        assertThat(
+            json.getJSONObject("inlineRule").getString("uid"),
+            equalTo("test-inline-rule"));
+
+        assertThat(
+            json.getJSONObject("inlineRule")
+                .getJSONObject("actions")
+                .getJSONArray("scale")
+                .getJSONObject(0)
+                .getString("filter"),
+            equalTo("color = red"));
+    }
+
+
+
+
+    @Test
+    public void testSearchReturnsMetadata() throws Exception {
+        createEmptyIndex("metadata-test");
+
+        Map<String, Object> scaleRule =
+            Map.of("filter", "color = red", "weight", 1.2);
+
+        Map<String, Object> actions =
+            Map.of("scale", List.of(scaleRule));
+
+        Map<String, Object> inlineRule =
+            Map.of("uid", "test-inline-rule", "actions", actions);
+
+        var result = client.index("metadata-test").search(
+            SearchRequest.builder()
+                .q("shirt")
+                .inlineRule(inlineRule)
+                .build()
+        );
+
+        assertThat(result, notNullValue());
+        assertThat(result.getMetadata(), notNullValue());
+        assertThat(
+            result.getMetadata().getInlineRuleConditionOutcomes(),
+            notNullValue()
+        );
+    }
+
+
+
+
+    @Test
+    public void testMultiSearchReturnsMetadata() throws Exception {
+        {
+            createEmptyIndex("multi-metadata-test");
+
+
+            Map<String, Object> scaleRule =
+                Map.of("filter", "color = red", "weight", 1.2);
+
+            Map<String, Object> actions =
+                Map.of("scale", List.of(scaleRule));
+
+            Map<String, Object> inlineRule =
+                Map.of("uid", "test-inline-rule", "actions", actions);
+
+            IndexSearchRequest searchRequest =
+                IndexSearchRequest.builder()
+                    .indexUid("multi-metadata-test")
+                    .q("shirt")
+                    .inlineRule(inlineRule)
+                    .build();
+
+
+
+
+            MultiSearchRequest multiSearchRequest =
+                new MultiSearchRequest().addQuery(searchRequest);
+
+            Results<MultiSearchResult> result =
+                client.multiSearch(multiSearchRequest);
+
+            assertThat(result, notNullValue());
+            assertThat(result.getResults().length, equalTo(1));
+            assertThat(
+                result.getResults()[0].getMetadata().getInlineRuleConditionOutcomes(),
+                notNullValue());
+        }
     }
 }

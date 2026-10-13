@@ -1324,4 +1324,70 @@ public class SearchTest extends AbstractIT {
         assertThat(searchResult.getEstimatedTotalHits(), is(equalTo(31)));
         assertThat(searchResult.getPerformanceDetails(), aMapWithSize(greaterThan(0)));
     }
+
+
+    @Test
+    public void testSearchWithInlineRule() throws Exception {
+        String indexUid = "SearchInlineRule";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+        index.waitForTask(task.getTaskUid());
+
+        Map<String, Object> scaleRule =
+            Map.of("filter", "title = \"The Dark Knight\"", "weight", 1.2);
+
+        Map<String, Object> actions = Map.of("scale", java.util.List.of(scaleRule));
+
+        Map<String, Object> inlineRule =
+            Map.of("uid", "user-likes-batman", "actions", actions);
+
+        SearchRequest searchRequest =
+            SearchRequest.builder()
+                .q("batman")
+                .inlineRule(inlineRule)
+                .build();
+
+        SearchResult searchResult = (SearchResult) index.search(searchRequest);
+
+        assertThat(searchResult.getHits(), is(notNullValue()));
+    }
+
+
+
+
+    @Test
+    public void testMultiSearchWithInlineRule() throws Exception {
+        String indexUid = "MultiSearchInlineRule";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+        index.waitForTask(task.getTaskUid());
+
+        Map<String, Object> scaleRule =
+            Map.of("filter", "title = \"The Dark Knight\"", "weight", 1.2);
+
+        Map<String, Object> actions = Map.of("scale", java.util.List.of(scaleRule));
+
+        Map<String, Object> inlineRule =
+            Map.of("uid", "user-likes-batman", "actions", actions);
+
+        IndexSearchRequest indexSearchRequest =
+            new IndexSearchRequest(indexUid)
+                .setQuery("batman")
+                .setInlineRule(inlineRule);
+
+        MultiSearchRequest multiSearchRequest = new MultiSearchRequest();
+        multiSearchRequest.addQuery(indexSearchRequest);
+
+        MultiSearchResult[] results = client.multiSearch(multiSearchRequest).getResults();
+
+        assertThat(results, is(notNullValue()));
+        assertThat(results.length, is(1));
+        assertThat(results[0].getHits(), is(notNullValue()));
+    }
+
+
 }

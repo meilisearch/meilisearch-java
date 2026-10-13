@@ -18,4 +18,8 @@ public interface Searchable {
     int getProcessingTimeMs();
 
     String getQuery();
+
+    SearchMetadata getMetadata();
+
+
 }

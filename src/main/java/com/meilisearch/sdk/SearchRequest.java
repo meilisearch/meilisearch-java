@@ -1,5 +1,7 @@
 package com.meilisearch.sdk;
 
+
+import java.util.Map;
 import com.meilisearch.sdk.model.Hybrid;
 import com.meilisearch.sdk.model.MatchingStrategy;
 import lombok.AccessLevel;
@@ -47,6 +49,7 @@ public class SearchRequest {
     protected Double[] vector;
     protected Boolean retrieveVectors;
     protected Boolean showPerformanceDetails;
+    private Map<String, Object> inlineRule;
     /**
      * Constructor for SearchRequest for building search queries with the default values: offset: 0,
      * limit: 20, attributesToRetrieve: ["*"], attributesToCrop: null, cropLength: 200,
@@ -112,7 +115,8 @@ public class SearchRequest {
                         .putOpt("distinct", this.distinct)
                         .putOpt("vector", this.vector)
                         .putOpt("retrieveVectors", this.retrieveVectors)
-                        .putOpt("showPerformanceDetails", this.showPerformanceDetails);
+                        .putOpt("showPerformanceDetails", this.showPerformanceDetails)
+.putOpt("inlineRule", this.inlineRule);
 
         if (this.hybrid != null) {
             jsonObject.put("hybrid", this.hybrid.toJSONObject());
