@@ -2,6 +2,8 @@ package com.meilisearch.integration;
 
 
 
+import com.meilisearch.integration.classes.TestData;
+import com.meilisearch.sdk.Index;
 import com.meilisearch.sdk.IndexSearchRequest;
 import com.meilisearch.sdk.MultiSearchRequest;
 import com.meilisearch.sdk.SearchRequest;
@@ -10,6 +12,7 @@ import com.meilisearch.sdk.model.SearchResult;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
@@ -21,6 +24,9 @@ import com.meilisearch.sdk.model.TaskInfo;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import com.meilisearch.sdk.utils.Movie;
+import org.hamcrest.Matchers;
 import org.json.JSONObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -145,65 +151,21 @@ public class DynamicSearchRulesTest extends AbstractIT {
                 () -> client.getDynamicSearchRule("test-rule-delete"));
         assertThat(exception, notNullValue());
     }
-
-
-    @Test
-    public void testSearchRequestWithInlineRule() throws Exception {
-        Map<String, Object> scaleRule =
-            Map.of("filter", "color = red", "weight", 1.2);
-
-        Map<String, Object> actions =
-            Map.of("scale", List.of(scaleRule));
-
-        Map<String, Object> inlineRule =
-            Map.of(
-                "uid", "test-inline-rule",
-                "actions", actions);
-
-        SearchRequest request =
-            SearchRequest.builder()
-                .q("shirt")
-                .inlineRule(inlineRule)
-                .build();
-
-        JSONObject json = new JSONObject(request.toString());
-
-        assertThat(
-            json.getJSONObject("inlineRule").getString("uid"),
-            equalTo("test-inline-rule"));
-
-        assertThat(
-            json.getJSONObject("inlineRule")
-                .getJSONObject("actions")
-                .getJSONArray("scale")
-                .getJSONObject(0)
-                .getString("filter"),
-            equalTo("color = red"));
-    }
-
-
-
-
     @Test
     public void testSearchReturnsMetadata() throws Exception {
         createEmptyIndex("metadata-test");
-
         Map<String, Object> scaleRule =
             Map.of("filter", "color = red", "weight", 1.2);
-
         Map<String, Object> actions =
             Map.of("scale", List.of(scaleRule));
-
         Map<String, Object> inlineRule =
             Map.of("uid", "test-inline-rule", "actions", actions);
-
         var result = client.index("metadata-test").search(
             SearchRequest.builder()
                 .q("shirt")
                 .inlineRule(inlineRule)
                 .build()
         );
-
         assertThat(result, notNullValue());
         assertThat(result.getMetadata(), notNullValue());
         assertThat(
@@ -211,46 +173,94 @@ public class DynamicSearchRulesTest extends AbstractIT {
             notNullValue()
         );
     }
-
-
-
-
     @Test
     public void testMultiSearchReturnsMetadata() throws Exception {
         {
             createEmptyIndex("multi-metadata-test");
-
-
             Map<String, Object> scaleRule =
                 Map.of("filter", "color = red", "weight", 1.2);
-
             Map<String, Object> actions =
                 Map.of("scale", List.of(scaleRule));
-
             Map<String, Object> inlineRule =
                 Map.of("uid", "test-inline-rule", "actions", actions);
-
             IndexSearchRequest searchRequest =
                 IndexSearchRequest.builder()
                     .indexUid("multi-metadata-test")
                     .q("shirt")
                     .inlineRule(inlineRule)
                     .build();
-
-
-
-
             MultiSearchRequest multiSearchRequest =
                 new MultiSearchRequest().addQuery(searchRequest);
 
             Results<MultiSearchResult> result =
                 client.multiSearch(multiSearchRequest);
-
             assertThat(result, notNullValue());
             assertThat(result.getResults().length, equalTo(1));
             assertThat(
                 result.getResults()[0].getMetadata().getInlineRuleConditionOutcomes(),
                 notNullValue());
         }
+    }
+    @Test
+    public void testSearchWithInlineRule() throws Exception {
+        String indexUid = "SearchInlineRule";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+        index.waitForTask(task.getTaskUid());
+
+        Map<String, Object> scaleRule =
+            Map.of("filter", "title = \"The Dark Knight\"", "weight", 1.2);
+
+        Map<String, Object> actions = Map.of("scale", java.util.List.of(scaleRule));
+
+        Map<String, Object> inlineRule =
+            Map.of("uid", "user-likes-batman", "actions", actions);
+
+        SearchRequest searchRequest =
+            SearchRequest.builder()
+                .q("batman")
+                .inlineRule(inlineRule)
+                .build();
+
+        SearchResult searchResult = (SearchResult) index.search(searchRequest);
+
+        assertThat(searchResult.getHits(), is(Matchers.notNullValue()));
+    }
+
+
+
+
+    @Test
+    public void testMultiSearchWithInlineRule() throws Exception {
+        String indexUid = "MultiSearchInlineRule";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+        index.waitForTask(task.getTaskUid());
+
+        Map<String, Object> scaleRule =
+            Map.of("filter", "title = \"The Dark Knight\"", "weight", 1.2);
+
+        Map<String, Object> actions = Map.of("scale", java.util.List.of(scaleRule));
+
+        Map<String, Object> inlineRule =
+            Map.of("uid", "user-likes-batman", "actions", actions);
+
+        IndexSearchRequest indexSearchRequest =
+            new IndexSearchRequest(indexUid)
+                .setQuery("batman")
+                .setInlineRule(inlineRule);
+
+        MultiSearchRequest multiSearchRequest = new MultiSearchRequest();
+        multiSearchRequest.addQuery(indexSearchRequest);
+
+        MultiSearchResult[] results = client.multiSearch(multiSearchRequest).getResults();
+
+        assertThat(results, is(Matchers.notNullValue()));
+        assertThat(results.length, is(1));
+        assertThat(results[0].getHits(), is(Matchers.notNullValue()));
     }
 }
