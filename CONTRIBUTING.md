@@ -44,7 +44,7 @@ You can set up your local environment natively or using `docker`, check out the 
 
 Example of running all the checks with docker:
 ```bash
-docker-compose run --rm package bash -c "./gradlew build && ./gradlew build integrationTest"
+docker compose run --rm package bash -c "./gradlew build && ./gradlew build integrationTest"
 ```
 
 To install dependencies:
