@@ -23,6 +23,7 @@ public class FacetSearchRequest {
     private String q;
     private MatchingStrategy matchingStrategy;
     private String[] attributesToSearchOn;
+    private Boolean exhaustiveFacetCount;
     private String[] filter;
     private String[][] filterArray;
 
@@ -68,6 +69,7 @@ public class FacetSearchRequest {
                                         ? null
                                         : this.matchingStrategy.toString())
                         .putOpt("attributesToSearchOn", this.attributesToSearchOn)
+                        .putOpt("exhaustiveFacetCount", this.exhaustiveFacetCount)
                         .putOpt("filter", this.filter)
                         .putOpt("filter", this.filterArray);
 
