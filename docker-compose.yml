@@ -1,22 +1,33 @@
 services:
   package:
-    image: azul/zulu-openjdk:17-latest
+    build:
+      context: .
+      dockerfile: docker/java.Dockerfile
+    image: meilisearch-java-dev
     tty: true
     stdin_open: true
     working_dir: /home/package
     environment:
       - MEILISEARCH_HOST=http://meilisearch:7700
+      - GRADLE_USER_HOME=/root/.gradle
     depends_on:
-      - meilisearch
-    links:
       - meilisearch
     volumes:
       - ./:/home/package
+      # Hide the host project cache.
+      - package_gradle_project:/home/package/.gradle
+      # Keep Gradle modules in Docker. Native binaries stay in this volume.
+      - package_gradle:/root/.gradle
 
   meilisearch:
-    image: getmeili/meilisearch-enterprise:latest
+    image: getmeili/meilisearch-enterprise:v1.55
     ports:
-      - "7700"
+      - "7700:7700"
     environment:
       - MEILI_MASTER_KEY=masterKey
       - MEILI_NO_ANALYTICS=true
+      - MEILI_EXPERIMENTAL_ALLOWED_IP_NETWORKS=any
+
+volumes:
+  package_gradle:
+  package_gradle_project:
