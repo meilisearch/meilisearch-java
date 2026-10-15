@@ -38,9 +38,21 @@ public abstract class AbstractIT {
         }
     }
 
+//    public void setUp() {
+//
+//        if (client == null) client = new Client(new Config(getMeilisearchHost(), "masterKey"));
+//    }
+
     public void setUp() {
-        if (client == null) client = new Client(new Config(getMeilisearchHost(), "masterKey"));
+        if (client == null) {
+            Config config = new Config(getMeilisearchHost(), "masterKey");
+
+            config.getHeaders().put("Meili-Include-Metadata", "true");
+
+            client = new Client(config);
+        }
     }
+
 
     public void setUpJacksonClient() {
         Config config = new Config(getMeilisearchHost(), "masterKey", new JacksonJsonHandler());

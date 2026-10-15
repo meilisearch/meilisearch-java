@@ -1,5 +1,9 @@
 package com.meilisearch.sdk;
 
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -9,6 +13,8 @@ import com.meilisearch.sdk.model.Hybrid;
 import com.meilisearch.sdk.model.MatchingStrategy;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+
+
 
 class SearchRequestTest {
 
@@ -419,4 +425,47 @@ class SearchRequestTest {
         JSONObject json = new JSONObject(result);
         assertThat(json.getBoolean("retrieveVectors"), is(true));
     }
+
+
+
+
+    @Test
+    void toStringWithInlineRule() {
+        Map<String, Object> scaleRule = new HashMap<>();
+        scaleRule.put("filter", "hero = batman");
+        scaleRule.put("weight", 1.2);
+
+        Map<String, Object> actions = new HashMap<>();
+        actions.put("scale", Collections.singletonList(scaleRule));
+
+        Map<String, Object> inlineRule = new HashMap<>();
+        inlineRule.put("uid", "user-likes-batman");
+        inlineRule.put("actions", actions);
+
+        SearchRequest classToTest =
+            SearchRequest.builder()
+                .q("batman")
+                .inlineRule(inlineRule)
+                .build();
+
+        JSONObject actual = new JSONObject(classToTest.toString());
+
+        assertThat(actual.getString("q"), is(equalTo("batman")));
+        assertThat(
+            actual.getJSONObject("inlineRule").getString("uid"),
+            is(equalTo("user-likes-batman")));
+        assertThat(
+            actual.getJSONObject("inlineRule")
+                .getJSONObject("actions")
+                .getJSONArray("scale")
+                .getJSONObject(0)
+                .getString("filter"),
+            is(equalTo("hero = batman")));
+    }
+
+
+
+
+
+
 }

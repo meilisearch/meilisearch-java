@@ -1,5 +1,7 @@
 package com.meilisearch.sdk.json;
 
+import com.meilisearch.sdk.model.MultiSearchResult;
+import com.meilisearch.sdk.model.SearchResult;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.equalTo;
@@ -178,4 +180,45 @@ class JacksonJsonHandlerTest {
                         .getComparison(),
                 is(false));
     }
+
+
+
+    @Test
+    void deserializeSearchMetadata() throws Exception {
+        String content =
+            "{\"hits\":[],\"metadata\":{"
+                + "\"queryUid\":\"example-query-id\","
+                + "\"indexUid\":\"products\","
+                + "\"inlineRuleConditionOutcomes\":{"
+                + "\"satisfiesActiveCondition\":true}}}";
+
+        SearchResult searchResult =
+            classToTest.decode(content, SearchResult.class);
+
+        assertThat(searchResult.getMetadata(), is(notNullValue()));
+        assertThat(
+            searchResult.getMetadata().getQueryUid(),
+            is(equalTo("example-query-id")));
+        assertThat(
+            searchResult.getMetadata().getIndexUid(),
+            is(equalTo("products")));
+        assertThat(
+            searchResult.getMetadata()
+                .getInlineRuleConditionOutcomes()
+                .get("satisfiesActiveCondition"),
+            is(equalTo(true)));
+
+        MultiSearchResult multiSearchResult =
+            classToTest.decode(content, MultiSearchResult.class);
+
+        assertThat(multiSearchResult.getMetadata(), is(notNullValue()));
+        assertThat(
+            multiSearchResult.getMetadata()
+                .getInlineRuleConditionOutcomes()
+                .get("satisfiesActiveCondition"),
+            is(equalTo(true)));
+    }
+
+
+
 }

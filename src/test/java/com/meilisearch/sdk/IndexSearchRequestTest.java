@@ -1,5 +1,7 @@
 package com.meilisearch.sdk;
 
+import java.util.HashMap;
+import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -54,4 +56,35 @@ class IndexSearchRequestTest {
         String expected = "{\"q\":\"This is a Test\",\"hybrid\":{\"embedder\":\"default\"}}";
         assertThat(classToTest.toString(), is(equalTo(expected)));
     }
+
+
+
+    @Test
+    void toStringWithInlineRule() {
+        Map<String, Object> scaleRule = new HashMap<>();
+        scaleRule.put("filter", "hero = batman");
+        scaleRule.put("weight", 1.2);
+
+        Map<String, Object> actions = new HashMap<>();
+        actions.put("scale", java.util.Collections.singletonList(scaleRule));
+
+        Map<String, Object> inlineRule = new HashMap<>();
+        inlineRule.put("uid", "user-likes-batman");
+        inlineRule.put("actions", actions);
+
+        IndexSearchRequest classToTest =
+            IndexSearchRequest.builder()
+                .q("batman")
+                .inlineRule(inlineRule)
+                .build();
+
+        org.json.JSONObject actual = new org.json.JSONObject(classToTest.toString());
+
+        assertThat(actual.getString("q"), is(equalTo("batman")));
+        assertThat(
+            actual.getJSONObject("inlineRule").getString("uid"),
+            is(equalTo("user-likes-batman")));
+    }
+
+
 }

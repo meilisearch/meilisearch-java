@@ -1,5 +1,7 @@
 package com.meilisearch.sdk;
 
+
+import java.util.Map;
 import com.meilisearch.sdk.model.Hybrid;
 import com.meilisearch.sdk.model.MatchingStrategy;
 import lombok.*;
@@ -41,6 +43,7 @@ public class IndexSearchRequest {
     protected String distinct;
     protected Hybrid hybrid;
     protected Boolean retrieveVectors;
+    private Map<String, Object> inlineRule;
 
     /**
      * Constructor for MultiSearchRequest for building search queries with the default values:
@@ -111,7 +114,8 @@ public class IndexSearchRequest {
                         .putOpt("locales", this.locales)
                         .putOpt("distinct", this.distinct)
                         .putOpt("retrieveVectors", this.retrieveVectors)
-                        .putOpt("hybrid", this.hybrid != null ? this.hybrid.toJSONObject() : null);
+                        .putOpt("hybrid", this.hybrid != null ? this.hybrid.toJSONObject() : null)
+.putOpt("inlineRule", this.inlineRule);
 
         return jsonObject.toString();
     }

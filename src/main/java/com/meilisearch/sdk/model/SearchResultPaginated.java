@@ -25,6 +25,7 @@ public class SearchResultPaginated implements Searchable {
     int processingTimeMs;
     ArrayList<Float> queryVector;
     String query;
+    SearchMetadata metadata;
 
     public SearchResultPaginated() {}
 }
