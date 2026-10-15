@@ -210,6 +210,10 @@ public class DynamicSearchRulesTest extends AbstractIT {
         TaskInfo task = index.addDocuments(testData.getRaw());
         index.waitForTask(task.getTaskUid());
 
+        TaskInfo settingsTask =
+            index.updateFilterableAttributesSettings(new String[] {"title"});
+        index.waitForTask(settingsTask.getTaskUid());
+
         Map<String, Object> scaleRule =
             Map.of("filter", "title = \"The Dark Knight\"", "weight", 1.2);
 
@@ -240,6 +244,10 @@ public class DynamicSearchRulesTest extends AbstractIT {
         TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
         TaskInfo task = index.addDocuments(testData.getRaw());
         index.waitForTask(task.getTaskUid());
+
+        TaskInfo settingsTask =
+            index.updateFilterableAttributesSettings(new String[] {"title"});
+        index.waitForTask(settingsTask.getTaskUid());
 
         Map<String, Object> scaleRule =
             Map.of("filter", "title = \"The Dark Knight\"", "weight", 1.2);
