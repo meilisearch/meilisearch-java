@@ -356,10 +356,29 @@ public class Client {
      * Waits for a task to be processed
      *
      * @param uid Identifier of the requested Task
+     * @return Task in its final state (succeeded, failed or canceled)
      * @throws MeilisearchException if an error occurs or if timeout is reached
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks#task-status">API
+     *     specification</a>
      */
-    public void waitForTask(int uid) throws MeilisearchException {
-        this.tasksHandler.waitForTask(uid);
+    public Task waitForTask(int uid) throws MeilisearchException {
+        return this.tasksHandler.waitForTask(uid);
+    }
+
+    /**
+     * Waits for a task to be processed
+     *
+     * @param uid Identifier of the requested Task
+     * @param timeoutInMs number of milliseconds before throwing an Exception
+     * @param intervalInMs number of milliseconds before requesting the status again
+     * @return Task in its final state (succeeded, failed or canceled)
+     * @throws MeilisearchException if an error occurs or if timeout is reached
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks#task-status">API
+     *     specification</a>
+     */
+    public Task waitForTask(int uid, int timeoutInMs, int intervalInMs)
+            throws MeilisearchException {
+        return this.tasksHandler.waitForTask(uid, timeoutInMs, intervalInMs);
     }
 
     /**

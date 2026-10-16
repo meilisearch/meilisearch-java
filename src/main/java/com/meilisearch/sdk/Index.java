@@ -1307,12 +1307,13 @@ public class Index implements Serializable {
      * Waits for a task to be processed
      *
      * @param taskId Identifier of the requested Task
+     * @return Task in its final state (succeeded, failed or canceled)
      * @throws MeilisearchException if an error occurs or if timeout is reached
      * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks#task-status">API
      *     specification</a>
      */
-    public void waitForTask(int taskId) throws MeilisearchException {
-        this.tasksHandler.waitForTask(taskId, 5000, 50);
+    public Task waitForTask(int taskId) throws MeilisearchException {
+        return this.tasksHandler.waitForTask(taskId);
     }
 
     /**
@@ -1321,13 +1322,14 @@ public class Index implements Serializable {
      * @param taskId ID of the index update
      * @param timeoutInMs number of milliseconds before throwing an Exception
      * @param intervalInMs number of milliseconds before requesting the status again
+     * @return Task in its final state (succeeded, failed or canceled)
      * @throws MeilisearchException if an error occurs or if timeout is reached
      * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks#task-status">API
      *     specification</a>
      */
-    public void waitForTask(int taskId, int timeoutInMs, int intervalInMs)
+    public Task waitForTask(int taskId, int timeoutInMs, int intervalInMs)
             throws MeilisearchException {
-        this.tasksHandler.waitForTask(taskId, timeoutInMs, intervalInMs);
+        return this.tasksHandler.waitForTask(taskId, timeoutInMs, intervalInMs);
     }
 
     /**

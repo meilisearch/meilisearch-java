@@ -6,7 +6,6 @@ import com.meilisearch.sdk.http.URLBuilder;
 import com.meilisearch.sdk.model.*;
 import com.meilisearch.sdk.model.batch.req.BatchesQuery;
 import com.meilisearch.sdk.model.batch.res.Batch;
-import java.util.Date;
 
 /**
  * Class covering the Meilisearch Task API
@@ -14,6 +13,9 @@ import java.util.Date;
  * @see <a href="https://www.meilisearch.com/docs/reference/api/tasks">API specification</a>
  */
 public class TasksHandler {
+    static final int DEFAULT_WAIT_TIMEOUT_MS = 5000;
+    static final int DEFAULT_WAIT_INTERVAL_MS = 50;
+
     private final HttpClient httpClient;
 
     /**
@@ -124,10 +126,11 @@ public class TasksHandler {
      * Waits for a task to be processed
      *
      * @param taskUid Identifier of the Task
+     * @return Task in its final state (succeeded, failed or canceled)
      * @throws MeilisearchException if timeout is reached
      */
-    void waitForTask(int taskUid) throws MeilisearchException {
-        this.waitForTask(taskUid, 5000, 50);
+    Task waitForTask(int taskUid) throws MeilisearchException {
+        return this.waitForTask(taskUid, DEFAULT_WAIT_TIMEOUT_MS, DEFAULT_WAIT_INTERVAL_MS);
     }
 
     /**
@@ -136,28 +139,35 @@ public class TasksHandler {
      * @param taskUid Identifier of the Task
      * @param timeoutInMs number of milliseconds before throwing an Exception
      * @param intervalInMs number of milliseconds before requesting the status again
+     * @return Task in its final state (succeeded, failed or canceled)
      * @throws MeilisearchException if timeout is reached
      */
-    void waitForTask(int taskUid, int timeoutInMs, int intervalInMs) throws MeilisearchException {
-        Task task;
-        TaskStatus status = null;
-        long startTime = new Date().getTime();
-        long elapsedTime = 0;
-
-        while (status == null
-                || (status.equals(TaskStatus.ENQUEUED) || status.equals(TaskStatus.PROCESSING))) {
-            if (elapsedTime >= timeoutInMs) {
-                throw new MeilisearchTimeoutException();
+    Task waitForTask(int taskUid, int timeoutInMs, int intervalInMs) throws MeilisearchException {
+        long deadline = System.currentTimeMillis() + timeoutInMs;
+        while (true) {
+            Task task = this.getTask(taskUid);
+            TaskStatus status = task.getStatus();
+            if (status != TaskStatus.ENQUEUED && status != TaskStatus.PROCESSING) {
+                return task;
             }
-            task = this.getTask(taskUid);
-            status = task.getStatus();
+            long remainingMs = deadline - System.currentTimeMillis();
+            if (remainingMs <= 0) {
+                throw new MeilisearchTimeoutException(
+                        "Task "
+                                + taskUid
+                                + " not finished after "
+                                + timeoutInMs
+                                + "ms (last status: "
+                                + status
+                                + ")");
+            }
             try {
-                Thread.sleep(intervalInMs);
+                // never sleep past the deadline, even when intervalInMs exceeds timeoutInMs
+                Thread.sleep(Math.min(intervalInMs, remainingMs));
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                throw new MeilisearchTimeoutException();
+                throw new MeilisearchTimeoutException(e);
             }
-            elapsedTime = new Date().getTime() - startTime;
         }
     }
 
