@@ -39,6 +39,7 @@ public class BatchTest extends AbstractIT {
         assertTrue(batch.getStats().getTotalNbTasks() > 0);
         assertNotNull(batch.getStats().getStatus());
         assertNotNull(batch.getStats().getTypes());
+        assertNotNull(batch.getBatchStrategy());
         assertNotNull(batch.getStats().getIndexUids());
         assertNotNull(batch.getDuration());
         assertNotNull(batch.getStartedAt());
