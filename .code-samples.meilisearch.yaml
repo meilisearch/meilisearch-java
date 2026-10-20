@@ -338,6 +338,8 @@ get_health_1: |-
   client.health();
 get_version_1: |-
   client.getVersion();
+get_server_version_1: |-
+  client.getServerVersion();
 distinct_attribute_guide_1: |-
   client.index("jackets").updateDistinctAttributeSettings("product_id");
 field_properties_guide_displayed_1: |-

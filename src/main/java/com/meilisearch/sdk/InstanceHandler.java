@@ -2,6 +2,7 @@ package com.meilisearch.sdk;
 
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.IndexStats;
+import com.meilisearch.sdk.model.ServerVersion;
 import com.meilisearch.sdk.model.Stats;
 
 /** Class providing information on the Meilisearch instance */
@@ -77,5 +78,16 @@ public class InstanceHandler {
      */
     String getVersion() throws MeilisearchException {
         return httpClient.get("/version", String.class);
+    }
+
+    /**
+     * Gets the version of Meilisearch instance as a ServerVersion object
+     *
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/version">API specification</a>
+     */
+    ServerVersion getServerVersion() throws MeilisearchException {
+        return httpClient.get("/version", ServerVersion.class);
     }
 }

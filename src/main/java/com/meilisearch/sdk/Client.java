@@ -289,6 +289,18 @@ public class Client {
     }
 
     /**
+     * Gets the version of Meilisearch instance as a server version
+     *
+     * @return Meilisearch API response
+     * @throws MeilisearchException if an error occurs
+     * @see <a href="https://www.meilisearch.com/docs/reference/api/version#version">API
+     *     specification</a>
+     */
+    public ServerVersion getServerVersion() throws MeilisearchException {
+        return this.instanceHandler.getServerVersion();
+    }
+
+    /**
      * Retrieves a task with the specified uid
      *
      * @param uid Identifier of the requested Task
