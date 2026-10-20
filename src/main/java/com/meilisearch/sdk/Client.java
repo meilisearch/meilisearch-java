@@ -524,7 +524,7 @@ public class Client {
         Date now = new Date();
         String secret;
 
-        if (options.getApiKey() == null || options.getApiKey() == "") {
+        if (options.getApiKey() == null || options.getApiKey().isEmpty()) {
             secret = this.config.apiKey;
         } else {
             secret = options.getApiKey();
@@ -533,7 +533,7 @@ public class Client {
         if (options.getExpiresAt() != null && now.after((Date) options.getExpiresAt())) {
             throw new MeilisearchException("The date expiresAt should be in the future.");
         }
-        if (secret == null || secret == "" || secret.length() <= 8) {
+        if (secret == null || secret.length() <= 8) {
             throw new MeilisearchException(
                     "An api key is required in the client or should be passed as an argument and this key cannot be the master key.");
         }
@@ -541,7 +541,7 @@ public class Client {
             throw new MeilisearchException(
                     "The searchRules field is mandatory and should be defined.");
         }
-        if (apiKeyUid == "" || apiKeyUid == null || !isValidUUID(apiKeyUid)) {
+        if (apiKeyUid == null || apiKeyUid.isEmpty() || !isValidUUID(apiKeyUid)) {
             throw new MeilisearchException(
                     "The uid used for the token generation must exist and comply to uuid4 format");
         }
