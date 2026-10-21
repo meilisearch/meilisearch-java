@@ -291,6 +291,20 @@ class GsonJsonHandlerTest {
         assertThat(decoded[0].getAttributePatterns(), arrayContaining("director", null, "genres"));
     }
 
+    @Test
+    void decodeIndexStatsWithIndexSizeAndUsedIndexSize() {
+        String json =
+                "{\"numberOfDocuments\":10,\"isIndexing\":false,\"fieldDistribution\":{},\"rawDocumentDbSize\":1024,\"avgDocumentSize\":102,\"numberOfEmbeddedDocuments\":0,\"numberOfEmbeddings\":0,\"indexSize\":2048,\"usedIndexSize\":1500}";
+
+        com.meilisearch.sdk.model.IndexStats indexStats =
+                classToTest.decode(json, com.meilisearch.sdk.model.IndexStats.class);
+
+        assertThat(indexStats, is(notNullValue()));
+        assertThat(indexStats.getNumberOfDocuments(), is(equalTo(10L)));
+        assertThat(indexStats.getIndexSize(), is(equalTo(2048L)));
+        assertThat(indexStats.getUsedIndexSize(), is(equalTo(1500L)));
+    }
+
     @Getter
     private static class Container {
         private Key key;
