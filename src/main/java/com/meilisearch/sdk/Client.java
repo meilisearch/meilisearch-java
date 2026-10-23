@@ -529,7 +529,6 @@ public class Client {
         } else {
             secret = options.getApiKey();
         }
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         if (options.getExpiresAt() != null && now.after((Date) options.getExpiresAt())) {
             throw new MeilisearchException("The date expiresAt should be in the future.");
         }
