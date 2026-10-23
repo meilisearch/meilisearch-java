@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 import com.meilisearch.sdk.model.Hybrid;
+import com.meilisearch.sdk.model.Personalize;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 class IndexSearchRequestTest {
@@ -53,5 +55,28 @@ class IndexSearchRequestTest {
 
         String expected = "{\"q\":\"This is a Test\",\"hybrid\":{\"embedder\":\"default\"}}";
         assertThat(classToTest.toString(), is(equalTo(expected)));
+    }
+
+    @Test
+    void toStringWithPersonalizeUsingBuilder() {
+        IndexSearchRequest classToTest =
+                IndexSearchRequest.builder()
+                        .q("This is a Test")
+                        .personalize(
+                                Personalize.builder()
+                                        .userContext("The user prefers sci-fi movies")
+                                        .build())
+                        .build();
+
+        JSONObject json = new JSONObject(classToTest.toString());
+        assertThat(json.getString("q"), is(equalTo("This is a Test")));
+        assertThat(
+                json.getJSONObject("personalize").getString("userContext"),
+                is(equalTo("The user prefers sci-fi movies")));
+
+        // Verify getters
+        assertThat(
+                classToTest.getPersonalize().getUserContext(),
+                is(equalTo("The user prefers sci-fi movies")));
     }
 }

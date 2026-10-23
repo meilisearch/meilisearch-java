@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 import com.meilisearch.sdk.model.Hybrid;
 import com.meilisearch.sdk.model.MatchingStrategy;
+import com.meilisearch.sdk.model.Personalize;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
@@ -418,5 +419,28 @@ class SearchRequestTest {
         String result = searchRequest.toString();
         JSONObject json = new JSONObject(result);
         assertThat(json.getBoolean("retrieveVectors"), is(true));
+    }
+
+    @Test
+    void toStringWithPersonalizeUsingBuilder() {
+        SearchRequest classToTest =
+                SearchRequest.builder()
+                        .q("This is a Test")
+                        .personalize(
+                                Personalize.builder()
+                                        .userContext("The user prefers sci-fi movies")
+                                        .build())
+                        .build();
+
+        JSONObject json = new JSONObject(classToTest.toString());
+        assertThat(json.getString("q"), is(equalTo("This is a Test")));
+        assertThat(
+                json.getJSONObject("personalize").getString("userContext"),
+                is(equalTo("The user prefers sci-fi movies")));
+
+        // Verify getters
+        assertThat(
+                classToTest.getPersonalize().getUserContext(),
+                is(equalTo("The user prefers sci-fi movies")));
     }
 }
