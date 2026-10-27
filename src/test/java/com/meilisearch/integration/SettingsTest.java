@@ -30,6 +30,7 @@ import com.meilisearch.sdk.model.LocalizedAttribute;
 import com.meilisearch.sdk.model.Pagination;
 import com.meilisearch.sdk.model.Settings;
 import com.meilisearch.sdk.model.TaskInfo;
+import com.meilisearch.sdk.model.TaskStatus;
 import com.meilisearch.sdk.model.TypoTolerance;
 import com.meilisearch.sdk.utils.Movie;
 import java.util.ArrayList;
@@ -41,6 +42,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 @Tag("integration")
 public class SettingsTest extends AbstractIT {
@@ -1340,6 +1343,36 @@ public class SettingsTest extends AbstractIT {
         assertThat(initialFaceting.getSortFacetValuesBy().get("*"), is(FacetSortValue.ALPHA));
         assertThat(updatedFaceting.getSortFacetValuesBy().get("*"), is(FacetSortValue.COUNT));
         assertThat(facetingAfterReset.getSortFacetValuesBy().get("*"), is(FacetSortValue.ALPHA));
+    }
+
+    @ParameterizedTest(name = "Sampled count facet ordering for {0}")
+    @ValueSource(strings = {"*", "genres"})
+    public void testSampledCountFacetingSettings(String attribute) throws Exception {
+        Index index =
+                createEmptyIndex(
+                        "testSampledCountFacetingSettings_" + attribute.replace("*", "all"));
+        Faceting faceting = new Faceting();
+        faceting.setMaxValuesPerFacet(200);
+        HashMap<String, FacetSortValue> sortValues = new HashMap<>();
+        sortValues.put("*", FacetSortValue.ALPHA);
+        sortValues.put(attribute, FacetSortValue.SAMPLED_COUNT);
+        faceting.setSortFacetValuesBy(sortValues);
+
+        TaskInfo update = index.updateFacetingSettings(faceting);
+        index.waitForTask(update.getTaskUid());
+        assertThat(index.getTask(update.getTaskUid()).getStatus(), is(TaskStatus.SUCCEEDED));
+        assertThat(index.getFacetingSettings().getMaxValuesPerFacet(), is(200));
+        assertThat(index.getFacetingSettings().getSortFacetValuesBy(), is(equalTo(sortValues)));
+        assertThat(
+                index.getSettings().getFaceting().getSortFacetValuesBy(), is(equalTo(sortValues)));
+
+        TaskInfo reset = index.resetFacetingSettings();
+        index.waitForTask(reset.getTaskUid());
+        assertThat(index.getTask(reset.getTaskUid()).getStatus(), is(TaskStatus.SUCCEEDED));
+        assertThat(index.getFacetingSettings().getMaxValuesPerFacet(), is(100));
+        assertThat(
+                index.getFacetingSettings().getSortFacetValuesBy(),
+                is(equalTo(Map.of("*", FacetSortValue.ALPHA))));
     }
 
     /** Tests of the proximity precision setting methods */

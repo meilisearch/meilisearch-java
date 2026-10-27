@@ -13,7 +13,9 @@ public enum FacetSortValue {
     @SerializedName("alpha")
     ALPHA("alpha"),
     @SerializedName("count")
-    COUNT("count");
+    COUNT("count"),
+    @SerializedName("sampledCount")
+    SAMPLED_COUNT("sampledCount");
 
     public final String facetSortValue;
 

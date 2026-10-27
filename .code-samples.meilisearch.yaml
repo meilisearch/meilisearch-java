@@ -293,7 +293,7 @@ update_faceting_settings_1: |-
   newFaceting.setMaxValuesPerFacet(2);
   HashMap<String, FacetSortValue> facetSortValues = new HashMap<>();
   facetSortValues.put("*", FacetSortValue.ALPHA);
-  facetSortValues.put("genres", FacetSortValue.COUNT);
+  facetSortValues.put("genres", FacetSortValue.SAMPLED_COUNT);
   newFaceting.setSortFacetValuesBy(facetSortValues);
   client.index("books").updateFacetingSettings(newFaceting);
 reset_faceting_settings_1: |-
