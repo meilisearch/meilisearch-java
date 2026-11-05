@@ -46,7 +46,7 @@ public class WebHooksHandler {
     Webhook createWebhook(CreateUpdateWebhookRequest createUpdateWebhookRequest)
             throws MeilisearchException {
         return this.httpClient.post(
-                webhooksPath().getURL(), createUpdateWebhookRequest, Webhook.class);
+                webhooksPath().getURL(), createUpdateWebhookRequest.toString(), Webhook.class);
     }
 
     /**
@@ -61,7 +61,7 @@ public class WebHooksHandler {
             throws MeilisearchException {
         return this.httpClient.patch(
                 webhooksPath().addSubroute(webhookUuid.toString()).getURL(),
-                createUpdateWebhookRequest,
+                createUpdateWebhookRequest.toString(),
                 Webhook.class);
     }
 
