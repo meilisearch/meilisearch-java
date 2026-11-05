@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -146,5 +148,46 @@ public class WebhooksTest extends AbstractIT {
 
         assertThat(webhooks, hasSize(0));
         cleanUp();
+    }
+
+    @Test
+    public void testWebhookLifecycleWithJacksonJsonHandler() throws Exception {
+        HashMap<String, Object> headers = new HashMap<>();
+        headers.put("authorization", "MASTER_KEY");
+        headers.put("referer", "http://example.com");
+        CreateUpdateWebhookRequest createRequest =
+                new CreateUpdateWebhookRequest("http://jackson.example.com", headers);
+
+        Webhook created = this.clientJackson.createWebhook(createRequest);
+        try {
+            assertThat(created.getUuid(), is(notNullValue()));
+            assertThat(created.getUrl(), is(equalTo("http://jackson.example.com")));
+            assertThat(created.isEditable(), is(true));
+
+            Webhook fetched = this.clientJackson.getWebhook(created.getUuid());
+            assertThat(fetched.getUuid(), is(equalTo(created.getUuid())));
+            assertThat(fetched.isEditable(), is(true));
+
+            assertThat(jacksonWebhookUuids(), hasItem(created.getUuid()));
+
+            HashMap<String, Object> updatedHeaders = new HashMap<>();
+            updatedHeaders.put("referer", null);
+            Webhook updated =
+                    this.clientJackson.updateWebhook(
+                            created.getUuid(),
+                            new CreateUpdateWebhookRequest(created.getUrl(), updatedHeaders));
+            assertThat(updated.getHeaders(), is(aMapWithSize(1)));
+            assertThat(updated.getHeaders(), hasKey("authorization"));
+        } finally {
+            this.clientJackson.deleteWebhook(created.getUuid());
+        }
+
+        assertThat(jacksonWebhookUuids(), not(hasItem(created.getUuid())));
+    }
+
+    private List<UUID> jacksonWebhookUuids() {
+        return Arrays.stream(this.clientJackson.getWebhooks().getResults())
+                .map(Webhook::getUuid)
+                .collect(Collectors.toList());
     }
 }
