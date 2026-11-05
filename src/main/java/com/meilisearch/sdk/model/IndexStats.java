@@ -1,5 +1,6 @@
 package com.meilisearch.sdk.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 import lombok.Getter;
 
@@ -12,7 +13,10 @@ import lombok.Getter;
 @Getter
 public class IndexStats {
     protected long numberOfDocuments;
+
+    @JsonProperty("isIndexing")
     protected boolean isIndexing;
+
     protected Map<String, Integer> fieldDistribution;
     protected long rawDocumentDbSize;
     protected long avgDocumentSize;
@@ -36,5 +40,11 @@ public class IndexStats {
         this.avgDocumentSize = avgDocumentSize;
         this.numberOfEmbeddedDocuments = numberOfEmbeddedDocuments;
         this.numberOfEmbeddings = numberOfEmbeddings;
+    }
+
+    /** Named explicitly because Jackson would otherwise call this property {@code indexing}. */
+    @JsonProperty("isIndexing")
+    public boolean isIndexing() {
+        return isIndexing;
     }
 }
