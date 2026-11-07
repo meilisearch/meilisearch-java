@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
@@ -419,6 +420,71 @@ public class DocumentsTest extends AbstractIT {
             Movie movie = index.getDocument(testData.getData().get(i).getId(), Movie.class);
             assertThat(movie.getTitle(), is(equalTo(testData.getData().get(i).getTitle())));
         }
+    }
+
+    /** Test GetDocuments with specified document IDs */
+    @Test
+    public void testGetDocumentsByIds() throws Exception {
+        String indexUid = "GetDocumentsByIds";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+        index.waitForTask(task.getTaskUid());
+
+        String firstId = testData.getData().get(0).getId();
+        String secondId = testData.getData().get(1).getId();
+        DocumentsQuery query =
+                new DocumentsQuery().setIds(new String[] {firstId, secondId, "unknown-id"});
+
+        Results<Movie> result = index.getDocuments(query, Movie.class);
+
+        assertThat(
+                Arrays.stream(result.getResults()).map(Movie::getId).toList(),
+                Matchers.containsInAnyOrder(firstId, secondId));
+
+        String rawResult = index.getRawDocuments(query);
+        int total = JsonParser.parseString(rawResult).getAsJsonObject().get("total").getAsInt();
+        assertThat(total, is(equalTo(2)));
+    }
+
+    /** Test GetDocuments with document IDs and specified fields */
+    @Test
+    public void testGetDocumentsByIdsAndSpecifiedFields() throws Exception {
+        String indexUid = "GetDocumentsByIdsAndSpecifiedFields";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+        index.waitForTask(task.getTaskUid());
+
+        Movie expected = testData.getData().get(0);
+        DocumentsQuery query =
+                new DocumentsQuery()
+                        .setIds(new String[] {expected.getId()})
+                        .setFields(new String[] {"id", "title"});
+
+        Movie[] movies = index.getDocuments(query, Movie.class).getResults();
+
+        assertThat(movies, is(arrayWithSize(1)));
+        assertThat(movies[0].getId(), is(equalTo(expected.getId())));
+        assertThat(movies[0].getTitle(), is(equalTo(expected.getTitle())));
+        assertThat(movies[0].getOverview(), is(nullValue()));
+    }
+
+    /** Test GetDocuments with an empty list of document IDs */
+    @Test
+    public void testGetDocumentsByEmptyIds() throws Exception {
+        String indexUid = "GetDocumentsByEmptyIds";
+        Index index = client.index(indexUid);
+
+        TestData<Movie> testData = this.getTestData(MOVIES_INDEX, Movie.class);
+        TaskInfo task = index.addDocuments(testData.getRaw());
+        index.waitForTask(task.getTaskUid());
+
+        DocumentsQuery query = new DocumentsQuery().setIds(new String[0]);
+
+        assertThat(index.getDocuments(query, Movie.class).getResults(), is(arrayWithSize(0)));
     }
 
     /** Test GetDocuments with limit and offset */
