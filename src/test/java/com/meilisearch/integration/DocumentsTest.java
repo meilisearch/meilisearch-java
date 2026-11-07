@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.meilisearch.integration.classes.AbstractIT;
 import com.meilisearch.integration.classes.TestData;
 import com.meilisearch.sdk.Index;
@@ -443,7 +444,8 @@ public class DocumentsTest extends AbstractIT {
                 Matchers.containsInAnyOrder(firstId, secondId));
 
         String rawResult = index.getRawDocuments(query);
-        assertThat(rawResult, Matchers.containsString("\"total\":2"));
+        int total = JsonParser.parseString(rawResult).getAsJsonObject().get("total").getAsInt();
+        assertThat(total, is(equalTo(2)));
     }
 
     /** Test GetDocuments with document IDs and specified fields */
